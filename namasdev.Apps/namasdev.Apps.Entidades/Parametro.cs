@@ -1,7 +1,7 @@
 ﻿
 namespace namasdev.Apps.Entidades
 {
-    public class Parametro
+    public partial class Parametro
     {
         public string Nombre { get; set; }
         public string Valor { get; set; }

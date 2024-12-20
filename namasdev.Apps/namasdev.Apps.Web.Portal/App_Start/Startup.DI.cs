@@ -41,16 +41,18 @@ namespace namasdev.Apps.Web.Portal
             services.AddScoped<ICorreosParametrosRepositorio, CorreosParametrosRepositorio>();
             services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
             services.AddScoped<IAplicacionesRepositorio, AplicacionesRepositorio>();
+            services.AddScoped<IAplicacionesVersionesRepositorio, AplicacionesVersionesRepositorio>();
         }
 
         private void RegisterNegocios(ServiceCollection services)
         {
-            services.AddSingleton<ServidorDeCorreosParametros>((sp) => JsonConvert.DeserializeObject<ServidorDeCorreosParametros>(sp.GetService<IParametrosRepositorio>().Obtener(ParametroNombres.SERVIDOR_CORREOS)));
+            services.AddSingleton<ServidorDeCorreosParametros>((sp) => JsonConvert.DeserializeObject<ServidorDeCorreosParametros>(sp.GetService<IParametrosRepositorio>().Obtener(Parametros.SERVIDOR_CORREOS)));
             
             services.AddScoped<IServidorDeCorreos, ServidorDeCorreos>();
             services.AddScoped<ICorreosNegocio, CorreosNegocio>();
             services.AddScoped<IUsuariosNegocio, UsuariosNegocio>();
             services.AddScoped<IAplicacionesNegocio, AplicacionesNegocio>();
+            services.AddScoped<IAplicacionesVersionesNegocio, AplicacionesVersionesNegocio>();
         }
 
         private void RegisterControllers(ServiceCollection services)
@@ -58,6 +60,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddTransient<AccountController>();
             services.AddTransient<UsuariosController>();
             services.AddTransient<AplicacionesController>();
+            services.AddTransient<AplicacionesVersionesController>();
         }
     }
 

@@ -3,7 +3,7 @@ using namasdev.Core.Entity;
 
 namespace namasdev.Apps.Entidades
 {
-    public class Error : Entidad<Guid>
+    public partial class Error : Entidad<Guid>
     {
         public string Mensaje { get; set; }
         public string StackTrace { get; set; }

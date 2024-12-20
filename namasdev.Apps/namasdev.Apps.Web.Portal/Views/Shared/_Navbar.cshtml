@@ -1,7 +1,7 @@
 ﻿@using namasdev.Apps.Web.Portal.Helpers;
 @{
     var usuarioHelper = new UsuarioHelper(this.Context);
-    string nombreCompleto = usuarioHelper.Usuario?.NombreCompleto;
+    string nombreCompleto = usuarioHelper.Usuario?.NombresYApellidos;
 }
 @if (Request.IsAuthenticated)
 {

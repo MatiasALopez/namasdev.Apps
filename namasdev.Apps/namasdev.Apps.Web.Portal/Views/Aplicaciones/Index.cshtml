@@ -23,9 +23,7 @@
 @Html.Partial("_Errores")
 <div class="row my-3">
     <div class="col-md-3">
-        <div>
-            <a href="@Url.Action("Agregar")" class="btn btn-primary">Agregar nuevo</a>
-        </div>
+        <a href="@Url.Action("Agregar")" class="btn btn-primary">Agregar nuevo</a>
     </div>
     <div class="col-md-9 text-right filtros">
         @using (Html.BeginForm("Index", "Aplicaciones", FormMethod.Get, new { @class = "form-inline pull-right" }))

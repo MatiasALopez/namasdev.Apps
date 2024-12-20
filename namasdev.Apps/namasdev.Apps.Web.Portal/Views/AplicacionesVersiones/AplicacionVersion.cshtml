@@ -1,0 +1,37 @@
+﻿@using namasdev.Apps.Entidades.Metadata; 
+@using namasdev.Apps.Web.Portal.ViewModels.AplicacionesVersiones;
+@model AplicacionVersionViewModel
+@{
+    ViewBag.Title = String.Format("{0} {1}", Model.PaginaModo, AplicacionVersionMetadata.NOMBRE);
+
+    var controlesIds = new 
+    {
+        Form = "frmVersion"
+    };
+}
+<h2 class="my-3">@ViewBag.Title</h2>
+<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mt-3">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(excludePropertyErrors: true)
+    @Html.Partial("_Errores")
+    @Html.Partial("_ResultadoOk")
+    @Html.HiddenFor(m => m.AplicacionVersionId)
+    @Html.HiddenFor(m => m.AplicacionId)
+    @Html.HiddenFor(m => m.PaginaModo)
+    <div class="form-row">
+        <div class="form-group col-lg-5 col-md-6">
+            @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = AplicacionVersionMetadata.Nombre.TAMAÑO_MAX })
+            @Html.ValidationMessageFor(m => m.Nombre)
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
+    <a href="@Url.Action("Index", new { aplicacionId = Model.AplicacionId })" class="btn btn-secondary">Volver</a>
+</form>
+@section bodyScripts {
+    <script type="text/javascript">
+        $(function () {
+            namasdevApps.setActiveMenuOption('aplicaciones');
+        });
+    </script>
+}

@@ -7,15 +7,15 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public CorreoParametrosConfig()
         {
-            ToTable("CorreosParametros");
-            HasKey(e => e.Id);
+            ToTable(Entidades.Metadata.CorreoParametrosMetadata.BD.TABLA);
+            HasKey(p => p.Id);
+
+            Property(p => p.Id)
+                .HasColumnName(Entidades.Metadata.CorreoParametrosMetadata.BD.ID);
 
             Property(e => e.Asunto)
                 .IsRequired()
-                .HasMaxLength(256);
-
-            Property(e => e.CopiaOculta)
-                .HasMaxLength(100);
+                .HasMaxLength(Entidades.Metadata.CorreoParametrosMetadata.Asunto.TAMAÑO_MAX);
         }
     }
 }

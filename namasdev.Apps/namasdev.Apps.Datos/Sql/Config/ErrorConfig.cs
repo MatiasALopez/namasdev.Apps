@@ -7,9 +7,12 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public ErrorConfig()
         {
-            ToTable("Errores");
-            HasKey(e => e.Id);
-            
+            ToTable(Entidades.Metadata.ErrorMetadata.BD.TABLA);
+            HasKey(p => p.Id);
+
+            Property(p => p.Id)
+                .HasColumnName(Entidades.Metadata.ErrorMetadata.BD.ID);
+
             Property(e => e.Mensaje)
                 .IsRequired();
 
@@ -18,7 +21,7 @@ namespace namasdev.Apps.Datos.Sql.Config
 
             Property(e => e.Source)
                 .IsRequired()
-                .HasMaxLength(200);
+                .HasMaxLength(Entidades.Metadata.ErrorMetadata.Source.TAMAÑO_MAX);
 
             Property(e => e.UserId)
                 .HasMaxLength(128);

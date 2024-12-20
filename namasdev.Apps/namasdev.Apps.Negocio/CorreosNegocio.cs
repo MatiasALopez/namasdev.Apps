@@ -9,9 +9,19 @@ using namasdev.Core.Validation;
 using namasdev.Net.Correos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Datos;
+using System;
 
 namespace namasdev.Apps.Negocio
 {
+    public interface ICorreosNegocio
+    {
+        void EnviarCorreoActivarCuenta(string email, string nombreYApellido, string activarCuentaUrl);
+        void EnviarCorreoResetearPassword(string email, string nombreYApellido, string resetearPasswordUrl);
+        void EnviarCorreo(string destinatario, string asunto, string cuerpo, IDictionary<string, string> correoVariables = null, string copiaOculta = null, IEnumerable<Archivo> adjuntos = null);
+        void EnviarCorreo(string destinatario, short correoParametrosId, IDictionary<string, string> correoVariables = null, string copiaOculta = null, IEnumerable<Archivo> adjuntos = null);
+        void EnviarCorreo(string destinatario, CorreoParametros correoParametros, IDictionary<string, string> correoVariables = null, string copiaOculta = null, IEnumerable<Archivo> adjuntos = null);
+    }
+
     public class CorreosNegocio : ICorreosNegocio
     {
         private readonly IServidorDeCorreos _servidorDeCorreos;
@@ -23,12 +33,12 @@ namespace namasdev.Apps.Negocio
             Validador.ValidarArgumentRequeridoYThrow(correosParametrosRepositorio, nameof(correosParametrosRepositorio));
 
             _servidorDeCorreos = servidorDeCorreos;
-            _correosParametrosRepositorio = correosParametrosRepositorio ?? new CorreosParametrosRepositorio();
+            _correosParametrosRepositorio = correosParametrosRepositorio;
         }
 
         public void EnviarCorreoActivarCuenta(string email, string nombreYApellido, string activarCuentaUrl)
         {
-            var correoParametros = _correosParametrosRepositorio.Obtener(CorreoParametros.ID_ACTIVAR_USUARIO);
+            var correoParametros = _correosParametrosRepositorio.Obtener(CorreosParametros.ACTIVAR_USUARIO);
 
             var variables = new Dictionary<string, string>
             {
@@ -44,7 +54,7 @@ namespace namasdev.Apps.Negocio
 
         public void EnviarCorreoResetearPassword(string email, string nombreYApellido, string resetearPasswordUrl)
         {
-            var correoParametros = _correosParametrosRepositorio.Obtener(CorreoParametros.ID_RESETEAR_PASSWORD);
+            var correoParametros = _correosParametrosRepositorio.Obtener(CorreosParametros.RESETEAR_PASSWORD);
 
             var variables = new Dictionary<string, string>
             {
@@ -144,26 +154,5 @@ namespace namasdev.Apps.Negocio
 
             return correo;
         }
-
-        #region Clases internas
-
-        private class ServidorDeCorreosPruebas : IServidorDeCorreos
-        {
-            private SmtpClient _smtpClient;
-
-            public ServidorDeCorreosPruebas()
-            {
-                _smtpClient = new SmtpClient();
-                _smtpClient.DeliveryMethod = SmtpDeliveryMethod.SpecifiedPickupDirectory;
-                _smtpClient.PickupDirectoryLocation = @"D:\Dev\mails\namasdev.Apps";
-            }
-
-            public void EnviarCorreo(MailMessage correo)
-            {
-                _smtpClient.Send(correo);
-            }
-        }
-
-        #endregion
     }
 }

@@ -8,6 +8,15 @@ using namasdev.Apps.Datos;
 
 namespace namasdev.Apps.Negocio
 {
+    public interface IUsuariosNegocio
+    {
+        void Actualizar(Usuario usuario, string usuarioLogueadoId);
+        Usuario Agregar(string usuarioId, string nombres, string apellidos, string email, string usuarioLogueadoId);
+        void DesmarcarComoBorrado(string usuarioId);
+        void MarcarComoBorrado(string usuarioId, string usuarioLogueadoId);
+        void ValidarDatos(Usuario usuario);
+    }
+
     public class UsuariosNegocio : IUsuariosNegocio
     {
         private IUsuariosRepositorio _usuariosRepositorio;
@@ -65,11 +74,9 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarEmailYAgregarAListaErrores(usuario.Email, Entidades.Metadata.Usuario.EMAIL_DISPLAY_NAME, requerido: true, errores);
-            Validador.ValidarStringYAgregarAListaErrores(usuario.Nombres, Entidades.Metadata.Usuario.NOMBRES_DISPLAY_NAME, requerido: true, errores,
-                tamañoMaximo: Entidades.Metadata.Usuario.NOMBRES_TAMAÑO_MAXIMO);
-            Validador.ValidarStringYAgregarAListaErrores(usuario.Apellidos, Entidades.Metadata.Usuario.APELLIDOS_DISPLAY_NAME, requerido: true, errores,
-                tamañoMaximo: Entidades.Metadata.Usuario.APELLIDOS_TAMAÑO_MAXIMO);
+            Validador.ValidarEmailYAgregarAListaErrores(usuario.Email, Entidades.Metadata.UsuarioMetadata.Email.DISPLAY_NAME, requerido: true, errores);
+            Validador.ValidarStringYAgregarAListaErrores(usuario.Nombres, Entidades.Metadata.UsuarioMetadata.Nombres.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.UsuarioMetadata.Nombres.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(usuario.Apellidos, Entidades.Metadata.UsuarioMetadata.Apellidos.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.UsuarioMetadata.Apellidos.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

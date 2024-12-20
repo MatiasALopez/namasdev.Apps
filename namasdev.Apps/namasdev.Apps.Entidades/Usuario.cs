@@ -6,18 +6,14 @@ using namasdev.Core.Entity;
 
 namespace namasdev.Apps.Entidades
 {
-    public class Usuario : EntidadCreadoModificadoBorrado<string>
+    public partial class Usuario : EntidadCreadoModificadoBorrado<string>
     {
-        public const string DISPLAY_NAME_EMAIL = "Email";
-        public const string DISPLAY_NAME_NOMBRES = "Nombres";
-        public const string DISPLAY_NAME_APELLIDOS = "Apellidos";
-        public const string DISPLAY_NAME_NOMBRECOMPLETO = "NombreCompleto";
-
         public string Email { get; set; }
         public string Nombres { get; set; }
         public string Apellidos { get; set; }
-        public string NombreCompleto { get; set; }
-       
+        public string NombresYApellidos { get; set; }
+        public string ApellidosYNombres { get; set; }
+
         public virtual List<AspNetRole> Roles { get; set; }
 
         public bool PerteneceAlRol(string rolNombre)
@@ -28,7 +24,7 @@ namespace namasdev.Apps.Entidades
 
         public override string ToString()
         {
-            return NombreCompleto;
+            return ApellidosYNombres;
         }
     }
 }

@@ -16,7 +16,7 @@ using namasdev.Apps.Web.Portal.ViewModels.Usuarios;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
-    [Authorize(Roles = AspNetRole.ADMINISTRADOR)]
+    [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
     public class UsuariosController : ControllerBase
     {
         private const string USUARIO_VIEW_NAME = "Usuario";
@@ -327,7 +327,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             _correosNegocio.EnviarCorreoActivarCuenta(
                 usuario.Email,
-                usuario.NombreCompleto,
+                usuario.NombresYApellidos,
                 activarCuentaUrl: URLHelper.GenerarRutaAbsoluta(Url.Action("ActivarCuenta", "Account", new { id = usuario.Id, code = UserManager.GenerateEmailConfirmationToken(usuario.Id) })));
         }
 

@@ -1,7 +1,7 @@
 ﻿
 namespace namasdev.Apps.Entidades
 {
-    public class ParametroNombres
+    public class Parametros
     {
         #region Generales
 

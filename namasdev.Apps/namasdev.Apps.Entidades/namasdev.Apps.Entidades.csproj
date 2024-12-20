@@ -50,16 +50,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AplicacionVersion.cs" />
+    <Compile Include="EntidadPropiedad.cs" />
+    <Compile Include="Metadata\AspNetRoleMetadata.cs" />
+    <Compile Include="Metadata\CorreoParametrosMetadata.cs" />
+    <Compile Include="Metadata\PropiedadTipoMetadata.cs" />
+    <Compile Include="Metadata\ParametroMetadata.cs" />
+    <Compile Include="Metadata\ErrorMetadata.cs" />
+    <Compile Include="Metadata\EntidadPropiedadMetadata.cs" />
+    <Compile Include="Metadata\EntidadMetadata.cs" />
+    <Compile Include="Metadata\AuditoriaTipoMetadata.cs" />
+    <Compile Include="Metadata\AuditoriaMetadata.cs" />
+    <Compile Include="Metadata\AplicacionVersionMetadata.cs" />
+    <Compile Include="PropiedadTipo.cs" />
+    <Compile Include="Entidad.cs" />
     <Compile Include="Aplicacion.cs" />
     <Compile Include="AspNetRole.cs" />
-    <Compile Include="AzureStorage.cs" />
+    <Compile Include="AuditoriaTipo.cs" />
+    <Compile Include="Auditoria.cs" />
+    <Compile Include="Valores\AzureStorage.cs" />
     <Compile Include="CorreoParametros.cs" />
     <Compile Include="Error.cs" />
-    <Compile Include="Metadata\Usuario.cs" />
+    <Compile Include="Metadata\AplicacionMetadata.cs" />
+    <Compile Include="Metadata\UsuarioMetadata.cs" />
     <Compile Include="Parametro.cs" />
-    <Compile Include="ParametroNombres.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuario.cs" />
+    <Compile Include="Valores\AspNetRole.cs" />
+    <Compile Include="Valores\AuditoriaTipo.cs" />
+    <Compile Include="Valores\CorreoParametros.cs" />
+    <Compile Include="Valores\Parametro.cs" />
+    <Compile Include="Valores\PropiedadTipo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

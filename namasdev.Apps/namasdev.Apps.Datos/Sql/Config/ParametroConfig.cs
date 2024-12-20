@@ -7,12 +7,12 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public ParametroConfig()
         {
-            ToTable("Parametros");
-            HasKey(e => e.Nombre);
+            ToTable(Entidades.Metadata.ParametroMetadata.BD.TABLA);
+            HasKey(p => p.Nombre);
 
             Property(e => e.Nombre)
                 .IsRequired()
-                .HasMaxLength(75);
+                .HasMaxLength(Entidades.Metadata.ParametroMetadata.Nombre.TAMAÑO_MAX);
         }
     }
 }

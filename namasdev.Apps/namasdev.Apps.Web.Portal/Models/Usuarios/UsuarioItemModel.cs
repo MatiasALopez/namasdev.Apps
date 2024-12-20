@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using namasdev.Apps.Entidades.Metadata;
+using System.ComponentModel.DataAnnotations;
 
 namespace namasdev.Apps.Web.Portal.Models.Usuarios
 {
@@ -6,14 +7,16 @@ namespace namasdev.Apps.Web.Portal.Models.Usuarios
     {
         public string UsuarioId { get; set; }
 
+        [Display(Name = UsuarioMetadata.Nombres.DISPLAY_NAME)]
         public string Nombres { get; set; }
 
+        [Display(Name = UsuarioMetadata.Apellidos.DISPLAY_NAME)]
         public string Apellidos { get; set; }
 
-        [Display(Name = "Correo electrónico")]
+        [Display(Name = UsuarioMetadata.Email.DISPLAY_NAME)]
         public string Email { get; set; }
 
-        [Display(Name = "Rol")]
+        [Display(Name = AspNetRoleMetadata.NOMBRE)]
         public string Rol { get; set; }
 
         public bool Activado { get; set; }

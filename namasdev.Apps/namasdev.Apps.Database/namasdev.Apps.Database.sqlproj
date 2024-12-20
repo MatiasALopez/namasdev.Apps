@@ -73,6 +73,12 @@
     <Build Include="dbo\Tables\Usuarios.sql" />
     <None Include="Data\01.Schema.sql" />
     <None Include="Data\03.DataTest.sql" />
+    <Build Include="dbo\Tables\Entidades.sql" />
+    <Build Include="dbo\Tables\AplicacionesVersiones.sql" />
+    <Build Include="dbo\Tables\AuditoriaTipos.sql" />
+    <Build Include="dbo\Tables\Auditorias.sql" />
+    <Build Include="dbo\Tables\EntidadesPropiedades.sql" />
+    <Build Include="dbo\Tables\PropiedadTipos.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\02.Data.sql" />

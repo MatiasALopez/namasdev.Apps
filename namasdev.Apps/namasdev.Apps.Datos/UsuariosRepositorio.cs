@@ -6,10 +6,23 @@ using System.Linq;
 using namasdev.Apps.Datos.Sql;
 using namasdev.Apps.Entidades;
 using namasdev.Core.Types;
+using namasdev.Core.Validation;
+using namasdev.Data;
 using namasdev.Data.Entity;
 
 namespace namasdev.Apps.Datos
 {
+    public interface IUsuariosRepositorio : IRepositorio<Usuario, string>
+    {
+        List<string> ObtenerEmailsPorRol(string rolNombre);
+        string ObtenerNombresYApellidosPorId(string usuarioId);
+        Usuario Obtener(string usuarioId, bool cargarRoles = false);
+        bool ExisteBorradoPorEmail(string email, out string usuarioId);
+        List<AspNetRole> ObtenerRoles();
+        List<Usuario> ObtenerListado(string busqueda = null, string rol = null, bool cargarRoles = false, OrdenYPaginacionParametros op = null);
+        string ObtenerRolDeUsuario(string usuarioId);
+    }
+
     public class UsuariosRepositorio : Repositorio<SqlContext, Usuario, string>, IUsuariosRepositorio
     {
         public List<string> ObtenerEmailsPorRol(string rolNombre)
@@ -26,13 +39,13 @@ namespace namasdev.Apps.Datos
             }
         }
 
-        public string ObtenerNombreCompletoPorId(string usuarioId)
+        public string ObtenerNombresYApellidosPorId(string usuarioId)
         {
             using (var ctx = new SqlContext())
             {
                 return ctx.Usuarios
                     .Where(u => u.Id == usuarioId && !u.Borrado)
-                    .Select(u => u.NombreCompleto)
+                    .Select(u => u.NombresYApellidos)
                     .FirstOrDefault();
             }
         }
@@ -70,7 +83,7 @@ namespace namasdev.Apps.Datos
 
         public List<AspNetRole> ObtenerRoles()
         {
-            using (var ctx = new Sql.SqlContext())
+            using (var ctx = new SqlContext())
             {
                 return ctx.AspNetRoles
                     .OrderBy(r => r.Name)
@@ -83,7 +96,7 @@ namespace namasdev.Apps.Datos
             bool cargarRoles = false,
             OrdenYPaginacionParametros op = null)
         {
-            using (var ctx = new Sql.SqlContext())
+            using (var ctx = new SqlContext())
             {
                 var query = ctx.Usuarios.AsQueryable();
 
@@ -95,7 +108,7 @@ namespace namasdev.Apps.Datos
                 if (!String.IsNullOrWhiteSpace(busqueda))
                 {
                     query = query.Where(u =>
-                        u.NombreCompleto.Contains(busqueda)
+                        u.ApellidosYNombres.Contains(busqueda)
                         || u.Email.Contains(busqueda));
                 }
 
@@ -106,14 +119,14 @@ namespace namasdev.Apps.Datos
 
                 return query
                     .Where(u => !u.Borrado)
-                    .OrdenarYPaginar(op, ordenDefault: nameof(Usuario.NombreCompleto))
+                    .OrdenarYPaginar(op, ordenDefault: nameof(Usuario.ApellidosYNombres))
                     .ToList();
             }
         }
 
         public string ObtenerRolDeUsuario(string usuarioId)
         {
-            using (var ctx = new Sql.SqlContext())
+            using (var ctx = new SqlContext())
             {
                 return ctx.Usuarios
                     .Where(u => u.Id == usuarioId)

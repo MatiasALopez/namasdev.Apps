@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
 {
@@ -21,7 +22,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
             if (PaginaModo == PaginaModo.Editar
                 && !AplicacionId.HasValue)
             {
-                yield return new ValidationResult(Validador.MensajeRequerido("Aplicación"));
+                yield return new ValidationResult(Validador.MensajeRequerido(AplicacionMetadata.NOMBRE));
             }
         }
     }

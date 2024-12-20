@@ -3,6 +3,7 @@ using System.Web.Mvc;
 
 using namasdev.Web.ViewModels;
 using namasdev.Apps.Web.Portal.Models.Usuarios;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
 {
@@ -16,7 +17,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
         [Display(Name = "Búsqueda (Nombre y apellido, Correo electrónico)")]
         public string Busqueda { get; set; }
 
-        [Display(Name = "Rol")]
+        [Display(Name = AspNetRoleMetadata.NOMBRE)]
         public string Rol { get; set; }
 
         public bool? Activado { get; set; }

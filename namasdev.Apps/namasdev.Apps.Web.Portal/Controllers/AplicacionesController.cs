@@ -12,7 +12,7 @@ using namasdev.Apps.Web.Portal.ViewModels.Aplicaciones;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
-    [Authorize(Roles = AspNetRole.ADMINISTRADOR)]
+    [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
     public class AplicacionesController : ControllerBase
     {
         private const string APLICACION_VIEW_NAME = "Aplicacion";

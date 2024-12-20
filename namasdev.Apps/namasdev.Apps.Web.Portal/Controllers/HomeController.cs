@@ -13,7 +13,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Index()
         {
-            //if (UsuarioHelper.PerteneceAlRol(AspNetRole.ADMINISTRADOR))
+            //if (UsuarioHelper.PerteneceAlRol(AspNetRoles.ADMINISTRADOR))
             //{
             //    return RedirectToAction("Ventas", "Reportes");
             //}

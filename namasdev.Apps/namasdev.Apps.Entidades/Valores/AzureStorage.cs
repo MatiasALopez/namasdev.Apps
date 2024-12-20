@@ -1,13 +1,13 @@
 ﻿
 namespace namasdev.Apps.Entidades
 {
-    public class AzureBlobContainerNombres
+    public class AzureBlobContainer
     {
         //public const string RECURSOS = "recursos";
         public const string ARTICULOS_FOTOS = "articulos-fotos";
     }
-
-    public class AzureBlobDirectoryNombres
+    
+    public class AzureBlobDirectory
     {
         //public class Recursos
         //{
@@ -15,7 +15,7 @@ namespace namasdev.Apps.Entidades
         //}
     }
 
-    public class AzureBlobNombres
+    public class AzureBlob
     {
         //public class Recursos
         //{

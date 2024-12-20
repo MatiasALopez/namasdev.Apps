@@ -10,7 +10,7 @@
             <li id="menuFunciones">
                 <a href="#submenuFunciones" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Funciones</a>
                 <ul class="collapse list-unstyled sidebar-submenu" id="submenuFunciones">
-                    @if (usuarioHelper.PerteneceAlRol(AspNetRole.ADMINISTRADOR))
+                    @if (usuarioHelper.PerteneceAlRol(AspNetRoles.ADMINISTRADOR))
                     {
                         <li class="menu-aplicaciones"><a href="@Url.Action("Index", "Aplicaciones")">Aplicaciones</a></li>
                         <li class="menu-usuarios"><a href="@Url.Action("Index", "Usuarios")">Usuarios</a></li>
@@ -20,7 +20,7 @@
             <li id="menuReportes">
                 <a href="#submenuReportes" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Reportes</a>
                 <ul class="collapse list-unstyled sidebar-submenu" id="submenuReportes">
-                    @if (usuarioHelper.PerteneceAlRol(AspNetRole.ADMINISTRADOR))
+                    @if (usuarioHelper.PerteneceAlRol(AspNetRoles.ADMINISTRADOR))
                     {
                     }
                 </ul>

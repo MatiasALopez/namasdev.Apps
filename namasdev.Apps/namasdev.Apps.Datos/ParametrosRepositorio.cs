@@ -10,23 +10,26 @@ using namasdev.Apps.Datos.Sql;
 
 namespace namasdev.Apps.Datos
 {
-    public class ParametrosRepositorio : IParametrosRepositorio, IDisposable
+    public interface IParametrosRepositorio
     {
-        private SqlContext _sqlContext;
+        string Obtener(string nombre);
+        Dictionary<string, string> Obtener(params string[] nombres);
+        void Guardar(string nombre, string valor);
+        void Guardar(Dictionary<string, string> parametros);
+        CloudStorageAccount ObtenerCloudStorageAccount();
+    }
 
-        public ParametrosRepositorio(SqlContext sqlContext)
-        {
-            Validador.ValidarArgumentRequeridoYThrow(sqlContext, nameof(sqlContext));
-
-            _sqlContext = sqlContext;
-        }
-
+    public class ParametrosRepositorio : IParametrosRepositorio
+    {
         public string Obtener(string nombre)
         {
-            return _sqlContext.Parametros
-                .Where(e => e.Nombre == nombre)
-                .Select(e => e.Valor)
-                .FirstOrDefault();
+            using (var ctx = new SqlContext())
+            {
+                return ctx.Parametros
+                    .Where(e => e.Nombre == nombre)
+                    .Select(e => e.Valor)
+                    .FirstOrDefault();
+            }
         }
 
         public Dictionary<string, string> Obtener(params string[] nombres)
@@ -36,9 +39,12 @@ namespace namasdev.Apps.Datos
                 return new Dictionary<string, string>();
             }
 
-            return _sqlContext.Parametros
-                .Where(e => nombres.Contains(e.Nombre))
-                .ToDictionary(e => e.Nombre, e => e.Valor);
+            using (var ctx = new SqlContext())
+            {
+                return ctx.Parametros
+                    .Where(e => nombres.Contains(e.Nombre))
+                    .ToDictionary(e => e.Nombre, e => e.Valor);
+            }
         }
 
         public void Guardar(string nombre, string valor)
@@ -50,34 +56,29 @@ namespace namasdev.Apps.Datos
         {
             Validador.ValidarArgumentListaRequeridaYThrow(parametros, nameof(parametros));
 
-            Parametro p = null;
-            foreach (var parametro in parametros)
+            using (var ctx = new SqlContext())
             {
-                p = _sqlContext.Parametros.Find(parametro.Key);
-
-                if (p == null)
+                Parametro p = null;
+                foreach (var parametro in parametros)
                 {
-                    p = new Parametro { Nombre = parametro.Key };
-                    _sqlContext.Parametros.Add(p);
+                    p = ctx.Parametros.Find(parametro.Key);
+
+                    if (p == null)
+                    {
+                        p = new Parametro { Nombre = parametro.Key };
+                        ctx.Parametros.Add(p);
+                    }
+
+                    p.Valor = parametro.Value;
                 }
 
-                p.Valor = parametro.Value;
+                ctx.SaveChanges();
             }
-
-            _sqlContext.SaveChanges();
         }
 
         public CloudStorageAccount ObtenerCloudStorageAccount()
         {
-            return CloudStorageAccount.Parse(Obtener(ParametroNombres.CLOUD_STORAGE_ACCOUNT_CONNECTION_STRING));
-        }
-
-        public void Dispose()
-        {
-            if (_sqlContext != null) 
-            { 
-                _sqlContext.Dispose();
-            }
+            return CloudStorageAccount.Parse(Obtener(Entidades.Metadata.ParametroMetadata.Nombres.CLOUD_STORAGE_ACCOUNT_CONNECTION_STRING));
         }
     }
 }

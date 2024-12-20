@@ -35,7 +35,7 @@ namespace namasdev.Apps.Negocio
         {
             using (var ts = TransactionScopeFactory.Crear(TransactionScopeOption.Suppress))
             {
-                string mensajeAlUsuario = _parametrosRepositorio.Obtener(ParametroNombres.ERRORES_MENSAJE_DEFAULT);
+                string mensajeAlUsuario = _parametrosRepositorio.Obtener(Entidades.Metadata.ParametroMetadata.Nombres.ERRORES_MENSAJE_DEFAULT);
 
                 try
                 {

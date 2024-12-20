@@ -87,7 +87,7 @@ GO
 --====
 CREATE TABLE [dbo].[Parametros]
 (
-	[Nombre] nvarchar(75) not null,
+	[Nombre] nvarchar(100) not null,
 	[Valor] nvarchar(max) null,
 
 	constraint [PK_Parametros] primary key clustered ([Nombre])
@@ -102,7 +102,7 @@ create table [dbo].[CorreosParametros]
 	[Id] smallint not null,
 	[Asunto] nvarchar(256) not null,
 	[Contenido] nvarchar(max) not null,
-	[CopiaOculta] nvarchar(100) null, 
+	[CopiaOculta] nvarchar(max) null, 
 
     constraint [PK_CorreosParametros] primary key clustered ([Id])
 )
@@ -123,6 +123,36 @@ CREATE TABLE [dbo].[Errores]
 	CONSTRAINT [PK_Errores] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 GO
+--=====
+
+--=====
+CREATE TABLE [dbo].[AuditoriaTipos] 
+(
+    [AuditoriaTipoId] SMALLINT      NOT NULL,
+    [Nombre]          NVARCHAR (50) NOT NULL,
+    
+    CONSTRAINT [PK_AuditoriaTipos] PRIMARY KEY CLUSTERED ([AuditoriaTipoId] ASC)
+)
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_AuditoriaTipos_Nombre] ON [dbo].[AuditoriaTipos]([Nombre] ASC)
+go
+--=====
+
+--=====
+CREATE TABLE [dbo].[Auditorias] 
+(
+    [Id]              UNIQUEIDENTIFIER NOT NULL,
+    [Tabla]           NVARCHAR (100)   NOT NULL,
+    [AuditoriaTipoId] SMALLINT         NOT NULL,
+    [Detalle]         NVARCHAR (MAX)   NOT NULL,
+    [UserId]          NVARCHAR (128)   NOT NULL,
+    [FechaHora]       DATETIME         NOT NULL,
+    
+    CONSTRAINT [PK_Auditorias] PRIMARY KEY CLUSTERED ([Id] ASC),
+    CONSTRAINT [FK_Auditorias_AuditoriaTipoId] FOREIGN KEY ([AuditoriaTipoId]) REFERENCES [dbo].[AuditoriaTipos] ([AuditoriaTipoId])
+)
+go
 --=====
 
 --=====
@@ -149,6 +179,17 @@ go
 --=====
 
 --=====
+create table dbo.PropiedadTipos
+(
+	PropiedadTipoId smallint not null,
+	Nombre nvarchar(100) not null,
+	
+	constraint PK_PropiedadTipos primary key clustered (PropiedadTipoId)
+)
+go
+--=====
+
+--=====
 create table dbo.Aplicaciones
 (
 	AplicacionId uniqueidentifier not null,
@@ -163,5 +204,76 @@ create table dbo.Aplicaciones
 
 	constraint PK_Aplicaciones primary key clustered (AplicacionId)
 )
+go
+--=====
+
+--=====
+create table dbo.AplicacionesVersiones
+(
+	AplicacionVersionId uniqueidentifier not null,
+	AplicacionId uniqueidentifier not null,
+	Nombre nvarchar(50) not null,
+	CreadoPor nvarchar(128) not null,
+	CreadoFecha datetime not null,
+	UltimaModificacionPor nvarchar(128) not null,
+	UltimaModificacionFecha datetime not null,
+	BorradoPor nvarchar(128) null,
+	BorradoFecha datetime null,
+	Borrado AS (ISNULL(CONVERT(bit,CASE WHEN BorradoFecha IS NULL THEN 0 ELSE 1 END), 0)),
+
+	constraint PK_AplicacionesVersiones primary key clustered (AplicacionVersionId),
+	constraint FK_AplicacionesVersiones_AplicacionId foreign key (AplicacionId) references dbo.Aplicaciones (AplicacionId)
+)
+go
+
+create nonclustered index IX_AplicacionesVersiones_AplicacionId on dbo.AplicacionesVersiones (AplicacionId)
+go
+--=====
+
+--=====
+create table dbo.Entidades
+(
+	EntidadId uniqueidentifier not null,
+	AplicacionVersionId uniqueidentifier not null,
+	Nombre nvarchar(100) not null,
+	CreadoPor nvarchar(128) not null,
+	CreadoFecha datetime not null,
+	UltimaModificacionPor nvarchar(128) not null,
+	UltimaModificacionFecha datetime not null,
+	BorradoPor nvarchar(128) null,
+	BorradoFecha datetime null,
+	Borrado AS (ISNULL(CONVERT(bit,CASE WHEN BorradoFecha IS NULL THEN 0 ELSE 1 END), 0)),
+
+	constraint PK_Entidades primary key clustered (EntidadId),
+	constraint FK_Entidades_AplicacionVersionId foreign key (AplicacionVersionId) references dbo.AplicacionesVersiones (AplicacionVersionId)
+)
+go
+--=====
+
+--=====
+create table dbo.EntidadesPropiedades
+(
+	EntidadPropiedadId uniqueidentifier not null,
+	EntidadId uniqueidentifier not null,
+	Nombre nvarchar(100) not null,
+	PropiedadTipoId smallint not null,
+	PropiedadTipoEspecificaciones nvarchar(max) not null,
+	PermiteNull bit not null,
+	EsCalculado bit not null,
+	CreadoPor nvarchar(128) not null,
+	CreadoFecha datetime not null,
+	UltimaModificacionPor nvarchar(128) not null,
+	UltimaModificacionFecha datetime not null,
+	BorradoPor nvarchar(128) null,
+	BorradoFecha datetime null,
+	Borrado AS (ISNULL(CONVERT(bit,CASE WHEN BorradoFecha IS NULL THEN 0 ELSE 1 END), 0)),
+
+	constraint PK_EntidadesPropiedades primary key clustered (EntidadPropiedadId),
+	constraint FK_EntidadesPropiedades_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId),
+	constraint FK_EntidadesPropiedades_PropiedadTipoId foreign key (PropiedadTipoId) references dbo.PropiedadTipos (PropiedadTipoId)
+)
+go
+
+create nonclustered index IX_EntidadesPropiedades_EntidadId on dbo.EntidadesPropiedades (EntidadId)
 go
 --=====

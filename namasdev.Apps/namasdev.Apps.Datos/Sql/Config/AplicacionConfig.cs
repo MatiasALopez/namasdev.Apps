@@ -7,15 +7,15 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public AplicacionConfig()
         {
-            ToTable("Aplicaciones");
-            HasKey(x => x.Id);
+            ToTable(Entidades.Metadata.AplicacionMetadata.BD.TABLA);
+            HasKey(p => p.Id);
 
-            Property(x => x.Id)
-                .HasColumnName("AplicacionId");
+            Property(p => p.Id)
+                .HasColumnName(Entidades.Metadata.AplicacionMetadata.BD.ID);
 
-            Property(x => x.Nombre)
+            Property(p => p.Nombre)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(Entidades.Metadata.AplicacionMetadata.Nombre.TAMAÑO_MAX);
         }
     }
 }

@@ -28,3 +28,28 @@ insert into dbo.AspNetRoles (Id,Name) values
 ('1212CE75-E3CA-4838-B083-DCB5753CB657','Administrador')
 go
 --====
+
+--====
+insert into dbo.AuditoriaTipos (AuditoriaTipoId,Nombre) values
+(1,'Creación'),
+(2,'Modificación'),
+(3,'Borrado')
+go
+--====
+
+--====
+insert into dbo.PropiedadTipos (PropiedadTipoId,Nombre) values
+(1,'Texto'),
+(2,'GUID'),
+(3,'Entero'),
+(4,'Entero corto'),
+(5,'Entero largo'),
+(6,'Decimal'),
+(7,'Decimal largo'),
+(8,'Importe'),
+(9,'Fecha/Hora'),
+(10,'Fecha'),
+(11,'Hora'),
+(12,'Booleano')
+go
+--====

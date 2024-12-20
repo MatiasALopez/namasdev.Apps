@@ -8,7 +8,15 @@ using namasdev.Core.Validation;
 
 namespace namasdev.Apps.Negocio
 {
-    public class AplicacionesNegocio : IAplicacionesNegocio, IDisposable
+    public interface IAplicacionesNegocio
+    {
+        Aplicacion Agregar(string nombre, string usuarioId);
+        void Actualizar(Aplicacion aplicacion, string usuarioId);
+        void MarcarComoBorrado(Guid aplicacionId, string usuarioLogueadoId);
+        void DesmarcarComoBorrado(Guid aplicacionId);
+    }
+
+    public class AplicacionesNegocio : IAplicacionesNegocio
     {
         private IAplicacionesRepositorio _aplicacionesRepositorio;
 
@@ -64,20 +72,11 @@ namespace namasdev.Apps.Negocio
             _aplicacionesRepositorio.ActualizarDatosBorrado(new Aplicacion { Id = aplicacionId });
         }
 
-        public void Dispose()
-        {
-            if (_aplicacionesRepositorio != null)
-            {
-                _aplicacionesRepositorio.Dispose();
-            }
-        }
-
         private void ValidarDatos(Aplicacion aplicacion)
         {
             var errores = new List<string>();
 
-            Validador.ValidarStringYAgregarAListaErrores(aplicacion.Nombre, Aplicacion.DISPLAY_NAME_NOMBRE, requerido: true, errores, 
-                tamañoMaximo: 100);
+            Validador.ValidarStringYAgregarAListaErrores(aplicacion.Nombre, Entidades.Metadata.AplicacionMetadata.Nombre.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.AplicacionMetadata.Nombre.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

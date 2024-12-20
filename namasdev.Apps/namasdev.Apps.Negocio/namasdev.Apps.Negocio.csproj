@@ -67,12 +67,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AplicacionesVersionesNegocio.cs" />
     <Compile Include="AplicacionesNegocio.cs" />
     <Compile Include="CorreosNegocio.cs" />
     <Compile Include="ErroresNegocio.cs" />
-    <Compile Include="IAplicacionesNegocio.cs" />
-    <Compile Include="ICorreosNegocio.cs" />
-    <Compile Include="IUsuariosNegocio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UsuariosNegocio.cs" />
   </ItemGroup>

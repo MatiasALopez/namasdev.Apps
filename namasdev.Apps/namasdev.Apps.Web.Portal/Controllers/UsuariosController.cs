@@ -140,7 +140,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var usuario = _usuariosRepositorio.Obtener(id, cargarRoles: true);
             if (usuario == null)
             {
-                return Redirect("Index");
+                return RedirectToAction(nameof(Index));
             }
 
             var modelo = UsuariosMapper.MapearUsuarioEntidadAViewModel(usuario);

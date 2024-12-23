@@ -248,6 +248,12 @@ create table dbo.Entidades
 	constraint FK_Entidades_AplicacionVersionId foreign key (AplicacionVersionId) references dbo.AplicacionesVersiones (AplicacionVersionId)
 )
 go
+
+create nonclustered index IX_Entidades_AplicacionVersionId on dbo.Entidades (AplicacionVersionId)
+go
+
+create unique nonclustered index IX_Entidades_AplicacionVersionIdYNombre on dbo.Entidades(AplicacionVersionId,Nombre)
+go
 --=====
 
 --=====
@@ -275,5 +281,8 @@ create table dbo.EntidadesPropiedades
 go
 
 create nonclustered index IX_EntidadesPropiedades_EntidadId on dbo.EntidadesPropiedades (EntidadId)
+go
+
+create unique nonclustered index IX_EntidadesPropiedades_EntidadIdYNombre on dbo.EntidadesPropiedades (EntidadId,Nombre)
 go
 --=====

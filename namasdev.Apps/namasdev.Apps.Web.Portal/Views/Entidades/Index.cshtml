@@ -1,39 +1,49 @@
 ﻿@using namasdev.Web.Helpers;
-@model namasdev.Apps.Web.Portal.ViewModels.AplicacionesVersiones.AplicacionesVersionesViewModel
+@model namasdev.Apps.Web.Portal.ViewModels.Entidades.EntidadesViewModel
 @{
-    ViewBag.Title = "Versiones";
+    ViewBag.Title = "Entidades";
 
     var controlesIds = new
     {
-        Form = "frmVersiones",
-        TablaContainer = "divVersionesContainer",
-        Tabla = "tblVersiones"
+        Form = "frmEntidades",
+        TablaContainer = "divEntidadesContainer",
+        Tabla = "tblEntidades"
     };
     var displayNames = new
     {
         Busqueda = Html.DisplayNameWithoutEncodingFor(m => m.Busqueda).ToString()
     };
-    var clasesCss = new 
+    var clasesCss = new
     {
         BotonEliminar = "btn-eliminar"
     };
 }
-<h2 class="my-2">@ViewBag.Title</h2>
+<h2>@ViewBag.Title</h2>
 @Html.Partial("_ResultadoOk")
 @Html.Partial("_Errores")
-<div class="row my-3">
+<div class="mt-3">
+    <strong>@Html.DisplayNameFor(m => m.AplicacionNombre):</strong> @Model.AplicacionNombre
+</div>
+<form action="@Url.Action("Index", "Entidades")" method="get" class="form-inline mt-3">
+    @Html.HiddenFor(m => m.AplicacionId)
+    @Html.LabelFor(m => m.AplicacionVersionId)
+    @Html.DropDownListFor(m => m.AplicacionVersionId, Model.AplicacionesVersionesSelectList, new { @class = "form-control autopostback ml-2 mb-2" })
+</form>
+<div class="row mt-3">
     <div class="col-md-3">
-        <a href="@Url.Action("Agregar", new { aplicacionId = Model.AplicacionId })" class="btn btn-primary">Agregar nueva</a>
+        <a href="@Url.Action("Agregar", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-primary">Agregar nueva</a>
     </div>
     <div class="col-md-9 text-right filtros">
-        @using (Html.BeginForm("Index", "AplicacionesVersiones", new { aplicacionId = Model.AplicacionId }, FormMethod.Get, new { @class = "form-inline pull-right" }))
+        @using (Html.BeginForm("Index", "Entidades", FormMethod.Get, new { @class = "form-inline pull-right" }))
         {
+            @Html.HiddenFor(m => m.AplicacionId, new { id = "hfAplicacionId" })
+            @Html.HiddenFor(m => m.AplicacionVersionId, new { id = "hfAplicacionVersionId" })
             @Html.TextBoxFor(m => m.Busqueda, new { @class = "form-control ml-1", placeholder = displayNames.Busqueda, title = displayNames.Busqueda, data_toggle = "tooltip" })
             <button type="submit" class="btn btn-secondary ml-1">Buscar</button>
         }
     </div>
 </div>
-<div class="row">
+<div class="row mt-3">
     <div class="col-md-12">
         @if (Model.TieneItems)
         {
@@ -54,8 +64,8 @@
                             <tr>
                                 <td>@item.Nombre</td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Editar", new { id = item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.AplicacionVersionId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    <a href="@Url.Action("Editar", new { id = item.EntidadId, aplicacionVersionId = item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         }
@@ -66,14 +76,14 @@
         }
         else
         {
-            <div class="alert alert-warning">No hay versiones para mostrar.</div>
+            <div class="alert alert-warning">No hay entidades para mostrar.</div>
         }
     </div>
 </div>
 @section bodyScripts {
     <script type="text/javascript">
         $(function () {
-            namasdevApps.setActiveMenuOption('aplicaciones');
+            namasdevApps.setActiveMenuOption('entidades');
 
             $('#@controlesIds.Tabla')
                 .on('click', '.@clasesCss.BotonEliminar', function (ev) {
@@ -87,8 +97,8 @@
                     var options = {
                         showLoadingSelector: '#@controlesIds.TablaContainer',
                         confirm: true,
-                        confirmTitle: 'Eliminar versión',
-                        confirmMessage: '¿Estás seguro que deseas eliminar la versión seleccionada?'
+                        confirmTitle: 'Eliminar entidad',
+                        confirmMessage: '¿Estás seguro que deseas eliminar la entidad seleccionada?'
                     };
                     namasdevApps.postJson(
                         '@Url.Action("Eliminar")/' + id,
@@ -96,7 +106,7 @@
                         function (response) {
                             if (response.success) {
                                 nmd.ui.controls.showSuccessModal(
-                                    'La versión fue eliminada correctamente.',
+                                    'La entidad fue eliminada correctamente.',
                                     function () {
                                         nmd.page.reloadPage();
                                     });

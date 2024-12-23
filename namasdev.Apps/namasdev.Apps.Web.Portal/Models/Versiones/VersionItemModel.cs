@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 using namasdev.Apps.Entidades.Metadata;
 
-namespace namasdev.Apps.Web.Portal.Models.AplicacionesVersiones
+namespace namasdev.Apps.Web.Portal.Models.Versiones
 {
-    public class AplicacionVersionItemModel
+    public class VersionItemModel
     {
         public Guid AplicacionVersionId { get; set; }
 

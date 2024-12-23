@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -10,6 +8,17 @@ namespace namasdev.Apps.Web.Portal.Helpers
 {
     public class ListasHelper
     {
+        public static SelectList ObtenerVersionesSelectList(IEnumerable<AplicacionVersion> versiones)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(
+                versiones,
+                av => new SelectListItem
+                {
+                    Text = av.Nombre,
+                    Value = av.Id.ToString()
+                });
+        }
+
         public static SelectList ObtenerRolesSelectList(IEnumerable<AspNetRole> roles)
         {
             return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeItems(ObtenerRolesSelectListItems(roles));

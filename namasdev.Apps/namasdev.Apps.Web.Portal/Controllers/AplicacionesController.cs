@@ -43,15 +43,6 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 Orden = orden,
             };
 
-            var op = modelo.CrearOrdenYPaginacionParametros();
-
-            modelo.Items = AplicacionesMapper.MapearEntidadesAModelos(
-                entidades: _aplicacionesRepositorio.ObtenerLista(
-                    busqueda: modelo.Busqueda,
-                    op: op));
-
-            modelo.CargarPaginacion(op);
-
             CargarAplicacionesViewModel(modelo);
             return View(modelo);
         }
@@ -113,7 +104,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var aplicacion = _aplicacionesRepositorio.Obtener(id);
             if (aplicacion == null)
             {
-                return Redirect(nameof(Index));
+                return RedirectToAction(nameof(Index));
             }
 
             var modelo = AplicacionesMapper.MapearEntidadAAplicacionViewModel(aplicacion);
@@ -152,6 +143,15 @@ namespace namasdev.Apps.Web.Portal.Controllers
         private void CargarAplicacionesViewModel(AplicacionesViewModel modelo)
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
+
+            var op = modelo.CrearOrdenYPaginacionParametros();
+
+            modelo.Items = AplicacionesMapper.MapearEntidadesAModelos(
+                entidades: _aplicacionesRepositorio.ObtenerLista(
+                    busqueda: modelo.Busqueda,
+                    op: op));
+
+            modelo.CargarPaginacion(op);
         }
 
         private void CargarAplicacionViewModel(AplicacionViewModel modelo, PaginaModo paginaModo)

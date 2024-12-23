@@ -4,19 +4,19 @@ using System.Linq;
 
 using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
-using namasdev.Apps.Web.Portal.Models.AplicacionesVersiones;
-using namasdev.Apps.Web.Portal.ViewModels.AplicacionesVersiones;
+using namasdev.Apps.Web.Portal.Models.Versiones;
+using namasdev.Apps.Web.Portal.ViewModels.Versiones;
 
 namespace namasdev.Apps.Web.Portal.Mappers
 {
-    public class AplicacionesVersionesMapper
+    public class VersionesMapper
     {
-        public static List<AplicacionVersionItemModel> MapearEntidadesAModelos(IEnumerable<AplicacionVersion> entidades)
+        public static List<VersionItemModel> MapearEntidadesAModelos(IEnumerable<AplicacionVersion> entidades)
         {
             Validador.ValidarArgumentListaRequeridaYThrow(entidades, nameof(entidades), validarNoVacia: false);
 
             return entidades
-                .Select(e => new AplicacionVersionItemModel
+                .Select(e => new VersionItemModel
                 {
                     AplicacionVersionId = e.Id,
                     AplicacionId = e.AplicacionId,
@@ -25,26 +25,27 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 .ToList();
         }
 
-        public static AplicacionVersion MapearAplicacionVersionViewModelAEntidad(AplicacionVersionViewModel modelo)
+        public static AplicacionVersion MapearAplicacionVersionViewModelAEntidad(VersionViewModel modelo)
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
             return new AplicacionVersion
             {
                 Id = modelo.AplicacionVersionId ?? Guid.Empty,
-                AplicacionId = modelo.AplicacionId.Value,
+                AplicacionId = modelo.AplicacionId,
                 Nombre = modelo.Nombre,
             };
         }
 
-        public static AplicacionVersionViewModel MapearEntidadAAplicacionViewModel(AplicacionVersion entidad)
+        public static VersionViewModel MapearEntidadAAplicacionViewModel(AplicacionVersion entidad)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidad, nameof(entidad));
 
-            return new AplicacionVersionViewModel
+            return new VersionViewModel
             {
                 AplicacionVersionId = entidad.Id,
                 AplicacionId = entidad.AplicacionId,
+                AplicacionNombre = entidad.Aplicacion.Nombre,
                 Nombre = entidad.Nombre,
             };
         }

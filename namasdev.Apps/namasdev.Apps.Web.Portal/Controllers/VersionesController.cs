@@ -6,28 +6,34 @@ using namasdev.Web.Helpers;
 using namasdev.Web.Models;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
-using namasdev.Apps.Web.Portal.ViewModels.AplicacionesVersiones;
-using namasdev.Apps.Entidades.Metadata;
+using namasdev.Apps.Web.Portal.ViewModels.Versiones;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
-    public class AplicacionesVersionesController : ControllerBase
+    public class VersionesController : ControllerBase
     {
-        private const string APLICACION_VERSION_VIEW_NAME = "AplicacionVersion";
+        private const string VERSION_VIEW_NAME = "Version";
 
         private IAplicacionesVersionesRepositorio _aplicacionesVersionesRepositorio;
         private IAplicacionesVersionesNegocio _aplicacionesVersionesNegocio;
+        private IAplicacionesRepositorio _aplicacionesRepositorio;
 
-        public AplicacionesVersionesController(IAplicacionesVersionesRepositorio aplicacionesVersionesRepositorio, IAplicacionesVersionesNegocio aplicacionesVersionesNegocio)
+        public VersionesController(
+            IAplicacionesVersionesRepositorio aplicacionesVersionesRepositorio, 
+            IAplicacionesVersionesNegocio aplicacionesVersionesNegocio,
+            IAplicacionesRepositorio aplicacionesRepositorio)
         {
             Validador.ValidarArgumentRequeridoYThrow(aplicacionesVersionesRepositorio, nameof(aplicacionesVersionesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(aplicacionesVersionesNegocio, nameof(aplicacionesVersionesNegocio));
+            Validador.ValidarArgumentRequeridoYThrow(aplicacionesRepositorio, nameof(aplicacionesRepositorio));
 
             _aplicacionesVersionesRepositorio = aplicacionesVersionesRepositorio;
             _aplicacionesVersionesNegocio = aplicacionesVersionesNegocio;
+            _aplicacionesRepositorio = aplicacionesRepositorio;
         }
 
         #region Acciones
@@ -37,7 +43,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             string orden = null,
             int pagina = 1)
         {
-            var modelo = new AplicacionesVersionesViewModel
+            var modelo = new VersionesViewModel
             {
                 AplicacionId = aplicacionId,
                 Busqueda = busqueda,
@@ -45,22 +51,14 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 Orden = orden,
             };
 
-            var op = modelo.CrearOrdenYPaginacionParametros();
-
-            modelo.Items = AplicacionesVersionesMapper.MapearEntidadesAModelos(
-                entidades: _aplicacionesVersionesRepositorio.ObtenerLista(
-                    busqueda: modelo.Busqueda,
-                    op: op));
-
-            modelo.CargarPaginacion(op);
-
-            CargarAplicacionesVersionesViewModel(modelo);
+            CargarVersionesViewModel(modelo);
             return View(modelo);
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult Eliminar(Guid id)
+        public ActionResult Eliminar(
+            Guid id)
         {
             var aplicacion = _aplicacionesVersionesRepositorio.Obtener(id);
             if (aplicacion == null)
@@ -82,29 +80,24 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Agregar(Guid aplicacionId)
         {
-            var modelo = new AplicacionVersionViewModel 
+            var modelo = new VersionViewModel 
             {
                 AplicacionId = aplicacionId
             };
-            CargarAplicacionVersionViewModel(modelo, PaginaModo.Agregar);
+            CargarVersionViewModel(modelo, PaginaModo.Agregar);
 
-            return View(APLICACION_VERSION_VIEW_NAME, modelo);
+            return View(VERSION_VIEW_NAME, modelo);
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult Agregar(AplicacionVersionViewModel modelo)
+        public ActionResult Agregar(VersionViewModel modelo)
         {
-            if (!modelo.AplicacionId.HasValue)
-            {
-                return RedirectToAction("Index", "Aplicaciones");
-            }
-
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _aplicacionesVersionesNegocio.Agregar(modelo.AplicacionId.Value, modelo.Nombre, UsuarioId);
+                    _aplicacionesVersionesNegocio.Agregar(modelo.AplicacionId, modelo.Nombre, UsuarioId);
 
                     return RedirectToAction(nameof(Index), new { aplicacionId = modelo.AplicacionId });
                 }
@@ -114,33 +107,33 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 ControllerHelper.CargarMensajesError(ex.Message);
             }
 
-            CargarAplicacionVersionViewModel(modelo, PaginaModo.Agregar);
-            return View(APLICACION_VERSION_VIEW_NAME, modelo);
+            CargarVersionViewModel(modelo, PaginaModo.Agregar);
+            return View(VERSION_VIEW_NAME, modelo);
         }
 
-        public ActionResult Editar(Guid id)
+        public ActionResult Editar(Guid id, Guid aplicacionId)
         {
-            var aplicacionVersion = _aplicacionesVersionesRepositorio.Obtener(id);
+            var aplicacionVersion = _aplicacionesVersionesRepositorio.Obtener(id, cargarDatosAdicionales: true);
             if (aplicacionVersion == null)
             {
-                return RedirectToAction("Index", "Aplicaciones");
+                return RedirectToAction(nameof(Index), new { aplicacionId });
             }
 
-            var modelo = AplicacionesVersionesMapper.MapearEntidadAAplicacionViewModel(aplicacionVersion);
-            CargarAplicacionVersionViewModel(modelo, PaginaModo.Editar);
+            var modelo = VersionesMapper.MapearEntidadAAplicacionViewModel(aplicacionVersion);
+            CargarVersionViewModel(modelo, PaginaModo.Editar);
 
-            return View(APLICACION_VERSION_VIEW_NAME, modelo);
+            return View(VERSION_VIEW_NAME, modelo);
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult Editar(AplicacionVersionViewModel modelo)
+        public ActionResult Editar(VersionViewModel modelo)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    var entidad = AplicacionesVersionesMapper.MapearAplicacionVersionViewModelAEntidad(modelo);
+                    var entidad = VersionesMapper.MapearAplicacionVersionViewModelAEntidad(modelo);
                     _aplicacionesVersionesNegocio.Actualizar(entidad, UsuarioId);
 
                     ControllerHelper.CargarMensajeResultadoOk("Versión actualizada correctamente.");
@@ -151,28 +144,51 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 ControllerHelper.CargarMensajesError(ex.Message);
             }
 
-            CargarAplicacionVersionViewModel(modelo, PaginaModo.Editar);
-            return View(APLICACION_VERSION_VIEW_NAME, modelo);
+            CargarVersionViewModel(modelo, PaginaModo.Editar);
+            return View(VERSION_VIEW_NAME, modelo);
         }
 
         #endregion Acciones
 
         #region Metodos
 
-        private void CargarAplicacionesVersionesViewModel(AplicacionesVersionesViewModel modelo)
+        private void CargarVersionesViewModel(VersionesViewModel modelo)
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
-            modelo.AplicacionNombre = _aplicacionesVersionesRepositorio.Obtener(modelo.AplicacionId)?.Nombre;
+            var aplicacion = _aplicacionesRepositorio.Obtener(modelo.AplicacionId);
+            if (aplicacion == null)
+            {
+                return;
+            }
+
+            modelo.AplicacionNombre = aplicacion.Nombre;
+
+            var op = modelo.CrearOrdenYPaginacionParametros();
+
+            modelo.Items = VersionesMapper.MapearEntidadesAModelos(
+                entidades: _aplicacionesVersionesRepositorio.ObtenerLista(
+                    aplicacionId: aplicacion.Id,
+                    busqueda: modelo.Busqueda,
+                    op: op));
+
+            modelo.CargarPaginacion(op);
         }
 
-        private void CargarAplicacionVersionViewModel(AplicacionVersionViewModel modelo, PaginaModo paginaModo)
+        private void CargarVersionViewModel(VersionViewModel modelo, PaginaModo paginaModo)
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
             modelo.PaginaModo = paginaModo;
 
-            modelo.AplicacionNombre = _aplicacionesVersionesRepositorio.Obtener(modelo.AplicacionId.Value)?.Nombre;
+            if (string.IsNullOrWhiteSpace(modelo.AplicacionNombre))
+            {
+                var aplicacion = _aplicacionesRepositorio.Obtener(modelo.AplicacionId);
+                if (aplicacion != null)
+                {
+                    modelo.AplicacionNombre = aplicacion.Nombre;
+                }
+            }
         }
 
         #endregion Metodos

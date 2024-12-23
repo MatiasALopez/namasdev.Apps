@@ -15,3 +15,9 @@
 	constraint FK_Entidades_AplicacionVersionId foreign key (AplicacionVersionId) references dbo.AplicacionesVersiones (AplicacionVersionId)
 )
 go
+
+create unique nonclustered index IX_Entidades_AplicacionVersionIdYNombre on dbo.Entidades(AplicacionVersionId,Nombre)
+go
+
+create nonclustered index IX_Entidades_AplicacionVersionId on dbo.Entidades (AplicacionVersionId)
+go

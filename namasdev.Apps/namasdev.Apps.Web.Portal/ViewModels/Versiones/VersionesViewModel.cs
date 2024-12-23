@@ -3,13 +3,13 @@ using System.ComponentModel.DataAnnotations;
 
 using namasdev.Web.ViewModels;
 using namasdev.Apps.Entidades.Metadata;
-using namasdev.Apps.Web.Portal.Models.AplicacionesVersiones;
+using namasdev.Apps.Web.Portal.Models.Versiones;
 
-namespace namasdev.Apps.Web.Portal.ViewModels.AplicacionesVersiones
+namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
 {
-    public class AplicacionesVersionesViewModel : ListadoConPaginacionViewModel<AplicacionVersionItemModel>
+    public class VersionesViewModel : ListadoConPaginacionViewModel<VersionItemModel>
     {
-        public AplicacionesVersionesViewModel()
+        public VersionesViewModel()
         {
             ItemsPorPagina = 10;    
         }

@@ -14,7 +14,8 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
 
         public Guid? AplicacionId { get; set; }
 
-        [Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        [Display(Name = AplicacionMetadata.Nombre.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

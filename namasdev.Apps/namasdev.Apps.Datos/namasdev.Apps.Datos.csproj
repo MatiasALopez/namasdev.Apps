@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntidadesPropiedadesRepositorio.cs" />
     <Compile Include="EntidadesRepositorio.cs" />
     <Compile Include="AplicacionesVersionesRepositorio.cs" />
     <Compile Include="AplicacionesRepositorio.cs" />

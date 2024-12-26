@@ -17,8 +17,12 @@ namespace namasdev.Apps.Datos.Sql.Config
                 .IsRequired()
                 .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.Nombre.TAMAÑO_MAX);
 
-            Property(p => p.PropiedadTipoEspecificaciones)
-                .IsRequired();
+            Property(p => p.Etiqueta)
+                .IsRequired()
+                .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.Etiqueta.TAMAÑO_MAX);
+
+            Property(p => p.CalculadaFormula)
+                .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.CalculadaFormula.TAMAÑO_MAX);
 
             HasRequired(p => p.Entidad)
                 .WithMany(p => p.Propiedades)

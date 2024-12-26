@@ -198,6 +198,7 @@
     <Compile Include="App_Start\Startup.DI.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EntidadesPropiedadesController.cs" />
     <Compile Include="Controllers\EntidadesController.cs" />
     <Compile Include="Controllers\VersionesController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
@@ -209,10 +210,12 @@
     </Compile>
     <Compile Include="Helpers\ListasHelper.cs" />
     <Compile Include="Helpers\UsuarioHelper.cs" />
+    <Compile Include="Mappers\EntidadesPropiedadesMapper.cs" />
     <Compile Include="Mappers\EntidadesMapper.cs" />
     <Compile Include="Mappers\VersionesMapper.cs" />
     <Compile Include="Mappers\AplicacionesMapper.cs" />
     <Compile Include="Mappers\UsuariosMapper.cs" />
+    <Compile Include="Models\EntidadesPropiedades\EntidadPropiedadItemModel.cs" />
     <Compile Include="Models\Entidades\EntidadItemModel.cs" />
     <Compile Include="Models\Versiones\VersionItemModel.cs" />
     <Compile Include="Models\Aplicaciones\AplicacionItemModel.cs" />
@@ -222,6 +225,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="ViewModels\EntidadesPropiedades\EntidadesPropiedadesViewModel.cs" />
+    <Compile Include="ViewModels\EntidadesPropiedades\EntidadPropiedadViewModel.cs" />
     <Compile Include="ViewModels\Entidades\EntidadesViewModel.cs" />
     <Compile Include="ViewModels\Entidades\EntidadViewModel.cs" />
     <Compile Include="ViewModels\Versiones\VersionesViewModel.cs" />
@@ -287,6 +292,8 @@
     <Content Include="Views\Versiones\Index.cshtml" />
     <Content Include="Views\Entidades\Entidad.cshtml" />
     <Content Include="Views\Entidades\Index.cshtml" />
+    <Content Include="Views\EntidadesPropiedades\Propiedad.cshtml" />
+    <Content Include="Views\EntidadesPropiedades\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

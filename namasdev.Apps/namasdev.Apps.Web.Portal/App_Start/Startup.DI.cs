@@ -43,6 +43,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddScoped<IAplicacionesRepositorio, AplicacionesRepositorio>();
             services.AddScoped<IAplicacionesVersionesRepositorio, AplicacionesVersionesRepositorio>();
             services.AddScoped<IEntidadesRepositorio, EntidadesRepositorio>();
+            services.AddScoped<IEntidadesPropiedadesRepositorio, EntidadesPropiedadesRepositorio>();
         }
 
         private void RegisterNegocios(ServiceCollection services)
@@ -55,6 +56,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddScoped<IAplicacionesNegocio, AplicacionesNegocio>();
             services.AddScoped<IAplicacionesVersionesNegocio, AplicacionesVersionesNegocio>();
             services.AddScoped<IEntidadesNegocio, EntidadesNegocio>();
+            services.AddScoped<IEntidadesPropiedadesNegocio, EntidadesPropiedadesNegocio>();
         }
 
         private void RegisterControllers(ServiceCollection services)
@@ -64,6 +66,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddTransient<AplicacionesController>();
             services.AddTransient<VersionesController>();
             services.AddTransient<EntidadesController>();
+            services.AddTransient<EntidadesPropiedadesController>();
         }
     }
 

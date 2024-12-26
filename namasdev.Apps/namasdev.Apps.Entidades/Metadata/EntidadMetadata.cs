@@ -13,7 +13,7 @@ namespace namasdev.Apps.Entidades.Metadata
 
         public class AplicacionVersionId
         {
-            public const string DISPLAY_NAME = "Versión aplicación";
+            public const string DISPLAY_NAME = AplicacionVersionMetadata.NOMBRE;
         }
 
         public class Nombre

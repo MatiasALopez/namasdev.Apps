@@ -8,10 +8,12 @@ namespace namasdev.Apps.Entidades
     {
         public Guid EntidadId { get; set; }
         public string Nombre { get; set; }
+        public string Etiqueta { get; set; }
         public short PropiedadTipoId { get; set; }
         public string PropiedadTipoEspecificaciones { get; set; }
         public bool PermiteNull { get; set; }
-        public bool EsCalculada { get; set; }
+        public string CalculadaFormula { get; set; }
+        public short Orden { get; set; }
 
         public Entidad Entidad { get; set; }
         public PropiedadTipo Tipo { get; set; }

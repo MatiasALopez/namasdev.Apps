@@ -1,13 +1,14 @@
-﻿@using namasdev.Web.Helpers;
-@model namasdev.Apps.Web.Portal.ViewModels.Entidades.EntidadesViewModel
+﻿@using namasdev.Core.Types; 
+@using namasdev.Web.Helpers;
+@model namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades.EntidadesPropiedadesViewModel
 @{
-    ViewBag.Title = "Entidades";
+    ViewBag.Title = "Propiedades";
 
     var controlesIds = new
     {
-        Form = "frmEntidades",
-        TablaContainer = "divEntidadesContainer",
-        Tabla = "tblEntidades"
+        Form = "frmPropiedades",
+        TablaContainer = "divPropiedadesContainer",
+        Tabla = "tblPropiedades"
     };
     var displayNames = new
     {
@@ -22,22 +23,16 @@
 @Html.Partial("_ResultadoOk")
 @Html.Partial("_Errores")
 <div class="mt-3">
-    <strong>@Html.DisplayNameFor(m => m.AplicacionNombre):</strong> @Model.AplicacionNombre
+    <strong>@Html.DisplayNameFor(m => m.EntidadNombre):</strong> @Model.EntidadNombre
 </div>
-<form action="@Url.Action("Index", "Entidades")" method="get" class="form-inline mt-3">
-    @Html.HiddenFor(m => m.AplicacionId)
-    @Html.LabelFor(m => m.AplicacionVersionId)
-    @Html.DropDownListFor(m => m.AplicacionVersionId, Model.AplicacionesVersionesSelectList, new { @class = "form-control autopostback ml-2 mb-2" })
-</form>
 <div class="row mt-3">
     <div class="col-md-3">
-        <a href="@Url.Action("Agregar", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-primary">Agregar nueva</a>
+        <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { Model.EntidadId })" class="btn btn-primary">Agregar nueva</a>
     </div>
     <div class="col-md-9 text-right filtros">
-        @using (Html.BeginForm("Index", "Entidades", FormMethod.Get, new { @class = "form-inline pull-right" }))
+        @using (Html.BeginForm("Index", "EntidadesPropiedades", FormMethod.Get, new { @class = "form-inline pull-right" }))
         {
-            @Html.HiddenFor(m => m.AplicacionId, new { id = "hfAplicacionId" })
-            @Html.HiddenFor(m => m.AplicacionVersionId, new { id = "hfAplicacionVersionId" })
+            @Html.HiddenFor(m => m.EntidadId)
             @Html.TextBoxFor(m => m.Busqueda, new { @class = "form-control ml-1", placeholder = displayNames.Busqueda, title = displayNames.Busqueda, data_toggle = "tooltip" })
             <button type="submit" class="btn btn-secondary ml-1">Buscar</button>
         }
@@ -55,6 +50,9 @@
                     <thead>
                         <tr>
                             <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, "Nombre")">@Html.DisplayNameFor(m => m.Items[0].Nombre) <i class="fa fa-sort ml-2"></i></a></th>
+                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, "Tipo.Nombre")">@Html.DisplayNameFor(m => m.Items[0].PropiedadTipoNombre) <i class="fa fa-sort ml-2"></i></a></th>
+                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, "PermiteNull")">@Html.DisplayNameFor(m => m.Items[0].PermiteNull) <i class="fa fa-sort ml-2"></i></a></th>
+                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, "Orden")">@Html.DisplayNameFor(m => m.Items[0].Orden) <i class="fa fa-sort ml-2"></i></a></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -63,10 +61,12 @@
                         {
                             <tr>
                                 <td>@item.Nombre</td>
+                                <td>@item.PropiedadTipoNombre</td>
+                                <td>@item.PermiteNull</td>
+                                <td>@Formateador.FormatoNumero(item.Orden)</td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Editar", new { id = item.EntidadId, aplicacionVersionId = item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <a href="@Url.Action("Index", "EntidadesPropiedades", new { entidadId = item.EntidadId })" class="btn btn-sm btn-outline-info"><i class="fa fa-list-ul" data-toggle="tooltip" title="Propiedades"></i></a>
-                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    <a href="@Url.Action("Editar", new { id = item.EntidadPropiedadId, item.EntidadId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadPropiedadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         }
@@ -77,7 +77,7 @@
         }
         else
         {
-            <div class="alert alert-warning">No hay entidades para mostrar.</div>
+            <div class="alert alert-warning">No hay propiedades para mostrar.</div>
         }
     </div>
 </div>
@@ -98,8 +98,8 @@
                     var options = {
                         showLoadingSelector: '#@controlesIds.TablaContainer',
                         confirm: true,
-                        confirmTitle: 'Eliminar entidad',
-                        confirmMessage: '¿Estás seguro que deseas eliminar la entidad seleccionada?'
+                        confirmTitle: 'Eliminar propiedad',
+                        confirmMessage: '¿Estás seguro que deseas eliminar la propiedad seleccionada?'
                     };
                     namasdevApps.postJson(
                         '@Url.Action("Eliminar")/' + id,
@@ -107,7 +107,7 @@
                         function (response) {
                             if (response.success) {
                                 nmd.ui.controls.showSuccessModal(
-                                    'La entidad fue eliminada correctamente.',
+                                    'La propiedad fue eliminada correctamente.',
                                     function () {
                                         nmd.page.reloadPage();
                                     });

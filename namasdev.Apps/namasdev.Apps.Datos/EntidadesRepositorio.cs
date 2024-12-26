@@ -28,7 +28,7 @@ namespace namasdev.Apps.Datos
                 return ctx.Entidades
                     .Where(e => e.AplicacionVersionId == aplicacionVersionId && !e.Borrado)
                     .WhereIf(e => e.Nombre.Contains(busqueda), !string.IsNullOrWhiteSpace(busqueda))
-                    .OrdenarYPaginar(op, ordenDefault: nameof(Aplicacion.Nombre))
+                    .OrdenarYPaginar(op, ordenDefault: nameof(Entidad.Nombre))
                     .ToList();
             }
         }

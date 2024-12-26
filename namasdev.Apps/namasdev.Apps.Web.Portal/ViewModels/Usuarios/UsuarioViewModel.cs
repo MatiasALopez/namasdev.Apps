@@ -15,17 +15,21 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
 
         public string UsuarioId { get; set; }
 
-        [Display(Name = UsuarioMetadata.Nombres.DISPLAY_NAME)]
+        [Display(Name = UsuarioMetadata.Nombres.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombres { get; set; }
 
-        [Display(Name = UsuarioMetadata.Apellidos.DISPLAY_NAME)]
+        [Display(Name = UsuarioMetadata.Apellidos.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Apellidos { get; set; }
 
         [Display(Name = UsuarioMetadata.Email.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO),
         EmailAddress]
         public string Email { get; set; }
 
-        [Display(Name = AspNetRoleMetadata.NOMBRE)]
+        [Display(Name = AspNetRoleMetadata.NOMBRE),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Rol { get; set; }
      
         public string DesmarcarBorradoUsuarioId { get; set; }
@@ -38,22 +42,6 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
                 && String.IsNullOrWhiteSpace(UsuarioId))
             {
                 yield return new ValidationResult(Validador.MensajeRequerido(UsuarioMetadata.NOMBRE), new string[] { nameof(UsuarioId) });
-            }
-            if (String.IsNullOrWhiteSpace(Nombres))
-            {
-                yield return new ValidationResult(Validador.MensajeRequerido(UsuarioMetadata.Nombres.DISPLAY_NAME), new string[] { nameof(Nombres) });
-            }
-            if (String.IsNullOrWhiteSpace(Apellidos))
-            {
-                yield return new ValidationResult(Validador.MensajeRequerido(UsuarioMetadata.Apellidos.DISPLAY_NAME), new string[] { nameof(Apellidos) });
-            }
-            if (String.IsNullOrWhiteSpace(Email))
-            {
-                yield return new ValidationResult(Validador.MensajeRequerido(UsuarioMetadata.Email.DISPLAY_NAME), new string[] { nameof(Email) });
-            }
-            if (String.IsNullOrWhiteSpace(Rol))
-            {
-                yield return new ValidationResult(Validador.MensajeRequerido(AspNetRoleMetadata.NOMBRE), new string[] { nameof(Rol) });
             }
         }
     }

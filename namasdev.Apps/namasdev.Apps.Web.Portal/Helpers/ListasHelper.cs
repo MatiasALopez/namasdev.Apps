@@ -8,6 +8,17 @@ namespace namasdev.Apps.Web.Portal.Helpers
 {
     public class ListasHelper
     {
+        public static SelectList ObtenerPropiedadTiposSelectList(IEnumerable<PropiedadTipo> tipos)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(
+                tipos,
+                av => new SelectListItem
+                {
+                    Text = av.Nombre,
+                    Value = av.Id.ToString()
+                });
+        }
+
         public static SelectList ObtenerVersionesSelectList(IEnumerable<AplicacionVersion> versiones)
         {
             return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(

@@ -17,14 +17,16 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
         [Display(Name = AplicacionMetadata.NOMBRE)]
         public string AplicacionNombre { get; set; }
 
+        [Display(Name = EntidadMetadata.AplicacionVersionId.DISPLAY_NAME)]
         public Guid AplicacionVersionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.NOMBRE)]
+        [Display(Name = EntidadMetadata.AplicacionVersionId.DISPLAY_NAME)]
         public string AplicacionVersionNombre { get; set; }
 
         public Guid? EntidadId { get; set; }
 
-        [Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        [Display(Name = EntidadMetadata.Nombre.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

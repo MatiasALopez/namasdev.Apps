@@ -12,18 +12,25 @@
 
         public class EntidadId
         {
-            public const string DISPLAY_NAME = "Entidad";
+            public const string DISPLAY_NAME = EntidadMetadata.NOMBRE;
         }
 
         public class Nombre
         {
             public const string DISPLAY_NAME = "Nombre";
             public const int TAMAÑO_MAX = 100;
+            public const string REG_EX = @"^[a-zA-Z][a-zA-ZñÑ0-9_]*$";
+        }
+
+        public class Etiqueta
+        {
+            public const string DISPLAY_NAME = "Etiqueta";
+            public const int TAMAÑO_MAX = 100;
         }
 
         public class PropiedadTipoId
         {
-            public const string DISPLAY_NAME = "Tipo";
+            public const string DISPLAY_NAME = PropiedadTipoMetadata.NOMBRE;
         }
 
         public class PropiedadTipoEspecificaciones
@@ -36,9 +43,15 @@
             public const string DISPLAY_NAME = "Permite null";
         }
 
-        public class EsCalculada
+        public class CalculadaFormula
         {
-            public const string DISPLAY_NAME = "Es calculada";
+            public const string DISPLAY_NAME = "Calculada (Fórmula)";
+            public const int TAMAÑO_MAX = 2000;
+        }
+
+        public class Orden
+        {
+            public const string DISPLAY_NAME = "Orden";
         }
     }
 }

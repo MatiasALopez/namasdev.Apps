@@ -40,10 +40,24 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 Nombre = modelo.Nombre,
                 Etiqueta = modelo.Etiqueta,
                 PropiedadTipoId = modelo.PropiedadTipoId.Value,
-                PermiteNull = modelo.PermiteNull,
                 CalculadaFormula = modelo.CalculadaFormula,
-                Orden = modelo.Orden.Value
+                Orden = modelo.Orden.Value,
+                PermiteNull = modelo.PermiteNull.Value,
+                GeneradaAlCrear = modelo.GeneradaAlCrear.Value,
+                Editable = modelo.Editable.Value,
             };
+        }
+
+        public static IPropiedadTipoEspecificaciones MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(EntidadPropiedadViewModel modelo)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
+
+            throw new NotImplementedException();
+            // TODO (ML): completar
+            //switch (modelo.PropiedadTipoId)
+            //{
+
+            //}
         }
 
         public static EntidadPropiedadViewModel MapearEntidadAEntidadPropiedadViewModel(EntidadPropiedad entidad)
@@ -58,9 +72,11 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 Nombre = entidad.Nombre,
                 Etiqueta = entidad.Etiqueta,
                 PropiedadTipoId = entidad.PropiedadTipoId,
-                PermiteNull = entidad.PermiteNull,
                 CalculadaFormula = entidad.CalculadaFormula,
-                Orden = entidad.Orden
+                Orden = entidad.Orden,
+                PermiteNull = entidad.PermiteNull,
+                GeneradaAlCrear = entidad.GeneradaAlCrear,
+                Editable = entidad.Editable,
             };
         }
     }

@@ -41,11 +41,6 @@
             @Html.ValidationMessageFor(m => m.PropiedadTipoId)
         </div>
         <div class="form-group col-lg-2 col-sm-4 col-6">
-            @Html.LabelFor(m => m.PermiteNull, new { @class = "requerido" })
-            @Html.DropDownListFor(m => m.PermiteNull, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
-            @Html.ValidationMessageFor(m => m.PermiteNull)
-        </div>
-        <div class="form-group col-lg-2 col-sm-4 col-6">
             @Html.LabelFor(m => m.Orden, new { @class = "requerido" })
             @Html.TextBoxFor(m => m.Orden, new { @class = "form-control inputmask-integer form-control-required", maxlength = 5 })
             @Html.ValidationMessageFor(m => m.Orden)
@@ -55,6 +50,24 @@
             @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control", maxlength = EntidadPropiedadMetadata.CalculadaFormula.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.CalculadaFormula)
         </div>
+        <div class="form-group col-lg-2 col-sm-4 col-6">
+            @Html.LabelFor(m => m.PermiteNull, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.PermiteNull, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.PermiteNull)
+        </div>
+        <div class="form-group col-lg-2 col-sm-4 col-6">
+            @Html.LabelFor(m => m.GeneradaAlCrear, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.GeneradaAlCrear, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.GeneradaAlCrear)
+        </div>
+        <div class="form-group col-lg-2 col-sm-4 col-6">
+            @Html.LabelFor(m => m.Editable, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.Editable, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.Editable)
+        </div>
+    </div>
+    <div class="form-row">
+        @Html.Partial("_PropiedadTipoTextoEspecificaciones", Model.PropiedadTipoEspecificacionesTexto)
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
     <a href="@Url.Action("Index", new { entidadId = Model.EntidadId })" class="btn btn-secondary">Volver</a>

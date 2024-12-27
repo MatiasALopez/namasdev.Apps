@@ -31,7 +31,7 @@ namespace namasdev.Apps.Datos
                     .IncludeIf(ep => ep.Tipo, cargarDatosAdicionales)
                     .Where(ep => ep.EntidadId == entidadId && !ep.Borrado)
                     .WhereIf(ep => ep.Nombre.Contains(busqueda), !string.IsNullOrWhiteSpace(busqueda))
-                    .OrdenarYPaginar(op, ordenDefault: nameof(EntidadPropiedad.Nombre))
+                    .OrdenarYPaginar(op, ordenDefault: nameof(EntidadPropiedad.Orden))
                     .ToList();
             }
         }

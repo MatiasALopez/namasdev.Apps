@@ -38,20 +38,30 @@
             public const string DISPLAY_NAME = "Tipo Especificaciones";
         }
 
+        public class Orden
+        {
+            public const string DISPLAY_NAME = "Orden";
+        }
+
         public class PermiteNull
         {
             public const string DISPLAY_NAME = "Permite null";
+        }
+
+        public class GeneradaAlCrear
+        {
+            public const string DISPLAY_NAME = "Generada al crear";
+        }
+
+        public class Editable
+        {
+            public const string DISPLAY_NAME = "Editable";
         }
 
         public class CalculadaFormula
         {
             public const string DISPLAY_NAME = "Calculada (Fórmula)";
             public const int TAMAÑO_MAX = 2000;
-        }
-
-        public class Orden
-        {
-            public const string DISPLAY_NAME = "Orden";
         }
     }
 }

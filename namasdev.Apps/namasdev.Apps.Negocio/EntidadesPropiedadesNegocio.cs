@@ -10,13 +10,13 @@ namespace namasdev.Apps.Negocio
 {
     public interface IEntidadesPropiedadesNegocio
     {
-        EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, string propiedadTipoEspecificaciones, bool permiteNull, string calculadaFormula, string usuarioId);
+        EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, short orden, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId);
         void Actualizar(EntidadPropiedad aplicacion, string usuarioId);
         void MarcarComoBorrado(Guid entidadPropiedadId, string usuarioLogueadoId);
         void DesmarcarComoBorrado(Guid entidadPropiedadId);
     }
 
-    public class EntidadesPropiedadesNegocio : IEntidadesPropiedadesNegocio
+    public class EntidadesPropiedadesNegocio : NegocioBase, IEntidadesPropiedadesNegocio
     {
         private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
 
@@ -27,7 +27,7 @@ namespace namasdev.Apps.Negocio
             _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
         }
 
-        public EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, string propiedadTipoEspecificaciones, bool permiteNull, string calculadaFormula, string usuarioId)
+        public EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, short orden, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId)
         {
             // TODO (ML): terminar especificaciones 
             DateTime fechaHora = DateTime.Now;
@@ -39,8 +39,11 @@ namespace namasdev.Apps.Negocio
                 Nombre = nombre,
                 Etiqueta = etiqueta,
                 PropiedadTipoId = propiedadTipoId,
-                PropiedadTipoEspecificaciones = propiedadTipoEspecificaciones,
+                PropiedadTipoEspecificaciones = SerializarPropiedadTipoEspecificaciones(propiedadTipoEspecificaciones),
+                Orden = orden,
                 PermiteNull = permiteNull,
+                GeneradaAlCrear = generadaAlCrear,
+                Editable = editable,
                 CalculadaFormula = calculadaFormula,
             };
             entidadPropiedad.EstablecerDatosCreado(usuarioId, fechaHora);

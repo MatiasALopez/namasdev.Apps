@@ -1,33 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 
+using namasdev.Core.Entity;
+using namasdev.Core.Transactions;
+using namasdev.Core.Validation;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
-using namasdev.Core.Entity;
-using namasdev.Core.Validation;
 
 namespace namasdev.Apps.Negocio
 {
     public interface IEntidadesNegocio
     {
-        Entidad Agregar(Guid aplicacionVersionId, string nombre, string usuarioId);
+        Entidad Agregar(Guid aplicacionVersionId, string nombre, string usuarioId, EntidadAltaOpciones opciones = null);
         void Actualizar(Entidad aplicacion, string usuarioId);
         void MarcarComoBorrado(Guid entidadId, string usuarioLogueadoId);
         void DesmarcarComoBorrado(Guid entidadId);
     }
 
-    public class EntidadesNegocio : IEntidadesNegocio
+    public class EntidadesNegocio : NegocioBase, IEntidadesNegocio
     {
         private IEntidadesRepositorio _entidadesRepositorio;
+        private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
 
-        public EntidadesNegocio(IEntidadesRepositorio entidadesRepositorio)
+        public EntidadesNegocio(IEntidadesRepositorio entidadesRepositorio, IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
+            Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
 
             _entidadesRepositorio = entidadesRepositorio;
+            _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
         }
 
-        public Entidad Agregar(Guid aplicacionVersionId, string nombre, string usuarioId)
+        public Entidad Agregar(Guid aplicacionVersionId, string nombre, string usuarioId,
+            EntidadAltaOpciones opciones = null)
         {
             DateTime fechaHora = DateTime.Now;
 
@@ -41,7 +46,15 @@ namespace namasdev.Apps.Negocio
             entidad.EstablecerDatosModificacion(usuarioId, fechaHora);
             ValidarDatos(entidad);
 
-            _entidadesRepositorio.Agregar(entidad);
+            using (var ts = TransactionScopeFactory.Crear())
+            {
+                _entidadesRepositorio.Agregar(entidad);
+
+                if (opciones != null)
+                {
+                    _entidadesPropiedadesRepositorio.Agregar(CrearEntidadesPropiedades(entidad.Id, opciones));
+                }
+            }
 
             return entidad;
         }
@@ -80,6 +93,131 @@ namespace namasdev.Apps.Negocio
             Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, Entidades.Metadata.EntidadMetadata.Nombre.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.EntidadMetadata.Nombre.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
+        }
+
+        private IEnumerable<EntidadPropiedad> CrearEntidadesPropiedades(Guid entidadId, EntidadAltaOpciones opciones)
+        {
+            var propiedades = new List<EntidadPropiedad>();
+
+            if (opciones.PropiedadesCrearId)
+            {
+                propiedades.Add(new EntidadPropiedad
+                {
+                    Id = Guid.NewGuid(),
+                    EntidadId = entidadId,
+                    Nombre = $"Id",
+                    Etiqueta = "ID",
+                    PropiedadTipoId = PropiedadTipos.TEXTO,
+                    PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
+                    PermiteNull = false,
+                    Orden = 1000,
+                    GeneradaAlCrear = true,
+                    Editable = false,
+                });
+            }
+
+            if (opciones.PropiedadesCrearAuditoriaCreado)
+            {
+                propiedades.Add(new EntidadPropiedad
+                {
+                    Id = Guid.NewGuid(),
+                    EntidadId = entidadId,
+                    Nombre = "CreadoPor",
+                    Etiqueta = "Fecha creación",
+                    PropiedadTipoId = PropiedadTipos.TEXTO,
+                    PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
+                    PermiteNull = false,
+                    Orden = 1011,
+                    GeneradaAlCrear = true,
+                    Editable = false,
+                });
+
+                propiedades.Add(new EntidadPropiedad
+                {
+                    Id = Guid.NewGuid(),
+                    EntidadId = entidadId,
+                    Nombre = "CreadoFecha",
+                    Etiqueta = "Fecha/hora creación",
+                    PropiedadTipoId = PropiedadTipos.FECHA_HORA,
+                    PermiteNull = false,
+                    Orden = 1012,
+                    GeneradaAlCrear = true,
+                    Editable = false,
+                });
+            }
+
+            if (opciones.PropiedadesCrearAuditoriaUltimaModificacion)
+            {
+                propiedades.Add(new EntidadPropiedad
+                {
+                    Id = Guid.NewGuid(),
+                    EntidadId = entidadId,
+                    Nombre = "UltimaModificacionPor",
+                    Etiqueta = "Fecha creación",
+                    PropiedadTipoId = PropiedadTipos.TEXTO,
+                    PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
+                    PermiteNull = false,
+                    Orden = 1021,
+                    GeneradaAlCrear = true,
+                    Editable = false,
+                });
+
+                propiedades.Add(new EntidadPropiedad
+                {
+                    Id = Guid.NewGuid(),
+                    EntidadId = entidadId,
+                    Nombre = "UltimaModificacionFecha",
+                    Etiqueta = "Fecha/hora última modificación",
+                    PropiedadTipoId = PropiedadTipos.FECHA_HORA,
+                    PermiteNull = false,
+                    Orden = 1022,
+                    GeneradaAlCrear = true,
+                    Editable = false,
+                });
+            }
+
+            if (opciones.PropiedadesCrearAuditoriaBorrado)
+            {
+                propiedades.Add(new EntidadPropiedad
+                {
+                    Id = Guid.NewGuid(),
+                    EntidadId = entidadId,
+                    Nombre = "BorradoPor",
+                    Etiqueta = "Fecha borrado",
+                    PropiedadTipoId = PropiedadTipos.TEXTO,
+                    PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
+                    PermiteNull = true,
+                    Orden = 1031,
+                    Editable = false,
+                });
+
+                propiedades.Add(new EntidadPropiedad
+                {
+                    Id = Guid.NewGuid(),
+                    EntidadId = entidadId,
+                    Nombre = "BorradoFecha",
+                    Etiqueta = "Fecha/hora borrado",
+                    PropiedadTipoId = PropiedadTipos.FECHA_HORA,
+                    PermiteNull = false,
+                    Orden = 1032,
+                    Editable = false,
+                });
+
+                propiedades.Add(new EntidadPropiedad
+                {
+                    Id = Guid.NewGuid(),
+                    EntidadId = entidadId,
+                    Nombre = "Borrado",
+                    Etiqueta = "Borrado",
+                    PropiedadTipoId = PropiedadTipos.BOOLEANO,
+                    PermiteNull = false,
+                    CalculadaFormula = "ISNULL(CONVERT(bit,CASE WHEN [BorradoFecha] IS NULL THEN 0 ELSE 1 END), 0)",
+                    Orden = 1033,
+                    Editable = false,
+                });
+            }
+
+            return propiedades;
         }
     }
 }

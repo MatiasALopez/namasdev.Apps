@@ -51,7 +51,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AplicacionVersion.cs" />
+    <Compile Include="EntidadAltaOpciones.cs" />
     <Compile Include="EntidadPropiedad.cs" />
+    <Compile Include="Metadata\EntidadAltaOpcionesMetadata.cs" />
+    <Compile Include="Metadata\PropiedadTipoEspecificacionesNumeroMetadata.cs" />
+    <Compile Include="Metadata\PropiedadTipoEspecificacionesEnteroMetadata.cs" />
+    <Compile Include="Metadata\PropiedadTipoEspecificacionesTextoMetadata.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesEntero.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesEnteroLargo.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesEnteroCorto.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesNumeroCorto.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesNumeroLargo.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesNumeroBase.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesEnteroBase.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesTexto.cs" />
+    <Compile Include="IPropiedadTipoEspecificaciones.cs" />
     <Compile Include="Metadata\AspNetRoleMetadata.cs" />
     <Compile Include="Metadata\CorreoParametrosMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoMetadata.cs" />
@@ -81,9 +95,13 @@
     <Compile Include="Valores\CorreoParametros.cs" />
     <Compile Include="Valores\Parametro.cs" />
     <Compile Include="Valores\PropiedadTipo.cs" />
+    <Compile Include="Valores\PropiedadTiposEspecificaciones.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

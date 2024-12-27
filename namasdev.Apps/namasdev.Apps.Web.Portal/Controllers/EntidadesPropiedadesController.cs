@@ -81,9 +81,12 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Agregar(Guid entidadId)
         {
-            var modelo = new EntidadPropiedadViewModel 
+            var modelo = new EntidadPropiedadViewModel
             {
-                EntidadId = entidadId
+                EntidadId = entidadId,
+                PropiedadTipoEspecificacionesTexto = new PropiedadTipoEspecificacionesTextoViewModel(),
+                PropiedadTipoEspecificacionesEntero = new PropiedadTipoEspecificacionesEnteroViewModel(),
+                PropiedadTipoEspecificacionesNumero = new PropiedadTipoEspecificacionesNumeroViewModel(),
             };
             
             CargarEntidadPropiedadViewModel(modelo, PaginaModo.Agregar);
@@ -94,13 +97,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
         ValidateAntiForgeryToken]
         public ActionResult Agregar(EntidadPropiedadViewModel modelo)
         {
+            // TODO (ML) resolver binding de props de ViewModel dentro de ViewModel
             try
             {
                 if (ModelState.IsValid)
                 {
-                    // TODO (ML): reemplazar por obj serializado
-                    string propiedadTipoEspecificaciones = null;
-                    _entidadesPropiedadesNegocio.Agregar(modelo.EntidadId, modelo.Nombre, modelo.Etiqueta, modelo.PropiedadTipoId.Value, propiedadTipoEspecificaciones, modelo.PermiteNull, modelo.CalculadaFormula, UsuarioId);
+                    var propiedadTipoEspecificaciones = EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(modelo);
+                    _entidadesPropiedadesNegocio.Agregar(modelo.EntidadId, modelo.Nombre, modelo.Etiqueta, modelo.PropiedadTipoId.Value, propiedadTipoEspecificaciones, modelo.Orden.Value, modelo.PermiteNull.Value, modelo.GeneradaAlCrear.Value, modelo.Editable.Value, modelo.CalculadaFormula, UsuarioId);
 
                     return RedirectToAction(nameof(Index), new { modelo.EntidadId });
                 }
@@ -184,6 +187,9 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 modelo.EntidadNombre = _entidadesRepositorio.Obtener(modelo.EntidadId).Nombre;
             }
+
+            modelo.GeneradaAlCrear = modelo.GeneradaAlCrear ?? false;
+            modelo.Editable = modelo.Editable ?? true;
 
             modelo.TiposSelectList = ListasHelper.ObtenerPropiedadTiposSelectList(_entidadesPropiedadesRepositorio.ObtenerTipos());
             modelo.SiNoSelectList = namasdev.Web.Helpers.ListasHelper.ObtenerSiNoSelectList();

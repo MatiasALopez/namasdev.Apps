@@ -32,13 +32,23 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
         public short? PropiedadTipoId { get; set; }
 
         [Display(Name = EntidadPropiedadMetadata.PermiteNull.DISPLAY_NAME)]
-        public bool PermiteNull { get; set; }
+        public bool? PermiteNull { get; set; }
+
+        [Display(Name = EntidadPropiedadMetadata.Orden.DISPLAY_NAME)]
+        public short? Orden { get; set; }
+
+        [Display(Name = EntidadPropiedadMetadata.GeneradaAlCrear.DISPLAY_NAME)]
+        public bool? GeneradaAlCrear { get; set; }
+
+        [Display(Name = EntidadPropiedadMetadata.Editable.DISPLAY_NAME)]
+        public bool? Editable { get; set; }
 
         [Display(Name = EntidadPropiedadMetadata.CalculadaFormula.DISPLAY_NAME)]
         public string CalculadaFormula { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Orden.DISPLAY_NAME)]
-        public short? Orden { get; set; }
+        public PropiedadTipoEspecificacionesTextoViewModel PropiedadTipoEspecificacionesTexto { get; set; }
+        public PropiedadTipoEspecificacionesEnteroViewModel PropiedadTipoEspecificacionesEntero { get; set; }
+        public PropiedadTipoEspecificacionesNumeroViewModel PropiedadTipoEspecificacionesNumero { get; set; }
 
         public SelectList TiposSelectList { get; set; }
         public SelectList SiNoSelectList { get; set; }

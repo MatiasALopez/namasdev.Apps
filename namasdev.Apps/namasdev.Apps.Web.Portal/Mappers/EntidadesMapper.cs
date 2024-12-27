@@ -6,6 +6,7 @@ using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Web.Portal.Models.Entidades;
 using namasdev.Apps.Web.Portal.ViewModels.Entidades;
+using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 
 namespace namasdev.Apps.Web.Portal.Mappers
 {
@@ -34,6 +35,19 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 Id = modelo.EntidadId ?? Guid.Empty,
                 AplicacionVersionId = modelo.AplicacionVersionId,
                 Nombre = modelo.Nombre,
+            };
+        }
+
+        public static EntidadAltaOpciones MapearEntidadViewModelAEntidadAltaOpciones(EntidadViewModel modelo)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
+
+            return new EntidadAltaOpciones
+            {
+                PropiedadesCrearId = modelo.AltaOpcionesPropiedadesCrearId,
+                PropiedadesCrearAuditoriaCreado = modelo.AltaOpcionesPropiedadesCrearAuditoriaCreado,
+                PropiedadesCrearAuditoriaUltimaModificacion = modelo.AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion,
+                PropiedadesCrearAuditoriaBorrado = modelo.AltaOpcionesPropiedadesCrearAuditoriaBorrado
             };
         }
 

@@ -29,6 +29,26 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
+        #region Alta opciones
+
+        [Display(Name = EntidadAltaOpcionesMetadata.PropiedadesCrearId.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        public bool AltaOpcionesPropiedadesCrearId { get; set; }
+
+        [Display(Name = EntidadAltaOpcionesMetadata.PropiedadesCrearAuditoriaCreado.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        public bool AltaOpcionesPropiedadesCrearAuditoriaCreado { get; set; }
+
+        [Display(Name = EntidadAltaOpcionesMetadata.PropiedadesCrearAuditoriaUltimaModificacion.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        public bool AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion { get; set; }
+
+        [Display(Name = EntidadAltaOpcionesMetadata.PropiedadesCrearAuditoriaBorrado.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        public bool AltaOpcionesPropiedadesCrearAuditoriaBorrado { get; set; }
+
+        #endregion
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (PaginaModo == PaginaModo.Editar

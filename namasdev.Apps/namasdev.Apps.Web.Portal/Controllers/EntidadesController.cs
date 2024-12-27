@@ -82,6 +82,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Agregar(Guid aplicacionVersionId)
         {
+            // TODO (ML): completar alta opciones
             var modelo = new EntidadViewModel 
             {
                 AplicacionVersionId = aplicacionVersionId

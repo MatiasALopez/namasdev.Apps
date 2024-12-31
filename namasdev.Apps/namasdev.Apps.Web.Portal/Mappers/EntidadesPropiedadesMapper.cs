@@ -52,12 +52,85 @@ namespace namasdev.Apps.Web.Portal.Mappers
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
-            throw new NotImplementedException();
-            // TODO (ML): completar
-            //switch (modelo.PropiedadTipoId)
-            //{
+            IPropiedadTipoEspecificaciones especificaciones = null;
 
-            //}
+            if (modelo.PropiedadTipoId.HasValue)
+            {
+                switch (modelo.PropiedadTipoId.Value)
+                {
+                    case PropiedadTipos.TEXTO:
+                        if (modelo.PropiedadTipoEspecificacionesTexto != null)
+                        {
+                            especificaciones = new PropiedadTipoEspecificacionesTexto 
+                            {
+                                TamañoMinimo = modelo.PropiedadTipoEspecificacionesTexto.TamañoMinimo,
+                                TamañoMaximo = modelo.PropiedadTipoEspecificacionesTexto.TamañoMaximo,
+                                TamañoExacto = modelo.PropiedadTipoEspecificacionesTexto.TamañoExacto,
+                                RegEx = modelo.PropiedadTipoEspecificacionesTexto.RegEx,
+                            };
+                        }
+                        break;
+
+                    case PropiedadTipos.ENTERO:
+                        if (modelo.PropiedadTipoEspecificacionesEntero != null)
+                        {
+                            especificaciones = new PropiedadTipoEspecificacionesEntero
+                            {
+                                ValorMinimo = (int?)modelo.PropiedadTipoEspecificacionesEntero.ValorMinimo,
+                                ValorMaximo = (int?)modelo.PropiedadTipoEspecificacionesEntero.ValorMaximo,
+                            };
+                        }
+                        break;
+
+                    case PropiedadTipos.ENTERO_CORTO:
+                        if (modelo.PropiedadTipoEspecificacionesEntero != null)
+                        {
+                            especificaciones = new PropiedadTipoEspecificacionesEnteroCorto
+                            {
+                                ValorMinimo = (short?)modelo.PropiedadTipoEspecificacionesEntero.ValorMinimo,
+                                ValorMaximo = (short?)modelo.PropiedadTipoEspecificacionesEntero.ValorMaximo,
+                            };
+                        }
+                        break;
+
+                    case PropiedadTipos.ENTERO_LARGO:
+                        if (modelo.PropiedadTipoEspecificacionesEntero != null)
+                        {
+                            especificaciones = new PropiedadTipoEspecificacionesEnteroLargo
+                            {
+                                ValorMinimo = modelo.PropiedadTipoEspecificacionesEntero.ValorMinimo,
+                                ValorMaximo = modelo.PropiedadTipoEspecificacionesEntero.ValorMaximo,
+                            };
+                        }
+                        break;
+
+                    case PropiedadTipos.DECIMAL:
+                        if (modelo.PropiedadTipoEspecificacionesNumero != null)
+                        {
+                            especificaciones = new PropiedadTipoEspecificacionesNumero
+                            {
+                                ValorMinimo = (double?)modelo.PropiedadTipoEspecificacionesNumero.ValorMinimo,
+                                ValorMaximo = (double?)modelo.PropiedadTipoEspecificacionesNumero.ValorMaximo,
+                                CantDecimales = modelo.PropiedadTipoEspecificacionesNumero.CantDecimales ?? 0,
+                            };
+                        }
+                        break;
+
+                    case PropiedadTipos.DECIMAL_LARGO:
+                        if (modelo.PropiedadTipoEspecificacionesNumero != null)
+                        {
+                            especificaciones = new PropiedadTipoEspecificacionesNumeroLargo
+                            {
+                                ValorMinimo = modelo.PropiedadTipoEspecificacionesNumero.ValorMinimo,
+                                ValorMaximo = modelo.PropiedadTipoEspecificacionesNumero.ValorMaximo,
+                                CantDecimales = modelo.PropiedadTipoEspecificacionesNumero.CantDecimales ?? 0,
+                            };
+                        }
+                        break;
+                }
+            }
+
+            return especificaciones;
         }
 
         public static EntidadPropiedadViewModel MapearEntidadAEntidadPropiedadViewModel(EntidadPropiedad entidad)

@@ -1,0 +1,19 @@
+﻿@using namasdev.Apps.Entidades.Metadata;
+@model namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades.EntidadPropiedadViewModel
+<div class="form-row">
+    <div class="form-group col-lg-3 col-md-4">
+        @Html.LabelFor(m => m.PropiedadTipoEspecificacionesNumero.ValorMinimo)
+        @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesNumero.ValorMinimo, new { @class = "form-control inputmask-numeric", maxlength = PropiedadTipoEspecificacionesNumeroMetadata.ValorMinimo.TAMAÑO_MAX })
+        @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesNumero.ValorMinimo)
+    </div>
+    <div class="form-group col-lg-3 col-md-4">
+        @Html.LabelFor(m => m.PropiedadTipoEspecificacionesNumero.ValorMaximo)
+        @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesNumero.ValorMaximo, new { @class = "form-control inputmask-numeric", maxlength = PropiedadTipoEspecificacionesNumeroMetadata.ValorMaximo.TAMAÑO_MAX })
+        @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesNumero.ValorMaximo)
+    </div>
+    <div class="form-group col-lg-3 col-sm-4">
+        @Html.LabelFor(m => m.PropiedadTipoEspecificacionesNumero.CantDecimales)
+        @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesNumero.CantDecimales, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesNumeroMetadata.CantDecimales.TAMAÑO_MAX })
+        @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesNumero.CantDecimales)
+    </div>
+</div>

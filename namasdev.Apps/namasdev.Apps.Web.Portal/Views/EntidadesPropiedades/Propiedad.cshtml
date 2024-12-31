@@ -6,7 +6,10 @@
 
     var controlesIds = new 
     {
-        Form = "frmPropiedad"
+        Form = "frmPropiedad",
+        EspecificacionesTextoRow = "divEspecificacionesTexto",
+        EspecificacionesEnteroRow = "divEspecificacionesEntero",
+        EspecificacionesNumeroRow = "divEspecificacionesNumero",
     };
 }
 <h2>@ViewBag.Title</h2>
@@ -66,8 +69,14 @@
             @Html.ValidationMessageFor(m => m.Editable)
         </div>
     </div>
-    <div class="form-row">
-        @Html.Partial("_PropiedadTipoTextoEspecificaciones", Model.PropiedadTipoEspecificacionesTexto)
+    <div id="@controlesIds.EspecificacionesTextoRow" class="form-row" style="display: none;">
+        @Html.Partial("_PropiedadTipoEspecificacionesTexto", Model)
+    </div>
+    <div id="@controlesIds.EspecificacionesEnteroRow" class="form-row" style="display: none;">
+        @Html.Partial("_PropiedadTipoEspecificacionesEntero", Model)
+    </div>
+    <div id="@controlesIds.EspecificacionesNumeroRow" class="form-row" style="display: none;">
+        @Html.Partial("_PropiedadTipoEspecificacionesNumero", Model)
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
     <a href="@Url.Action("Index", new { entidadId = Model.EntidadId })" class="btn btn-secondary">Volver</a>
@@ -76,6 +85,34 @@
     <script type="text/javascript">
         $(function () {
             namasdevApps.setActiveMenuOption('entidades');
+
+            establecerVisibilidadEspecificacionesSegunTipo();
+
+            $('#@Html.IdFor(m => m.PropiedadTipoId)')
+                .on('change', function () {
+                    establecerVisibilidadEspecificacionesSegunTipo();
+                });
+
+            function establecerVisibilidadEspecificacionesSegunTipo() {
+                $('#@controlesIds.EspecificacionesTextoRow,#@controlesIds.EspecificacionesEnteroRow,#@controlesIds.EspecificacionesNumeroRow').hide();
+
+                switch ($('#@Html.IdFor(m => m.PropiedadTipoId)').val()) {
+                    case '@namasdev.Apps.Entidades.PropiedadTipos.TEXTO':
+                        $('#@controlesIds.EspecificacionesTextoRow').show();
+                        break;
+
+                    case '@namasdev.Apps.Entidades.PropiedadTipos.ENTERO':
+                    case '@namasdev.Apps.Entidades.PropiedadTipos.ENTERO_CORTO':
+                    case '@namasdev.Apps.Entidades.PropiedadTipos.ENTERO_LARGO':
+                        $('#@controlesIds.EspecificacionesEnteroRow').show();
+                        break;
+
+                    case '@namasdev.Apps.Entidades.PropiedadTipos.DECIMAL':
+                    case '@namasdev.Apps.Entidades.PropiedadTipos.DECIMAL_LARGO':
+                        $('#@controlesIds.EspecificacionesNumeroRow').show();
+                        break;
+                }
+            }
         });
     </script>
 }

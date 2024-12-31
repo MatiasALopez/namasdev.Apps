@@ -60,10 +60,10 @@
     <Compile Include="PropiedadTipoEspecificacionesEntero.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroLargo.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroCorto.cs" />
-    <Compile Include="PropiedadTipoEspecificacionesNumeroCorto.cs" />
-    <Compile Include="PropiedadTipoEspecificacionesNumeroLargo.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesNumero.cs" />
     <Compile Include="PropiedadTipoEspecificacionesNumeroBase.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroBase.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesNumeroLargo.cs" />
     <Compile Include="PropiedadTipoEspecificacionesTexto.cs" />
     <Compile Include="IPropiedadTipoEspecificaciones.cs" />
     <Compile Include="Metadata\AspNetRoleMetadata.cs" />

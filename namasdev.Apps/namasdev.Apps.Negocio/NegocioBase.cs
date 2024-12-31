@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 using namasdev.Apps.Entidades;
 
@@ -11,7 +8,9 @@ namespace namasdev.Apps.Negocio
     {
         protected string SerializarPropiedadTipoEspecificaciones(IPropiedadTipoEspecificaciones especificaciones)
         {
-            return JsonConvert.SerializeObject(especificaciones);
+            return especificaciones != null
+                ? JsonConvert.SerializeObject(especificaciones)
+                : null;
         }
     }
 }

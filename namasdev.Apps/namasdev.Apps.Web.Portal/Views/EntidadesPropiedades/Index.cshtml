@@ -62,7 +62,7 @@
                             <tr>
                                 <td>@item.Nombre</td>
                                 <td>@item.PropiedadTipoNombre</td>
-                                <td>@item.PermiteNull</td>
+                                <td>@Formateador.FormatoSiNo(item.PermiteNull)</td>
                                 <td>@Formateador.FormatoNumero(item.Orden)</td>
                                 <td class="text-center">
                                     <a href="@Url.Action("Editar", new { id = item.EntidadPropiedadId, item.EntidadId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>

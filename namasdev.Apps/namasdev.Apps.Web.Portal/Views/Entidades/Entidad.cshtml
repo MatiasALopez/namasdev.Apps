@@ -4,7 +4,7 @@
 @{
     ViewBag.Title = String.Format("{0} {1}", Model.PaginaModo, EntidadMetadata.NOMBRE);
 
-    var controlesIds = new 
+    var controlesIds = new
     {
         Form = "frmEntidad"
     };
@@ -34,17 +34,22 @@
     </div>
     <div class="form-row">
         <div class="form-group col-lg-5 col-md-6">
+            <label for="">Crear propiedades</label>
             <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                <label class="custom-control-label" for="customSwitch1">Toggle this switch element</label>
+                @Html.CheckBoxFor(m => m.AltaOpcionesPropiedadesCrearId, new { @class = "custom-control-input" })
+                @Html.LabelFor(m => m.AltaOpcionesPropiedadesCrearId, new { @class = "custom-control-label" })
             </div>
             <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="customSwitch2">
-                <label class="custom-control-label" for="customSwitch2">switch element</label>
+                @Html.CheckBoxFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaCreado, new { @class = "custom-control-input" })
+                @Html.LabelFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaCreado, new { @class = "custom-control-label" })
             </div>
             <div class="custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input"  id="customSwitch3">
-                <label class="custom-control-label" for="customSwitch3">switch element</label>
+                @Html.CheckBoxFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion, new { @class = "custom-control-input" })
+                @Html.LabelFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion, new { @class = "custom-control-label" })
+            </div>
+            <div class="custom-control custom-switch">
+                @Html.CheckBoxFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaBorrado, new { @class = "custom-control-input" })
+                @Html.LabelFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaBorrado, new { @class = "custom-control-label" })
             </div>
         </div>
     </div>

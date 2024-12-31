@@ -28,6 +28,7 @@ namespace namasdev.Apps.Datos
             using (var ctx = new SqlContext())
             {
                 return ctx.EntidadesPropiedades
+                    .IncludeIf(ep => ep.Entidad, cargarDatosAdicionales)
                     .IncludeIf(ep => ep.Tipo, cargarDatosAdicionales)
                     .Where(ep => ep.EntidadId == entidadId && !ep.Borrado)
                     .WhereIf(ep => ep.Nombre.Contains(busqueda), !string.IsNullOrWhiteSpace(busqueda))
@@ -43,6 +44,7 @@ namespace namasdev.Apps.Datos
             using (var ctx = new SqlContext())
             {
                 return ctx.EntidadesPropiedades
+                    .IncludeIf(ep => ep.Entidad, cargarDatosAdicionales)
                     .IncludeIf(ep => ep.Tipo, cargarDatosAdicionales)
                     .FirstOrDefault(ep => ep.Id == entidadPropiedadId && !ep.Borrado);
             }

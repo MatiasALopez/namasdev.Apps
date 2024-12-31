@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using namasdev.Apps.Entidades.Metadata;
+using namasdev.Core.Validation;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 {
@@ -12,7 +13,8 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
         [Display(Name = PropiedadTipoEspecificacionesNumeroMetadata.ValorMaximo.DISPLAY_NAME)]
         public decimal? ValorMaximo { get; set; }
 
-        [Display(Name = PropiedadTipoEspecificacionesNumeroMetadata.CantDecimales.DISPLAY_NAME)]
-        public int CantDecimales { get; set; }
+        [Display(Name = PropiedadTipoEspecificacionesNumeroMetadata.CantDecimales.DISPLAY_NAME),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        public int? CantDecimales { get; set; }
     }
 }

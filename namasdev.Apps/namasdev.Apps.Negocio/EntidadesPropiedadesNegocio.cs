@@ -11,7 +11,7 @@ namespace namasdev.Apps.Negocio
     public interface IEntidadesPropiedadesNegocio
     {
         EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, short orden, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId);
-        void Actualizar(EntidadPropiedad aplicacion, string usuarioId);
+        void Actualizar(EntidadPropiedad propiedad, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, string usuarioId);
         void MarcarComoBorrado(Guid entidadPropiedadId, string usuarioLogueadoId);
         void DesmarcarComoBorrado(Guid entidadPropiedadId);
     }
@@ -29,10 +29,9 @@ namespace namasdev.Apps.Negocio
 
         public EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, short orden, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId)
         {
-            // TODO (ML): terminar especificaciones 
             DateTime fechaHora = DateTime.Now;
 
-            var entidadPropiedad = new EntidadPropiedad
+            var propiedad = new EntidadPropiedad
             {
                 Id = Guid.NewGuid(),
                 EntidadId = entidadId,
@@ -46,35 +45,36 @@ namespace namasdev.Apps.Negocio
                 Editable = editable,
                 CalculadaFormula = calculadaFormula,
             };
-            entidadPropiedad.EstablecerDatosCreado(usuarioId, fechaHora);
-            entidadPropiedad.EstablecerDatosModificacion(usuarioId, fechaHora);
-            ValidarDatos(entidadPropiedad);
+            propiedad.EstablecerDatosCreado(usuarioId, fechaHora);
+            propiedad.EstablecerDatosModificacion(usuarioId, fechaHora);
+            ValidarDatos(propiedad);
 
-            _entidadesPropiedadesRepositorio.Agregar(entidadPropiedad);
+            _entidadesPropiedadesRepositorio.Agregar(propiedad);
 
-            return entidadPropiedad;
+            return propiedad;
         }
 
-        public void Actualizar(EntidadPropiedad entidadPropiedad, string usuarioId)
+        public void Actualizar(EntidadPropiedad propiedad, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, string usuarioId)
         {
-            Validador.ValidarArgumentRequeridoYThrow(entidadPropiedad, nameof(entidadPropiedad));
+            Validador.ValidarArgumentRequeridoYThrow(propiedad, nameof(propiedad));
 
             DateTime fechaHora = DateTime.Now;
 
-            entidadPropiedad.EstablecerDatosModificacion(usuarioId, fechaHora);
-            ValidarDatos(entidadPropiedad);
+            propiedad.PropiedadTipoEspecificaciones = SerializarPropiedadTipoEspecificaciones(propiedadTipoEspecificaciones);
+            propiedad.EstablecerDatosModificacion(usuarioId, fechaHora);
+            ValidarDatos(propiedad);
 
-            _entidadesPropiedadesRepositorio.Actualizar(entidadPropiedad);
+            _entidadesPropiedadesRepositorio.Actualizar(propiedad);
         }
 
         public void MarcarComoBorrado(Guid entidadPropiedadId, string usuarioLogueadoId)
         {
-            var entidadPropiedad = new EntidadPropiedad 
+            var propiedad = new EntidadPropiedad 
             {
                 Id = entidadPropiedadId
             };
-            entidadPropiedad.EstablecerDatosBorrado(usuarioLogueadoId, DateTime.Now);
-            _entidadesPropiedadesRepositorio.ActualizarDatosBorrado(entidadPropiedad);
+            propiedad.EstablecerDatosBorrado(usuarioLogueadoId, DateTime.Now);
+            _entidadesPropiedadesRepositorio.ActualizarDatosBorrado(propiedad);
         }
 
         public void DesmarcarComoBorrado(Guid entidadPropiedadId)

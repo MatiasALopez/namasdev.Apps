@@ -55,6 +55,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
             };
 
             CargarEntidadesViewModel(modelo);
+
+            if (modelo.AplicacionesVersionesSelectList == null
+                || !modelo.AplicacionesVersionesSelectList.Any())
+            {
+                return RedirectToAction("Index", "Versiones", new { modelo.AplicacionId });
+            }
+
             return View(modelo);
         }
 
@@ -82,10 +89,10 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Agregar(Guid aplicacionVersionId)
         {
-            // TODO (ML): completar alta opciones
             var modelo = new EntidadViewModel 
             {
-                AplicacionVersionId = aplicacionVersionId
+                AplicacionVersionId = aplicacionVersionId,
+                AltaOpcionesPropiedadesCrearId = true,
             };
             
             CargarEntidadViewModel(modelo, PaginaModo.Agregar);
@@ -100,7 +107,15 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _entidadesNegocio.Agregar(modelo.AplicacionVersionId, modelo.Nombre, UsuarioId);
+                    _entidadesNegocio.Agregar(
+                        modelo.AplicacionVersionId, modelo.Nombre, UsuarioId,
+                        opciones: new EntidadAltaOpciones 
+                        {
+                            PropiedadesCrearId = modelo.AltaOpcionesPropiedadesCrearId,
+                            PropiedadesCrearAuditoriaCreado = modelo.AltaOpcionesPropiedadesCrearAuditoriaCreado,
+                            PropiedadesCrearAuditoriaUltimaModificacion = modelo.AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion,
+                            PropiedadesCrearAuditoriaBorrado = modelo.AltaOpcionesPropiedadesCrearAuditoriaBorrado
+                        });
 
                     return RedirectToAction(nameof(Index), new { aplicacionId = modelo.AplicacionId, aplicacionVersionId = modelo.AplicacionVersionId });
                 }

@@ -84,9 +84,6 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = new EntidadPropiedadViewModel
             {
                 EntidadId = entidadId,
-                PropiedadTipoEspecificacionesTexto = new PropiedadTipoEspecificacionesTextoViewModel(),
-                PropiedadTipoEspecificacionesEntero = new PropiedadTipoEspecificacionesEnteroViewModel(),
-                PropiedadTipoEspecificacionesNumero = new PropiedadTipoEspecificacionesNumeroViewModel(),
             };
             
             CargarEntidadPropiedadViewModel(modelo, PaginaModo.Agregar);
@@ -97,7 +94,6 @@ namespace namasdev.Apps.Web.Portal.Controllers
         ValidateAntiForgeryToken]
         public ActionResult Agregar(EntidadPropiedadViewModel modelo)
         {
-            // TODO (ML) resolver binding de props de ViewModel dentro de ViewModel
             try
             {
                 if (ModelState.IsValid)
@@ -139,8 +135,10 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var propiedad = EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAEntidad(modelo);
-                    _entidadesPropiedadesNegocio.Actualizar(propiedad, UsuarioId);
+                    _entidadesPropiedadesNegocio.Actualizar(
+                        propiedad: EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAEntidad(modelo), 
+                        propiedadTipoEspecificaciones: EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(modelo), 
+                        usuarioId: UsuarioId);
 
                     ControllerHelper.CargarMensajeResultadoOk("Propiedad actualizada correctamente.");
                 }

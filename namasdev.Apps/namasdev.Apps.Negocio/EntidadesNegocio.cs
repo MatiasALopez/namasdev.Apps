@@ -46,14 +46,21 @@ namespace namasdev.Apps.Negocio
             entidad.EstablecerDatosModificacion(usuarioId, fechaHora);
             ValidarDatos(entidad);
 
+            var propiedades = 
+                opciones != null
+                ? CrearEntidadesPropiedades(entidad, opciones)
+                : null;
+
             using (var ts = TransactionScopeFactory.Crear())
             {
                 _entidadesRepositorio.Agregar(entidad);
 
-                if (opciones != null)
+                if (propiedades != null)
                 {
-                    _entidadesPropiedadesRepositorio.Agregar(CrearEntidadesPropiedades(entidad.Id, opciones));
+                    _entidadesPropiedadesRepositorio.Agregar(propiedades);
                 }
+
+                ts.Complete();
             }
 
             return entidad;
@@ -95,7 +102,7 @@ namespace namasdev.Apps.Negocio
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }
 
-        private IEnumerable<EntidadPropiedad> CrearEntidadesPropiedades(Guid entidadId, EntidadAltaOpciones opciones)
+        private IEnumerable<EntidadPropiedad> CrearEntidadesPropiedades(Entidad entidad, EntidadAltaOpciones opciones)
         {
             var propiedades = new List<EntidadPropiedad>();
 
@@ -104,45 +111,58 @@ namespace namasdev.Apps.Negocio
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
-                    EntidadId = entidadId,
+                    EntidadId = entidad.Id,
                     Nombre = $"Id",
                     Etiqueta = "ID",
-                    PropiedadTipoId = PropiedadTipos.TEXTO,
+                    PropiedadTipoId = PropiedadTipos.GUID,
                     PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
                     PermiteNull = false,
-                    Orden = 1000,
+                    Orden = 1,
                     GeneradaAlCrear = true,
                     Editable = false,
+                    CreadoPor = entidad.CreadoPor,
+                    CreadoFecha = entidad.CreadoFecha,
+                    UltimaModificacionPor = entidad.UltimaModificacionPor,
+                    UltimaModificacionFecha = entidad.UltimaModificacionFecha
                 });
             }
 
+            short orden = 101;
             if (opciones.PropiedadesCrearAuditoriaCreado)
             {
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
-                    EntidadId = entidadId,
+                    EntidadId = entidad.Id,
                     Nombre = "CreadoPor",
                     Etiqueta = "Fecha creación",
                     PropiedadTipoId = PropiedadTipos.TEXTO,
                     PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
                     PermiteNull = false,
-                    Orden = 1011,
+                    Orden = orden++,
                     GeneradaAlCrear = true,
                     Editable = false,
+                    CreadoPor = entidad.CreadoPor,
+                    CreadoFecha = entidad.CreadoFecha,
+                    UltimaModificacionPor = entidad.UltimaModificacionPor,
+                    UltimaModificacionFecha = entidad.UltimaModificacionFecha
                 });
 
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
-                    EntidadId = entidadId,
+                    EntidadId = entidad.Id,
                     Nombre = "CreadoFecha",
                     Etiqueta = "Fecha/hora creación",
                     PropiedadTipoId = PropiedadTipos.FECHA_HORA,
                     PermiteNull = false,
-                    Orden = 1012,
+                    Orden = orden++,
                     GeneradaAlCrear = true,
                     Editable = false,
+                    CreadoPor = entidad.CreadoPor,
+                    CreadoFecha = entidad.CreadoFecha,
+                    UltimaModificacionPor = entidad.UltimaModificacionPor,
+                    UltimaModificacionFecha = entidad.UltimaModificacionFecha
                 });
             }
 
@@ -151,28 +171,36 @@ namespace namasdev.Apps.Negocio
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
-                    EntidadId = entidadId,
+                    EntidadId = entidad.Id,
                     Nombre = "UltimaModificacionPor",
                     Etiqueta = "Fecha creación",
                     PropiedadTipoId = PropiedadTipos.TEXTO,
                     PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
                     PermiteNull = false,
-                    Orden = 1021,
+                    Orden = orden++,
                     GeneradaAlCrear = true,
                     Editable = false,
+                    CreadoPor = entidad.CreadoPor,
+                    CreadoFecha = entidad.CreadoFecha,
+                    UltimaModificacionPor = entidad.UltimaModificacionPor,
+                    UltimaModificacionFecha = entidad.UltimaModificacionFecha
                 });
 
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
-                    EntidadId = entidadId,
+                    EntidadId = entidad.Id,
                     Nombre = "UltimaModificacionFecha",
                     Etiqueta = "Fecha/hora última modificación",
                     PropiedadTipoId = PropiedadTipos.FECHA_HORA,
                     PermiteNull = false,
-                    Orden = 1022,
+                    Orden = orden++,
                     GeneradaAlCrear = true,
                     Editable = false,
+                    CreadoPor = entidad.CreadoPor,
+                    CreadoFecha = entidad.CreadoFecha,
+                    UltimaModificacionPor = entidad.UltimaModificacionPor,
+                    UltimaModificacionFecha = entidad.UltimaModificacionFecha
                 });
             }
 
@@ -181,39 +209,51 @@ namespace namasdev.Apps.Negocio
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
-                    EntidadId = entidadId,
+                    EntidadId = entidad.Id,
                     Nombre = "BorradoPor",
                     Etiqueta = "Fecha borrado",
                     PropiedadTipoId = PropiedadTipos.TEXTO,
                     PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
                     PermiteNull = true,
-                    Orden = 1031,
+                    Orden = orden++,
                     Editable = false,
+                    CreadoPor = entidad.CreadoPor,
+                    CreadoFecha = entidad.CreadoFecha,
+                    UltimaModificacionPor = entidad.UltimaModificacionPor,
+                    UltimaModificacionFecha = entidad.UltimaModificacionFecha
                 });
 
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
-                    EntidadId = entidadId,
+                    EntidadId = entidad.Id,
                     Nombre = "BorradoFecha",
                     Etiqueta = "Fecha/hora borrado",
                     PropiedadTipoId = PropiedadTipos.FECHA_HORA,
                     PermiteNull = false,
-                    Orden = 1032,
+                    Orden = orden++,
                     Editable = false,
+                    CreadoPor = entidad.CreadoPor,
+                    CreadoFecha = entidad.CreadoFecha,
+                    UltimaModificacionPor = entidad.UltimaModificacionPor,
+                    UltimaModificacionFecha = entidad.UltimaModificacionFecha
                 });
 
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
-                    EntidadId = entidadId,
+                    EntidadId = entidad.Id,
                     Nombre = "Borrado",
                     Etiqueta = "Borrado",
                     PropiedadTipoId = PropiedadTipos.BOOLEANO,
                     PermiteNull = false,
                     CalculadaFormula = "ISNULL(CONVERT(bit,CASE WHEN [BorradoFecha] IS NULL THEN 0 ELSE 1 END), 0)",
-                    Orden = 1033,
+                    Orden = orden++,
                     Editable = false,
+                    CreadoPor = entidad.CreadoPor,
+                    CreadoFecha = entidad.CreadoFecha,
+                    UltimaModificacionPor = entidad.UltimaModificacionPor,
+                    UltimaModificacionFecha = entidad.UltimaModificacionFecha
                 });
             }
 

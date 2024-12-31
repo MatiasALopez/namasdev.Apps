@@ -1,16 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 using namasdev.Apps.Entidades.Metadata;
-using System.Web.Mvc;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 {
     public class EntidadPropiedadViewModel : IValidatableObject
     {
+        public EntidadPropiedadViewModel()
+        {
+            PropiedadTipoEspecificacionesTexto = new PropiedadTipoEspecificacionesTextoViewModel();
+            PropiedadTipoEspecificacionesEntero = new PropiedadTipoEspecificacionesEnteroViewModel();
+            PropiedadTipoEspecificacionesNumero = new PropiedadTipoEspecificacionesNumeroViewModel();
+        }
+
         public PaginaModo PaginaModo { get; set; }
 
         public Guid EntidadId { get; set; }

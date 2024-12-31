@@ -297,7 +297,9 @@
     <Content Include="Views\Entidades\Index.cshtml" />
     <Content Include="Views\EntidadesPropiedades\Propiedad.cshtml" />
     <Content Include="Views\EntidadesPropiedades\Index.cshtml" />
-    <Content Include="Views\EntidadesPropiedades\_PropiedadTipoTextoEspecificaciones.cshtml" />
+    <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesTexto.cshtml" />
+    <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesNumero.cshtml" />
+    <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesEntero.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 using namasdev.Apps.Entidades.Metadata;
+using namasdev.Apps.Entidades;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 {
@@ -22,35 +23,35 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 
         public Guid EntidadId { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.EntidadId.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.EntidadId.ETIQUETA)]
         public string EntidadNombre { get; set; }
 
         public Guid? EntidadPropiedadId { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Nombre.DISPLAY_NAME),
+        [Display(Name = EntidadPropiedadMetadata.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Etiqueta.DISPLAY_NAME),
+        [Display(Name = EntidadPropiedadMetadata.Etiqueta.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Etiqueta { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.PropiedadTipoId.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.PropiedadTipoId.ETIQUETA)]
         public short? PropiedadTipoId { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.PermiteNull.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.PermiteNull.ETIQUETA)]
         public bool? PermiteNull { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Orden.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.Orden.ETIQUETA)]
         public short? Orden { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.GeneradaAlCrear.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.GeneradaAlCrear.ETIQUETA)]
         public bool? GeneradaAlCrear { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Editable.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.Editable.ETIQUETA)]
         public bool? Editable { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.CalculadaFormula.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.CalculadaFormula.ETIQUETA)]
         public string CalculadaFormula { get; set; }
 
         public PropiedadTipoEspecificacionesTextoViewModel PropiedadTipoEspecificacionesTexto { get; set; }
@@ -65,7 +66,25 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
             if (PaginaModo == PaginaModo.Editar
                 && !EntidadPropiedadId.HasValue)
             {
-                yield return new ValidationResult(Validador.MensajeRequerido(EntidadPropiedadMetadata.NOMBRE));
+                yield return new ValidationResult(Validador.MensajeRequerido(EntidadPropiedadMetadata.ETIQUETA));
+            }
+
+            if (PropiedadTipoId.HasValue)
+            {
+                switch (PropiedadTipoId.Value)
+                {
+                    case PropiedadTipos.DECIMAL:
+                    case PropiedadTipos.DECIMAL_LARGO:
+                        if (!PropiedadTipoEspecificacionesNumero.DigitosEnteros.HasValue)
+                        {
+                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesNumeroMetadata.DigitosEnteros.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesNumero)}.{nameof(PropiedadTipoEspecificacionesNumero.DigitosEnteros)}" });
+                        }
+                        if (!PropiedadTipoEspecificacionesNumero.DigitosDecimales.HasValue)
+                        {
+                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesNumeroMetadata.DigitosDecimales.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesNumero)}.{nameof(PropiedadTipoEspecificacionesNumero.DigitosDecimales)}" });
+                        }
+                        break;
+                }
             }
         }
     }

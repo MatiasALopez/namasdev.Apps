@@ -111,7 +111,8 @@ namespace namasdev.Apps.Web.Portal.Mappers
                             {
                                 ValorMinimo = (double?)modelo.PropiedadTipoEspecificacionesNumero.ValorMinimo,
                                 ValorMaximo = (double?)modelo.PropiedadTipoEspecificacionesNumero.ValorMaximo,
-                                CantDecimales = modelo.PropiedadTipoEspecificacionesNumero.CantDecimales ?? 0,
+                                DigitosEnteros = modelo.PropiedadTipoEspecificacionesNumero.DigitosEnteros.Value,
+                                DigitosDecimales = modelo.PropiedadTipoEspecificacionesNumero.DigitosDecimales.Value,
                             };
                         }
                         break;
@@ -123,7 +124,8 @@ namespace namasdev.Apps.Web.Portal.Mappers
                             {
                                 ValorMinimo = modelo.PropiedadTipoEspecificacionesNumero.ValorMinimo,
                                 ValorMaximo = modelo.PropiedadTipoEspecificacionesNumero.ValorMaximo,
-                                CantDecimales = modelo.PropiedadTipoEspecificacionesNumero.CantDecimales ?? 0,
+                                DigitosEnteros = modelo.PropiedadTipoEspecificacionesNumero.DigitosEnteros.Value,
+                                DigitosDecimales = modelo.PropiedadTipoEspecificacionesNumero.DigitosDecimales.Value,
                             };
                         }
                         break;

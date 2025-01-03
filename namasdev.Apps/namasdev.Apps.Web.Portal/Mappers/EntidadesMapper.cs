@@ -6,7 +6,6 @@ using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Web.Portal.Models.Entidades;
 using namasdev.Apps.Web.Portal.ViewModels.Entidades;
-using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 
 namespace namasdev.Apps.Web.Portal.Mappers
 {
@@ -22,6 +21,7 @@ namespace namasdev.Apps.Web.Portal.Mappers
                     EntidadId = e.Id,
                     AplicacionVersionId = e.AplicacionVersionId,
                     Nombre = e.Nombre,
+                    Etiqueta = e.Etiqueta
                 })
                 .ToList();
         }
@@ -35,6 +35,9 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 Id = modelo.EntidadId ?? Guid.Empty,
                 AplicacionVersionId = modelo.AplicacionVersionId,
                 Nombre = modelo.Nombre,
+                NombrePlural = modelo.NombrePlural,
+                Etiqueta = modelo.Etiqueta,
+                EtiquetaPlural = modelo.EtiquetaPlural
             };
         }
 
@@ -63,6 +66,9 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 AplicacionVersionId = entidad.AplicacionVersionId,
                 AplicacionVersionNombre = entidad.AplicacionVersion.Nombre,
                 Nombre = entidad.Nombre,
+                NombrePlural = entidad.NombrePlural,
+                Etiqueta = entidad.Etiqueta,
+                EtiquetaPlural = entidad.EtiquetaPlural
             };
         }
     }

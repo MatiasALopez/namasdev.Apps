@@ -2,7 +2,11 @@
 {
     public class AplicacionVersionMetadata
     {
-        public const string NOMBRE = "Versión";
+        public const string NOMBRE = "Version";
+        public const string NOMBRE_PLURAL = "Versiones";
+
+        public const string ETIQUETA = "Versión";
+        public const string ETIQUETA_PLURAL = "Versiones";
 
         public class BD
         {
@@ -12,12 +16,12 @@
 
         public class AplicacionId
         {
-            public const string DISPLAY_NAME = "Aplicación";
+            public const string ETIQUETA = "Aplicación";
         }
 
         public class Nombre
         {
-            public const string DISPLAY_NAME = "Nombre";
+            public const string ETIQUETA = "Nombre";
             public const int TAMAÑO_MAX = 100;
         }
     }

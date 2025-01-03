@@ -15,8 +15,9 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
         }
 
         public Guid EntidadId { get; set; }
+        public Guid AplicacionVersionId { get; set; }
 
-        [Display(Name = EntidadMetadata.NOMBRE)]
+        [Display(Name = EntidadMetadata.ETIQUETA)]
         public string EntidadNombre { get; set; }
 
         [Display(Name = "Búsqueda (Nombre)")]

@@ -63,7 +63,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var aplicacion = _aplicacionesVersionesRepositorio.Obtener(id);
             if (aplicacion == null)
             {
-                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(AplicacionVersionMetadata.NOMBRE, id) });
+                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(AplicacionVersionMetadata.ETIQUETA, id) });
             }
 
             try

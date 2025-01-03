@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 using namasdev.Web.ViewModels;
-
 using namasdev.Apps.Web.Portal.Models.Entidades;
 using namasdev.Apps.Entidades.Metadata;
-using namasdev.Apps.Entidades;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
 {
@@ -19,10 +17,10 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
 
         public Guid AplicacionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.NOMBRE)]
+        [Display(Name = AplicacionVersionMetadata.ETIQUETA)]
         public Guid? AplicacionVersionId { get; set; }
 
-        [Display(Name = AplicacionMetadata.NOMBRE)]
+        [Display(Name = AplicacionMetadata.ETIQUETA)]
         public string AplicacionNombre { get; set; }
         public string AplicacionVersionNombre { get; set; }
 

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using namasdev.Apps.Datos;
-using namasdev.Apps.Entidades;
 using namasdev.Core.Entity;
 using namasdev.Core.Validation;
+using namasdev.Apps.Datos;
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
+using Newtonsoft.Json;
 
 namespace namasdev.Apps.Negocio
 {
@@ -16,7 +18,7 @@ namespace namasdev.Apps.Negocio
         void DesmarcarComoBorrado(Guid entidadPropiedadId);
     }
 
-    public class EntidadesPropiedadesNegocio : NegocioBase, IEntidadesPropiedadesNegocio
+    public class EntidadesPropiedadesNegocio : IEntidadesPropiedadesNegocio
     {
         private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
 
@@ -86,12 +88,19 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, Entidades.Metadata.EntidadPropiedadMetadata.Nombre.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.EntidadPropiedadMetadata.Nombre.TAMAÑO_MAX, regEx: Entidades.Metadata.EntidadPropiedadMetadata.Nombre.REG_EX);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.Etiqueta, Entidades.Metadata.EntidadPropiedadMetadata.Etiqueta.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.EntidadPropiedadMetadata.Etiqueta.TAMAÑO_MAX);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.PropiedadTipoEspecificaciones, Entidades.Metadata.EntidadPropiedadMetadata.PropiedadTipoEspecificaciones.DISPLAY_NAME, requerido: false, errores);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.CalculadaFormula, Entidades.Metadata.EntidadPropiedadMetadata.CalculadaFormula.DISPLAY_NAME, requerido: false, errores, tamañoMaximo: Entidades.Metadata.EntidadPropiedadMetadata.CalculadaFormula.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, EntidadPropiedadMetadata.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadPropiedadMetadata.Nombre.TAMAÑO_MAX, regEx: EntidadPropiedadMetadata.Nombre.REG_EX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Etiqueta, EntidadPropiedadMetadata.Etiqueta.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadPropiedadMetadata.Etiqueta.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.PropiedadTipoEspecificaciones, EntidadPropiedadMetadata.PropiedadTipoEspecificaciones.ETIQUETA, requerido: false, errores);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.CalculadaFormula, EntidadPropiedadMetadata.CalculadaFormula.ETIQUETA, requerido: false, errores, tamañoMaximo: EntidadPropiedadMetadata.CalculadaFormula.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
+        }
+
+        private string SerializarPropiedadTipoEspecificaciones(IPropiedadTipoEspecificaciones especificaciones)
+        {
+            return especificaciones != null
+                ? JsonConvert.SerializeObject(especificaciones)
+                : null;
         }
     }
 }

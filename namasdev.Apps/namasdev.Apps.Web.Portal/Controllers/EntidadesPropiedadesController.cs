@@ -64,7 +64,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var propiedad = _entidadesPropiedadesRepositorio.Obtener(id);
             if (propiedad == null)
             {
-                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(EntidadPropiedadMetadata.NOMBRE, id) });
+                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(EntidadPropiedadMetadata.ETIQUETA, id) });
             }
 
             try
@@ -162,6 +162,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             var entidad = _entidadesRepositorio.Obtener(modelo.EntidadId);
             modelo.EntidadNombre = entidad.Nombre;
+            modelo.AplicacionVersionId = entidad.AplicacionVersionId;
 
             var op = modelo.CrearOrdenYPaginacionParametros();
 

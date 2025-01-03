@@ -93,7 +93,7 @@
     <Compile Include="Valores\AspNetRole.cs" />
     <Compile Include="Valores\AuditoriaTipo.cs" />
     <Compile Include="Valores\CorreoParametros.cs" />
-    <Compile Include="Valores\Parametro.cs" />
+    <Compile Include="Valores\Parametros.cs" />
     <Compile Include="Valores\PropiedadTipo.cs" />
     <Compile Include="Valores\PropiedadTiposEspecificaciones.cs" />
   </ItemGroup>

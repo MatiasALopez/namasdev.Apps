@@ -17,6 +17,18 @@ namespace namasdev.Apps.Datos.Sql.Config
                 .IsRequired()
                 .HasMaxLength(Entidades.Metadata.EntidadMetadata.Nombre.TAMAÑO_MAX);
 
+            Property(p => p.NombrePlural)
+                .IsRequired()
+                .HasMaxLength(Entidades.Metadata.EntidadMetadata.NombrePlural.TAMAÑO_MAX);
+
+            Property(p => p.Etiqueta)
+                .IsRequired()
+                .HasMaxLength(Entidades.Metadata.EntidadMetadata.Etiqueta.TAMAÑO_MAX);
+
+            Property(p => p.EtiquetaPlural)
+                .IsRequired()
+                .HasMaxLength(Entidades.Metadata.EntidadMetadata.EtiquetaPlural.TAMAÑO_MAX);
+
             HasRequired(p => p.AplicacionVersion)
                 .WithMany(p => p.Entidades)
                 .HasForeignKey(p => p.AplicacionVersionId);

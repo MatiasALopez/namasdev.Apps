@@ -2,26 +2,28 @@
 {
     public class EntidadAltaOpcionesMetadata
     {
-        public const string NOMBRE = "Opciones";
+        public const string NOMBRE = "AltaOpciones";
+
+        public const string ETIQUETA = "Opciones";
 
         public class PropiedadesCrearId
         {
-            public const string DISPLAY_NAME = "ID";
+            public const string ETIQUETA = "ID";
         }
 
         public class PropiedadesCrearAuditoriaCreado
         {
-            public const string DISPLAY_NAME = "Auditoría creado";
+            public const string ETIQUETA = "Auditoría creado";
         }
 
         public class PropiedadesCrearAuditoriaUltimaModificacion
         {
-            public const string DISPLAY_NAME = "Auditoría última modificación";
+            public const string ETIQUETA = "Auditoría última modificación";
         }
 
         public class PropiedadesCrearAuditoriaBorrado
         {
-            public const string DISPLAY_NAME = "Auditoría borrado";
+            public const string ETIQUETA = "Auditoría borrado";
         }
     }
 }

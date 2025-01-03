@@ -14,12 +14,12 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
 
         public Guid AplicacionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.AplicacionId.DISPLAY_NAME)]
+        [Display(Name = AplicacionVersionMetadata.AplicacionId.ETIQUETA)]
         public string AplicacionNombre { get; set; }
 
         public Guid? AplicacionVersionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.Nombre.DISPLAY_NAME),
+        [Display(Name = AplicacionVersionMetadata.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
@@ -28,7 +28,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
             if (PaginaModo == PaginaModo.Editar
                 && !AplicacionVersionId.HasValue)
             {
-                yield return new ValidationResult(Validador.MensajeRequerido(AplicacionVersionMetadata.NOMBRE));
+                yield return new ValidationResult(Validador.MensajeRequerido(AplicacionVersionMetadata.ETIQUETA));
             }
         }
     }

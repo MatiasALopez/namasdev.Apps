@@ -17,7 +17,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
         [Display(Name = "Búsqueda (Nombre y apellido, Correo electrónico)")]
         public string Busqueda { get; set; }
 
-        [Display(Name = AspNetRoleMetadata.NOMBRE)]
+        [Display(Name = AspNetRoleMetadata.ETIQUETA)]
         public string Rol { get; set; }
 
         public bool? Activado { get; set; }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using namasdev.Apps.Datos;
-using namasdev.Apps.Entidades;
 using namasdev.Core.Entity;
 using namasdev.Core.Validation;
+using namasdev.Apps.Datos;
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Negocio
 {
@@ -77,7 +78,7 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarStringYAgregarAListaErrores(aplicacionVersion.Nombre, Entidades.Metadata.AplicacionVersionMetadata.Nombre.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.AplicacionVersionMetadata.Nombre.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(aplicacionVersion.Nombre, AplicacionVersionMetadata.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: AplicacionVersionMetadata.Nombre.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

@@ -16,7 +16,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
 
         public Guid AplicacionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.AplicacionId.DISPLAY_NAME)]
+        [Display(Name = AplicacionVersionMetadata.AplicacionId.ETIQUETA)]
         public string AplicacionNombre { get; set; }
 
         [Display(Name = "Búsqueda (Nombre)")]

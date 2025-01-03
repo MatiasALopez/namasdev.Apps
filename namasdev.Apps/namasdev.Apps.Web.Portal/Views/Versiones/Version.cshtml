@@ -2,11 +2,11 @@
 @using namasdev.Apps.Web.Portal.ViewModels.Versiones;
 @model VersionViewModel
 @{
-    ViewBag.Title = String.Format("{0} {1}", Model.PaginaModo, AplicacionVersionMetadata.NOMBRE);
+    ViewBag.Title = $"{Model.PaginaModo} {AplicacionVersionMetadata.ETIQUETA}";
 
     var controlesIds = new 
     {
-        Form = "frmVersion"
+        Form = $"frm{AplicacionVersionMetadata.NOMBRE}"
     };
 }
 <h2>@ViewBag.Title</h2>

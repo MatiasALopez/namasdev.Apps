@@ -1,17 +1,17 @@
 ﻿@using namasdev.Apps.Entidades.Metadata;
 @model namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades.EntidadPropiedadViewModel
 <div class="form-row">
-    <div class="form-group col-lg-3 col-md-4">
+    <div class="form-group col-lg-2 col-md-4 col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMinimo)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMinimo, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesTextoMetadata.TamañoMinimo.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMinimo)
     </div>
-    <div class="form-group col-lg-3 col-md-4">
+    <div class="form-group col-lg-2 col-md-4 col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMaximo)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMaximo, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesTextoMetadata.TamañoMaximo.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMaximo)
     </div>
-    <div class="form-group col-lg-3 col-sm-4">
+    <div class="form-group col-lg-2 col-md-4 col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoExacto)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoExacto, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesTextoMetadata.TamañoExacto.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoExacto)

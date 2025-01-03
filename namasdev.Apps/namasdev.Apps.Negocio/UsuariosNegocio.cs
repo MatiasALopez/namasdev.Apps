@@ -5,6 +5,7 @@ using namasdev.Core.Entity;
 using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Datos;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Negocio
 {
@@ -74,9 +75,9 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarEmailYAgregarAListaErrores(usuario.Email, Entidades.Metadata.UsuarioMetadata.Email.DISPLAY_NAME, requerido: true, errores);
-            Validador.ValidarStringYAgregarAListaErrores(usuario.Nombres, Entidades.Metadata.UsuarioMetadata.Nombres.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.UsuarioMetadata.Nombres.TAMAÑO_MAX);
-            Validador.ValidarStringYAgregarAListaErrores(usuario.Apellidos, Entidades.Metadata.UsuarioMetadata.Apellidos.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.UsuarioMetadata.Apellidos.TAMAÑO_MAX);
+            Validador.ValidarEmailYAgregarAListaErrores(usuario.Email, UsuarioMetadata.Email.ETIQUETA, requerido: true, errores);
+            Validador.ValidarStringYAgregarAListaErrores(usuario.Nombres, UsuarioMetadata.Nombres.ETIQUETA, requerido: true, errores, tamañoMaximo: UsuarioMetadata.Nombres.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(usuario.Apellidos, UsuarioMetadata.Apellidos.ETIQUETA, requerido: true, errores, tamañoMaximo: UsuarioMetadata.Apellidos.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

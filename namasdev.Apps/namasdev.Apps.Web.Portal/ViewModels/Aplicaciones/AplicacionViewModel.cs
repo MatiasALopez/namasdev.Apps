@@ -14,7 +14,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
 
         public Guid? AplicacionId { get; set; }
 
-        [Display(Name = AplicacionMetadata.Nombre.DISPLAY_NAME),
+        [Display(Name = AplicacionMetadata.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
@@ -23,7 +23,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
             if (PaginaModo == PaginaModo.Editar
                 && !AplicacionId.HasValue)
             {
-                yield return new ValidationResult(Validador.MensajeRequerido(AplicacionMetadata.NOMBRE));
+                yield return new ValidationResult(Validador.MensajeRequerido(AplicacionMetadata.ETIQUETA));
             }
         }
     }

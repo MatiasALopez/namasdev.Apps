@@ -6,10 +6,10 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 {
     public class PropiedadTipoEspecificacionesEnteroViewModel
     {
-        [Display(Name = PropiedadTipoEspecificacionesEnteroMetadata.ValorMinimo.DISPLAY_NAME)]
+        [Display(Name = PropiedadTipoEspecificacionesEnteroMetadata.ValorMinimo.ETIQUETA)]
         public long? ValorMinimo { get; set; }
 
-        [Display(Name = PropiedadTipoEspecificacionesEnteroMetadata.ValorMaximo.DISPLAY_NAME)]
+        [Display(Name = PropiedadTipoEspecificacionesEnteroMetadata.ValorMaximo.ETIQUETA)]
         public long? ValorMaximo { get; set; }
     }
 }

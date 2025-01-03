@@ -72,7 +72,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var entidad = _entidadesRepositorio.Obtener(id);
             if (entidad == null)
             {
-                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(EntidadMetadata.NOMBRE, id) });
+                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(EntidadMetadata.ETIQUETA, id) });
             }
 
             try
@@ -107,8 +107,9 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _entidadesNegocio.Agregar(
-                        modelo.AplicacionVersionId, modelo.Nombre, UsuarioId,
+                    var entidad = _entidadesNegocio.Agregar(
+                        modelo.AplicacionVersionId, modelo.Nombre, modelo.NombrePlural, modelo.Etiqueta, modelo.EtiquetaPlural,
+                        UsuarioId,
                         opciones: new EntidadAltaOpciones 
                         {
                             PropiedadesCrearId = modelo.AltaOpcionesPropiedadesCrearId,
@@ -117,7 +118,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                             PropiedadesCrearAuditoriaBorrado = modelo.AltaOpcionesPropiedadesCrearAuditoriaBorrado
                         });
 
-                    return RedirectToAction(nameof(Index), new { aplicacionId = modelo.AplicacionId, aplicacionVersionId = modelo.AplicacionVersionId });
+                    return RedirectToAction("Index", "EntidadesPropiedades", new { entidadId = entidad.Id });
                 }
             }
             catch (Exception ex)

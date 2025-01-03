@@ -4,6 +4,10 @@ namespace namasdev.Apps.Entidades.Metadata
     public class AspNetRoleMetadata
     {
         public const string NOMBRE = "Rol";
+        public const string NOMBRE_PLURAL = "Roles";
+
+        public const string ETIQUETA = "Rol";
+        public const string ETIQUETA_PLURAL = "Roles";
 
         public class BD
         {
@@ -12,7 +16,7 @@ namespace namasdev.Apps.Entidades.Metadata
 
         public class Name
         {
-            public const string DISPLAY_NAME = "Nombre";
+            public const string ETIQUETA = "Nombre";
         }
     }
 }

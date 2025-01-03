@@ -236,6 +236,9 @@ create table dbo.Entidades
 	EntidadId uniqueidentifier not null,
 	AplicacionVersionId uniqueidentifier not null,
 	Nombre nvarchar(100) not null,
+	NombrePlural nvarchar(120) not null,
+	Etiqueta nvarchar(120) not null,
+	EtiquetaPlural nvarchar(140) not null,
 	CreadoPor nvarchar(128) not null,
 	CreadoFecha datetime not null,
 	UltimaModificacionPor nvarchar(128) not null,
@@ -249,10 +252,10 @@ create table dbo.Entidades
 )
 go
 
-create nonclustered index IX_Entidades_AplicacionVersionId on dbo.Entidades (AplicacionVersionId)
+create unique nonclustered index IX_Entidades_AplicacionVersionIdYNombre on dbo.Entidades(AplicacionVersionId,Nombre)
 go
 
-create unique nonclustered index IX_Entidades_AplicacionVersionIdYNombre on dbo.Entidades(AplicacionVersionId,Nombre)
+create nonclustered index IX_Entidades_AplicacionVersionId on dbo.Entidades (AplicacionVersionId)
 go
 --=====
 

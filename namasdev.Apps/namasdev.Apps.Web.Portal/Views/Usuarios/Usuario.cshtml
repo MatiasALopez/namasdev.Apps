@@ -2,11 +2,11 @@
 @using namasdev.Apps.Web.Portal.ViewModels.Usuarios;
 @model UsuarioViewModel
 @{
-    ViewBag.Title = String.Format("{0} {1}", Model.PaginaModo, UsuarioMetadata.NOMBRE);
+    ViewBag.Title = $"{Model.PaginaModo} {UsuarioMetadata.NOMBRE}";
 
     var controlesIds = new 
     {
-        Form = "frmUsuario"
+        Form = $"frm{UsuarioMetadata.NOMBRE}"
     };
 }
 <h2 class="my-3">@ViewBag.Title</h2>

@@ -6,18 +6,19 @@ using namasdev.Core.Transactions;
 using namasdev.Core.Validation;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Negocio
 {
     public interface IEntidadesNegocio
     {
-        Entidad Agregar(Guid aplicacionVersionId, string nombre, string usuarioId, EntidadAltaOpciones opciones = null);
+        Entidad Agregar(Guid aplicacionVersionId, string nombre, string nombrePlural, string etiqueta, string etiquetaPlural, string usuarioId, EntidadAltaOpciones opciones = null);
         void Actualizar(Entidad aplicacion, string usuarioId);
         void MarcarComoBorrado(Guid entidadId, string usuarioLogueadoId);
         void DesmarcarComoBorrado(Guid entidadId);
     }
 
-    public class EntidadesNegocio : NegocioBase, IEntidadesNegocio
+    public class EntidadesNegocio : IEntidadesNegocio
     {
         private IEntidadesRepositorio _entidadesRepositorio;
         private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
@@ -31,7 +32,7 @@ namespace namasdev.Apps.Negocio
             _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
         }
 
-        public Entidad Agregar(Guid aplicacionVersionId, string nombre, string usuarioId,
+        public Entidad Agregar(Guid aplicacionVersionId, string nombre, string nombrePlural, string etiqueta, string etiquetaPlural, string usuarioId,
             EntidadAltaOpciones opciones = null)
         {
             DateTime fechaHora = DateTime.Now;
@@ -40,7 +41,10 @@ namespace namasdev.Apps.Negocio
             {
                 Id = Guid.NewGuid(),
                 AplicacionVersionId = aplicacionVersionId,
-                Nombre = nombre
+                Nombre = nombre,
+                NombrePlural = nombrePlural,
+                Etiqueta = etiqueta,
+                EtiquetaPlural = etiquetaPlural
             };
             entidad.EstablecerDatosCreado(usuarioId, fechaHora);
             entidad.EstablecerDatosModificacion(usuarioId, fechaHora);
@@ -97,7 +101,10 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, Entidades.Metadata.EntidadMetadata.Nombre.DISPLAY_NAME, requerido: true, errores, tamañoMaximo: Entidades.Metadata.EntidadMetadata.Nombre.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, EntidadMetadata.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.Nombre.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.NombrePlural, EntidadMetadata.NombrePlural.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.NombrePlural.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Etiqueta, EntidadMetadata.Etiqueta.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.Etiqueta.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.EtiquetaPlural, EntidadMetadata.EtiquetaPlural.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.EtiquetaPlural.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

@@ -9,10 +9,10 @@ namespace namasdev.Apps.Web.Portal.Models.Versiones
     {
         public Guid AplicacionVersionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.AplicacionId.DISPLAY_NAME)]
+        [Display(Name = AplicacionVersionMetadata.AplicacionId.ETIQUETA)]
         public Guid AplicacionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.Nombre.DISPLAY_NAME)]
+        [Display(Name = AplicacionVersionMetadata.Nombre.ETIQUETA)]
         public string Nombre { get; set; }
     }
 }

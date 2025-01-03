@@ -3,7 +3,11 @@ namespace namasdev.Apps.Entidades.Metadata
 {
     public class AuditoriaTipoMetadata
     {
-        public const string NOMBRE = "Tipo auditoría";
+        public const string NOMBRE = "AuditoriaTipo";
+        public const string NOMBRE_PLURAL = "AuditoriaTipos";
+
+        public const string ETIQUETA = "Tipo auditoría";
+        public const string ETIQUETA_PLURAL = "Tipos auditoría";
 
         public class BD
         {
@@ -13,7 +17,7 @@ namespace namasdev.Apps.Entidades.Metadata
 
         public class Nombre
         {
-            public const string DISPLAY_NAME = "Nombre";
+            public const string ETIQUETA = "Nombre";
             public const int TAMAÑO_MAX = 100;
         }
     }

@@ -8,6 +8,9 @@ namespace namasdev.Apps.Entidades
     {
         public Guid AplicacionVersionId { get; set; }
         public string Nombre { get; set; }
+        public string NombrePlural { get; set; }
+        public string Etiqueta { get; set; }
+        public string EtiquetaPlural { get; set; }
 
         public AplicacionVersion AplicacionVersion { get; set; }
         public List<EntidadPropiedad> Propiedades { get; set; }

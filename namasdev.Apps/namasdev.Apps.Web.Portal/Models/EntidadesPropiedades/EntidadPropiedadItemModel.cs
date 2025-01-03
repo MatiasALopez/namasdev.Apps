@@ -10,19 +10,19 @@ namespace namasdev.Apps.Web.Portal.Models.EntidadesPropiedades
         public Guid EntidadPropiedadId { get; set; }
         public Guid EntidadId { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Nombre.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.Nombre.ETIQUETA)]
         public string Nombre { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.PropiedadTipoId.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.PropiedadTipoId.ETIQUETA)]
         public short PropiedadTipoId { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.PropiedadTipoId.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.PropiedadTipoId.ETIQUETA)]
         public string PropiedadTipoNombre { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.PermiteNull.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.PermiteNull.ETIQUETA)]
         public bool PermiteNull { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Orden.DISPLAY_NAME)]
+        [Display(Name = EntidadPropiedadMetadata.Orden.ETIQUETA)]
         public short? Orden { get; set; }
     }
 }

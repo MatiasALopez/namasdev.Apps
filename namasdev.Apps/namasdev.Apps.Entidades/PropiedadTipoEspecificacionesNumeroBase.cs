@@ -5,6 +5,7 @@
     {
         public T? ValorMinimo { get; set; }
         public T? ValorMaximo { get; set; }
-        public int CantDecimales { get; set; }
+        public short DigitosEnteros { get; set; }
+        public short DigitosDecimales { get; set; }
     }
 }

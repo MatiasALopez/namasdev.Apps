@@ -2,11 +2,11 @@
 @using namasdev.Apps.Web.Portal.ViewModels.Entidades;
 @model EntidadViewModel
 @{
-    ViewBag.Title = String.Format("{0} {1}", Model.PaginaModo, EntidadMetadata.NOMBRE);
+    ViewBag.Title = $"{Model.PaginaModo} {EntidadMetadata.ETIQUETA}";
 
     var controlesIds = new
     {
-        Form = "frmEntidad"
+        Form = $"frm{EntidadMetadata.NOMBRE}"
     };
 }
 <h2>@ViewBag.Title</h2>
@@ -28,8 +28,25 @@
     <div class="form-row">
         <div class="form-group col-lg-5 col-md-6">
             @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = AplicacionMetadata.Nombre.TAMAÑO_MAX })
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = EntidadMetadata.Nombre.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.Nombre)
+        </div>
+        <div class="form-group col-lg-5 col-md-6">
+            @Html.LabelFor(m => m.NombrePlural, new { @class = "requerido" })
+            @Html.TextBoxFor(m => m.NombrePlural, new { @class = "form-control form-control-required", maxlength = EntidadMetadata.NombrePlural.TAMAÑO_MAX })
+            @Html.ValidationMessageFor(m => m.NombrePlural)
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-lg-5 col-md-6">
+            @Html.LabelFor(m => m.Etiqueta, new { @class = "requerido" })
+            @Html.TextBoxFor(m => m.Etiqueta, new { @class = "form-control form-control-required", maxlength = EntidadMetadata.Etiqueta.TAMAÑO_MAX })
+            @Html.ValidationMessageFor(m => m.Etiqueta)
+        </div>
+        <div class="form-group col-lg-5 col-md-6">
+            @Html.LabelFor(m => m.EtiquetaPlural, new { @class = "requerido" })
+            @Html.TextBoxFor(m => m.EtiquetaPlural, new { @class = "form-control form-control-required", maxlength = EntidadMetadata.EtiquetaPlural.TAMAÑO_MAX })
+            @Html.ValidationMessageFor(m => m.EtiquetaPlural)
         </div>
     </div>
     <div class="form-row">

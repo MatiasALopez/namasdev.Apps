@@ -5,7 +5,6 @@ using System.Transactions;
 using namasdev.Core.Exceptions;
 using namasdev.Core.Transactions;
 using namasdev.Core.Validation;
-
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 
@@ -35,7 +34,7 @@ namespace namasdev.Apps.Negocio
         {
             using (var ts = TransactionScopeFactory.Crear(TransactionScopeOption.Suppress))
             {
-                string mensajeAlUsuario = _parametrosRepositorio.Obtener(Entidades.Metadata.ParametroMetadata.Nombres.ERRORES_MENSAJE_DEFAULT);
+                string mensajeAlUsuario = _parametrosRepositorio.Obtener(Parametros.ERRORES_MENSAJE_DEFAULT);
 
                 try
                 {

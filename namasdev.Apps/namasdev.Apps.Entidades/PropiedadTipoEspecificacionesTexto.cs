@@ -6,5 +6,6 @@
         public short? TamañoMaximo { get; set; }
         public short? TamañoExacto { get; set; }
         public string RegEx { get; set; }
+        public bool EsMultilinea { get; set; }
     }
 }

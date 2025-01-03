@@ -15,20 +15,20 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
 
         public string UsuarioId { get; set; }
 
-        [Display(Name = UsuarioMetadata.Nombres.DISPLAY_NAME),
+        [Display(Name = UsuarioMetadata.Nombres.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombres { get; set; }
 
-        [Display(Name = UsuarioMetadata.Apellidos.DISPLAY_NAME),
+        [Display(Name = UsuarioMetadata.Apellidos.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Apellidos { get; set; }
 
-        [Display(Name = UsuarioMetadata.Email.DISPLAY_NAME),
+        [Display(Name = UsuarioMetadata.Email.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO),
         EmailAddress]
         public string Email { get; set; }
 
-        [Display(Name = AspNetRoleMetadata.NOMBRE),
+        [Display(Name = AspNetRoleMetadata.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Rol { get; set; }
      
@@ -41,7 +41,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
             if (PaginaModo == PaginaModo.Editar
                 && String.IsNullOrWhiteSpace(UsuarioId))
             {
-                yield return new ValidationResult(Validador.MensajeRequerido(UsuarioMetadata.NOMBRE), new string[] { nameof(UsuarioId) });
+                yield return new ValidationResult(Validador.MensajeRequerido(UsuarioMetadata.ETIQUETA), new string[] { nameof(UsuarioId) });
             }
         }
     }

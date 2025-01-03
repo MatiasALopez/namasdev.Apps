@@ -3,7 +3,11 @@ namespace namasdev.Apps.Entidades.Metadata
 {
     public class CorreoParametrosMetadata
     {
-        public const string NOMBRE = "Parámetros correo";
+        public const string NOMBRE = "CorreoParametros";
+        public const string NOMBRE_PLURAL = "CorreosParametros";
+
+        public const string ETIQUETA = "Parámetros correo";
+        public const string ETIQUETA_PLURAL = "Parámetros correos";
 
         public class BD
         {
@@ -13,18 +17,18 @@ namespace namasdev.Apps.Entidades.Metadata
 
         public class Asunto
         {
-            public const string DISPLAY_NAME = "Asunto";
+            public const string ETIQUETA = "Asunto";
             public const int TAMAÑO_MAX = 256;
         }
 
         public class Contenido
         {
-            public const string DISPLAY_NAME = "Contenido";
+            public const string ETIQUETA = "Contenido";
         }
 
         public class CopiaOculta
         {
-            public const string DISPLAY_NAME = "Copia oculta";
+            public const string ETIQUETA = "Copia oculta";
         }
     }
 }

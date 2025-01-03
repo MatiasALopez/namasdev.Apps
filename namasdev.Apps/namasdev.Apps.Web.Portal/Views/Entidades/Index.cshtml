@@ -1,13 +1,15 @@
-﻿@using namasdev.Web.Helpers;
+﻿@using namasdev.Apps.Entidades;
+@using namasdev.Apps.Entidades.Metadata;
+@using namasdev.Web.Helpers;
 @model namasdev.Apps.Web.Portal.ViewModels.Entidades.EntidadesViewModel
 @{
-    ViewBag.Title = "Entidades";
+    ViewBag.Title = EntidadMetadata.ETIQUETA_PLURAL;
 
     var controlesIds = new
     {
-        Form = "frmEntidades",
-        TablaContainer = "divEntidadesContainer",
-        Tabla = "tblEntidades"
+        Form = $"frm{EntidadMetadata.NOMBRE_PLURAL}",
+        TablaContainer = $"div{EntidadMetadata.NOMBRE_PLURAL}Container",
+        Tabla = $"tbl{EntidadMetadata.NOMBRE_PLURAL}"
     };
     var displayNames = new
     {
@@ -31,13 +33,13 @@
 </form>
 <div class="row mt-3">
     <div class="col-md-3">
-        <a href="@Url.Action("Agregar", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-primary">Agregar nueva</a>
+        <a href="@Url.Action("Agregar", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-primary">Agregar</a>
     </div>
     <div class="col-md-9 text-right filtros">
         @using (Html.BeginForm("Index", "Entidades", FormMethod.Get, new { @class = "form-inline pull-right" }))
         {
-            @Html.HiddenFor(m => m.AplicacionId, new { id = "hfAplicacionId" })
-            @Html.HiddenFor(m => m.AplicacionVersionId, new { id = "hfAplicacionVersionId" })
+            @Html.HiddenFor(m => m.AplicacionId, new { id = $"{Html.IdFor(m => m.AplicacionId)}_2" })
+            @Html.HiddenFor(m => m.AplicacionVersionId, new { id = $"{Html.IdFor(m => m.AplicacionVersionId)}_2" })
             @Html.TextBoxFor(m => m.Busqueda, new { @class = "form-control ml-1", placeholder = displayNames.Busqueda, title = displayNames.Busqueda, data_toggle = "tooltip" })
             <button type="submit" class="btn btn-secondary ml-1">Buscar</button>
         }
@@ -54,7 +56,8 @@
                 <table id="@controlesIds.Tabla" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, "Nombre")">@Html.DisplayNameFor(m => m.Items[0].Nombre) <i class="fa fa-sort ml-2"></i></a></th>
+                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(Entidad.Nombre))">@Html.DisplayNameFor(m => m.Items[0].Nombre) <i class="fa fa-sort ml-2"></i></a></th>
+                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(Entidad.Etiqueta))">@Html.DisplayNameFor(m => m.Items[0].Etiqueta) <i class="fa fa-sort ml-2"></i></a></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -63,9 +66,10 @@
                         {
                             <tr>
                                 <td>@item.Nombre</td>
+                                <td>@item.Etiqueta</td>
                                 <td class="text-center">
                                     <a href="@Url.Action("Editar", new { id = item.EntidadId, aplicacionVersionId = item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <a href="@Url.Action("Index", "EntidadesPropiedades", new { entidadId = item.EntidadId })" class="btn btn-sm btn-outline-info"><i class="fa fa-list-ul" data-toggle="tooltip" title="Propiedades"></i></a>
+                                    <a href="@Url.Action("Index", "EntidadesPropiedades", new { entidadId = item.EntidadId })" class="btn btn-sm btn-outline-info"><i class="fa fa-list-ul" data-toggle="tooltip" title="@EntidadPropiedadMetadata.ETIQUETA_PLURAL"></i></a>
                                     <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
@@ -81,6 +85,7 @@
         }
     </div>
 </div>
+<a href="@Url.Action("Index", "Aplicaciones")" class="btn btn-secondary">Volver</a>
 @section bodyScripts {
     <script type="text/javascript">
         $(function () {

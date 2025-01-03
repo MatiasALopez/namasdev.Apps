@@ -9,7 +9,7 @@ namespace namasdev.Apps.Web.Portal.Models.Aplicaciones
     {
         public Guid AplicacionId { get; set; }
 
-        [Display(Name = AplicacionMetadata.Nombre.DISPLAY_NAME)]
+        [Display(Name = AplicacionMetadata.Nombre.ETIQUETA)]
         public string Nombre { get; set; }
     }
 }

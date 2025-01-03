@@ -78,7 +78,7 @@ namespace namasdev.Apps.Datos
 
         public CloudStorageAccount ObtenerCloudStorageAccount()
         {
-            return CloudStorageAccount.Parse(Obtener(Entidades.Metadata.ParametroMetadata.Nombres.CLOUD_STORAGE_ACCOUNT_CONNECTION_STRING));
+            return CloudStorageAccount.Parse(Obtener(Parametros.CLOUD_STORAGE_ACCOUNT_CONNECTION_STRING));
         }
     }
 }

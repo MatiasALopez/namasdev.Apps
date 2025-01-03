@@ -1,15 +1,16 @@
-﻿@using namasdev.Apps.Entidades.Metadata; 
+﻿@using namasdev.Apps.Entidades;
+@using namasdev.Apps.Entidades.Metadata; 
 @using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 @model EntidadPropiedadViewModel
 @{
-    ViewBag.Title = String.Format("{0} {1}", Model.PaginaModo, EntidadPropiedadMetadata.NOMBRE);
+    ViewBag.Title = $"{Model.PaginaModo} {EntidadPropiedadMetadata.ETIQUETA}";
 
     var controlesIds = new 
     {
-        Form = "frmPropiedad",
-        EspecificacionesTextoRow = "divEspecificacionesTexto",
-        EspecificacionesEnteroRow = "divEspecificacionesEntero",
-        EspecificacionesNumeroRow = "divEspecificacionesNumero",
+        Form = $"frm{EntidadPropiedadMetadata.NOMBRE}",
+        EspecificacionesTextoRow = $"div{PropiedadTipoEspecificacionesTextoMetadata.NOMBRE}",
+        EspecificacionesEnteroRow = $"div{PropiedadTipoEspecificacionesEnteroMetadata.NOMBRE}",
+        EspecificacionesNumeroRow = $"div{PropiedadTipoEspecificacionesNumeroMetadata.NOMBRE}",
     };
 }
 <h2>@ViewBag.Title</h2>
@@ -69,13 +70,13 @@
             @Html.ValidationMessageFor(m => m.Editable)
         </div>
     </div>
-    <div id="@controlesIds.EspecificacionesTextoRow" class="form-row" style="display: none;">
+    <div id="@controlesIds.EspecificacionesTextoRow" style="display: none;">
         @Html.Partial("_PropiedadTipoEspecificacionesTexto", Model)
     </div>
-    <div id="@controlesIds.EspecificacionesEnteroRow" class="form-row" style="display: none;">
+    <div id="@controlesIds.EspecificacionesEnteroRow" style="display: none;">
         @Html.Partial("_PropiedadTipoEspecificacionesEntero", Model)
     </div>
-    <div id="@controlesIds.EspecificacionesNumeroRow" class="form-row" style="display: none;">
+    <div id="@controlesIds.EspecificacionesNumeroRow" style="display: none;">
         @Html.Partial("_PropiedadTipoEspecificacionesNumero", Model)
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
@@ -97,18 +98,18 @@
                 $('#@controlesIds.EspecificacionesTextoRow,#@controlesIds.EspecificacionesEnteroRow,#@controlesIds.EspecificacionesNumeroRow').hide();
 
                 switch ($('#@Html.IdFor(m => m.PropiedadTipoId)').val()) {
-                    case '@namasdev.Apps.Entidades.PropiedadTipos.TEXTO':
+                    case '@PropiedadTipos.TEXTO':
                         $('#@controlesIds.EspecificacionesTextoRow').show();
                         break;
 
-                    case '@namasdev.Apps.Entidades.PropiedadTipos.ENTERO':
-                    case '@namasdev.Apps.Entidades.PropiedadTipos.ENTERO_CORTO':
-                    case '@namasdev.Apps.Entidades.PropiedadTipos.ENTERO_LARGO':
+                    case '@PropiedadTipos.ENTERO':
+                    case '@PropiedadTipos.ENTERO_CORTO':
+                    case '@PropiedadTipos.ENTERO_LARGO':
                         $('#@controlesIds.EspecificacionesEnteroRow').show();
                         break;
 
-                    case '@namasdev.Apps.Entidades.PropiedadTipos.DECIMAL':
-                    case '@namasdev.Apps.Entidades.PropiedadTipos.DECIMAL_LARGO':
+                    case '@PropiedadTipos.DECIMAL':
+                    case '@PropiedadTipos.DECIMAL_LARGO':
                         $('#@controlesIds.EspecificacionesNumeroRow').show();
                         break;
                 }

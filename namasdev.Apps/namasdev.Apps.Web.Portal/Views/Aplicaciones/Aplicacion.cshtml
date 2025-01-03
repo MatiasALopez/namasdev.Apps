@@ -2,11 +2,11 @@
 @using namasdev.Apps.Web.Portal.ViewModels.Aplicaciones;
 @model AplicacionViewModel
 @{
-    ViewBag.Title = String.Format("{0} {1}", Model.PaginaModo, AplicacionMetadata.NOMBRE);
+    ViewBag.Title = String.Format("{0} {1}", Model.PaginaModo, AplicacionMetadata.ETIQUETA);
 
     var controlesIds = new
     {
-        Form = "frmAplicacion"
+        Form = $"frm{AplicacionMetadata.NOMBRE}"
     };
 }
 <h2 class="my-3">@ViewBag.Title</h2>
@@ -14,8 +14,8 @@
 {
     <div class="row my-3">
         <div class="col-12">
-            <a href="@Url.Action("Index", "Versiones", new { Model.AplicacionId })" class="btn btn-sm btn-info">Versiones</a>
-            <a href="@Url.Action("Index", "Entidades", new { Model.AplicacionId })" class="btn btn-sm btn-info">Entidades</a>
+            <a href="@Url.Action("Index", "Versiones", new { Model.AplicacionId })" class="btn btn-sm btn-info">@AplicacionVersionMetadata.ETIQUETA_PLURAL</a>
+            <a href="@Url.Action("Index", "Entidades", new { Model.AplicacionId })" class="btn btn-sm btn-info">@EntidadMetadata.ETIQUETA_PLURAL</a>
         </div>
     </div>
 }

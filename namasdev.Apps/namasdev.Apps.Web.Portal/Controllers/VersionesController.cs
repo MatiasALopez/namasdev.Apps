@@ -2,7 +2,6 @@
 using System.Web.Mvc;
 
 using namasdev.Core.Validation;
-using namasdev.Web.Helpers;
 using namasdev.Web.Models;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
@@ -10,6 +9,7 @@ using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.ViewModels.Versiones;
+using namasdev.Apps.Web.Portal.Helpers;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -97,7 +97,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _aplicacionesVersionesNegocio.Agregar(modelo.AplicacionId, modelo.Nombre, UsuarioId);
+                    _aplicacionesVersionesNegocio.Agregar(modelo.AplicacionId, modelo.Nombre, UsuarioId, 
+                        aplicacionVersionIdBase: modelo.AplicacionVersionIdBase.Value);
 
                     return RedirectToAction(nameof(Index), new { aplicacionId = modelo.AplicacionId });
                 }
@@ -188,6 +189,11 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 {
                     modelo.AplicacionNombre = aplicacion.Nombre;
                 }
+            }
+
+            if (paginaModo == PaginaModo.Agregar)
+            {
+                modelo.VersionesSelectList = ListasHelper.ObtenerVersionesSelectList(_aplicacionesVersionesRepositorio.ObtenerLista(aplicacionId: modelo.AplicacionId));
             }
         }
 

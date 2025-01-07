@@ -14,6 +14,7 @@ namespace namasdev.Apps.Datos
     {
         IEnumerable<AplicacionVersion> ObtenerLista(Guid aplicacionId, string busqueda = null, OrdenYPaginacionParametros op = null);
         AplicacionVersion Obtener(Guid aplicacionVersionId, bool cargarDatosAdicionales = false);
+        void Clonar(Guid aplicacionVersionIdOrigen, Guid aplicacionVersionIdDestino, string usuarioId, DateTime fechaHora);
     }
 
     public class AplicacionesVersionesRepositorio : Repositorio<SqlContext,AplicacionVersion,Guid>, IAplicacionesVersionesRepositorio
@@ -41,6 +42,14 @@ namespace namasdev.Apps.Datos
                 return ctx.AplicacionesVersiones
                     .IncludeIf(av => av.Aplicacion, cargarDatosAdicionales)
                     .FirstOrDefault(av => av.Id == aplicacionVersionId && !av.Borrado);
+            }
+        }
+
+        public void Clonar(Guid aplicacionVersionIdOrigen, Guid aplicacionVersionIdDestino, string usuarioId, DateTime fechaHora)
+        {
+            using (var ctx = new SqlContext())
+            {
+                ctx.uspClonarAplicacionVersion(aplicacionVersionIdOrigen, aplicacionVersionIdDestino, usuarioId, fechaHora);
             }
         }
     }

@@ -1,5 +1,6 @@
-﻿using System.Data.Entity;
-
+﻿using System;
+using System.Data.Entity;
+using System.Data.SqlClient;
 using namasdev.Apps.Entidades;
 using namasdev.Data.Entity;
 
@@ -24,5 +25,18 @@ namespace namasdev.Apps.Datos.Sql
         public DbSet<PropiedadTipo> PropiedadTipos { get; set; }
         public DbSet<Entidad> Entidades { get; set; }
         public DbSet<EntidadPropiedad> EntidadesPropiedades { get; set; }
+
+        public void uspClonarAplicacionVersion(Guid aplicacionVersionIdOrigen, Guid aplicacionVersionIdDestino, string usuarioId, DateTime fechaHora)
+        {
+            EjecutarComando(
+                "EXEC dbo.uspClonarAplicacionVersion @AplicacionVersionIdOrigen,@AplicacionVersionIdDestino,@UsuarioId,@FechaHora",
+                parametros: new SqlParameter[] 
+                {
+                    new SqlParameter("@AplicacionVersionIdOrigen", aplicacionVersionIdOrigen),
+                    new SqlParameter("@AplicacionVersionIdDestino", aplicacionVersionIdDestino),
+                    new SqlParameter("@UsuarioId", usuarioId),
+                    new SqlParameter("@FechaHora", fechaHora)
+                });
+        }
     }
 }

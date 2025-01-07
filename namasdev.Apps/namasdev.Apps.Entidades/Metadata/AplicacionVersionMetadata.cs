@@ -24,5 +24,10 @@
             public const string ETIQUETA = "Nombre";
             public const int TAMAÑO_MAX = 100;
         }
+
+        public class AplicacionVersionIdBase
+        {
+            public const string ETIQUETA = "Versión base";
+        }
     }
 }

@@ -6,12 +6,14 @@ using namasdev.Core.Validation;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
+using System.Transactions;
+using namasdev.Core.Transactions;
 
 namespace namasdev.Apps.Negocio
 {
     public interface IAplicacionesVersionesNegocio
     {
-        AplicacionVersion Agregar(Guid aplicacionId, string nombre, string usuarioId);
+        AplicacionVersion Agregar(Guid aplicacionId, string nombre, string usuarioId, Guid? aplicacionVersionIdBase = null);
         void Actualizar(AplicacionVersion aplicacionVersion, string usuarioId);
         void MarcarComoBorrado(Guid aplicacionVersionId, string usuarioLogueadoId);
         void DesmarcarComoBorrado(Guid aplicacionVersionId);
@@ -28,23 +30,34 @@ namespace namasdev.Apps.Negocio
             _aplicacionesVersionesRepositorio = aplicacionesVersionesRepositorio;
         }
 
-        public AplicacionVersion Agregar(Guid aplicacionId, string nombre, string usuarioId)
+        public AplicacionVersion Agregar(Guid aplicacionId, string nombre, string usuarioId,
+            Guid? aplicacionVersionIdBase = null)
         {
             DateTime fechaHora = DateTime.Now;
 
-            var aplicacionVersion = new AplicacionVersion 
+            var version = new AplicacionVersion 
             {
                 Id = Guid.NewGuid(),
                 AplicacionId = aplicacionId,
                 Nombre = nombre
             };
-            aplicacionVersion.EstablecerDatosCreado(usuarioId, fechaHora);
-            aplicacionVersion.EstablecerDatosModificacion(usuarioId, fechaHora);
-            ValidarDatos(aplicacionVersion);
+            version.EstablecerDatosCreado(usuarioId, fechaHora);
+            version.EstablecerDatosModificacion(usuarioId, fechaHora);
+            ValidarDatos(version);
 
-            _aplicacionesVersionesRepositorio.Agregar(aplicacionVersion);
+            using (var ts = TransactionScopeFactory.Crear())
+            {
+                _aplicacionesVersionesRepositorio.Agregar(version);
+                
+                if (aplicacionVersionIdBase.HasValue)
+                {
+                    _aplicacionesVersionesRepositorio.Clonar(aplicacionVersionIdBase.Value, version.Id, version.CreadoPor, version.CreadoFecha);
+                }
 
-            return aplicacionVersion;
+                ts.Complete();
+            }
+
+            return version;
         }
 
         public void Actualizar(AplicacionVersion aplicacionVersion, string usuarioId)

@@ -59,6 +59,7 @@
     <Folder Include="dbo" />
     <Folder Include="Data" />
     <Folder Include="dbo\Tables" />
+    <Folder Include="dbo\Stored Procedures" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="dbo\Tables\Aplicaciones.sql" />
@@ -79,6 +80,7 @@
     <Build Include="dbo\Tables\Auditorias.sql" />
     <Build Include="dbo\Tables\EntidadesPropiedades.sql" />
     <Build Include="dbo\Tables\PropiedadTipos.sql" />
+    <Build Include="dbo\Stored Procedures\uspClonarAplicacionVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\02.Data.sql" />

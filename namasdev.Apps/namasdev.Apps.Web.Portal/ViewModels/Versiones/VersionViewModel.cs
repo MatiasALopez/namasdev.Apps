@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 using namasdev.Apps.Entidades.Metadata;
+using System.Web.Mvc;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
 {
@@ -23,13 +24,30 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
+        [Display(Name = AplicacionVersionMetadata.AplicacionVersionIdBase.ETIQUETA)]
+        public Guid? AplicacionVersionIdBase { get; set; }
+
+        public SelectList VersionesSelectList { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (PaginaModo == PaginaModo.Editar
-                && !AplicacionVersionId.HasValue)
+            switch (PaginaModo)
             {
-                yield return new ValidationResult(Validador.MensajeRequerido(AplicacionVersionMetadata.ETIQUETA));
+                case PaginaModo.Agregar:
+                    if (!AplicacionVersionIdBase.HasValue)
+                    {
+                        yield return new ValidationResult(Validador.MensajeRequerido(AplicacionVersionMetadata.AplicacionVersionIdBase.ETIQUETA));
+                    }
+                    break;
+
+                case PaginaModo.Editar:
+                    if (!AplicacionVersionId.HasValue)
+                    {
+                        yield return new ValidationResult(Validador.MensajeRequerido(AplicacionVersionMetadata.ETIQUETA));
+                    }
+                    break;
             }
+            
         }
     }
 }

@@ -294,8 +294,120 @@ create unique nonclustered index IX_EntidadesPropiedades_EntidadIdYNombre on dbo
 go
 --=====
 
+--=====
+create table dbo.AsociacionMultiplicidades
+(
+	AsociacionMultiplicidadId smallint not null,
+	Nombre nvarchar(50) not null,
+
+	constraint PK_AsociacionMultiplicidades primary key clustered (AsociacionMultiplicidadId)
+)
+go
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_AsociacionMultiplicidades_Nombre] ON [dbo].AsociacionMultiplicidades([Nombre] ASC)
+go
+--=====
 
 --=====
+create table dbo.AsociacionReglas
+(
+	AsociacionReglaId smallint not null,
+	Nombre nvarchar(50) not null,
+
+	constraint PK_AsociacionReglas primary key clustered (AsociacionReglaId)
+)
+go
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_AsociacionReglas_Nombre] ON [dbo].AsociacionReglas([Nombre] ASC)
+go
+--=====
+
+--=====
+create table dbo.EntidadesClaves
+(
+	EntidadClaveId uniqueidentifier not null,
+	EntidadId uniqueidentifier not null,
+	EntidadPropiedadId uniqueidentifier not null,
+	
+	constraint PK_EntidadesClaves primary key clustered (EntidadClaveId),
+	constraint FK_EntidadesClaves_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId),
+	constraint FK_EntidadesClaves_EntidadPropiedadId foreign key (EntidadPropiedadId) references dbo.EntidadesPropiedades (EntidadPropiedadId)
+)
+go
+
+create nonclustered index IX_EntidadesClaves_EntidadId on dbo.EntidadesClaves (EntidadId)
+go
+--=====
+
+--=====
+create table dbo.EntidadesAsociaciones
+(
+	EntidadAsociacionId uniqueidentifier not null,
+	EntidadPrincipalId uniqueidentifier not null,
+	EntidadPrincipalAsociacionMultiplicidadId smallint not null,
+	EntidadDependienteId uniqueidentifier not null,
+	EntidadDependienteAsociacionMultiplicidadId smallint not null,
+	TablaAuxiliarNombre nvarchar(100) null,
+	DeleteAsociacionReglaId smallint not null,
+	UpdateAsociacionReglaId smallint not null,
+	
+	constraint PK_EntidadesAsociaciones primary key clustered (EntidadAsociacionId),
+	constraint FK_EntidadesAsociaciones_EntidadPrincipalId foreign key (EntidadPrincipalId) references dbo.Entidades (EntidadId),
+	constraint FK_EntidadesAsociaciones_EntidadPrincipalAsociacionMultiplicidadId foreign key (EntidadPrincipalAsociacionMultiplicidadId) references dbo.AsociacionMultiplicidades (AsociacionMultiplicidadId),
+	constraint FK_EntidadesAsociaciones_EntidadDependienteId foreign key (EntidadDependienteId) references dbo.Entidades (EntidadId),
+	constraint FK_EntidadesAsociaciones_EntidadDependienteAsociacionMultiplicidadId foreign key (EntidadDependienteAsociacionMultiplicidadId) references dbo.AsociacionMultiplicidades (AsociacionMultiplicidadId),
+	constraint FK_EntidadesAsociaciones_DeleteAsociacionReglaId foreign key (DeleteAsociacionReglaId) references dbo.AsociacionReglas (AsociacionReglaId),
+	constraint FK_EntidadesAsociaciones_UpdateAsociacionReglaId foreign key (UpdateAsociacionReglaId) references dbo.AsociacionReglas (AsociacionReglaId),
+	constraint CK_EntidadesAsociaciones_TablaAuxiliarNombre check ((EntidadPrincipalAsociacionMultiplicidadId = 3 and EntidadDependienteAsociacionMultiplicidadId = 3 and TablaAuxiliarNombre is not null) or ((EntidadPrincipalAsociacionMultiplicidadId <> 3 or EntidadDependienteAsociacionMultiplicidadId <> 3) and TablaAuxiliarNombre is null))
+)
+go
+
+create nonclustered index IX_EntidadesAsociaciones_EntidadPrincipalId on dbo.EntidadesAsociaciones (EntidadPrincipalId)
+go
+--=====
+
+--=====
+create table dbo.EntidadesIndices
+(
+	EntidadIndiceId uniqueidentifier not null,
+	EntidadId uniqueidentifier not null,
+	Nombre nvarchar(200) not null,
+	EsUnique bit not null,
+	
+	constraint PK_EntidadesIndices primary key clustered (EntidadIndiceId),
+	constraint FK_EntidadesIndices_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId)
+)
+go
+
+create nonclustered index IX_EntidadesIndices_EntidadId on dbo.EntidadesClaves (EntidadId)
+go
+
+create unique nonclustered index IX_EntidadesIndices_EntidadIdYNombre on dbo.EntidadesIndices (EntidadId,Nombre)
+go
+--=====
+
+--=====
+create table dbo.EntidadesIndicesPropiedades
+(
+	EntidadIndicePropiedadId uniqueidentifier not null,
+	EntidadIndiceId uniqueidentifier not null,
+	EntidadPropiedadId uniqueidentifier not null,
+	
+	constraint PK_EntidadesIndicesPropiedades primary key clustered (EntidadIndiceId),
+	constraint FK_EntidadesIndicesPropiedades_EntidadIndiceId foreign key (EntidadIndiceId) references dbo.EntidadesIndices (EntidadIndiceId) on delete cascade on update cascade,
+	constraint FK_EntidadesIndicesPropiedades_EntidadPropiedadId foreign key (EntidadPropiedadId) references dbo.EntidadesPropiedades (EntidadPropiedadId)
+)
+go
+
+create nonclustered index IX_EntidadesIndicesPropiedades_EntidadIndiceId on dbo.EntidadesIndicesPropiedades (EntidadIndiceId)
+go
+
+create unique nonclustered index IX_EntidadesIndicesPropiedades_EntidadIndiceIdYEntidadPropiedadId on dbo.EntidadesIndicesPropiedades (EntidadIndiceId,EntidadPropiedadId)
+go
+--=====
+
+--=====
+go
 CREATE PROCEDURE [dbo].[uspClonarAplicacionVersion]
 	@AplicacionVersionIdOrigen uniqueidentifier,
 	@AplicacionVersionIdDestino uniqueidentifier,

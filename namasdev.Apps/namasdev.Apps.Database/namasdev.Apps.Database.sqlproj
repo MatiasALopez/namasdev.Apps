@@ -81,6 +81,12 @@
     <Build Include="dbo\Tables\EntidadesPropiedades.sql" />
     <Build Include="dbo\Tables\PropiedadTipos.sql" />
     <Build Include="dbo\Stored Procedures\uspClonarAplicacionVersion.sql" />
+    <Build Include="dbo\Tables\AsociacionMultiplicidades.sql" />
+    <Build Include="dbo\Tables\EntidadesAsociaciones.sql" />
+    <Build Include="dbo\Tables\EntidadesClaves.sql" />
+    <Build Include="dbo\Tables\AsociacionReglas.sql" />
+    <Build Include="dbo\Tables\EntidadesIndicesPropiedades.sql" />
+    <Build Include="dbo\Tables\EntidadesIndices.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\02.Data.sql" />

@@ -53,3 +53,20 @@ insert into dbo.PropiedadTipos (PropiedadTipoId,Nombre) values
 (12,'Booleano')
 go
 --====
+
+--====
+insert into dbo.AsociacionMultiplicidades (AsociacionMultiplicidadId,Nombre) values
+(1,'0..1'),
+(2,'1'),
+(3,'*')
+go
+--====
+
+--====
+insert into dbo.AsociacionReglas (AsociacionReglaId,Nombre) values
+(1,'No action'),
+(2,'Cascade'),
+(3,'Set Null'),
+(4,'Set Default')
+go
+--====

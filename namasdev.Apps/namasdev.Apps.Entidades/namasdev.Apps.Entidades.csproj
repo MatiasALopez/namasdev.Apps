@@ -51,9 +51,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AplicacionVersion.cs" />
+    <Compile Include="AsociacionMultiplicidad.cs" />
+    <Compile Include="AsociacionRegla.cs" />
     <Compile Include="EntidadAltaOpciones.cs" />
+    <Compile Include="EntidadAsociacion.cs" />
+    <Compile Include="EntidadClave.cs" />
+    <Compile Include="EntidadIndice.cs" />
+    <Compile Include="EntidadIndicePropiedad.cs" />
     <Compile Include="EntidadPropiedad.cs" />
+    <Compile Include="Metadata\AsociacionMultiplicidadMetadata.cs" />
+    <Compile Include="Metadata\AsociacionReglaMetadata.cs" />
     <Compile Include="Metadata\EntidadAltaOpcionesMetadata.cs" />
+    <Compile Include="Metadata\EntidadAsociacionMetadata.cs" />
+    <Compile Include="Metadata\EntidadIndiceMetadata.cs" />
+    <Compile Include="Metadata\EntidadClaveMetadata.cs" />
+    <Compile Include="Metadata\EntidadIndicePropiedadMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesNumeroMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesEnteroMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesTextoMetadata.cs" />
@@ -82,6 +94,8 @@
     <Compile Include="AspNetRole.cs" />
     <Compile Include="AuditoriaTipo.cs" />
     <Compile Include="Auditoria.cs" />
+    <Compile Include="Valores\AsociacionMultiplicidades.cs" />
+    <Compile Include="Valores\AsociacionReglas.cs" />
     <Compile Include="Valores\AzureStorage.cs" />
     <Compile Include="CorreoParametros.cs" />
     <Compile Include="Error.cs" />

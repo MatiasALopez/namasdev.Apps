@@ -12,8 +12,11 @@ namespace namasdev.Apps.Entidades
         public string Etiqueta { get; set; }
         public string EtiquetaPlural { get; set; }
 
-        public AplicacionVersion AplicacionVersion { get; set; }
-        public List<EntidadPropiedad> Propiedades { get; set; }
+        public virtual AplicacionVersion AplicacionVersion { get; set; }
+        public virtual List<EntidadPropiedad> Propiedades { get; set; }
+        public virtual List<EntidadAsociacion> Asociaciones { get; set; }
+        public virtual List<EntidadClave> Claves { get; set; }
+        public virtual List<EntidadIndice> Indices { get; set; }
 
         public override string ToString()
         {

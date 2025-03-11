@@ -79,7 +79,13 @@
     <Compile Include="CorreosParametrosRepositorio.cs" />
     <Compile Include="ErroresRepositorio.cs" />
     <Compile Include="ParametrosRepositorio.cs" />
+    <Compile Include="Sql\Config\AsociacionMultiplicidadConfig.cs" />
+    <Compile Include="Sql\Config\AsociacionReglaConfig.cs" />
     <Compile Include="Sql\Config\AplicacionVersionConfig.cs" />
+    <Compile Include="Sql\Config\EntidadAsociacionConfig.cs" />
+    <Compile Include="Sql\Config\EntidadIndicePropiedadConfig.cs" />
+    <Compile Include="Sql\Config\EntidadIndiceConfig.cs" />
+    <Compile Include="Sql\Config\EntidadClaveConfig.cs" />
     <Compile Include="Sql\Config\EntidadPropiedadConfig.cs" />
     <Compile Include="Sql\Config\PropiedadTipoConfig.cs" />
     <Compile Include="Sql\Config\EntidadConfig.cs" />

@@ -18,7 +18,19 @@ namespace namasdev.Apps.Entidades.Metadata
         public class Nombre
         {
             public const string ETIQUETA = "Nombre";
-            public const int TAMAÑO_MAX = 100;
+            public const int TAMAÑO_MAX = 50;
+        }
+
+        public class CLRType
+        {
+            public const string ETIQUETA = "Tipo CLR";
+            public const int TAMAÑO_MAX = 50;
+        }
+
+        public class TSQLType
+        {
+            public const string ETIQUETA = "Tipo T-SQL";
+            public const int TAMAÑO_MAX = 50;
         }
     }
 }

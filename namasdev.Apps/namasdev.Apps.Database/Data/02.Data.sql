@@ -38,19 +38,19 @@ go
 --====
 
 --====
-insert into dbo.PropiedadTipos (PropiedadTipoId,Nombre) values
-(1,'Texto'),
-(2,'GUID'),
-(3,'Entero'),
-(4,'Entero corto'),
-(5,'Entero largo'),
-(6,'Decimal'),
-(7,'Decimal largo'),
-(8,'Importe'),
-(9,'Fecha/Hora'),
-(10,'Fecha'),
-(11,'Hora'),
-(12,'Booleano')
+insert into dbo.PropiedadTipos (PropiedadTipoId,Nombre,CLRType,TSQLType) values
+(1,'Texto','string','nvarchar'),
+(2,'GUID','Guid','uniqueidentifier'),
+(3,'Entero','int','int'),
+(4,'Entero corto','short','smallint'),
+(5,'Entero largo','long','bigint'),
+(6,'Decimal','decimal','decimal'),
+(7,'Decimal largo','double','float'),
+(8,'Importe','decimal','money'),
+(9,'Fecha/Hora','DateTime','datetime'),
+(10,'Fecha','DateTime','date'),
+(11,'Hora','TimeSpan','time'),
+(12,'Booleano','bool','bit')
 go
 --====
 

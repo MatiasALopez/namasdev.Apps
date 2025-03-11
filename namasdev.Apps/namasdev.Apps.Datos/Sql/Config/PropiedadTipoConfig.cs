@@ -16,6 +16,14 @@ namespace namasdev.Apps.Datos.Sql.Config
             Property(p => p.Nombre)
                 .IsRequired()
                 .HasMaxLength(Entidades.Metadata.PropiedadTipoMetadata.Nombre.TAMAÑO_MAX);
+
+            Property(p => p.CLRType)
+                .IsRequired()
+                .HasMaxLength(Entidades.Metadata.PropiedadTipoMetadata.CLRType.TAMAÑO_MAX);
+
+            Property(p => p.TSQLType)
+                .IsRequired()
+                .HasMaxLength(Entidades.Metadata.PropiedadTipoMetadata.TSQLType.TAMAÑO_MAX);
         }
     }
 }

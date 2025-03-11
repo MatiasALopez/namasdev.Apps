@@ -4,7 +4,7 @@
 	EntidadIndiceId uniqueidentifier not null,
 	EntidadPropiedadId uniqueidentifier not null,
 	
-	constraint PK_EntidadesIndicesPropiedades primary key clustered (EntidadIndiceId),
+	constraint PK_EntidadesIndicesPropiedades primary key clustered (EntidadIndicePropiedadId),
 	constraint FK_EntidadesIndicesPropiedades_EntidadIndiceId foreign key (EntidadIndiceId) references dbo.EntidadesIndices (EntidadIndiceId) on delete cascade on update cascade,
 	constraint FK_EntidadesIndicesPropiedades_EntidadPropiedadId foreign key (EntidadPropiedadId) references dbo.EntidadesPropiedades (EntidadPropiedadId)
 )

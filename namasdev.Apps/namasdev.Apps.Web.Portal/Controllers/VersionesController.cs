@@ -98,7 +98,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 if (ModelState.IsValid)
                 {
                     _aplicacionesVersionesNegocio.Agregar(modelo.AplicacionId, modelo.Nombre, UsuarioId, 
-                        aplicacionVersionIdBase: modelo.AplicacionVersionIdBase.Value);
+                        aplicacionVersionIdBase: modelo.AplicacionVersionIdBase);
 
                     return RedirectToAction(nameof(Index), new { aplicacionId = modelo.AplicacionId });
                 }

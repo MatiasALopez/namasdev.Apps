@@ -32,8 +32,8 @@
         @if (Model.PaginaModo == namasdev.Web.Models.PaginaModo.Agregar)
         {
             <div class="form-group col-lg-4 col-md-6">
-                @Html.LabelFor(m => m.AplicacionVersionIdBase, new { @class = "requerido" })
-                @Html.DropDownListFor(m => m.AplicacionVersionIdBase, Model.VersionesSelectList, "", new { @class = "form-control form-control-required" })
+                @Html.LabelFor(m => m.AplicacionVersionIdBase)
+                @Html.DropDownListFor(m => m.AplicacionVersionIdBase, Model.VersionesSelectList, "", new { @class = "form-control" })
                 @Html.ValidationMessageFor(m => m.AplicacionVersionIdBase)
             </div>
         }

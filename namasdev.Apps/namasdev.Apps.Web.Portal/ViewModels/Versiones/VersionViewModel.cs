@@ -33,13 +33,6 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
         {
             switch (PaginaModo)
             {
-                case PaginaModo.Agregar:
-                    if (!AplicacionVersionIdBase.HasValue)
-                    {
-                        yield return new ValidationResult(Validador.MensajeRequerido(AplicacionVersionMetadata.AplicacionVersionIdBase.ETIQUETA));
-                    }
-                    break;
-
                 case PaginaModo.Editar:
                     if (!AplicacionVersionId.HasValue)
                     {

@@ -67,6 +67,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddTransient<VersionesController>();
             services.AddTransient<EntidadesController>();
             services.AddTransient<EntidadesPropiedadesController>();
+            services.AddTransient<TemplatesController>();
         }
     }
 

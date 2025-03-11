@@ -200,6 +200,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EntidadesPropiedadesController.cs" />
     <Compile Include="Controllers\EntidadesController.cs" />
+    <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Controllers\VersionesController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -300,6 +301,8 @@
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesTexto.cshtml" />
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesNumero.cshtml" />
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesEntero.cshtml" />
+    <Content Include="Views\Templates\Tabla.cshtml" />
+    <Content Include="Views\Templates\Entidad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

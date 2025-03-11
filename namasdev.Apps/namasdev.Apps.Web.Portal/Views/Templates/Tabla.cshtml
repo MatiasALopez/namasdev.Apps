@@ -1,0 +1,45 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    string nombreTabla = Model.NombrePlural;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Script</title>
+</head>
+<body>
+    <div>
+        create table dbo.@nombreTabla
+        (
+        @foreach (var p in Model.Propiedades.OrderBy(p => p.Orden))
+        {
+            <text>@p.Nombre @(!string.IsNullOrWhiteSpace(p.CalculadaFormula) ? $"AS {p.CalculadaFormula}" : $"{p.Tipo.TSQLType} {(p.PermiteNull ? "null" : " not null")}"),</text>
+        }
+
+        @if (Model.Claves != null)
+        {
+            <text>constraint PK_@nombreTabla primary key clustered(@string.Join(",", Model.Claves.Select(c => c.Propiedad.Nombre))),</text>
+        }
+        @if (Model.Asociaciones != null)
+        {
+            string fkPropiedad;
+            foreach (var a in Model.Asociaciones)
+            {
+                fkPropiedad = a.OrigenPropiedad.Nombre;
+                <text>constraint FK_@(nombreTabla)_@fkPropiedad foreign key (@fkPropiedad) references dbo.@(a.DestinoPropiedad.Entidad.NombrePlural) (@a.DestinoPropiedad.Nombre),</text>
+            }
+        }
+        )
+        go
+        @if (Model.Indices != null)
+        {
+            foreach (var i in Model.Indices)
+            {
+                <text>create @(i.EsUnique ? "unique" : "") nonclustered index IX_@(nombreTabla)_@(string.Join("Y",i.Propiedades.Select(ip => ip.Propiedad.Nombre))) on dbo.@nombreTabla (@(string.Join(",",i.Propiedades.Select(ip => ip.Propiedad.Nombre))))
+                go</text>
+            }
+        }
+    </div>
+</body>
+</html>

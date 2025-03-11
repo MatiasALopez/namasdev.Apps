@@ -237,7 +237,7 @@ namespace namasdev.Apps.Negocio
                     Nombre = "BorradoFecha",
                     Etiqueta = "Fecha/hora borrado",
                     PropiedadTipoId = PropiedadTipos.FECHA_HORA,
-                    PermiteNull = false,
+                    PermiteNull = true,
                     Orden = orden++,
                     Editable = false,
                     CreadoPor = entidad.CreadoPor,

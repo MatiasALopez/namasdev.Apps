@@ -53,7 +53,7 @@
     <Compile Include="AplicacionVersion.cs" />
     <Compile Include="AsociacionMultiplicidad.cs" />
     <Compile Include="AsociacionRegla.cs" />
-    <Compile Include="EntidadAltaOpciones.cs" />
+    <Compile Include="EntidadPropiedadesDefault.cs" />
     <Compile Include="EntidadAsociacion.cs" />
     <Compile Include="EntidadClave.cs" />
     <Compile Include="EntidadIndice.cs" />
@@ -61,8 +61,8 @@
     <Compile Include="EntidadPropiedad.cs" />
     <Compile Include="Metadata\AsociacionMultiplicidadMetadata.cs" />
     <Compile Include="Metadata\AsociacionReglaMetadata.cs" />
-    <Compile Include="Metadata\EntidadAltaOpcionesMetadata.cs" />
     <Compile Include="Metadata\EntidadAsociacionMetadata.cs" />
+    <Compile Include="Metadata\EntidadPropiedadesDefaultMetadata.cs" />
     <Compile Include="Metadata\EntidadIndiceMetadata.cs" />
     <Compile Include="Metadata\EntidadClaveMetadata.cs" />
     <Compile Include="Metadata\EntidadIndicePropiedadMetadata.cs" />
@@ -107,6 +107,7 @@
     <Compile Include="Valores\AspNetRole.cs" />
     <Compile Include="Valores\AuditoriaTipo.cs" />
     <Compile Include="Valores\CorreoParametros.cs" />
+    <Compile Include="Valores\EntidadPropiedades.cs" />
     <Compile Include="Valores\Parametros.cs" />
     <Compile Include="Valores\PropiedadTipo.cs" />
     <Compile Include="Valores\PropiedadTiposEspecificaciones.cs" />

@@ -1,6 +1,11 @@
 ﻿@model namasdev.Apps.Entidades.Entidad
 @{
     string nombreTabla = Model.NombrePlural;
+
+    string claseBase =
+        Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
+        ? $"Entidad{(Model.PropiedadesDefault.AuditoriaCreado ? "Creado" : "")}{(Model.PropiedadesDefault.AuditoriaUltimaModificacion ? "Modificado" : "")}{(Model.PropiedadesDefault.AuditoriaBorrado ? "Borrado" : "")}<{Model.PropiedadesDefault.IDTipo.CLRType}>"
+        : null;
 }
 <!DOCTYPE html>
 <html>
@@ -14,11 +19,20 @@
 
         namespace @(Model.AplicacionVersion.Aplicacion.Nombre)
         {
-            public partial class @Model.Nombre
+            public partial class @Model.Nombre @(!string.IsNullOrWhiteSpace(claseBase) ? $": {claseBase}" : "")
             {
-            @foreach (var p in Model.Propiedades.OrderBy(p => p.Orden))
+            @foreach (var p in Model.Propiedades)
             {
+                if (p.EsPropiedadDefault())
+                {
+                    continue;
+                }
                 <text>public @p.Tipo.CLRType@(p.PermiteNull && p.Tipo.CLRType != "string" ? "?" : "") @p.Nombre { get; set; }</text>
+            }
+
+            @foreach (var a in Model.Asociaciones)
+            {
+                <text>public virtual @a.DestinoPropiedad.Entidad.Nombre @namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id") { get; set; }</text>
             }
             }
         }

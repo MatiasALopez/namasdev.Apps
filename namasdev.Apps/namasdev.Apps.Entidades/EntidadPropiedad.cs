@@ -1,6 +1,7 @@
 ﻿using System;
 
 using namasdev.Core.Entity;
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Entidades
 {
@@ -23,6 +24,18 @@ namespace namasdev.Apps.Entidades
         public override string ToString()
         {
             return Nombre;
+        }
+
+        public bool EsPropiedadDefault()
+        {
+            return Nombre == EntidadPropiedades.Id.Nombre(Entidad)
+                || Nombre == EntidadPropiedades.CreadoPor.NOMBRE
+                || Nombre == EntidadPropiedades.CreadoFecha.NOMBRE
+                || Nombre == EntidadPropiedades.UltimaModificacionPor.NOMBRE
+                || Nombre == EntidadPropiedades.UltimaModificacionFecha.NOMBRE
+                || Nombre == EntidadPropiedades.BorradoPor.NOMBRE
+                || Nombre == EntidadPropiedades.BorradoFecha.NOMBRE
+                || Nombre == EntidadPropiedades.Borrado.NOMBRE;
         }
     }
 }

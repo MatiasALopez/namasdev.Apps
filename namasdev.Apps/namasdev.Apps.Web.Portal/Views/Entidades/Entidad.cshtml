@@ -49,27 +49,32 @@
             @Html.ValidationMessageFor(m => m.EtiquetaPlural)
         </div>
     </div>
-    <div class="form-row">
-        <div class="form-group col-lg-5 col-md-6">
-            <label for="">Crear propiedades</label>
-            <div class="custom-control custom-switch">
-                @Html.CheckBoxFor(m => m.AltaOpcionesPropiedadesCrearId, new { @class = "custom-control-input" })
-                @Html.LabelFor(m => m.AltaOpcionesPropiedadesCrearId, new { @class = "custom-control-label" })
-            </div>
-            <div class="custom-control custom-switch">
-                @Html.CheckBoxFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaCreado, new { @class = "custom-control-input" })
-                @Html.LabelFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaCreado, new { @class = "custom-control-label" })
-            </div>
-            <div class="custom-control custom-switch">
-                @Html.CheckBoxFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion, new { @class = "custom-control-input" })
-                @Html.LabelFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion, new { @class = "custom-control-label" })
-            </div>
-            <div class="custom-control custom-switch">
-                @Html.CheckBoxFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaBorrado, new { @class = "custom-control-input" })
-                @Html.LabelFor(m => m.AltaOpcionesPropiedadesCrearAuditoriaBorrado, new { @class = "custom-control-label" })
+    <fieldset>
+        <legend>Propiedades default</legend>
+        <div class="form-row">
+            <div class="form-group col-lg-3 col-md-6">
+                @Html.LabelFor(m => m.PropiedadesDefaultIDPropiedadTipoId)
+                @Html.DropDownListFor(m => m.PropiedadesDefaultIDPropiedadTipoId, Model.PropiedadTiposSelectList, "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.PropiedadesDefaultIDPropiedadTipoId)
             </div>
         </div>
-    </div>
+        <div class="form-row">
+            <div class="form-group col-lg-5 col-md-6">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.PropiedadesDefaultAuditoriaCreado, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.PropiedadesDefaultAuditoriaCreado, new { @class = "custom-control-label" })
+                </div>
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.PropiedadesDefaultAuditoriaUltimaModificacion, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.PropiedadesDefaultAuditoriaUltimaModificacion, new { @class = "custom-control-label" })
+                </div>
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.PropiedadesDefaultAuditoriaBorrado, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.PropiedadesDefaultAuditoriaBorrado, new { @class = "custom-control-label" })
+                </div>
+            </div>
+        </div>
+    </fieldset>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
     <a href="@Url.Action("Index", new { aplicacionVersionId = Model.AplicacionVersionId })" class="btn btn-secondary">Volver</a>
 </form>

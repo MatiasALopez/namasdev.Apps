@@ -87,6 +87,7 @@
     <Build Include="dbo\Tables\AsociacionReglas.sql" />
     <Build Include="dbo\Tables\EntidadesIndicesPropiedades.sql" />
     <Build Include="dbo\Tables\EntidadesIndices.sql" />
+    <Build Include="dbo\Tables\EntidadesPropiedadesDefault.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\02.Data.sql" />

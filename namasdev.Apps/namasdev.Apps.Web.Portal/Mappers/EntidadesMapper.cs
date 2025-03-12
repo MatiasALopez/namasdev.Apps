@@ -41,16 +41,16 @@ namespace namasdev.Apps.Web.Portal.Mappers
             };
         }
 
-        public static EntidadAltaOpciones MapearEntidadViewModelAEntidadAltaOpciones(EntidadViewModel modelo)
+        public static EntidadPropiedadesDefault MapearEntidadViewModelAEntidadPropiedadesDefault(EntidadViewModel modelo)
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
-            return new EntidadAltaOpciones
+            return new EntidadPropiedadesDefault
             {
-                PropiedadesCrearId = modelo.AltaOpcionesPropiedadesCrearId,
-                PropiedadesCrearAuditoriaCreado = modelo.AltaOpcionesPropiedadesCrearAuditoriaCreado,
-                PropiedadesCrearAuditoriaUltimaModificacion = modelo.AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion,
-                PropiedadesCrearAuditoriaBorrado = modelo.AltaOpcionesPropiedadesCrearAuditoriaBorrado
+                IDPropiedadTipoId = modelo.PropiedadesDefaultIDPropiedadTipoId,
+                AuditoriaCreado = modelo.PropiedadesDefaultAuditoriaCreado,
+                AuditoriaUltimaModificacion = modelo.PropiedadesDefaultAuditoriaUltimaModificacion,
+                AuditoriaBorrado = modelo.PropiedadesDefaultAuditoriaBorrado
             };
         }
 

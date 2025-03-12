@@ -32,6 +32,9 @@ namespace namasdev.Apps.Datos.Sql.Config
             HasRequired(p => p.AplicacionVersion)
                 .WithMany(p => p.Entidades)
                 .HasForeignKey(p => p.AplicacionVersionId);
+
+            HasRequired(p => p.PropiedadesDefault)
+                .WithRequiredDependent(p => p.Entidad);
         }
     }
 }

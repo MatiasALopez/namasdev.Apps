@@ -13,6 +13,7 @@ namespace namasdev.Apps.Entidades
         public string EtiquetaPlural { get; set; }
 
         public virtual AplicacionVersion AplicacionVersion { get; set; }
+        public virtual EntidadPropiedadesDefault PropiedadesDefault { get; set; }
         public virtual List<EntidadPropiedad> Propiedades { get; set; }
         public virtual List<EntidadAsociacion> Asociaciones { get; set; }
         public virtual List<EntidadClave> Claves { get; set; }

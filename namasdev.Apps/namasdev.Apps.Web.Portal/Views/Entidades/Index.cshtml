@@ -68,9 +68,18 @@
                                 <td>@item.Nombre</td>
                                 <td>@item.Etiqueta</td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Editar", new { id = item.EntidadId, aplicacionVersionId = item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <a href="@Url.Action("Index", "EntidadesPropiedades", new { entidadId = item.EntidadId })" class="btn btn-sm btn-outline-info"><i class="fa fa-list-ul" data-toggle="tooltip" title="@EntidadPropiedadMetadata.ETIQUETA_PLURAL"></i></a>
-                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    <div class="btn-group">
+                                        <a href="@Url.Action("Editar", new { id = item.EntidadId, aplicacionVersionId = item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                        <a href="@Url.Action("Index", "EntidadesPropiedades", new { entidadId = item.EntidadId })" class="btn btn-sm btn-outline-info"><i class="fa fa-list-ul" data-toggle="tooltip" title="@EntidadPropiedadMetadata.ETIQUETA_PLURAL"></i></a>
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-code" data-toggle="tooltip" title="Generar"></i></button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="@Url.Action("Entidad", "Templates", new { id = item.EntidadId })">Entidad</a>
+                                                <a class="dropdown-item" href="@Url.Action("Tabla", "Templates", new { id = item.EntidadId })">Tabla</a>
+                                            </div>
+                                        </div>
+                                        <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    </div>
                                 </td>
                             </tr>
                         }

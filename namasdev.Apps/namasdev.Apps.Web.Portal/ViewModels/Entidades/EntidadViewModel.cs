@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 using namasdev.Apps.Entidades.Metadata;
+using System.Web.Mvc;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
 {
@@ -41,25 +42,26 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string EtiquetaPlural { get; set; }
 
-        #region Alta opciones
+        #region Propiedades default
 
-        [Display(Name = EntidadAltaOpcionesMetadata.PropiedadesCrearId.ETIQUETA),
-        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
-        public bool AltaOpcionesPropiedadesCrearId { get; set; }
+        [Display(Name = EntidadPropiedadesDefaultMetadata.IDPropiedadTipoId.ETIQUETA)]
+        public short? PropiedadesDefaultIDPropiedadTipoId { get; set; }
 
-        [Display(Name = EntidadAltaOpcionesMetadata.PropiedadesCrearAuditoriaCreado.ETIQUETA),
+        [Display(Name = EntidadPropiedadesDefaultMetadata.AuditoriaCreado.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
-        public bool AltaOpcionesPropiedadesCrearAuditoriaCreado { get; set; }
+        public bool PropiedadesDefaultAuditoriaCreado { get; set; }
 
-        [Display(Name = EntidadAltaOpcionesMetadata.PropiedadesCrearAuditoriaUltimaModificacion.ETIQUETA),
+        [Display(Name = EntidadPropiedadesDefaultMetadata.AuditoriaUltimaModificacion.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
-        public bool AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion { get; set; }
+        public bool PropiedadesDefaultAuditoriaUltimaModificacion { get; set; }
 
-        [Display(Name = EntidadAltaOpcionesMetadata.PropiedadesCrearAuditoriaBorrado.ETIQUETA),
+        [Display(Name = EntidadPropiedadesDefaultMetadata.AuditoriaBorrado.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
-        public bool AltaOpcionesPropiedadesCrearAuditoriaBorrado { get; set; }
+        public bool PropiedadesDefaultAuditoriaBorrado { get; set; }
 
         #endregion
+
+        public SelectList PropiedadTiposSelectList { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

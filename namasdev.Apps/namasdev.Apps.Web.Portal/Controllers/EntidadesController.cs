@@ -19,19 +19,23 @@ namespace namasdev.Apps.Web.Portal.Controllers
     {
         private const string ENTIDAD_VIEW_NAME = "Entidad";
 
+        private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
         private IEntidadesRepositorio _entidadesRepositorio;
         private IEntidadesNegocio _entidadesNegocio;
         private IAplicacionesVersionesRepositorio _aplicacionesVersionesRepositorio;
 
         public EntidadesController(
+            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
             IEntidadesRepositorio entidadesRepositorio, 
             IEntidadesNegocio entidadesNegocio, 
             IAplicacionesVersionesRepositorio aplicacionesVersionesRepositorio)
         {
+            Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesNegocio, nameof(entidadesNegocio));
             Validador.ValidarArgumentRequeridoYThrow(aplicacionesVersionesRepositorio, nameof(aplicacionesVersionesRepositorio));
 
+            _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
             _entidadesRepositorio = entidadesRepositorio;
             _entidadesNegocio = entidadesNegocio;
             _aplicacionesVersionesRepositorio = aplicacionesVersionesRepositorio;
@@ -92,7 +96,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = new EntidadViewModel 
             {
                 AplicacionVersionId = aplicacionVersionId,
-                AltaOpcionesPropiedadesCrearId = true,
+                PropiedadesDefaultIDPropiedadTipoId = PropiedadTipos.GUID,
             };
             
             CargarEntidadViewModel(modelo, PaginaModo.Agregar);
@@ -110,13 +114,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     var entidad = _entidadesNegocio.Agregar(
                         modelo.AplicacionVersionId, modelo.Nombre, modelo.NombrePlural, modelo.Etiqueta, modelo.EtiquetaPlural,
                         UsuarioId,
-                        opciones: new EntidadAltaOpciones 
-                        {
-                            PropiedadesCrearId = modelo.AltaOpcionesPropiedadesCrearId,
-                            PropiedadesCrearAuditoriaCreado = modelo.AltaOpcionesPropiedadesCrearAuditoriaCreado,
-                            PropiedadesCrearAuditoriaUltimaModificacion = modelo.AltaOpcionesPropiedadesCrearAuditoriaUltimaModificacion,
-                            PropiedadesCrearAuditoriaBorrado = modelo.AltaOpcionesPropiedadesCrearAuditoriaBorrado
-                        });
+                        propiedadesDefault: EntidadesMapper.MapearEntidadViewModelAEntidadPropiedadesDefault(modelo)
+                        );
 
                     return RedirectToAction("Index", "EntidadesPropiedades", new { entidadId = entidad.Id });
                 }
@@ -225,6 +224,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 modelo.AplicacionId = aplicacionVersion.AplicacionId;
                 modelo.AplicacionNombre = aplicacionVersion.Aplicacion.Nombre;
                 modelo.AplicacionVersionNombre = aplicacionVersion.Nombre;
+
+                modelo.PropiedadTiposSelectList = ListasHelper.ObtenerPropiedadTiposSelectList(_entidadesPropiedadesRepositorio.ObtenerTipos());
             }
         }
 

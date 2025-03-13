@@ -129,7 +129,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return View(ENTIDAD_VIEW_NAME, modelo);
         }
 
-        public ActionResult Editar(Guid id, Guid aplicacionVersionId)
+        public ActionResult Editar(Guid id, Guid? aplicacionVersionId = null)
         {
             var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
             if (entidad == null)

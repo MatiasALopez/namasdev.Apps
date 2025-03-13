@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using namasdev.Core.Entity;
 using namasdev.Core.Transactions;
@@ -23,16 +24,21 @@ namespace namasdev.Apps.Negocio
     {
         private IEntidadesRepositorio _entidadesRepositorio;
         private IEntidadesPropiedadesDefaultRepositorio _entidadesPropiedadesDefaultRepositorio;
+        private IEntidadesClavesRepositorio _entidadesClavesRepositorio;
         private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
 
-        public EntidadesNegocio(IEntidadesRepositorio entidadesRepositorio, IEntidadesPropiedadesDefaultRepositorio entidadesPropiedadesDefaultRepositorio, IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio)
+        public EntidadesNegocio(IEntidadesRepositorio entidadesRepositorio, IEntidadesPropiedadesDefaultRepositorio entidadesPropiedadesDefaultRepositorio,
+            IEntidadesClavesRepositorio entidadesClavesRepositorio,
+            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesDefaultRepositorio, nameof(entidadesPropiedadesDefaultRepositorio));
+            Validador.ValidarArgumentRequeridoYThrow(entidadesClavesRepositorio, nameof(entidadesClavesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
 
             _entidadesRepositorio = entidadesRepositorio;
             _entidadesPropiedadesDefaultRepositorio = entidadesPropiedadesDefaultRepositorio;
+            _entidadesClavesRepositorio = entidadesClavesRepositorio;
             _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
         }
 
@@ -57,16 +63,21 @@ namespace namasdev.Apps.Negocio
             propiedadesDefault = propiedadesDefault ?? new EntidadPropiedadesDefault();
             propiedadesDefault.Id = entidad.Id;
 
-            var propiedades = CrearPropiedadesDefaultParaEntidad(entidad, propiedadesDefault);
+            var propiedades = CrearPropiedadesParaEntidad(entidad, propiedadesDefault);
+            var claves = CrearClavesParaEntidad(entidad, propiedadesDefault, propiedades);
 
             using (var ts = TransactionScopeFactory.Crear())
             {
                 _entidadesRepositorio.Agregar(entidad);
+                _entidadesPropiedadesDefaultRepositorio.Agregar(propiedadesDefault);
 
                 if (propiedades != null)
                 {
-                    _entidadesPropiedadesDefaultRepositorio.Agregar(propiedadesDefault);
                     _entidadesPropiedadesRepositorio.Agregar(propiedades);
+                }
+                if (claves != null)
+                {
+                    _entidadesClavesRepositorio.Agregar(claves);
                 }
 
                 ts.Complete();
@@ -114,7 +125,7 @@ namespace namasdev.Apps.Negocio
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }
 
-        private IEnumerable<EntidadPropiedad> CrearPropiedadesDefaultParaEntidad(Entidad entidad, EntidadPropiedadesDefault propiedadesDefault)
+        private IEnumerable<EntidadPropiedad> CrearPropiedadesParaEntidad(Entidad entidad, EntidadPropiedadesDefault propiedadesDefault)
         {
             var propiedades = new List<EntidadPropiedad>();
 
@@ -269,6 +280,32 @@ namespace namasdev.Apps.Negocio
             }
 
             return propiedades;
+        }
+
+        private IEnumerable<EntidadClave> CrearClavesParaEntidad(Entidad entidad, EntidadPropiedadesDefault propiedadesDefault, IEnumerable<EntidadPropiedad> propiedades)
+        {
+            if (propiedadesDefault.IDPropiedadTipoId.HasValue)
+            {
+                var propiedadId =
+                    propiedades != null
+                    ? propiedades.FirstOrDefault()
+                    : null;
+
+                if (propiedadId != null)
+                {
+                    return new[]
+                    {
+                        new EntidadClave
+                        {
+                            Id = Guid.NewGuid(),
+                            EntidadId = entidad.Id,
+                            EntidadPropiedadId = propiedadId.Id
+                        }
+                    };
+                }
+            }
+
+            return null;
         }
     }
 }

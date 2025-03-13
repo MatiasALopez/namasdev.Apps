@@ -24,5 +24,8 @@ namespace namasdev.Apps.Web.Portal.Models.EntidadesPropiedades
 
         [Display(Name = EntidadPropiedadMetadata.Orden.ETIQUETA)]
         public short? Orden { get; set; }
+
+        public bool EsClave { get; set; }
+        public bool Seleccionado { get; set; }
     }
 }

@@ -1,0 +1,21 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section headStyles {
+    @RenderSection("headStyles", required: false)
+}
+@section headScripts {
+    @RenderSection("headScripts", required: false)
+}
+<ul id="tabsEntidad" class="nav nav-tabs mb-2">
+    <li class="nav-item"><a id="tabEntidad" class="nav-link" href="@Url.Action("Editar", "Entidades", new { id = Model.EntidadId })">Entidad</a></li>
+    <li class="nav-item"><a id="tabPropiedades" class="nav-link" href="@Url.Action("Index", "EntidadesPropiedades", new { entidadId = Model.EntidadId })">Propiedades</a></li>
+    <li class="nav-item"><a id="tabAsociaciones" class="nav-link" href="@Url.Action("Index", "EntidadesAsociaciones", new { entidadId = Model.EntidadId })">Asociaciones</a></li>
+</ul>
+@RenderBody()
+@section bodyScripts {
+    @RenderSection("bodyScripts", required: false)
+}
+@section modals {
+    @RenderSection("modals", required: false)
+}

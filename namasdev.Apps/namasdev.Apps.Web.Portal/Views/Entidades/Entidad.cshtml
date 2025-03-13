@@ -2,14 +2,14 @@
 @using namasdev.Apps.Web.Portal.ViewModels.Entidades;
 @model EntidadViewModel
 @{
+    Layout = "~/Views/Shared/_EntidadesLayout.cshtml";
     ViewBag.Title = $"{Model.PaginaModo} {EntidadMetadata.ETIQUETA}";
-
+    
     var controlesIds = new
     {
         Form = $"frm{EntidadMetadata.NOMBRE}"
     };
 }
-<h2>@ViewBag.Title</h2>
 <form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mt-3">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(excludePropertyErrors: true)
@@ -82,6 +82,12 @@
     <script type="text/javascript">
         $(function () {
             namasdevApps.setActiveMenuOption('entidades');
+
+            @if (Model.PaginaModo == namasdev.Web.Models.PaginaModo.Editar) { <text>
+            $('#tabEntidad').addClass('active');
+            </text>} else {<text>
+            $('#tabsEntidad').remove();
+            </text> }
         });
     </script>
 }

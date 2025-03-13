@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+
+using Newtonsoft.Json;
 
 using namasdev.Core.Entity;
+using namasdev.Core.Transactions;
 using namasdev.Core.Validation;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
-using Newtonsoft.Json;
 
 namespace namasdev.Apps.Negocio
 {
@@ -16,17 +19,23 @@ namespace namasdev.Apps.Negocio
         void Actualizar(EntidadPropiedad propiedad, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, string usuarioId);
         void MarcarComoBorrado(Guid entidadPropiedadId, string usuarioLogueadoId);
         void DesmarcarComoBorrado(Guid entidadPropiedadId);
+        void EstablecerComoClave(Guid entidadId, IEnumerable<Guid> propiedadesIds);
     }
 
     public class EntidadesPropiedadesNegocio : IEntidadesPropiedadesNegocio
     {
         private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
+        private IEntidadesClavesRepositorio _entidadesClavesRepositorio;
 
-        public EntidadesPropiedadesNegocio(IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio)
+        public EntidadesPropiedadesNegocio(
+            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
+            IEntidadesClavesRepositorio entidadesClavesRepositorio)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
+            Validador.ValidarArgumentRequeridoYThrow(entidadesClavesRepositorio, nameof(entidadesClavesRepositorio));
 
             _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
+            _entidadesClavesRepositorio = entidadesClavesRepositorio;
         }
 
         public EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, short orden, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId)
@@ -56,6 +65,7 @@ namespace namasdev.Apps.Negocio
             return propiedad;
         }
 
+        // TODO (ML) actualizar claves/asociaciones de propiedades
         public void Actualizar(EntidadPropiedad propiedad, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, string usuarioId)
         {
             Validador.ValidarArgumentRequeridoYThrow(propiedad, nameof(propiedad));
@@ -101,6 +111,29 @@ namespace namasdev.Apps.Negocio
             return especificaciones != null
                 ? JsonConvert.SerializeObject(especificaciones)
                 : null;
+        }
+
+        public void EstablecerComoClave(Guid entidadId, IEnumerable<Guid> propiedadesIds)
+        {
+            Validador.ValidarArgumentListaRequeridaYThrow(propiedadesIds, nameof(propiedadesIds), validarNoVacia: false);
+
+            var claves = propiedadesIds
+                .Select(id =>
+                    new EntidadClave
+                    {
+                        Id = Guid.NewGuid(),
+                        EntidadId = entidadId,
+                        EntidadPropiedadId = id
+                    })
+                .ToArray();
+
+            using (var ts = TransactionScopeFactory.Crear())
+            {
+                _entidadesClavesRepositorio.EliminarPorEntidad(entidadId);
+                _entidadesClavesRepositorio.Agregar(claves);
+
+                ts.Complete();
+            }
         }
     }
 }

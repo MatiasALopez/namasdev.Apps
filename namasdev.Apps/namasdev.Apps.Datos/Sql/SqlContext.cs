@@ -25,6 +25,10 @@ namespace namasdev.Apps.Datos.Sql
         public DbSet<PropiedadTipo> PropiedadTipos { get; set; }
         public DbSet<Entidad> Entidades { get; set; }
         public DbSet<EntidadPropiedad> EntidadesPropiedades { get; set; }
+        public DbSet<EntidadClave> EntidadesClaves { get; set; }
+        public DbSet<AsociacionMultiplicidad> AsociacionMultiplicidades { get; set; }
+        public DbSet<AsociacionRegla> AsociacionReglas { get; set; }
+        public DbSet<EntidadAsociacion> EntidadesAsociaciones { get; set; }
 
         public void uspClonarAplicacionVersion(Guid aplicacionVersionIdOrigen, Guid aplicacionVersionIdDestino, string usuarioId, DateTime fechaHora)
         {

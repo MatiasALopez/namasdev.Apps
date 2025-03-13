@@ -2,8 +2,10 @@
 @using namasdev.Apps.Entidades;
 @using namasdev.Apps.Entidades.Metadata;
 @using namasdev.Web.Helpers;
-@model namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades.EntidadesPropiedadesViewModel
+@using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
+@model EntidadesPropiedadesViewModel
 @{
+    Layout = "~/Views/Shared/_EntidadesLayout.cshtml";
     ViewBag.Title = EntidadPropiedadMetadata.ETIQUETA_PLURAL;
 
     var controlesIds = new
@@ -21,7 +23,6 @@
         BotonEliminar = "btn-eliminar"
     };
 }
-<h2>@ViewBag.Title</h2>
 @Html.Partial("_ResultadoOk")
 @Html.Partial("_Errores")
 <div class="mt-3">
@@ -44,38 +45,56 @@
     <div class="col-md-12">
         @if (Model.TieneItems)
         {
-            <div id="@controlesIds.TablaContainer" class="table-responsive">
-                <form id="@controlesIds.Form">
-                    @Html.AntiForgeryToken()
-                </form>
-                <table id="@controlesIds.Tabla" class="table table-striped table-bordered">
-                    <thead>
-                        <tr>
-                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.Nombre))">@Html.DisplayNameFor(m => m.Items[0].Nombre) <i class="fa fa-sort ml-2"></i></a></th>
-                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, $"{nameof(EntidadPropiedad.Tipo)}.{nameof(PropiedadTipo.Nombre)}")">@Html.DisplayNameFor(m => m.Items[0].PropiedadTipoNombre) <i class="fa fa-sort ml-2"></i></a></th>
-                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.PermiteNull))">@Html.DisplayNameFor(m => m.Items[0].PermiteNull) <i class="fa fa-sort ml-2"></i></a></th>
-                            <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.Orden))">@Html.DisplayNameFor(m => m.Items[0].Orden) <i class="fa fa-sort ml-2"></i></a></th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var item in Model.Items)
-                        {
+            <form id="@controlesIds.Form" action="@Url.Action()" method="post">
+                @Html.AntiForgeryToken()
+                <div id="@controlesIds.TablaContainer" class="table-responsive">
+                    <table id="@controlesIds.Tabla" class="table table-striped table-bordered">
+                        <thead>
                             <tr>
-                                <td>@item.Nombre</td>
-                                <td>@item.PropiedadTipoNombre</td>
-                                <td>@Formateador.FormatoSiNo(item.PermiteNull)</td>
-                                <td>@Formateador.FormatoNumero(item.Orden)</td>
-                                <td class="text-center">
-                                    <a href="@Url.Action("Editar", new { id = item.EntidadPropiedadId, item.EntidadId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadPropiedadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
-                                </td>
+                                <th></th>
+                                <th></th>
+                                <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.Nombre))">@Html.DisplayNameFor(m => m.Items[0].Nombre) <i class="fa fa-sort ml-2"></i></a></th>
+                                <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, $"{nameof(EntidadPropiedad.Tipo)}.{nameof(PropiedadTipo.Nombre)}")">@Html.DisplayNameFor(m => m.Items[0].PropiedadTipoNombre) <i class="fa fa-sort ml-2"></i></a></th>
+                                <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.PermiteNull))">@Html.DisplayNameFor(m => m.Items[0].PermiteNull) <i class="fa fa-sort ml-2"></i></a></th>
+                                <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.Orden))">@Html.DisplayNameFor(m => m.Items[0].Orden) <i class="fa fa-sort ml-2"></i></a></th>
+                                <th></th>
                             </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-            @Html.Partial("_Paginador", Model.Paginacion)
+                        </thead>
+                        <tbody>
+                            @{
+                                int cant = Model.Items.Count;
+
+                            }
+                            @for (var i = 0; i < cant; i++)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        @Html.HiddenFor(m => m.Items[i].EntidadPropiedadId)
+                                        @Html.CheckBoxFor(m => m.Items[i].Seleccionado)
+                                    </td>
+                                    <td class="text-center">
+                                        @if (Model.Items[i].EsClave)
+                                        {
+                                            <i class="fa fa-key" data-toggle="tooltip" title="Clave"></i>
+                                        }
+                                    </td>
+                                    <td>@Model.Items[i].Nombre</td>
+                                    <td>@Model.Items[i].PropiedadTipoNombre</td>
+                                    <td>@Formateador.FormatoSiNo(Model.Items[i].PermiteNull)</td>
+                                    <td>@Formateador.FormatoNumero(Model.Items[i].Orden)</td>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("Editar", new { id = Model.Items[i].EntidadPropiedadId, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                        <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@Model.Items[i].EntidadPropiedadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary" name="@Html.NameFor(m => m.Operacion)" value="@EntidadesPropiedadesViewModel.OPERACION_ESTABLECER_CLAVE">Establecer como clave</button>
+                </div>
+            </form>
         }
         else
         {
@@ -83,11 +102,14 @@
         }
     </div>
 </div>
-<a href="@Url.Action("Index", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-secondary">Volver</a>
+<div class="mt-2">
+    <a href="@Url.Action("Index", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-secondary">Volver</a>
+</div>
 @section bodyScripts {
     <script type="text/javascript">
         $(function () {
             namasdevApps.setActiveMenuOption('entidades');
+            $('#tabPropiedades').addClass('active');
 
             $('#@controlesIds.Tabla')
                 .on('click', '.@clasesCss.BotonEliminar', function (ev) {

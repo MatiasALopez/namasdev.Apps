@@ -12,6 +12,8 @@ using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 using namasdev.Apps.Web.Portal.Helpers;
 
+// TODO (ML): mensaje "operacion no valida" a namasdev.core?
+
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
@@ -42,19 +44,49 @@ namespace namasdev.Apps.Web.Portal.Controllers
         public ActionResult Index(
             Guid entidadId,
             string busqueda = null,
-            string orden = null,
-            int pagina = 1)
+            string orden = null)
         {
             var modelo = new EntidadesPropiedadesViewModel
             {
                 EntidadId = entidadId,
                 Busqueda = busqueda,
-                Pagina = pagina,
                 Orden = orden,
             };
 
             CargarEntidadesPropiedadesViewModel(modelo);
             return View(modelo);
+        }
+
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Index(EntidadesPropiedadesViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    switch (model.Operacion)
+                    {
+                        case EntidadesPropiedadesViewModel.OPERACION_ESTABLECER_CLAVE:
+                            _entidadesPropiedadesNegocio.EstablecerComoClave(model.EntidadId, model.ItemsSeleccionados.Select(i => i.EntidadPropiedadId));
+
+                            ControllerHelper.CargarMensajeResultadoOk("Clave establecida correctamente.");
+                            ModelState.Clear();
+
+                            break;
+
+                        default:
+                            throw new Exception($"Operación no válida ({model.Operacion}).");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ControllerHelper.CargarMensajesError(ex.Message);
+                }
+            }
+
+            CargarEntidadesPropiedadesViewModel(model);
+            return View(model);
         }
 
         [HttpPost,
@@ -160,20 +192,18 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
-            var entidad = _entidadesRepositorio.Obtener(modelo.EntidadId);
+            var entidad = _entidadesRepositorio.Obtener(modelo.EntidadId, cargarDatosAdicionales: true);
             modelo.EntidadNombre = entidad.Nombre;
             modelo.AplicacionVersionId = entidad.AplicacionVersionId;
-
-            var op = modelo.CrearOrdenYPaginacionParametros();
 
             modelo.Items = EntidadesPropiedadesMapper.MapearEntidadesAModelos(
                 entidades: _entidadesPropiedadesRepositorio.ObtenerLista(
                     entidad.Id,
                     busqueda: modelo.Busqueda,
-                    op: op,
-                    cargarDatosAdicionales: true));
+                    cargarDatosAdicionales: true),
+                claves: entidad.Claves);
 
-            modelo.CargarPaginacion(op);
+            modelo.OrdenarItems();
         }
 
         private void CargarEntidadPropiedadViewModel(EntidadPropiedadViewModel modelo, PaginaModo paginaModo)

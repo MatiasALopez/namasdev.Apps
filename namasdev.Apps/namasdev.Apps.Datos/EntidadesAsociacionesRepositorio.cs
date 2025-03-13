@@ -12,7 +12,7 @@ namespace namasdev.Apps.Datos
     public interface IEntidadesAsociacionesRepositorio : IRepositorio<EntidadAsociacion, Guid>
     {
         IEnumerable<EntidadAsociacion> ObtenerLista(Guid entidadId, bool cargarDatosAdicionales = false);
-        EntidadPropiedad Obtener(Guid id, bool cargarDatosAdicionales = false);
+        EntidadAsociacion Obtener(Guid id, bool cargarDatosAdicionales = false);
         IEnumerable<AsociacionMultiplicidad> ObtenerMultiplicidades();
         IEnumerable<AsociacionRegla> ObtenerReglas();
     }

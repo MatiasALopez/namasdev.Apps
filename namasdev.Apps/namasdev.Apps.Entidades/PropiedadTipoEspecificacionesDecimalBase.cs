@@ -1,6 +1,6 @@
 ﻿namespace namasdev.Apps.Entidades
 {
-    public abstract class PropiedadTipoEspecificacionesNumeroBase<T> : IPropiedadTipoEspecificaciones
+    public abstract class PropiedadTipoEspecificacionesDecimalBase<T> : IPropiedadTipoEspecificaciones
         where T : struct
     {
         public T? ValorMinimo { get; set; }

@@ -21,6 +21,56 @@ namespace namasdev.Apps.Entidades
         public Entidad Entidad { get; set; }
         public PropiedadTipo Tipo { get; set; }
 
+        public PropiedadTipoEspecificacionesTexto EspecificacionesTexto
+        {
+            get
+            {
+                return PropiedadTipoId == PropiedadTipos.TEXTO
+                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesTexto>(PropiedadTipoEspecificaciones)
+                    : null;
+            }
+        }
+
+        public PropiedadTipoEspecificacionesDecimal EspecificacionesDecimal
+        {
+            get
+            {
+                return PropiedadTipoId == PropiedadTipos.DECIMAL
+                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimal>(PropiedadTipoEspecificaciones)
+                    : null;
+            }
+        }
+
+        public PropiedadTipoEspecificacionesDecimalLargo EspecificacionesDecimalLargo
+        {
+            get
+            {
+                return PropiedadTipoId == PropiedadTipos.DECIMAL_LARGO
+                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimalLargo>(PropiedadTipoEspecificaciones)
+                    : null;
+            }
+        }
+
+        public PropiedadTipoEspecificacionesEntero EspecificacionesEntero
+        {
+            get
+            {
+                return PropiedadTipoId == PropiedadTipos.ENTERO
+                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesEntero>(PropiedadTipoEspecificaciones)
+                    : null;
+            }
+        }
+
+        public PropiedadTipoEspecificacionesEnteroLargo EspecificacionesEnteroLargo
+        {
+            get
+            {
+                return PropiedadTipoId == PropiedadTipos.ENTERO_LARGO
+                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesEnteroLargo>(PropiedadTipoEspecificaciones)
+                    : null;
+            }
+        }
+
         public override string ToString()
         {
             return Nombre;

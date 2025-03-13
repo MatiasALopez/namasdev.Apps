@@ -1,9 +1,9 @@
 ﻿namespace namasdev.Apps.Entidades.Metadata
 {
-    public class PropiedadTipoEspecificacionesNumeroMetadata
+    public class PropiedadTipoEspecificacionesDecimalMetadata
     {
-        public const string NOMBRE = "EspecificacionesNumero";
-        public const string ETIQUETA = "Especificaciones (Número)";
+        public const string NOMBRE = "EspecificacionesDecimal";
+        public const string ETIQUETA = "Especificaciones (Decimal)";
 
         public class ValorMinimo
         {

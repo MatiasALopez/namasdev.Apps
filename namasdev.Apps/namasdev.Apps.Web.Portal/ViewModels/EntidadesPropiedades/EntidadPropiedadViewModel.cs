@@ -16,7 +16,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
         {
             PropiedadTipoEspecificacionesTexto = new PropiedadTipoEspecificacionesTextoViewModel();
             PropiedadTipoEspecificacionesEntero = new PropiedadTipoEspecificacionesEnteroViewModel();
-            PropiedadTipoEspecificacionesNumero = new PropiedadTipoEspecificacionesNumeroViewModel();
+            PropiedadTipoEspecificacionesDecimal = new PropiedadTipoEspecificacionesDecimalViewModel();
         }
 
         public PaginaModo PaginaModo { get; set; }
@@ -56,7 +56,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 
         public PropiedadTipoEspecificacionesTextoViewModel PropiedadTipoEspecificacionesTexto { get; set; }
         public PropiedadTipoEspecificacionesEnteroViewModel PropiedadTipoEspecificacionesEntero { get; set; }
-        public PropiedadTipoEspecificacionesNumeroViewModel PropiedadTipoEspecificacionesNumero { get; set; }
+        public PropiedadTipoEspecificacionesDecimalViewModel PropiedadTipoEspecificacionesDecimal { get; set; }
 
         public SelectList TiposSelectList { get; set; }
         public SelectList SiNoSelectList { get; set; }
@@ -75,13 +75,13 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
                 {
                     case PropiedadTipos.DECIMAL:
                     case PropiedadTipos.DECIMAL_LARGO:
-                        if (!PropiedadTipoEspecificacionesNumero.DigitosEnteros.HasValue)
+                        if (!PropiedadTipoEspecificacionesDecimal.DigitosEnteros.HasValue)
                         {
-                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesNumeroMetadata.DigitosEnteros.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesNumero)}.{nameof(PropiedadTipoEspecificacionesNumero.DigitosEnteros)}" });
+                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesDecimalMetadata.DigitosEnteros.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesDecimal)}.{nameof(PropiedadTipoEspecificacionesDecimal.DigitosEnteros)}" });
                         }
-                        if (!PropiedadTipoEspecificacionesNumero.DigitosDecimales.HasValue)
+                        if (!PropiedadTipoEspecificacionesDecimal.DigitosDecimales.HasValue)
                         {
-                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesNumeroMetadata.DigitosDecimales.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesNumero)}.{nameof(PropiedadTipoEspecificacionesNumero.DigitosDecimales)}" });
+                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesDecimalMetadata.DigitosDecimales.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesDecimal)}.{nameof(PropiedadTipoEspecificacionesDecimal.DigitosDecimales)}" });
                         }
                         break;
                 }

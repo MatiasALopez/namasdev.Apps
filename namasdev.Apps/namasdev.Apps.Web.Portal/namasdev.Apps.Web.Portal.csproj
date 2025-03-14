@@ -320,6 +320,7 @@
     <Content Include="Views\Templates\Entidad.cshtml" />
     <Content Include="Views\Shared\_EntidadesLayout.cshtml" />
     <Content Include="Views\EntidadesAsociaciones\Index.cshtml" />
+    <Content Include="Views\Templates\DatosEntidadSqlConfig.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

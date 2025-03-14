@@ -29,6 +29,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return View(entidad);
         }
 
+        public ActionResult DatosEntidadSqlConfig(Guid id)
+        {
+            var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
+            entidad.Propiedades = entidad.Propiedades.OrderBy(p => p.Orden).ToList();
+            return View(entidad);
+        }
+
         public ActionResult Tabla(Guid id)
         {
             var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);

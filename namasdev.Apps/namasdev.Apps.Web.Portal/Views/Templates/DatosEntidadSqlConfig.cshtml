@@ -1,0 +1,178 @@
+﻿@using namasdev.Core.Types;
+@using namasdev.Apps.Entidades.Valores;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    string nombreClase = $"{Model.Nombre}Config";
+
+    string claseBase =
+        Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
+        ? $"{(Model.PropiedadesDefault.AuditoriaBorrado ? "EntidadBorradoConfigBase" : "EntityTypeConfiguration")}<{Model.Nombre}>"
+        : null;
+
+    string claseMetadata = $"Entidades.Metadata.EntidadMetadata.{Model.Nombre}Metadata";
+
+    var propiedadesReglas = new Dictionary<string, string>();
+    List<string> propiedadReglas;
+    foreach (var p in Model.Propiedades)
+    {
+        propiedadReglas = new List<string>();
+        switch (p.PropiedadTipoId)
+        {
+            case PropiedadTipos.TEXTO:
+                if (p.Nombre == namasdev.Apps.Entidades.Valores.EntidadPropiedades.Id.Nombre(Model))
+                {
+                    propiedadReglas.Add($"HasColumnName({claseMetadata}.BD.ID)");
+                }
+                if (!p.PermiteNull)
+                {
+                    propiedadReglas.Add("IsRequired()");
+                }
+                if (p.EspecificacionesTexto != null)
+                {
+                    var maxLength = p.EspecificacionesTexto.TamañoMaximo ?? p.EspecificacionesTexto.TamañoExacto;
+                    if (maxLength.HasValue)
+                    {
+                        propiedadReglas.Add($"HasMaxLength({maxLength})");
+                    }
+                }
+                break;
+            case PropiedadTipos.DECIMAL:
+                if (p.EspecificacionesDecimal != null)
+                {
+                    propiedadReglas.Add($"HasPrecision({p.EspecificacionesDecimal.DigitosEnteros + p.EspecificacionesDecimal.DigitosDecimales},{p.EspecificacionesDecimal.DigitosDecimales})");
+                }
+                break;
+            case PropiedadTipos.DECIMAL_LARGO:
+                if (p.EspecificacionesDecimalLargo != null)
+                {
+                    propiedadReglas.Add($"HasPrecision({p.EspecificacionesDecimalLargo.DigitosEnteros + p.EspecificacionesDecimalLargo.DigitosDecimales},{p.EspecificacionesDecimalLargo.DigitosDecimales})");
+                }
+                break;
+        }
+        if (propiedadReglas.Any())
+        {
+            propiedadesReglas.Add(p.Nombre, Formateador.FormatoLista(propiedadReglas, "."));
+        }
+    }
+
+    var asociaciones = new List<string>();
+    string asociacionParte1Regla,
+        asociacionParte2Regla,
+        origenPropiedadNavegacionNombre,
+        destinoPropiedadNavegacionNombre; // TODO (ML): falta mapear correctamente en Entidad
+    bool asociacionTieneReglaForeignKey;
+    foreach (var a in Model.Asociaciones)
+    {
+        asociacionParte1Regla = asociacionParte2Regla = null;
+        asociacionTieneReglaForeignKey = false;
+        origenPropiedadNavegacionNombre = namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id");
+        destinoPropiedadNavegacionNombre = namasdev.Core.Types.StringExtensiones.TrimEnd(a.DestinoPropiedad.Nombre, "Id");
+        switch (a.DestinoAsociacionMultiplicidadId)
+        {
+            case AsociacionMultiplicidades.CERO_UNO:
+                asociacionParte1Regla = "HasOptional";
+
+                switch (a.OrigenAsociacionMultiplicidadId)
+                {
+                    case AsociacionMultiplicidades.CERO_UNO:
+                        asociacionParte2Regla = "WithOptionalDependent";
+                        break;
+
+                    case AsociacionMultiplicidades.UNO:
+                        asociacionParte2Regla = "WithRequired";
+                        break;
+
+                    case AsociacionMultiplicidades.MUCHOS:
+                        asociacionParte2Regla = "WithMany";
+                        asociacionTieneReglaForeignKey = true;
+                        break;
+                }
+                break;
+
+            case AsociacionMultiplicidades.UNO:
+                asociacionParte1Regla = "HasRequired";
+
+                switch (a.OrigenAsociacionMultiplicidadId)
+                {
+                    case AsociacionMultiplicidades.CERO_UNO:
+                        asociacionParte2Regla = "WithOptional";
+                        break;
+
+                    case AsociacionMultiplicidades.UNO:
+                        asociacionParte2Regla = "WithRequiredDependent";
+                        break;
+
+                    case AsociacionMultiplicidades.MUCHOS:
+                        asociacionParte2Regla = "WithMany";
+                        asociacionTieneReglaForeignKey = true;
+                        break;
+                }
+                break;
+
+            case AsociacionMultiplicidades.MUCHOS:
+                asociacionParte1Regla = "HasMany";
+
+                switch (a.OrigenAsociacionMultiplicidadId)
+                {
+                    case AsociacionMultiplicidades.CERO_UNO:
+                        asociacionParte2Regla = "WithOptional";
+                        break;
+
+                    case AsociacionMultiplicidades.UNO:
+                        asociacionParte2Regla = "WithRequiredDependent";
+                        break;
+
+                    case AsociacionMultiplicidades.MUCHOS:
+                        asociacionParte2Regla = "WithMany";
+                        break;
+                }
+
+                break;
+        }
+        asociaciones.Add($"{asociacionParte1Regla}(p => p.{origenPropiedadNavegacionNombre}).{asociacionParte2Regla}(p => p.{destinoPropiedadNavegacionNombre}){(asociacionTieneReglaForeignKey ? $".HasForeignKey(p => p.{a.DestinoPropiedad.Nombre})" : "")}");
+    }
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Script</title>
+</head>
+<body>
+    <code>
+        using namasdev.Data.Entity.Config;
+        using @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades;
+
+        namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Datos.Sql.Config
+        {
+            public class @nombreClase : @claseBase
+            {
+                public @(nombreClase)()
+                {
+                    ToTable(@(claseMetadata).BD.TABLA);
+                    @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
+                    {
+                        <text>HasKey(p => p.Id);</text>
+                    }
+                    else if (Model.Claves?.Count == 1)
+                    {
+                        <text>HasKey(p => p.@Model.Claves[0].Propiedad.Nombre);</text>
+                    } 
+                    else if (Model.Claves?.Count > 1)
+                    {
+                        <text>HasKey(p => new { @string.Join(", ", Model.Claves.Select(c => $"p.{c.Propiedad.Nombre}")) });</text>
+                    }
+                    @foreach (var p in propiedadesReglas)
+                    {
+                        <text>Property(p => @p.Key).@p.Value;</text>
+                    }
+                    @foreach (var a in asociaciones)
+                    {
+                        <text>@a;</text>
+                    }
+                }
+            }
+        }
+    </code>
+</body>
+</html>

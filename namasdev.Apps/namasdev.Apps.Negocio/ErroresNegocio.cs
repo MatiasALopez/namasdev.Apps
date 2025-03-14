@@ -7,6 +7,7 @@ using namasdev.Core.Transactions;
 using namasdev.Core.Validation;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Negocio
 {

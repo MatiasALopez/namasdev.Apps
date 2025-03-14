@@ -7,6 +7,7 @@ using Microsoft.WindowsAzure.Storage;
 using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Datos.Sql;
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Datos
 {

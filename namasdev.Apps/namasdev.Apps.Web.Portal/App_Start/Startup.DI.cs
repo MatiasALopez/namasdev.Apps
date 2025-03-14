@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 
 using namasdev.Net.Correos;
-using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Valores;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Datos.Sql;
 using namasdev.Apps.Negocio;

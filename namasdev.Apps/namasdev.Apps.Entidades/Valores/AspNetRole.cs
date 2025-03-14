@@ -1,4 +1,4 @@
-﻿namespace namasdev.Apps.Entidades
+﻿namespace namasdev.Apps.Entidades.Valores
 {
     public class AspNetRoles
     {

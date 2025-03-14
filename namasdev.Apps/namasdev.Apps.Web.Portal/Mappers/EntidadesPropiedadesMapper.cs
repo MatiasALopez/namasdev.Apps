@@ -4,6 +4,7 @@ using System.Linq;
 
 using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Valores;
 using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 using namasdev.Apps.Web.Portal.Models.EntidadesPropiedades;
 

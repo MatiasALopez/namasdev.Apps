@@ -12,7 +12,7 @@ namespace namasdev.Apps.Datos.Sql.Config
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.UsuarioMetadata.BD.TABLA_ID)
+                .HasColumnName(Entidades.Metadata.UsuarioMetadata.BD.ID)
                 .IsRequired()
                 .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.UsuarioId.TAMAÑO_MAX);
 

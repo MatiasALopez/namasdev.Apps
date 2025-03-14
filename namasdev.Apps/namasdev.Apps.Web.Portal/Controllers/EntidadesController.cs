@@ -7,6 +7,7 @@ using namasdev.Web.Models;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
+using namasdev.Apps.Entidades.Valores;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.ViewModels.Entidades;

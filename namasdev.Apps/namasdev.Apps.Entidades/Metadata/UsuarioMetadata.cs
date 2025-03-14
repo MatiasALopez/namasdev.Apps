@@ -12,7 +12,7 @@ namespace namasdev.Apps.Entidades.Metadata
         public class BD
         {
             public const string TABLA = "Usuarios";
-            public const string TABLA_ID = "UsuarioId";
+            public const string ID = "UsuarioId";
         }
 
         public class Propiedades

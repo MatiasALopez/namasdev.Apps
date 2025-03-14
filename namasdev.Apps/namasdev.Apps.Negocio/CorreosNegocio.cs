@@ -9,6 +9,7 @@ using namasdev.Core.Validation;
 using namasdev.Net.Correos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Datos;
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Negocio
 {

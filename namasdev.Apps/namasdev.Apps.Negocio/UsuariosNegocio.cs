@@ -75,9 +75,9 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarEmailYAgregarAListaErrores(usuario.Email, UsuarioMetadata.Email.ETIQUETA, requerido: true, errores);
-            Validador.ValidarStringYAgregarAListaErrores(usuario.Nombres, UsuarioMetadata.Nombres.ETIQUETA, requerido: true, errores, tamañoMaximo: UsuarioMetadata.Nombres.TAMAÑO_MAX);
-            Validador.ValidarStringYAgregarAListaErrores(usuario.Apellidos, UsuarioMetadata.Apellidos.ETIQUETA, requerido: true, errores, tamañoMaximo: UsuarioMetadata.Apellidos.TAMAÑO_MAX);
+            Validador.ValidarEmailYAgregarAListaErrores(usuario.Email, UsuarioMetadata.Propiedades.Email.ETIQUETA, requerido: true, errores);
+            Validador.ValidarStringYAgregarAListaErrores(usuario.Nombres, UsuarioMetadata.Propiedades.Nombres.ETIQUETA, requerido: true, errores, tamañoMaximo: UsuarioMetadata.Propiedades.Nombres.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(usuario.Apellidos, UsuarioMetadata.Propiedades.Apellidos.ETIQUETA, requerido: true, errores, tamañoMaximo: UsuarioMetadata.Propiedades.Apellidos.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

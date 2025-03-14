@@ -117,10 +117,10 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, EntidadMetadata.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.Nombre.TAMAÑO_MAX);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.NombrePlural, EntidadMetadata.NombrePlural.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.NombrePlural.TAMAÑO_MAX);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.Etiqueta, EntidadMetadata.Etiqueta.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.Etiqueta.TAMAÑO_MAX);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.EtiquetaPlural, EntidadMetadata.EtiquetaPlural.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.EtiquetaPlural.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, EntidadMetadata.Propiedades.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.NombrePlural, EntidadMetadata.Propiedades.NombrePlural.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.Propiedades.NombrePlural.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Etiqueta, EntidadMetadata.Propiedades.Etiqueta.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.EtiquetaPlural, EntidadMetadata.Propiedades.EtiquetaPlural.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadMetadata.Propiedades.EtiquetaPlural.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

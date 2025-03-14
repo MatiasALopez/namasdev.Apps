@@ -15,15 +15,15 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
 
         public string UsuarioId { get; set; }
 
-        [Display(Name = UsuarioMetadata.Nombres.ETIQUETA),
+        [Display(Name = UsuarioMetadata.Propiedades.Nombres.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombres { get; set; }
 
-        [Display(Name = UsuarioMetadata.Apellidos.ETIQUETA),
+        [Display(Name = UsuarioMetadata.Propiedades.Apellidos.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Apellidos { get; set; }
 
-        [Display(Name = UsuarioMetadata.Email.ETIQUETA),
+        [Display(Name = UsuarioMetadata.Propiedades.Email.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO),
         EmailAddress]
         public string Email { get; set; }

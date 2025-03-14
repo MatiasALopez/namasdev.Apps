@@ -8,9 +8,11 @@ using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Negocio;
-using namasdev.Apps.Web.Portal.Mappers;
-using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 using namasdev.Apps.Web.Portal.Helpers;
+using namasdev.Apps.Web.Portal.Mappers;
+using namasdev.Apps.Web.Portal.Metadata;
+using namasdev.Apps.Web.Portal.Metadata.Views;
+using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 
 // TODO (ML): mensaje "operacion no valida" a namasdev.core?
 
@@ -19,11 +21,11 @@ namespace namasdev.Apps.Web.Portal.Controllers
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
     public class EntidadesPropiedadesController : ControllerBase
     {
-        private const string PROPIEDAD_VIEW_NAME = "Propiedad";
+        public const string NAME = "EntidadesPropiedades";
 
-        private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
-        private IEntidadesPropiedadesNegocio _entidadesPropiedadesNegocio;
-        private IEntidadesRepositorio _entidadesRepositorio;
+        private readonly IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
+        private readonly IEntidadesPropiedadesNegocio _entidadesPropiedadesNegocio;
+        private readonly IEntidadesRepositorio _entidadesRepositorio;
 
         public EntidadesPropiedadesController(
             IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio, 
@@ -70,13 +72,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
                         case EntidadesPropiedadesViewModel.OPERACION_ESTABLECER_CLAVE:
                             _entidadesPropiedadesNegocio.EstablecerComoClave(model.EntidadId, model.ItemsSeleccionados.Select(i => i.EntidadPropiedadId));
 
-                            ControllerHelper.CargarMensajeResultadoOk("Clave establecida correctamente.");
+                            ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.ESTABLECER_CLAVE_OK);
                             ModelState.Clear();
 
                             break;
 
                         default:
-                            throw new Exception($"Operación no válida ({model.Operacion}).");
+                            throw new Exception(Textos.OperacionInvalida(model.Operacion));
                     }
                 }
                 catch (Exception ex)
@@ -105,7 +107,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
             catch (Exception)
             {
-                return Json(new { success = false, message = "No se pudo eliminar la propiedad." });
+                return Json(new { success = false, message = EntidadPropiedadMetadata.Mensajes.ELIMINAR_ERROR });
             }
 
             return Json(new { success = true });
@@ -119,7 +121,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             };
             
             CargarEntidadPropiedadViewModel(modelo, PaginaModo.Agregar);
-            return View(PROPIEDAD_VIEW_NAME, modelo);
+            return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
         }
 
         [HttpPost,
@@ -142,7 +144,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarEntidadPropiedadViewModel(modelo, PaginaModo.Agregar);
-            return View(PROPIEDAD_VIEW_NAME, modelo);
+            return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
         }
 
         public ActionResult Editar(Guid id, Guid entidadId)
@@ -156,7 +158,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = EntidadesPropiedadesMapper.MapearEntidadAEntidadPropiedadViewModel(propiedad);
 
             CargarEntidadPropiedadViewModel(modelo, PaginaModo.Editar);
-            return View(PROPIEDAD_VIEW_NAME, modelo);
+            return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
         }
 
         [HttpPost,
@@ -172,7 +174,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                         propiedadTipoEspecificaciones: EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(modelo), 
                         usuarioId: UsuarioId);
 
-                    ControllerHelper.CargarMensajeResultadoOk("Propiedad actualizada correctamente.");
+                    ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.EDITAR_OK);
                 }
             }
             catch (Exception ex)
@@ -181,7 +183,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarEntidadPropiedadViewModel(modelo, PaginaModo.Editar);
-            return View(PROPIEDAD_VIEW_NAME, modelo);
+            return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
         }
 
         #endregion Acciones

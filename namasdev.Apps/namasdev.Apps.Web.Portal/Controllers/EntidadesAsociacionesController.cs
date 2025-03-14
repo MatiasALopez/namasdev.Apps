@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 
 using namasdev.Core.Validation;
-using namasdev.Web.Models;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
-using namasdev.Apps.Web.Portal.Helpers;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
     public class EntidadesAsociacionesController : ControllerBase
     {
-        private const string ASOCIACION_VIEW_NAME = "Asociacion";
+        public const string NAME = "EntidadesAsociaciones";
 
         private readonly IEntidadesAsociacionesRepositorio _entidadesAsociacionesRepositorio;
         private readonly IEntidadesAsociacionesNegocio _entidadesAsociacionesNegocio;
@@ -43,11 +40,65 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Acciones
 
-        
+        public ActionResult Index(
+            Guid entidadId,
+            string busqueda = null,
+            string orden = null)
+        {
+            var modelo = new EntidadesPropiedadesViewModel
+            {
+                EntidadId = entidadId,
+                Busqueda = busqueda,
+                Orden = orden,
+            };
+
+            CargarEntidadesPropiedadesViewModel(modelo);
+            return View(modelo);
+        }
+
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Eliminar(Guid id)
+        {
+            var asociacion = _entidadesAsociacionesRepositorio.Obtener(id);
+            if (asociacion == null)
+            {
+                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(EntidadAsociacionMetadata.ETIQUETA, id) });
+            }
+
+            try
+            {
+                _entidadesAsociacionesNegocio.Eliminar(id, UsuarioId);
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = EntidadAsociacionMetadata.Mensajes.ELIMINAR_ERROR });
+            }
+
+            return Json(new { success = true });
+        }
+
         #endregion Acciones
 
         #region Metodos
 
+        private void CargarEntidadesPropiedadesViewModel(EntidadesPropiedadesViewModel modelo)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
+
+            var entidad = _entidadesRepositorio.Obtener(modelo.EntidadId, cargarDatosAdicionales: true);
+            modelo.EntidadNombre = entidad.Nombre;
+            modelo.AplicacionVersionId = entidad.AplicacionVersionId;
+
+            modelo.Items = EntidadesPropiedadesMapper.MapearEntidadesAModelos(
+                entidades: _entidadesPropiedadesRepositorio.ObtenerLista(
+                    entidad.Id,
+                    busqueda: modelo.Busqueda,
+                    cargarDatosAdicionales: true),
+                claves: entidad.Claves);
+
+            modelo.OrdenarItems();
+        }
 
         #endregion Metodos
     }

@@ -16,7 +16,7 @@ namespace namasdev.Apps.Datos.Sql.Config
 
             Property(p => p.Nombre)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.EntidadIndiceMetadata.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.EntidadIndiceMetadata.Propiedades.Nombre.TAMAÑO_MAX);
 
             HasRequired(p => p.Entidad)
                 .WithMany(p => p.Indices)

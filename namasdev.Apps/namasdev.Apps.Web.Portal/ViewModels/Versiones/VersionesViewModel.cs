@@ -11,12 +11,12 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
     {
         public VersionesViewModel()
         {
-            ItemsPorPagina = 10;    
+            ItemsPorPagina = 20;    
         }
 
         public Guid AplicacionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.AplicacionId.ETIQUETA)]
+        [Display(Name = AplicacionVersionMetadata.Propiedades.AplicacionId.ETIQUETA)]
         public string AplicacionNombre { get; set; }
 
         [Display(Name = "Búsqueda (Nombre)")]

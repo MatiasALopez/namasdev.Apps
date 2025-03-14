@@ -26,7 +26,7 @@
     <div class="form-row">
         <div class="form-group col-lg-4 col-md-6">
             @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = AplicacionVersionMetadata.Nombre.TAMAÑO_MAX })
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = AplicacionVersionMetadata.Propiedades.Nombre.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.Nombre)
         </div>
         @if (Model.PaginaModo == namasdev.Web.Models.PaginaModo.Agregar)

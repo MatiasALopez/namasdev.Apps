@@ -6,8 +6,10 @@ using namasdev.Web.Helpers;
 using namasdev.Web.Models;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
+using namasdev.Apps.Web.Portal.Metadata.Views;
 using namasdev.Apps.Web.Portal.ViewModels.Aplicaciones;
 
 namespace namasdev.Apps.Web.Portal.Controllers
@@ -15,10 +17,10 @@ namespace namasdev.Apps.Web.Portal.Controllers
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
     public class AplicacionesController : ControllerBase
     {
-        private const string APLICACION_VIEW_NAME = "Aplicacion";
+        public const string NAME = "Aplicaciones";
 
-        private IAplicacionesRepositorio _aplicacionesRepositorio;
-        private IAplicacionesNegocio _aplicacionesNegocio;
+        private readonly IAplicacionesRepositorio _aplicacionesRepositorio;
+        private readonly IAplicacionesNegocio _aplicacionesNegocio;
 
         public AplicacionesController(IAplicacionesRepositorio aplicacionesRepositorio, IAplicacionesNegocio aplicacionesNegocio)
         {
@@ -54,7 +56,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var aplicacion = _aplicacionesRepositorio.Obtener(id);
             if (aplicacion == null)
             {
-                return Json(new { success = false, message = Validador.MensajeEntidadInexistente("Aplicación", id) });
+                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(AplicacionMetadata.ETIQUETA, id) });
             }
 
             try
@@ -63,7 +65,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
             catch (Exception)
             {
-                return Json(new { success = false, message = "No se pudo eliminar la aplicación." });
+                return Json(new { success = false, message = AplicacionMetadata.Mensajes.ELIMINAR_ERROR });
             }
 
             return Json(new { success = true });
@@ -74,7 +76,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = new AplicacionViewModel();
             CargarAplicacionViewModel(modelo, PaginaModo.Agregar);
 
-            return View(APLICACION_VIEW_NAME, modelo);
+            return View(AplicacionesViews.APLICACION, modelo);
         }
 
         [HttpPost,
@@ -96,7 +98,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarAplicacionViewModel(modelo, PaginaModo.Agregar);
-            return View(APLICACION_VIEW_NAME, modelo);
+            return View(AplicacionesViews.APLICACION, modelo);
         }
 
         public ActionResult Editar(Guid id)
@@ -110,7 +112,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = AplicacionesMapper.MapearEntidadAAplicacionViewModel(aplicacion);
             CargarAplicacionViewModel(modelo, PaginaModo.Editar);
 
-            return View(APLICACION_VIEW_NAME, modelo);
+            return View(AplicacionesViews.APLICACION, modelo);
         }
 
         [HttpPost,
@@ -124,7 +126,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     var entidad = AplicacionesMapper.MapearAplicacionViewModelAEntidad(modelo);
                     _aplicacionesNegocio.Actualizar(entidad, UsuarioId);
 
-                    ControllerHelper.CargarMensajeResultadoOk("Aplicación actualizada correctamente.");
+                    ControllerHelper.CargarMensajeResultadoOk(AplicacionMetadata.Mensajes.EDITAR_OK);
                 }
             }
             catch (Exception ex)
@@ -133,7 +135,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarAplicacionViewModel(modelo, PaginaModo.Editar);
-            return View(APLICACION_VIEW_NAME, modelo);
+            return View(AplicacionesViews.APLICACION, modelo);
         }
 
         #endregion Acciones

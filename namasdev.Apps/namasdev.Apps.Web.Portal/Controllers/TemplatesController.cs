@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 using namasdev.Apps.Datos;
-using namasdev.Apps.Entidades;
 using namasdev.Core.Validation;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     public class TemplatesController : Controller
     {
+        public const string NAME = "Templates";
+
         private readonly IEntidadesRepositorio _entidadesRepositorio;
 
         public TemplatesController(IEntidadesRepositorio entidadesRepositorio)

@@ -15,7 +15,7 @@ namespace namasdev.Apps.Datos.Sql.Config
                 .HasColumnName(Entidades.Metadata.EntidadAsociacionMetadata.BD.ID);
 
             Property(p => p.TablaAuxiliarNombre)
-                .HasMaxLength(Entidades.Metadata.EntidadAsociacionMetadata.TablaAuxiliarNombre.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.TAMAÑO_MAX);
 
             HasRequired(p => p.OrigenEntidad)
                 .WithMany(p => p.Asociaciones)

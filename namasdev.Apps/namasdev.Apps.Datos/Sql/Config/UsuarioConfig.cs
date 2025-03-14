@@ -14,19 +14,19 @@ namespace namasdev.Apps.Datos.Sql.Config
             Property(p => p.Id)
                 .HasColumnName(Entidades.Metadata.UsuarioMetadata.BD.TABLA_ID)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.UsuarioId.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.UsuarioId.TAMAÑO_MAX);
 
             Property(e => e.Email)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Email.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.Email.TAMAÑO_MAX);
 
             Property(e => e.Nombres)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Nombres.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.Nombres.TAMAÑO_MAX);
 
             Property(e => e.Apellidos)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Apellidos.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.Apellidos.TAMAÑO_MAX);
 
             Property(e => e.ApellidosYNombres)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);

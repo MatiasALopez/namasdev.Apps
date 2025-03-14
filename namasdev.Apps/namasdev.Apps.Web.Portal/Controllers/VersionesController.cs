@@ -10,17 +10,18 @@ using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.ViewModels.Versiones;
 using namasdev.Apps.Web.Portal.Helpers;
+using namasdev.Apps.Web.Portal.Metadata.Views;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
     public class VersionesController : ControllerBase
     {
-        private const string VERSION_VIEW_NAME = "Version";
+        public const string NAME = "Versiones";
 
-        private IAplicacionesVersionesRepositorio _aplicacionesVersionesRepositorio;
-        private IAplicacionesVersionesNegocio _aplicacionesVersionesNegocio;
-        private IAplicacionesRepositorio _aplicacionesRepositorio;
+        private readonly IAplicacionesVersionesRepositorio _aplicacionesVersionesRepositorio;
+        private readonly IAplicacionesVersionesNegocio _aplicacionesVersionesNegocio;
+        private readonly IAplicacionesRepositorio _aplicacionesRepositorio;
 
         public VersionesController(
             IAplicacionesVersionesRepositorio aplicacionesVersionesRepositorio, 
@@ -72,7 +73,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
             catch (Exception)
             {
-                return Json(new { success = false, message = "No se pudo eliminar la versión." });
+                return Json(new { success = false, message = AplicacionVersionMetadata.Mensajes.ELIMINAR_ERROR });
             }
 
             return Json(new { success = true });
@@ -86,7 +87,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             };
             CargarVersionViewModel(modelo, PaginaModo.Agregar);
 
-            return View(VERSION_VIEW_NAME, modelo);
+            return View(VersionesViews.VERSION, modelo);
         }
 
         [HttpPost,
@@ -109,7 +110,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarVersionViewModel(modelo, PaginaModo.Agregar);
-            return View(VERSION_VIEW_NAME, modelo);
+            return View(VersionesViews.VERSION, modelo);
         }
 
         public ActionResult Editar(Guid id, Guid aplicacionId)
@@ -123,7 +124,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = VersionesMapper.MapearEntidadAAplicacionViewModel(aplicacionVersion);
             CargarVersionViewModel(modelo, PaginaModo.Editar);
 
-            return View(VERSION_VIEW_NAME, modelo);
+            return View(VersionesViews.VERSION, modelo);
         }
 
         [HttpPost,
@@ -137,7 +138,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     var entidad = VersionesMapper.MapearAplicacionVersionViewModelAEntidad(modelo);
                     _aplicacionesVersionesNegocio.Actualizar(entidad, UsuarioId);
 
-                    ControllerHelper.CargarMensajeResultadoOk("Versión actualizada correctamente.");
+                    ControllerHelper.CargarMensajeResultadoOk(AplicacionVersionMetadata.Mensajes.EDITAR_OK);
                 }
             }
             catch (Exception ex)
@@ -146,7 +147,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarVersionViewModel(modelo, PaginaModo.Editar);
-            return View(VERSION_VIEW_NAME, modelo);
+            return View(VersionesViews.VERSION, modelo);
         }
 
         #endregion Acciones

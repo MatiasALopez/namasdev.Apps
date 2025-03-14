@@ -10,10 +10,10 @@ namespace namasdev.Apps.Web.Portal.Models.Entidades
         public Guid AplicacionVersionId { get; set; }
         public Guid EntidadId { get; set; }
 
-        [Display(Name = EntidadMetadata.Nombre.ETIQUETA)]
+        [Display(Name = EntidadMetadata.Propiedades.Nombre.ETIQUETA)]
         public string Nombre { get; set; }
 
-        [Display(Name = EntidadMetadata.Etiqueta.ETIQUETA)]
+        [Display(Name = EntidadMetadata.Propiedades.Etiqueta.ETIQUETA)]
         public string Etiqueta { get; set; }
     }
 }

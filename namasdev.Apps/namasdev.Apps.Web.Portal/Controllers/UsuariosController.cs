@@ -9,17 +9,24 @@ using namasdev.Web.Helpers;
 using namasdev.Web.Models;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.Models;
 using namasdev.Apps.Web.Portal.ViewModels.Usuarios;
+using namasdev.Apps.Web.Portal.Metadata.Views;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
     public class UsuariosController : ControllerBase
     {
-        private const string USUARIO_VIEW_NAME = "Usuario";
+        public const string NAME = "Usuarios";
+
+        private const string USUARIO_INEXISTENTE_MENSAJE = "Usuario inexistente.";
+        private const string USUARIO_YA_ACTIVADO_MENSAJE = "Usuario ya activado.";
+        private const string USUARIO_NO_ACTIVADO_MENSAJE = "Usuario no activado.";
+        private const string ELIMINAR_USUARIO_LOGUEADO_ERROR_MENSAJE = "No puede eliminar su propio usuario.";
 
         private readonly IUsuariosRepositorio _usuariosRepositorio;
         private readonly IUsuariosNegocio _usuariosNegocio;
@@ -71,7 +78,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = new UsuarioViewModel();
             CargarUsuarioViewModel(modelo, PaginaModo.Agregar);
 
-            return View(USUARIO_VIEW_NAME, modelo);
+            return View(UsuariosViews.USUARIO, modelo);
         }
 
         [HttpPost,
@@ -109,7 +116,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                             throw;
                         }
 
-                        ControllerHelper.CargarMensajeResultadoOk("Usuario guardado correctamente.");
+                        ControllerHelper.CargarMensajeResultadoOk(UsuarioMetadata.Mensajes.AGREGAR_OK);
 
                         ModelState.Clear();
                         modelo = new UsuarioViewModel();
@@ -122,7 +129,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarUsuarioViewModel(modelo, PaginaModo.Agregar);
-            return View(USUARIO_VIEW_NAME, modelo);
+            return View(UsuariosViews.USUARIO, modelo);
         }
 
         [HttpPost,
@@ -146,7 +153,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = UsuariosMapper.MapearUsuarioEntidadAViewModel(usuario);
             CargarUsuarioViewModel(modelo, PaginaModo.Editar);
 
-            return View(USUARIO_VIEW_NAME, modelo);
+            return View(UsuariosViews.USUARIO, modelo);
         }
 
         [HttpPost,
@@ -206,7 +213,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                         throw;
                     }
 
-                    ControllerHelper.CargarMensajeResultadoOk("Usuario actualizado correctamente.");
+                    ControllerHelper.CargarMensajeResultadoOk(UsuarioMetadata.Mensajes.EDITAR_OK);
                 }
             }
             catch (Exception ex)
@@ -215,7 +222,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarUsuarioViewModel(modelo, PaginaModo.Editar);
-            return View(USUARIO_VIEW_NAME, modelo);
+            return View(UsuariosViews.USUARIO, modelo);
         }
 
         [HttpPost,
@@ -225,18 +232,18 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var user = UserManager.FindById(id);
             if (user == null)
             {
-                return Json(new { success = false, message = "Usuario inexistente." });
+                return Json(new { success = false, message = USUARIO_INEXISTENTE_MENSAJE });
             }
 
             if (UserManager.IsEmailConfirmed(user.Id))
             {
-                return Json(new { success = false, message = "Usuario ya activado." });
+                return Json(new { success = false, message = USUARIO_YA_ACTIVADO_MENSAJE });
             }
 
             var usuario = _usuariosRepositorio.Obtener(user.Id);
             if (usuario == null)
             {
-                return Json(new { success = false, message = "Usuario inexistente." });
+                return Json(new { success = false, message = USUARIO_INEXISTENTE_MENSAJE });
             }
 
             EnviarCorreoActivacion(usuario);
@@ -251,24 +258,24 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var user = UserManager.FindById(id);
             if (user == null)
             {
-                return Json(new { success = false, message = "Usuario inexistente." });
+                return Json(new { success = false, message = USUARIO_INEXISTENTE_MENSAJE });
             }
 
             if (!UserManager.IsEmailConfirmed(user.Id))
             {
-                return Json(new { success = false, message = "Usuario no activado." });
+                return Json(new { success = false, message = USUARIO_NO_ACTIVADO_MENSAJE });
             }
 
             var usuario = _usuariosRepositorio.Obtener(user.Id);
             if (usuario == null)
             {
-                return Json(new { success = false, message = "Usuario inexistente." });
+                return Json(new { success = false, message = USUARIO_INEXISTENTE_MENSAJE });
             }
 
             _correosNegocio.EnviarCorreoResetearPassword(
                 usuario.Email,
                 nombreYApellido: usuario.ToString(),
-                resetearPasswordUrl: URLHelper.GenerarRutaAbsoluta(Url.Action("ResetearPassword", "Account", new { id = user.Id, code = UserManager.GeneratePasswordResetToken(user.Id) })));
+                resetearPasswordUrl: URLHelper.GenerarRutaAbsoluta(Url.Action(nameof(AccountController.ResetearPassword), AccountController.NAME, new { id = user.Id, code = UserManager.GeneratePasswordResetToken(user.Id) })));
 
             return Json(new { success = true });
         }
@@ -282,13 +289,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             if (user == null && usuario == null)
             {
-                return Json(new { success = false, message = "Usuario inexistente." });
+                return Json(new { success = false, message = USUARIO_INEXISTENTE_MENSAJE });
             }
 
-            //Controla que no elimine el usuario que actualmente está logeado.
+            // No se puede eliminar el usuario logeado
             if (user != null && user.Id == User.Identity.GetUserId())
             {
-                return Json(new { success = false, message = "No puede eliminar su propio usuario." });
+                return Json(new { success = false, message = ELIMINAR_USUARIO_LOGUEADO_ERROR_MENSAJE });
             }
 
             try
@@ -298,7 +305,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
             catch (Exception)
             {
-                return Json(new { success = false, message = "No se pudo eliminar el usuario." });
+                return Json(new { success = false, message = UsuarioMetadata.Mensajes.ELIMINAR_ERROR });
             }
 
             return Json(new { success = true });
@@ -328,7 +335,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             _correosNegocio.EnviarCorreoActivarCuenta(
                 usuario.Email,
                 usuario.NombresYApellidos,
-                activarCuentaUrl: URLHelper.GenerarRutaAbsoluta(Url.Action("ActivarCuenta", "Account", new { id = usuario.Id, code = UserManager.GenerateEmailConfirmationToken(usuario.Id) })));
+                activarCuentaUrl: URLHelper.GenerarRutaAbsoluta(Url.Action(nameof(AccountController.ActivarCuenta), AccountController.NAME, new { id = usuario.Id, code = UserManager.GenerateEmailConfirmationToken(usuario.Id) })));
         }
 
         private void BloquearUsuario(string usuarioId)

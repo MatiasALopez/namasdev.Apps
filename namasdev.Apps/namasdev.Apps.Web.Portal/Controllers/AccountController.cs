@@ -11,12 +11,16 @@ using namasdev.Web.Helpers;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.ViewModels;
+using namasdev.Apps.Web.Portal.Metadata.Views;
+using namasdev.Apps.Web.Portal.Metadata;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     [Authorize]
     public class AccountController : ControllerBase
     {
+        public const string NAME = "Account";
+
         private ApplicationSignInManager _signInManager;
 
         private readonly IUsuariosRepositorio _usuariosRepositorio;
@@ -77,12 +81,12 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     return RedirectToLocal(returnUrl, model.Email);
 
                 case SignInStatus.LockedOut:
-                    return View("Lockout");
+                    return View(SharedViews.ACCESO_DENEGADO);
 
                 case SignInStatus.RequiresVerification:
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Los datos ingresados no son válidos.");
+                    ModelState.AddModelError("", Textos.DATOS_INVALIDOS);
                     return View(model);
             }
         }
@@ -93,7 +97,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             SignOutAndClearSession();
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), nameof(HomeController));
         }
 
         [AllowAnonymous]
@@ -101,13 +105,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             if (String.IsNullOrWhiteSpace(id) || String.IsNullOrWhiteSpace(code))
             {
-                return View("Error");
+                return View(SharedViews.ERROR);
             }
 
             var usuarioEntidad = _usuariosRepositorio.Obtener(id);
             if (usuarioEntidad == null)
             {
-                return View("Error");
+                return View(SharedViews.ERROR);
             }
 
             var model = new ActivarCuentaViewModel
@@ -129,7 +133,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 var usuarioIdentity = UserManager.FindById(id);
                 if (usuarioEntidad == null || usuarioIdentity == null)
                 {
-                    return View("Error");
+                    return View(SharedViews.ERROR);
                 }
 
                 var result = await UserManager.ConfirmEmailAsync(id, model.Code);
@@ -167,7 +171,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                             throw;
                         }
 
-                        return View("ActivarCuentaConfirmacion");
+                        return View(AccountViews.ACTIVAR_CUENTA_CONFIRMACION);
                     }
                     else
                     {
@@ -215,9 +219,9 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     _correosNegocio.EnviarCorreoResetearPassword(
                         model.Email,
                         nombreYApellido: usuarioEntidad.ToString(),
-                        resetearPasswordUrl: URLHelper.GenerarRutaAbsoluta(Url.Action("ResetearPassword", "Account", new { id = user.Id, code = UserManager.GeneratePasswordResetToken(user.Id) })));
+                        resetearPasswordUrl: URLHelper.GenerarRutaAbsoluta(Url.Action(nameof(ResetearPassword), new { id = user.Id, code = UserManager.GeneratePasswordResetToken(user.Id) })));
 
-                    return RedirectToAction("OlvidoPasswordConfirmacion", "Account");
+                    return RedirectToAction(nameof(OlvidoPasswordConfirmacion));
                 }
             }
             catch (Exception ex)
@@ -239,13 +243,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             if (String.IsNullOrWhiteSpace(id) || String.IsNullOrWhiteSpace(code))
             {
-                return View("Error");
+                return View(SharedViews.ERROR);
             }
 
             var usuario = UserManager.FindById(id);
             if (usuario == null)
             {
-                return View("Error");
+                return View(SharedViews.ERROR);
             }
 
             var model = new ResetPasswordViewModel
@@ -272,7 +276,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var result = await UserManager.ResetPasswordAsync(usuarioEntidad.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return View("ResetearPasswordConfirmacion");
+                return View(AccountViews.RESETEAR_PASSWORD_CONFIRMACION);
             }
 
             AddErrors(result);

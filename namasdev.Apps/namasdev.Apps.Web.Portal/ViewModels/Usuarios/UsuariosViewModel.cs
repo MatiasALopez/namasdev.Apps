@@ -11,7 +11,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
     {
         public UsuariosViewModel()
         {
-            ItemsPorPagina = 10;        
+            ItemsPorPagina = 20;        
         }
 
         [Display(Name = "Búsqueda (Nombre y apellido, Correo electrónico)")]

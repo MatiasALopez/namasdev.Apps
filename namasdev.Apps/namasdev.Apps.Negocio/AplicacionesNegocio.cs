@@ -77,7 +77,7 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarStringYAgregarAListaErrores(aplicacion.Nombre, AplicacionMetadata.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: AplicacionMetadata.Nombre.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(aplicacion.Nombre, AplicacionMetadata.Propiedades.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: AplicacionMetadata.Propiedades.Nombre.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

@@ -5,16 +5,19 @@
         public const string NOMBRE = "EspecificacionesEntero";
         public const string ETIQUETA = "Especificaciones (Entero)";
 
-        public class ValorMinimo
+        public class Propiedades
         {
-            public const string ETIQUETA = "Valor mínimo";
-            public const int TAMAÑO_MAX = 10;
-        }
+            public class ValorMinimo
+            {
+                public const string ETIQUETA = "Valor mínimo";
+                public const int TAMAÑO_MAX = 10;
+            }
 
-        public class ValorMaximo
-        {
-            public const string ETIQUETA = "Valor máximo";
-            public const int TAMAÑO_MAX = 10;
+            public class ValorMaximo
+            {
+                public const string ETIQUETA = "Valor máximo";
+                public const int TAMAÑO_MAX = 10;
+            }
         }
     }
 }

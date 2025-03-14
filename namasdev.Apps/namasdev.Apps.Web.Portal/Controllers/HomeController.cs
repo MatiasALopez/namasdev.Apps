@@ -5,6 +5,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
     [Authorize]
     public class HomeController : ControllerBase
     {
+        public const string NAME = "Home";
+
         public HomeController()
         {
         }

@@ -14,14 +14,29 @@
             public const string ID = "EntidadIndicePropiedadId";
         }
 
-        public class EntidadIndiceId
+        public class Propiedades
         {
-            public const string ETIQUETA = EntidadIndiceMetadata.ETIQUETA;
+            public class EntidadIndiceId
+            {
+                public const string ETIQUETA = EntidadIndiceMetadata.ETIQUETA;
+            }
+
+            public class EntidadPropiedadId
+            {
+                public const string ETIQUETA = EntidadPropiedadMetadata.ETIQUETA;
+            }
         }
 
-        public class EntidadPropiedadId
+        public class Mensajes
         {
-            public const string ETIQUETA = EntidadPropiedadMetadata.ETIQUETA;
+            public const string AGREGAR_OK = EntidadIndicePropiedadMetadata.ETIQUETA + " agregada correctamente.";
+            public const string AGREGAR_ERROR = "No se pudo agregar la " + EntidadIndicePropiedadMetadata.ETIQUETA;
+
+            public const string EDITAR_OK = EntidadIndicePropiedadMetadata.ETIQUETA + " actualizada correctamente.";
+            public const string EDITAR_ERROR = "No se pudo actualizar la " + EntidadIndicePropiedadMetadata.ETIQUETA;
+
+            public const string ELIMINAR_OK = EntidadIndicePropiedadMetadata.ETIQUETA + " eliminada correctamente.";
+            public const string ELIMINAR_ERROR = "No se pudo eliminar la " + EntidadIndicePropiedadMetadata.ETIQUETA;
         }
     }
 }

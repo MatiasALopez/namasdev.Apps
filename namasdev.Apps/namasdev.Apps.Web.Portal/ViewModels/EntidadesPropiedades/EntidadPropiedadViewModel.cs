@@ -5,8 +5,8 @@ using System.Web.Mvc;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
-using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 {
@@ -23,35 +23,35 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 
         public Guid EntidadId { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.EntidadId.ETIQUETA)]
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.EntidadId.ETIQUETA)]
         public string EntidadNombre { get; set; }
 
         public Guid? EntidadPropiedadId { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Nombre.ETIQUETA),
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Etiqueta.ETIQUETA),
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.Etiqueta.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Etiqueta { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.PropiedadTipoId.ETIQUETA)]
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.PropiedadTipoId.ETIQUETA)]
         public short? PropiedadTipoId { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.PermiteNull.ETIQUETA)]
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.PermiteNull.ETIQUETA)]
         public bool? PermiteNull { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Orden.ETIQUETA)]
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.Orden.ETIQUETA)]
         public short? Orden { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.GeneradaAlCrear.ETIQUETA)]
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.GeneradaAlCrear.ETIQUETA)]
         public bool? GeneradaAlCrear { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.Editable.ETIQUETA)]
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.Editable.ETIQUETA)]
         public bool? Editable { get; set; }
 
-        [Display(Name = EntidadPropiedadMetadata.CalculadaFormula.ETIQUETA)]
+        [Display(Name = EntidadPropiedadMetadata.Propiedades.CalculadaFormula.ETIQUETA)]
         public string CalculadaFormula { get; set; }
 
         public PropiedadTipoEspecificacionesTextoViewModel PropiedadTipoEspecificacionesTexto { get; set; }
@@ -77,11 +77,11 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
                     case PropiedadTipos.DECIMAL_LARGO:
                         if (!PropiedadTipoEspecificacionesDecimal.DigitosEnteros.HasValue)
                         {
-                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesDecimalMetadata.DigitosEnteros.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesDecimal)}.{nameof(PropiedadTipoEspecificacionesDecimal.DigitosEnteros)}" });
+                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesDecimalMetadata.Propiedades.DigitosEnteros.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesDecimal)}.{nameof(PropiedadTipoEspecificacionesDecimal.DigitosEnteros)}" });
                         }
                         if (!PropiedadTipoEspecificacionesDecimal.DigitosDecimales.HasValue)
                         {
-                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesDecimalMetadata.DigitosDecimales.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesDecimal)}.{nameof(PropiedadTipoEspecificacionesDecimal.DigitosDecimales)}" });
+                            yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesDecimalMetadata.Propiedades.DigitosDecimales.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesDecimal)}.{nameof(PropiedadTipoEspecificacionesDecimal.DigitosDecimales)}" });
                         }
                         break;
                 }

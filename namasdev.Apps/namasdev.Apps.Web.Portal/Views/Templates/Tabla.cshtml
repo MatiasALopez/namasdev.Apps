@@ -9,15 +9,15 @@
     <title>Script</title>
 </head>
 <body>
-    <div>
+    <code>
         create table dbo.@nombreTabla
         (
-        @foreach (var p in Model.Propiedades.OrderBy(p => p.Orden))
+        @foreach (var p in Model.Propiedades)
         {
-            <text>@p.Nombre @(!string.IsNullOrWhiteSpace(p.CalculadaFormula) ? $"AS {p.CalculadaFormula}" : $"{p.Tipo.TSQLType} {(p.PermiteNull ? "null" : " not null")}"),</text>
+            <text>@p.Nombre @(!string.IsNullOrWhiteSpace(p.CalculadaFormula) ? $"AS {p.CalculadaFormula}" : $"{p.Tipo.TSQLTypeConEspecificaciones(p)} {(p.PermiteNull ? "null" : " not null")}"),</text>
         }
 
-        @if (Model.Claves != null)
+        @if (Model.Claves != null && Model.Claves.Any())
         {
             <text>constraint PK_@nombreTabla primary key clustered(@string.Join(",", Model.Claves.Select(c => c.Propiedad.Nombre))),</text>
         }
@@ -40,6 +40,6 @@
                 go</text>
             }
         }
-    </div>
+    </code>
 </body>
 </html>

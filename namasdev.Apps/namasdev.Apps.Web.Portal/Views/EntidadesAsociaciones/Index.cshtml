@@ -1,0 +1,116 @@
+﻿@using namasdev.Core.Types;
+@using namasdev.Apps.Entidades;
+@using namasdev.Apps.Entidades.Metadata;
+@using namasdev.Web.Helpers;
+@using namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones;
+@model EntidadesAsociacionesViewModel
+@{
+    Layout = "~/Views/Shared/_EntidadesLayout.cshtml";
+    ViewBag.Title = EntidadAsociacionMetadata.ETIQUETA_PLURAL;
+
+    var controlesIds = new
+    {
+        Form = $"frm{EntidadAsociacionMetadata.NOMBRE_PLURAL}",
+        TablaContainer = $"div{EntidadAsociacionMetadata.NOMBRE_PLURAL}Container",
+        Tabla = $"tbl{EntidadAsociacionMetadata.NOMBRE_PLURAL}"
+    };
+    var clasesCss = new
+    {
+        BotonEliminar = "btn-eliminar"
+    };
+}
+@Html.Partial("_ResultadoOk")
+@Html.Partial("_Errores")
+<div class="mt-3">
+    <strong>@Html.DisplayNameFor(m => m.EntidadNombre):</strong> @Model.EntidadNombre
+</div>
+<div class="row mt-3">
+    <div class="col-md-3">
+        <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { Model.EntidadId })" class="btn btn-primary">Agregar</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        @if (Model.TieneItems)
+        {
+            <form id="@controlesIds.Form" action="@Url.Action()" method="post">
+                @Html.AntiForgeryToken()
+                <div id="@controlesIds.TablaContainer" class="table-responsive">
+                    <table id="@controlesIds.Tabla" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int cant = Model.Items.Count;
+
+                            }
+                            @for (var i = 0; i < cant; i++)
+                            {
+                                <tr>
+                                    <td class="text-center">
+                                        <a href="@Url.Action("Editar", new { id = Model.Items[i].EntidadAsociacionId, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                        <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@Model.Items[i].EntidadAsociacionId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="alert alert-warning">No hay propiedades para mostrar.</div>
+        }
+    </div>
+</div>
+<div class="mt-2">
+    <a href="@Url.Action("Index", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-secondary">Volver</a>
+</div>
+@section bodyScripts {
+    <script type="text/javascript">
+        $(function () {
+            namasdevApps.setActiveMenuOption('entidades');
+            $('#tabPropiedades').addClass('active');
+
+            $('#@controlesIds.Tabla')
+                .on('click', '.@clasesCss.BotonEliminar', function (ev) {
+                    ev.preventDefault();
+
+                    var id = $(this).data('id');
+                    if (!id) {
+                        return;
+                    }
+
+                    var options = {
+                        showLoadingSelector: '#@controlesIds.TablaContainer',
+                        confirm: true,
+                        confirmTitle: 'Eliminar propiedad',
+                        confirmMessage: '¿Estás seguro que deseas eliminar la propiedad seleccionada?'
+                    };
+                    namasdevApps.postJson(
+                        '@Url.Action("Eliminar")/' + id,
+                        nmd.ui.forms.createDataWithAntiForgeryToken('#@controlesIds.Form'),
+                        function (response) {
+                            if (response.success) {
+                                nmd.ui.controls.showSuccessModal(
+                                    'La propiedad fue eliminada correctamente.',
+                                    function () {
+                                        nmd.page.reloadPage();
+                                    });
+                            }
+                            else {
+                                namasdevApps.showErrorModal(response.message);
+                            }
+                        },
+                        options
+                    );
+
+                    return false;
+                });
+        });
+    </script>
+}

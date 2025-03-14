@@ -98,10 +98,10 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, EntidadPropiedadMetadata.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadPropiedadMetadata.Nombre.TAMAÑO_MAX, regEx: EntidadPropiedadMetadata.Nombre.REG_EX);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.Etiqueta, EntidadPropiedadMetadata.Etiqueta.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadPropiedadMetadata.Etiqueta.TAMAÑO_MAX);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.PropiedadTipoEspecificaciones, EntidadPropiedadMetadata.PropiedadTipoEspecificaciones.ETIQUETA, requerido: false, errores);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.CalculadaFormula, EntidadPropiedadMetadata.CalculadaFormula.ETIQUETA, requerido: false, errores, tamañoMaximo: EntidadPropiedadMetadata.CalculadaFormula.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, EntidadPropiedadMetadata.Propiedades.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadPropiedadMetadata.Propiedades.Nombre.TAMAÑO_MAX, regEx: EntidadPropiedadMetadata.Propiedades.Nombre.REG_EX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Etiqueta, EntidadPropiedadMetadata.Propiedades.Etiqueta.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadPropiedadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.PropiedadTipoEspecificaciones, EntidadPropiedadMetadata.Propiedades.PropiedadTipoEspecificaciones.ETIQUETA, requerido: false, errores);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.CalculadaFormula, EntidadPropiedadMetadata.Propiedades.CalculadaFormula.ETIQUETA, requerido: false, errores, tamañoMaximo: EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

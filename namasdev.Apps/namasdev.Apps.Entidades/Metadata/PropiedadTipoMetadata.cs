@@ -15,22 +15,25 @@ namespace namasdev.Apps.Entidades.Metadata
             public const string ID = "PropiedadTipoId";
         }
 
-        public class Nombre
+        public class Propiedades
         {
-            public const string ETIQUETA = "Nombre";
-            public const int TAMAÑO_MAX = 50;
-        }
+            public class Nombre
+            {
+                public const string ETIQUETA = "Nombre";
+                public const int TAMAÑO_MAX = 50;
+            }
 
-        public class CLRType
-        {
-            public const string ETIQUETA = "Tipo CLR";
-            public const int TAMAÑO_MAX = 50;
-        }
+            public class CLRType
+            {
+                public const string ETIQUETA = "Tipo CLR";
+                public const int TAMAÑO_MAX = 50;
+            }
 
-        public class TSQLType
-        {
-            public const string ETIQUETA = "Tipo T-SQL";
-            public const int TAMAÑO_MAX = 50;
+            public class TSQLType
+            {
+                public const string ETIQUETA = "Tipo T-SQL";
+                public const int TAMAÑO_MAX = 50;
+            }
         }
     }
 }

@@ -15,10 +15,13 @@ namespace namasdev.Apps.Entidades.Metadata
             public const string ID = "AuditoriaTipoId";
         }
 
-        public class Nombre
+        public class Propiedades
         {
-            public const string ETIQUETA = "Nombre";
-            public const int TAMAÑO_MAX = 100;
+            public class Nombre
+            {
+                public const string ETIQUETA = "Nombre";
+                public const int TAMAÑO_MAX = 100;
+            }
         }
     }
 }

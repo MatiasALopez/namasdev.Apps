@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
 using namasdev.Web.ViewModels;
-
 using namasdev.Apps.Web.Portal.Models.Aplicaciones;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
@@ -10,7 +9,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
     {
         public AplicacionesViewModel()
         {
-            ItemsPorPagina = 10;    
+            ItemsPorPagina = 20;    
         }
 
         [Display(Name = "Búsqueda (Nombre)")]

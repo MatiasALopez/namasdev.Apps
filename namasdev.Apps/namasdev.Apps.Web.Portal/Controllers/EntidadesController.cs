@@ -11,18 +11,19 @@ using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.ViewModels.Entidades;
 using namasdev.Apps.Web.Portal.Helpers;
+using namasdev.Apps.Web.Portal.Metadata.Views;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
     public class EntidadesController : ControllerBase
     {
-        private const string ENTIDAD_VIEW_NAME = "Entidad";
+        public const string NAME = "Entidades";
 
-        private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
-        private IEntidadesRepositorio _entidadesRepositorio;
-        private IEntidadesNegocio _entidadesNegocio;
-        private IAplicacionesVersionesRepositorio _aplicacionesVersionesRepositorio;
+        private readonly IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
+        private readonly IEntidadesRepositorio _entidadesRepositorio;
+        private readonly IEntidadesNegocio _entidadesNegocio;
+        private readonly IAplicacionesVersionesRepositorio _aplicacionesVersionesRepositorio;
 
         public EntidadesController(
             IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
@@ -63,7 +64,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             if (modelo.AplicacionesVersionesSelectList == null
                 || !modelo.AplicacionesVersionesSelectList.Any())
             {
-                return RedirectToAction("Index", "Versiones", new { modelo.AplicacionId });
+                return RedirectToAction(nameof(VersionesController.Index), VersionesController.NAME, new { modelo.AplicacionId });
             }
 
             return View(modelo);
@@ -85,7 +86,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
             catch (Exception)
             {
-                return Json(new { success = false, message = "No se pudo eliminar la entidad." });
+                return Json(new { success = false, message = EntidadMetadata.Mensajes.ELIMINAR_ERROR });
             }
 
             return Json(new { success = true });
@@ -100,7 +101,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             };
             
             CargarEntidadViewModel(modelo, PaginaModo.Agregar);
-            return View(ENTIDAD_VIEW_NAME, modelo);
+            return View(EntidadesViews.ENTIDAD, modelo);
         }
 
         [HttpPost,
@@ -117,7 +118,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                         propiedadesDefault: EntidadesMapper.MapearEntidadViewModelAEntidadPropiedadesDefault(modelo)
                         );
 
-                    return RedirectToAction("Index", "EntidadesPropiedades", new { entidadId = entidad.Id });
+                    return RedirectToAction(nameof(EntidadesPropiedadesController.Index), EntidadesPropiedadesController.NAME, new { entidadId = entidad.Id });
                 }
             }
             catch (Exception ex)
@@ -126,7 +127,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarEntidadViewModel(modelo, PaginaModo.Agregar);
-            return View(ENTIDAD_VIEW_NAME, modelo);
+            return View(EntidadesViews.ENTIDAD, modelo);
         }
 
         public ActionResult Editar(Guid id, Guid? aplicacionVersionId = null)
@@ -140,7 +141,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = EntidadesMapper.MapearEntidadAEntidadViewModel(entidad);
             CargarEntidadViewModel(modelo, PaginaModo.Editar);
 
-            return View(ENTIDAD_VIEW_NAME, modelo);
+            return View(EntidadesViews.ENTIDAD, modelo);
         }
 
         [HttpPost,
@@ -154,7 +155,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     var entidad = EntidadesMapper.MapearEntidadViewModelAEntidad(modelo);
                     _entidadesNegocio.Actualizar(entidad, UsuarioId);
 
-                    ControllerHelper.CargarMensajeResultadoOk("Entidad actualizada correctamente.");
+                    ControllerHelper.CargarMensajeResultadoOk(EntidadMetadata.Mensajes.EDITAR_OK);
                 }
             }
             catch (Exception ex)
@@ -163,7 +164,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             CargarEntidadViewModel(modelo, PaginaModo.Editar);
-            return View(ENTIDAD_VIEW_NAME, modelo);
+            return View(EntidadesViews.ENTIDAD, modelo);
         }
 
         #endregion Acciones

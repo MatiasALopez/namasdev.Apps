@@ -15,14 +15,14 @@ namespace namasdev.Apps.Datos.Sql.Config
 
             Property(p => p.Nombre)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.Propiedades.Nombre.TAMAÑO_MAX);
 
             Property(p => p.Etiqueta)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.Etiqueta.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX);
 
             Property(p => p.CalculadaFormula)
-                .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.CalculadaFormula.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX);
 
             HasRequired(p => p.Entidad)
                 .WithMany(p => p.Propiedades)

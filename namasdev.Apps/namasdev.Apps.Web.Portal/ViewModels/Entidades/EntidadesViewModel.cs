@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 using namasdev.Web.ViewModels;
-using namasdev.Apps.Web.Portal.Models.Entidades;
 using namasdev.Apps.Entidades.Metadata;
+using namasdev.Apps.Web.Portal.Models.Entidades;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
 {
@@ -12,7 +12,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
     {
         public EntidadesViewModel()
         {
-            ItemsPorPagina = 10;    
+            ItemsPorPagina = 20;    
         }
 
         public Guid AplicacionId { get; set; }

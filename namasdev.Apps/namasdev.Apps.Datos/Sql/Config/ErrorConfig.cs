@@ -21,7 +21,7 @@ namespace namasdev.Apps.Datos.Sql.Config
 
             Property(e => e.Source)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.ErrorMetadata.Source.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.ErrorMetadata.Propiedades.Source.TAMAÑO_MAX);
 
             Property(e => e.UserId)
                 .HasMaxLength(128);

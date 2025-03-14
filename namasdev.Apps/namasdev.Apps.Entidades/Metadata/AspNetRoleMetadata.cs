@@ -14,9 +14,12 @@ namespace namasdev.Apps.Entidades.Metadata
             public const string TABLA = "AspNetRoles";
         }
 
-        public class Name
+        public class Propiedades
         {
-            public const string ETIQUETA = "Nombre";
+            public class Name
+            {
+                public const string ETIQUETA = "Nombre";
+            }
         }
     }
 }

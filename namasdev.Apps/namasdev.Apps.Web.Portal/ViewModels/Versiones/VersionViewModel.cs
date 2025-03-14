@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 using namasdev.Apps.Entidades.Metadata;
-using System.Web.Mvc;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
 {
@@ -15,16 +15,16 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Versiones
 
         public Guid AplicacionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.AplicacionId.ETIQUETA)]
+        [Display(Name = AplicacionVersionMetadata.Propiedades.AplicacionId.ETIQUETA)]
         public string AplicacionNombre { get; set; }
 
         public Guid? AplicacionVersionId { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.Nombre.ETIQUETA),
+        [Display(Name = AplicacionVersionMetadata.Propiedades.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
-        [Display(Name = AplicacionVersionMetadata.AplicacionVersionIdBase.ETIQUETA)]
+        [Display(Name = AplicacionVersionMetadata.Propiedades.AplicacionVersionIdBase.ETIQUETA)]
         public Guid? AplicacionVersionIdBase { get; set; }
 
         public SelectList VersionesSelectList { get; set; }

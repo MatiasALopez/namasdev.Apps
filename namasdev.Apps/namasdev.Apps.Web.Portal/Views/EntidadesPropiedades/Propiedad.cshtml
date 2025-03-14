@@ -31,12 +31,12 @@
     <div class="form-row">
         <div class="form-group col-lg-6 col-md-12">
             @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Nombre.TAMAÑO_MAX })
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Propiedades.Nombre.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.Nombre)
         </div>
         <div class="form-group col-lg-6 col-md-12">
             @Html.LabelFor(m => m.Etiqueta, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Etiqueta, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Etiqueta.TAMAÑO_MAX })
+            @Html.TextBoxFor(m => m.Etiqueta, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.Etiqueta)
         </div>
         <div class="form-group col-lg-2 col-sm-4">
@@ -51,7 +51,7 @@
         </div>
         <div class="form-group col-12">
             @Html.LabelFor(m => m.CalculadaFormula)
-            @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control", maxlength = EntidadPropiedadMetadata.CalculadaFormula.TAMAÑO_MAX })
+            @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control", maxlength = EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.CalculadaFormula)
         </div>
         <div class="form-group col-lg-2 col-sm-4 col-6">

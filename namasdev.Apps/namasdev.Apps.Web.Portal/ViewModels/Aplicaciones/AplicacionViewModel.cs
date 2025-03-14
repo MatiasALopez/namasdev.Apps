@@ -14,7 +14,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
 
         public Guid? AplicacionId { get; set; }
 
-        [Display(Name = AplicacionMetadata.Nombre.ETIQUETA),
+        [Display(Name = AplicacionMetadata.Propiedades.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 

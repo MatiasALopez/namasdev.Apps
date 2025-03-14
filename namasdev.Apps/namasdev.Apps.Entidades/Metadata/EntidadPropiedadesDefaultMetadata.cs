@@ -15,24 +15,27 @@ namespace namasdev.Apps.Entidades.Metadata
             public const string ID = "EntidadId";
         }
 
-        public class IDPropiedadTipoId
+        public class Propiedades
         {
-            public const string ETIQUETA = "ID tipo";
-        }
+            public class IDPropiedadTipoId
+            {
+                public const string ETIQUETA = "ID tipo";
+            }
 
-        public class AuditoriaCreado
-        {
-            public const string ETIQUETA = "Auditoría creado";
-        }
+            public class AuditoriaCreado
+            {
+                public const string ETIQUETA = "Auditoría creado";
+            }
 
-        public class AuditoriaUltimaModificacion
-        {
-            public const string ETIQUETA = "Auditoría última modificación";
-        }
+            public class AuditoriaUltimaModificacion
+            {
+                public const string ETIQUETA = "Auditoría última modificación";
+            }
 
-        public class AuditoriaBorrado
-        {
-            public const string ETIQUETA = "Auditoría borrado";
+            public class AuditoriaBorrado
+            {
+                public const string ETIQUETA = "Auditoría borrado";
+            }
         }
     }
 }

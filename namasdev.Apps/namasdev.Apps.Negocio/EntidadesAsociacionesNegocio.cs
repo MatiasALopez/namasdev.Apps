@@ -21,6 +21,8 @@ namespace namasdev.Apps.Negocio
             string tablaAuxiliarNombre = null);
 
         void Actualizar(EntidadAsociacion asociacion, string usuarioId);
+
+        void Eliminar(Guid asociacionId, string usuarioId);
     }
 
     public class EntidadesAsociacionesNegocio : IEntidadesAsociacionesNegocio
@@ -71,6 +73,11 @@ namespace namasdev.Apps.Negocio
             ValidarDatos(asociacion);
 
             _entidadesAsociacionesRepositorio.Actualizar(asociacion);
+        }
+
+        public void Eliminar(Guid asociacionId, string usuarioId)
+        {
+            _entidadesAsociacionesRepositorio.Eliminar(new EntidadAsociacion { Id = asociacionId });
         }
 
         private void ValidarDatos(EntidadAsociacion entidad)

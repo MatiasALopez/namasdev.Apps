@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 using namasdev.Apps.Entidades.Metadata;
-using namasdev.Apps.Entidades;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones
 {

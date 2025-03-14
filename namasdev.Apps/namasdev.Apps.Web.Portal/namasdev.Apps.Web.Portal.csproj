@@ -217,6 +217,17 @@
     <Compile Include="Mappers\VersionesMapper.cs" />
     <Compile Include="Mappers\AplicacionesMapper.cs" />
     <Compile Include="Mappers\UsuariosMapper.cs" />
+    <Compile Include="Metadata\Textos.cs" />
+    <Compile Include="Metadata\Views\AccountViews.cs" />
+    <Compile Include="Metadata\Views\AplicacionesViews.cs" />
+    <Compile Include="Metadata\Views\EntidadesViews.cs" />
+    <Compile Include="Metadata\Views\EntidadesAsociacionesViews.cs" />
+    <Compile Include="Metadata\Views\EntidadesPropiedadesViews.cs" />
+    <Compile Include="Metadata\Views\HomeViews.cs" />
+    <Compile Include="Metadata\Views\SharedViews.cs" />
+    <Compile Include="Metadata\Views\TemplatesViews.cs" />
+    <Compile Include="Metadata\Views\UsuariosViews.cs" />
+    <Compile Include="Metadata\Views\VersionesViews.cs" />
     <Compile Include="Models\EntidadesAsociaciones\EntidadAsociacionItemModel.cs" />
     <Compile Include="Models\EntidadesPropiedades\EntidadPropiedadItemModel.cs" />
     <Compile Include="Models\Entidades\EntidadItemModel.cs" />
@@ -308,6 +319,7 @@
     <Content Include="Views\Templates\Tabla.cshtml" />
     <Content Include="Views\Templates\Entidad.cshtml" />
     <Content Include="Views\Shared\_EntidadesLayout.cshtml" />
+    <Content Include="Views\EntidadesAsociaciones\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

@@ -16,7 +16,7 @@ namespace namasdev.Apps.Datos.Sql.Config
 
             Property(p => p.Nombre)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.AsociacionMultiplicidadMetadata.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(Entidades.Metadata.AsociacionMultiplicidadMetadata.Propiedades.Nombre.TAMAÑO_MAX);
         }
     }
 }

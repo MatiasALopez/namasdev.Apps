@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 using namasdev.Apps.Entidades.Metadata;
-using System.Web.Mvc;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
 {
@@ -18,44 +18,44 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
         [Display(Name = AplicacionMetadata.ETIQUETA)]
         public string AplicacionNombre { get; set; }
 
-        [Display(Name = EntidadMetadata.AplicacionVersionId.ETIQUETA)]
+        [Display(Name = EntidadMetadata.Propiedades.AplicacionVersionId.ETIQUETA)]
         public Guid AplicacionVersionId { get; set; }
 
-        [Display(Name = EntidadMetadata.AplicacionVersionId.ETIQUETA)]
+        [Display(Name = EntidadMetadata.Propiedades.AplicacionVersionId.ETIQUETA)]
         public string AplicacionVersionNombre { get; set; }
 
         public Guid? EntidadId { get; set; }
 
-        [Display(Name = EntidadMetadata.Nombre.ETIQUETA),
+        [Display(Name = EntidadMetadata.Propiedades.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
 
-        [Display(Name = EntidadMetadata.NombrePlural.ETIQUETA),
+        [Display(Name = EntidadMetadata.Propiedades.NombrePlural.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string NombrePlural { get; set; }
 
-        [Display(Name = EntidadMetadata.Etiqueta.ETIQUETA),
+        [Display(Name = EntidadMetadata.Propiedades.Etiqueta.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Etiqueta { get; set; }
 
-        [Display(Name = EntidadMetadata.EtiquetaPlural.ETIQUETA),
+        [Display(Name = EntidadMetadata.Propiedades.EtiquetaPlural.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string EtiquetaPlural { get; set; }
 
         #region Propiedades default
 
-        [Display(Name = EntidadPropiedadesDefaultMetadata.IDPropiedadTipoId.ETIQUETA)]
+        [Display(Name = EntidadPropiedadesDefaultMetadata.Propiedades.IDPropiedadTipoId.ETIQUETA)]
         public short? PropiedadesDefaultIDPropiedadTipoId { get; set; }
 
-        [Display(Name = EntidadPropiedadesDefaultMetadata.AuditoriaCreado.ETIQUETA),
+        [Display(Name = EntidadPropiedadesDefaultMetadata.Propiedades.AuditoriaCreado.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public bool PropiedadesDefaultAuditoriaCreado { get; set; }
 
-        [Display(Name = EntidadPropiedadesDefaultMetadata.AuditoriaUltimaModificacion.ETIQUETA),
+        [Display(Name = EntidadPropiedadesDefaultMetadata.Propiedades.AuditoriaUltimaModificacion.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public bool PropiedadesDefaultAuditoriaUltimaModificacion { get; set; }
 
-        [Display(Name = EntidadPropiedadesDefaultMetadata.AuditoriaBorrado.ETIQUETA),
+        [Display(Name = EntidadPropiedadesDefaultMetadata.Propiedades.AuditoriaBorrado.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public bool PropiedadesDefaultAuditoriaBorrado { get; set; }
 

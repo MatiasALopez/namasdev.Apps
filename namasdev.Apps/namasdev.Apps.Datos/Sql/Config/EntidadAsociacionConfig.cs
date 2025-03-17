@@ -18,7 +18,7 @@ namespace namasdev.Apps.Datos.Sql.Config
                 .HasMaxLength(Entidades.Metadata.EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.TAMAÑO_MAX);
 
             HasRequired(p => p.OrigenEntidad)
-                .WithMany(p => p.Asociaciones)
+                .WithMany(p => p.AsociacionesOrigen)
                 .HasForeignKey(p => p.OrigenEntidadId);
 
             HasRequired(p => p.OrigenPropiedad)
@@ -28,6 +28,10 @@ namespace namasdev.Apps.Datos.Sql.Config
             HasRequired(p => p.OrigenMultiplicidad)
                 .WithMany()
                 .HasForeignKey(p => p.OrigenAsociacionMultiplicidadId);
+
+            HasRequired(p => p.DestinoEntidad)
+                .WithMany(p => p.AsociacionesDestino)
+                .HasForeignKey(p => p.DestinoEntidadId);
 
             HasRequired(p => p.DestinoPropiedad)
                 .WithMany()

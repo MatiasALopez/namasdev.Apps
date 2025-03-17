@@ -1,4 +1,5 @@
-﻿@model namasdev.Apps.Entidades.Entidad
+﻿@using namasdev.Apps.Entidades.Valores;
+@model namasdev.Apps.Entidades.Entidad
 @{
     string nombreTabla = Model.NombrePlural;
 
@@ -6,6 +7,42 @@
         Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
         ? $"Entidad{(Model.PropiedadesDefault.AuditoriaCreado ? "Creado" : "")}{(Model.PropiedadesDefault.AuditoriaUltimaModificacion ? "Modificado" : "")}{(Model.PropiedadesDefault.AuditoriaBorrado ? "Borrado" : "")}<{Model.PropiedadesDefault.IDTipo.CLRType}>"
         : null;
+
+    var propiedadesNavegacion = new List<string>();
+    string propiedadTipo,
+        propiedadNombre;
+    foreach (var a in Model.AsociacionesOrigen)
+    {
+        if (a.DestinoAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS)
+        {
+            propiedadTipo = $"List<{a.DestinoEntidad.Nombre}>";
+            propiedadNombre = a.DestinoEntidad.NombrePlural;
+        }
+        else
+        {
+            propiedadTipo = a.DestinoEntidad.Nombre;
+            propiedadNombre =
+                a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
+                ? namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id")
+                : a.DestinoEntidad.Nombre;
+        }
+
+        propiedadesNavegacion.Add($"{propiedadTipo} {propiedadNombre}");
+    }
+    foreach (var a in Model.AsociacionesDestino)
+    {
+        if (a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS)
+        {
+            propiedadTipo = $"List<{a.OrigenEntidad.Nombre}>";
+            propiedadNombre = a.OrigenEntidad.NombrePlural;
+        }
+        else
+        {
+            propiedadTipo = a.OrigenEntidad.Nombre;
+            propiedadNombre = namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id");
+        }
+        propiedadesNavegacion.Add($"{propiedadTipo} {propiedadNombre}");
+    }
 }
 <!DOCTYPE html>
 <html>
@@ -30,9 +67,9 @@
                 <text>public @p.Tipo.CLRType@(p.PermiteNull && p.Tipo.CLRType != "string" ? "?" : "") @p.Nombre { get; set; }</text>
             }
 
-            @foreach (var a in Model.Asociaciones)
+            @foreach (var p in propiedadesNavegacion)
             {
-                <text>public virtual @a.DestinoPropiedad.Entidad.Nombre @namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id") { get; set; }</text>
+                <text>public virtual @p { get; set; }</text>
             }
             }
         }

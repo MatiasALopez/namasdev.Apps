@@ -15,7 +15,8 @@ namespace namasdev.Apps.Entidades
         public virtual AplicacionVersion AplicacionVersion { get; set; }
         public virtual EntidadPropiedadesDefault PropiedadesDefault { get; set; }
         public virtual List<EntidadPropiedad> Propiedades { get; set; }
-        public virtual List<EntidadAsociacion> Asociaciones { get; set; }
+        public virtual List<EntidadAsociacion> AsociacionesOrigen { get; set; }
+        public virtual List<EntidadAsociacion> AsociacionesDestino { get; set; }
         public virtual List<EntidadClave> Claves { get; set; }
         public virtual List<EntidadIndice> Indices { get; set; }
 

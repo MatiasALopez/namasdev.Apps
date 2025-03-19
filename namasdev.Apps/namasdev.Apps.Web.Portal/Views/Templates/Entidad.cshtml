@@ -51,10 +51,10 @@
     <title>Script</title>
 </head>
 <body>
-    <code>
+    <pre><code>
         using System;
 
-        namespace @(Model.AplicacionVersion.Aplicacion.Nombre)
+        namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades
         {
             public partial class @Model.Nombre @(!string.IsNullOrWhiteSpace(claseBase) ? $": {claseBase}" : "")
             {
@@ -64,7 +64,7 @@
                 {
                     continue;
                 }
-                <text>public @p.Tipo.CLRType@(p.PermiteNull && p.Tipo.CLRType != "string" ? "?" : "") @p.Nombre { get; set; }</text>
+                <text>public @p.Tipo.CLRTypeConEspecificaciones(p) @p.Nombre { get; set; }</text>
             }
 
             @foreach (var p in propiedadesNavegacion)
@@ -73,6 +73,6 @@
             }
             }
         }
-    </code>
+    </code></pre>
 </body>
 </html>

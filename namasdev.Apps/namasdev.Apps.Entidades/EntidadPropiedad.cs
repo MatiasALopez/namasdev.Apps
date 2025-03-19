@@ -2,6 +2,7 @@
 
 using namasdev.Core.Entity;
 using namasdev.Apps.Entidades.Valores;
+using namasdev.Core.Types;
 
 namespace namasdev.Apps.Entidades
 {
@@ -9,65 +10,105 @@ namespace namasdev.Apps.Entidades
     {
         public Guid EntidadId { get; set; }
         public string Nombre { get; set; }
+
+        private string _nombreCamelCase;
+        public string NombreCamelCase
+        {
+            get { return _nombreCamelCase ?? (_nombreCamelCase = Nombre.ToFirstLetterLowercase()); }
+        }
+
         public string Etiqueta { get; set; }
         public short PropiedadTipoId { get; set; }
         public string PropiedadTipoEspecificaciones { get; set; }
         public bool PermiteNull { get; set; }
         public short Orden { get; set; }
         public string CalculadaFormula { get; set; }
+        public bool EsCalculada 
+        {
+            get { return !string.IsNullOrWhiteSpace(CalculadaFormula); }
+        }
+
         public bool GeneradaAlCrear { get; set; }
         public bool Editable { get; set; }
 
         public Entidad Entidad { get; set; }
         public PropiedadTipo Tipo { get; set; }
 
+        private PropiedadTipoEspecificacionesTexto _especificacionesTexto;
         public PropiedadTipoEspecificacionesTexto EspecificacionesTexto
         {
             get
             {
-                return PropiedadTipoId == PropiedadTipos.TEXTO
-                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesTexto>(PropiedadTipoEspecificaciones)
-                    : null;
+                return _especificacionesTexto ?? 
+                    (_especificacionesTexto = 
+                        PropiedadTipoId == PropiedadTipos.TEXTO
+                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesTexto>(PropiedadTipoEspecificaciones)
+                        : null);
             }
         }
 
+        private PropiedadTipoEspecificacionesDecimal _especificacionesDecimal;
         public PropiedadTipoEspecificacionesDecimal EspecificacionesDecimal
         {
             get
             {
-                return PropiedadTipoId == PropiedadTipos.DECIMAL
-                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimal>(PropiedadTipoEspecificaciones)
-                    : null;
+                return _especificacionesDecimal ??
+                    (_especificacionesDecimal = 
+                        PropiedadTipoId == PropiedadTipos.DECIMAL
+                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimal>(PropiedadTipoEspecificaciones)
+                        : null);
             }
         }
 
+        private PropiedadTipoEspecificacionesDecimalLargo _especificacionesDecimalLargo;
         public PropiedadTipoEspecificacionesDecimalLargo EspecificacionesDecimalLargo
         {
             get
             {
-                return PropiedadTipoId == PropiedadTipos.DECIMAL_LARGO
-                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimalLargo>(PropiedadTipoEspecificaciones)
-                    : null;
+                return _especificacionesDecimalLargo ??
+                    (_especificacionesDecimalLargo = 
+                        PropiedadTipoId == PropiedadTipos.DECIMAL_LARGO
+                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimalLargo>(PropiedadTipoEspecificaciones)
+                        : null);
             }
         }
 
+        private PropiedadTipoEspecificacionesEntero _especificacionesEntero;
         public PropiedadTipoEspecificacionesEntero EspecificacionesEntero
         {
             get
             {
-                return PropiedadTipoId == PropiedadTipos.ENTERO
-                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesEntero>(PropiedadTipoEspecificaciones)
-                    : null;
+                return _especificacionesEntero ??
+                    (_especificacionesEntero =
+                        PropiedadTipoId == PropiedadTipos.ENTERO
+                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesEntero>(PropiedadTipoEspecificaciones)
+                        : null);
             }
         }
 
+        private PropiedadTipoEspecificacionesEnteroCorto _especificacionesEnteroCorto;
+        public PropiedadTipoEspecificacionesEnteroCorto EspecificacionesEnteroCorto
+        {
+            get
+            {
+                return _especificacionesEnteroCorto ??
+                    (_especificacionesEnteroCorto =
+                        PropiedadTipoId == PropiedadTipos.ENTERO_CORTO
+                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesEnteroCorto>(PropiedadTipoEspecificaciones)
+                        : null);
+            }
+        }
+
+        private PropiedadTipoEspecificacionesEnteroLargo _especificacionesEnteroLargo;
         public PropiedadTipoEspecificacionesEnteroLargo EspecificacionesEnteroLargo
         {
             get
             {
-                return PropiedadTipoId == PropiedadTipos.ENTERO_LARGO
-                    ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesEnteroLargo>(PropiedadTipoEspecificaciones)
-                    : null;
+                return _especificacionesEnteroLargo ??
+                    (_especificacionesEnteroLargo = 
+                        PropiedadTipoId == PropiedadTipos.ENTERO_LARGO
+                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesEnteroLargo>(PropiedadTipoEspecificaciones)
+                        : null);
             }
         }
 

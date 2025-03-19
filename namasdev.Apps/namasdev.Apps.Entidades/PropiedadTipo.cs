@@ -15,6 +15,13 @@ namespace namasdev.Apps.Entidades
             return Nombre;
         }
 
+        public string CLRTypeConEspecificaciones(EntidadPropiedad propiedad)
+        {
+            return propiedad.PermiteNull && Id != PropiedadTipos.TEXTO
+                ? $"{CLRType}?"
+                : CLRType;
+        }
+
         public string TSQLTypeConEspecificaciones(EntidadPropiedad propiedad)
         {
             switch (Id)

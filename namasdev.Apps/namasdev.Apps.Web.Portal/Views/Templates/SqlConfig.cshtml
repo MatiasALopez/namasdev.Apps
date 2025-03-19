@@ -4,10 +4,10 @@
 @{
     string nombreClase = $"{Model.Nombre}Config";
 
-    string claseBase =
-        Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
-        ? $"{(Model.PropiedadesDefault.AuditoriaBorrado ? "EntidadBorradoConfigBase" : "EntityTypeConfiguration")}<{Model.Nombre}>"
-        : null;
+    string claseConfigBase =
+        Model.PropiedadesDefault.IDPropiedadTipoId.HasValue && Model.PropiedadesDefault.AuditoriaBorrado
+        ? "EntidadBorradoConfigBase" 
+        : "EntityTypeConfiguration";
 
     string claseMetadata = $"Entidades.Metadata.EntidadMetadata.{Model.Nombre}Metadata";
 
@@ -61,7 +61,7 @@
         origenPropiedadNavegacionNombre,
         destinoPropiedadNavegacionNombre; // TODO (ML): falta mapear correctamente en Entidad
     bool asociacionTieneReglaForeignKey;
-    foreach (var a in Model.Asociaciones)
+    foreach (var a in Model.AsociacionesOrigen)
     {
         asociacionParte1Regla = asociacionParte2Regla = null;
         asociacionTieneReglaForeignKey = false;
@@ -136,43 +136,42 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>Script</title>
+    <title>Datos.Sql.Config</title>
 </head>
 <body>
-    <code>
-        using namasdev.Data.Entity.Config;
-        using @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades;
+    <pre><code>
+using namasdev.Data.Entity.Config;
+using @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades;
 
-        namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Datos.Sql.Config
+namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Datos.Sql.Config
+{
+    public class @nombreClase : @claseConfigBase<@Model.Nombre>
+    {
+        public @(nombreClase)()
         {
-            public class @nombreClase : @claseBase
-            {
-                public @(nombreClase)()
-                {
-                    ToTable(@(claseMetadata).BD.TABLA);
-                    @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
-                    {
-                        <text>HasKey(p => p.Id);</text>
-                    }
-                    else if (Model.Claves?.Count == 1)
-                    {
-                        <text>HasKey(p => p.@Model.Claves[0].Propiedad.Nombre);</text>
-                    } 
-                    else if (Model.Claves?.Count > 1)
-                    {
-                        <text>HasKey(p => new { @string.Join(", ", Model.Claves.Select(c => $"p.{c.Propiedad.Nombre}")) });</text>
-                    }
-                    @foreach (var p in propiedadesReglas)
-                    {
-                        <text>Property(p => @p.Key).@p.Value;</text>
-                    }
-                    @foreach (var a in asociaciones)
-                    {
-                        <text>@a;</text>
-                    }
-                }
-            }
+            ToTable(@(claseMetadata).BD.TABLA);
+        @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
+        {
+            <text>HasKey(p => p.Id);</text>
         }
-    </code>
+        else if (Model.Claves?.Count == 1)
+        {
+            <text>HasKey(p => p.@Model.Claves[0].Propiedad.Nombre);</text>
+        } 
+        else if (Model.Claves?.Count > 1)
+        {
+            <text>HasKey(p => new { @string.Join(", ", Model.Claves.Select(c => $"p.{c.Propiedad.Nombre}")) });</text>
+        }
+    @foreach (var p in propiedadesReglas)
+    {
+        <text>Property(p => @p.Key).@p.Value;
+    </text>}
+    @foreach (var a in asociaciones)
+    {
+    <text>@a;</text>}
+}
+    }
+}
+    </code></pre>
 </body>
 </html>

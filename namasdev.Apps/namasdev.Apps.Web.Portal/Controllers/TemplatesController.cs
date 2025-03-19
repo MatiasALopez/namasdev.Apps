@@ -22,6 +22,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Actions
 
+        public ActionResult Tabla(Guid id)
+        {
+            var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
+            entidad.Propiedades = entidad.Propiedades.OrderBy(p => p.Orden).ToList();
+            return View(entidad);
+        }
+
         public ActionResult Entidad(Guid id)
         {
             var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
@@ -29,14 +36,20 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return View(entidad);
         }
 
-        public ActionResult DatosEntidadSqlConfig(Guid id)
+        public ActionResult SqlConfig(Guid id)
         {
             var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
             entidad.Propiedades = entidad.Propiedades.OrderBy(p => p.Orden).ToList();
             return View(entidad);
         }
 
-        public ActionResult Tabla(Guid id)
+        public ActionResult Repositorio(Guid id)
+        {
+            var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
+            return View(entidad);
+        }
+
+        public ActionResult Negocio(Guid id)
         {
             var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
             entidad.Propiedades = entidad.Propiedades.OrderBy(p => p.Orden).ToList();

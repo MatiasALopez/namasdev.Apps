@@ -65,6 +65,30 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return View(entidad);
         }
 
+        public ActionResult ItemModel(Guid id)
+        {
+            var entidad = ObtenerEntidad(id);
+            return View(entidad);
+        }
+
+        public ActionResult ListaViewModel(Guid id)
+        {
+            var entidad = ObtenerEntidad(id, ordenarPropiedades: false);
+            return View(entidad);
+        }
+
+        public ActionResult EntidadViewModel(Guid id)
+        {
+            var entidad = ObtenerEntidad(id);
+            return View(entidad);
+        }
+
+        public ActionResult ViewsMetadata(Guid id)
+        {
+            var entidad = ObtenerEntidad(id, ordenarPropiedades: false);
+            return View(entidad);
+        }
+
         public ActionResult Controller(Guid id)
         {
             var entidad = ObtenerEntidad(id);

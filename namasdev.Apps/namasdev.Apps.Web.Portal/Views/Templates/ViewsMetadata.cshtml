@@ -1,0 +1,26 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Views Metadata</title>
+</head>
+<body>
+    <pre><code>
+namespace @(namespaces.Aplicacion).Web.Portal.Metadata.Views
+{
+    public class @(Model.NombrePlural)Views
+    {
+        public const string INDEX = "Index";
+        public const string ENTIDAD = "@Model.Nombre";
+    }
+}
+    </code></pre>
+</body>
+</html>

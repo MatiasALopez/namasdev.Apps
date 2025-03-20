@@ -8,18 +8,22 @@ namespace namasdev.Apps.Entidades
     {
         public string Nombre { get; set; }
         public string CLRType { get; set; }
+        public string CLRTypeNullable 
+        {
+            get 
+            { 
+                return 
+                    Id != PropiedadTipos.TEXTO
+                    ? $"{CLRType}?"
+                    : CLRType;
+            }
+        }
+
         public string TSQLType { get; set; }
 
         public override string ToString()
         {
             return Nombre;
-        }
-
-        public string CLRTypeConEspecificaciones(EntidadPropiedad propiedad)
-        {
-            return propiedad.PermiteNull && Id != PropiedadTipos.TEXTO
-                ? $"{CLRType}?"
-                : CLRType;
         }
 
         public string TSQLTypeConEspecificaciones(EntidadPropiedad propiedad)

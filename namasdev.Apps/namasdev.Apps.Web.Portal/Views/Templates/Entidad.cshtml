@@ -62,7 +62,7 @@
                 {
                     continue;
                 }
-                <text>public @p.Tipo.CLRTypeConEspecificaciones(p) @p.Nombre { get; set; }</text>
+                <text>public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @p.Nombre { get; set; }</text>
             }
 
             @foreach (var p in propiedadesNavegacion)

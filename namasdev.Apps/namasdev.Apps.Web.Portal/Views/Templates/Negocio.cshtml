@@ -31,7 +31,7 @@
         }
         if (!p.EsCalculada)
         {
-            agregarParametros.Add($"{p.Tipo.CLRTypeConEspecificaciones(p)} {p.NombreCamelCase}");
+            agregarParametros.Add($"{(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType)} {p.NombreCamelCase}");
             agregarPropiedadesAsignacion.Add($"{p.Nombre} = {p.NombreCamelCase}");
         }
     }

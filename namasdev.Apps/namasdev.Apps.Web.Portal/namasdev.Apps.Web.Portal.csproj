@@ -326,6 +326,10 @@
     <Content Include="Views\Templates\EntidadMetadata.cshtml" />
     <Content Include="Views\Templates\Controller.cshtml" />
     <Content Include="Views\Templates\Mapper.cshtml" />
+    <Content Include="Views\Templates\ItemModel.cshtml" />
+    <Content Include="Views\Templates\ListaViewModel.cshtml" />
+    <Content Include="Views\Templates\EntidadViewModel.cshtml" />
+    <Content Include="Views\Templates\ViewsMetadata.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

@@ -6,11 +6,6 @@ namespace namasdev.Apps.Entidades.Valores
         public class Id
         {
             public const string ETIQUETA = "ID";
-            
-            public static string Nombre(Entidad entidad)
-            {
-                return $"{entidad.Nombre}Id";
-            }
         }
 
         public class CreadoPor

@@ -117,16 +117,45 @@ namespace namasdev.Apps.Entidades
             return Nombre;
         }
 
-        public bool EsPropiedadDefault()
+        public bool EsId()
         {
-            return Nombre == EntidadPropiedades.Id.Nombre(Entidad)
-                || Nombre == EntidadPropiedades.CreadoPor.NOMBRE
-                || Nombre == EntidadPropiedades.CreadoFecha.NOMBRE
-                || Nombre == EntidadPropiedades.UltimaModificacionPor.NOMBRE
-                || Nombre == EntidadPropiedades.UltimaModificacionFecha.NOMBRE
-                || Nombre == EntidadPropiedades.BorradoPor.NOMBRE
+            return Nombre == IdNombre(this.Entidad);
+        }
+
+        public bool EsAuditoria()
+        {
+            return EsAuditoriaCreado()
+                || EsAuditoriaUltimaModificacion()
+                || EsAuditoriaBorrado();
+        }
+
+        public bool EsAuditoriaCreado()
+        {
+            return Nombre == EntidadPropiedades.CreadoPor.NOMBRE
+                || Nombre == EntidadPropiedades.CreadoFecha.NOMBRE;
+        }
+
+        public bool EsAuditoriaUltimaModificacion()
+        {
+            return Nombre == EntidadPropiedades.UltimaModificacionPor.NOMBRE
+                || Nombre == EntidadPropiedades.UltimaModificacionFecha.NOMBRE;
+        }
+
+        public bool EsAuditoriaBorrado()
+        {
+            return Nombre == EntidadPropiedades.BorradoPor.NOMBRE
                 || Nombre == EntidadPropiedades.BorradoFecha.NOMBRE
                 || Nombre == EntidadPropiedades.Borrado.NOMBRE;
+        }
+
+        public bool EsPropiedadDefault()
+        {
+            return EsId() || EsAuditoria();
+        }
+
+        public static string IdNombre(Entidad entidad)
+        {
+            return $"{entidad.Nombre}Id";
         }
     }
 }

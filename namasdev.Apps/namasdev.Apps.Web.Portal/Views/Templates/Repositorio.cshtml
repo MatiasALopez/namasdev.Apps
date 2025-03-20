@@ -1,9 +1,20 @@
 ﻿@model namasdev.Apps.Entidades.Entidad
 @{
-    string namespaceBase = Model.AplicacionVersion.Aplicacion.Nombre,
-        claseNombre = $"{Model.NombrePlural}Repositorio",
-        interfazNombre = $"I{claseNombre}",
-        claveTipo = Model.PropiedadesDefault?.IDTipo?.CLRType,
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Datos = $"{Model.AplicacionVersion.Aplicacion.Nombre}.Datos",
+    };
+    var clases = new
+    {
+        Repositorio = $"{Model.NombrePlural}Repositorio"
+    };
+    var interfaces = new 
+    {
+        Repositorio = $"I{clases.Repositorio}"
+    };
+
+    string claveTipo = Model.PropiedadesDefault?.IDTipo?.CLRType,
         tiposGenericosEntidadYId = $"{Model.Nombre}, {claveTipo}";
 
     bool usarRepositorioBase = !string.IsNullOrWhiteSpace(claveTipo);
@@ -23,16 +34,16 @@ using System.Linq;
 using namasdev.Core.Types;
 using namasdev.Data;
 using namasdev.Data.Entity;
-using @(namespaceBase).Entidades;
-using @(namespaceBase).Datos.Sql;
+using @(namespaces.Aplicacion).Entidades;
+using @(namespaces.Datos).Sql;
 
-namespace @(namespaceBase).Datos
+namespace @(namespaces.Datos)
 {
-    public interface @interfazNombre @(usarRepositorioBase ? $": IRepositorio<{@tiposGenericosEntidadYId}>" : "")
+    public interface @interfaces.Repositorio @(usarRepositorioBase ? $": IRepositorio<{@tiposGenericosEntidadYId}>" : "")
     {
     }
 
-    public class @claseNombre : @(usarRepositorioBase ? $"Repositorio<SqlContext, {tiposGenericosEntidadYId}>, " : "")@interfazNombre
+    public class @clases.Repositorio : @(usarRepositorioBase ? $"Repositorio<SqlContext, {tiposGenericosEntidadYId}>, " : "")@interfaces.Repositorio
     {
     }
 }

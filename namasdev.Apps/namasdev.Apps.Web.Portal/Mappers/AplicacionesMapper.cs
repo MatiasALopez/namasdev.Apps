@@ -30,7 +30,7 @@ namespace namasdev.Apps.Web.Portal.Mappers
 
             return new Aplicacion
             {
-                Id = modelo.AplicacionId ?? Guid.Empty,
+                Id = modelo.AplicacionId ?? default,
                 Nombre = modelo.Nombre,
             };
         }

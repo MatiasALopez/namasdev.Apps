@@ -1,5 +1,4 @@
 ﻿@using namasdev.Core.Types;
-@using namasdev.Apps.Entidades;
 @using namasdev.Apps.Entidades.Valores;
 @model namasdev.Apps.Entidades.Entidad
 @{
@@ -26,6 +25,10 @@
     var agregarPropiedadesAsignacion = new List<string>();
     foreach (var p in Model.Propiedades)
     {
+        if (p.EsId())
+        {
+            continue;
+        }
         if (!p.EsCalculada)
         {
             agregarParametros.Add($"{p.Tipo.CLRTypeConEspecificaciones(p)} {p.NombreCamelCase}");

@@ -1,12 +1,10 @@
 ﻿@using namasdev.Apps.Entidades.Valores;
 @model namasdev.Apps.Entidades.Entidad
 @{
-    string nombreTabla = Model.NombrePlural;
-
     string claseBase =
         Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
-        ? $"Entidad{(Model.PropiedadesDefault.AuditoriaCreado ? "Creado" : "")}{(Model.PropiedadesDefault.AuditoriaUltimaModificacion ? "Modificado" : "")}{(Model.PropiedadesDefault.AuditoriaBorrado ? "Borrado" : "")}<{Model.PropiedadesDefault.IDTipo.CLRType}>"
-        : null;
+        ? $": Entidad{(Model.PropiedadesDefault.AuditoriaCreado ? "Creado" : "")}{(Model.PropiedadesDefault.AuditoriaUltimaModificacion ? "Modificado" : "")}{(Model.PropiedadesDefault.AuditoriaBorrado ? "Borrado" : "")}<{Model.PropiedadesDefault.IDTipo.CLRType}>"
+        : "";
 
     var propiedadesNavegacion = new List<string>();
     string propiedadTipo,
@@ -56,7 +54,7 @@
 
         namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades
         {
-            public partial class @Model.Nombre @(!string.IsNullOrWhiteSpace(claseBase) ? $": {claseBase}" : "")
+            public partial class @Model.Nombre @claseBase
             {
             @foreach (var p in Model.Propiedades)
             {

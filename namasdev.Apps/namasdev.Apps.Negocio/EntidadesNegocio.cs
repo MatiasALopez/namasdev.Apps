@@ -135,7 +135,7 @@ namespace namasdev.Apps.Negocio
                 {
                     Id = Guid.NewGuid(),
                     EntidadId = entidad.Id,
-                    Nombre = EntidadPropiedades.Id.Nombre(entidad),
+                    Nombre = EntidadPropiedad.IdNombre(entidad),
                     Etiqueta = EntidadPropiedades.Id.ETIQUETA,
                     PropiedadTipoId = propiedadesDefault.IDPropiedadTipoId.Value,
                     PermiteNull = false,

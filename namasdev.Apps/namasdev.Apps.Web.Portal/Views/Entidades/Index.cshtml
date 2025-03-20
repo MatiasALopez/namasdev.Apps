@@ -78,6 +78,7 @@
                                             <div class="dropdown-divider"></div>
                                             <h6 class="dropdown-header">Entidades</h6>
                                             <a class="dropdown-item" href="@Url.Action("Entidad", "Templates", new { id = item.EntidadId })" target="_blank">Entidad</a>
+                                            <a class="dropdown-item" href="@Url.Action("EntidadMetadata", "Templates", new { id = item.EntidadId })" target="_blank">Metadata</a>
                                             <div class="dropdown-divider"></div>
                                             <h6 class="dropdown-header">Datos</h6>
                                             <a class="dropdown-item" href="@Url.Action("SqlConfig", "Templates", new { id = item.EntidadId })" target="_blank">SQL Config</a>
@@ -85,6 +86,10 @@
                                             <div class="dropdown-divider"></div>
                                             <h6 class="dropdown-header">Negocio</h6>
                                             <a class="dropdown-item" href="@Url.Action("Negocio", "Templates", new { id = item.EntidadId })" target="_blank">Negocio</a>
+                                            <div class="dropdown-divider"></div>
+                                            <h6 class="dropdown-header">Web</h6>
+                                            <a class="dropdown-item" href="@Url.Action("Mapper", "Templates", new { id = item.EntidadId })" target="_blank">Mapper</a>
+                                            <a class="dropdown-item" href="@Url.Action("Controller", "Templates", new { id = item.EntidadId })" target="_blank">Controller</a>
                                         </div>
                                     </div>
                                     <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>

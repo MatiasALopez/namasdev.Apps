@@ -2,14 +2,19 @@
 @using namasdev.Apps.Entidades.Valores;
 @model namasdev.Apps.Entidades.Entidad
 @{
-    string nombreClase = $"{Model.Nombre}Config";
-
-    string claseConfigBase =
-        Model.PropiedadesDefault.IDPropiedadTipoId.HasValue && Model.PropiedadesDefault.AuditoriaBorrado
-        ? "EntidadBorradoConfigBase" 
-        : "EntityTypeConfiguration";
-
-    string claseMetadata = $"Entidades.Metadata.EntidadMetadata.{Model.Nombre}Metadata";
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        Config = $"{Model.Nombre}Config",
+        ConfigBase =
+            Model.PropiedadesDefault.IDPropiedadTipoId.HasValue && Model.PropiedadesDefault.AuditoriaBorrado
+            ? "EntidadBorradoConfigBase"
+            : "EntityTypeConfiguration",
+        Metadata = $"Entidades.Metadata.EntidadMetadata.{Model.Nombre}Metadata",
+    };
 
     var propiedadesReglas = new Dictionary<string, string>();
     List<string> propiedadReglas;
@@ -21,7 +26,7 @@
             case PropiedadTipos.TEXTO:
                 if (p.Nombre == namasdev.Apps.Entidades.Valores.EntidadPropiedades.Id.Nombre(Model))
                 {
-                    propiedadReglas.Add($"HasColumnName({claseMetadata}.BD.ID)");
+                    propiedadReglas.Add($"HasColumnName({clases.Metadata}.BD.ID)");
                 }
                 if (!p.PermiteNull)
                 {
@@ -58,15 +63,15 @@
     var asociaciones = new List<string>();
     string asociacionParte1Regla,
         asociacionParte2Regla,
-        origenPropiedadNavegacionNombre,
-        destinoPropiedadNavegacionNombre; // TODO (ML): falta mapear correctamente en Entidad
+        origenPropiedadNavegacion,
+        destinoPropiedadNavegacion;
     bool asociacionTieneReglaForeignKey;
     foreach (var a in Model.AsociacionesOrigen)
     {
         asociacionParte1Regla = asociacionParte2Regla = null;
         asociacionTieneReglaForeignKey = false;
-        origenPropiedadNavegacionNombre = namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id");
-        destinoPropiedadNavegacionNombre = namasdev.Core.Types.StringExtensiones.TrimEnd(a.DestinoPropiedad.Nombre, "Id");
+        origenPropiedadNavegacion = namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id");
+        destinoPropiedadNavegacion = namasdev.Core.Types.StringExtensiones.TrimEnd(a.DestinoPropiedad.Nombre, "Id");
         switch (a.DestinoAsociacionMultiplicidadId)
         {
             case AsociacionMultiplicidades.CERO_UNO:
@@ -129,7 +134,7 @@
 
                 break;
         }
-        asociaciones.Add($"{asociacionParte1Regla}(p => p.{origenPropiedadNavegacionNombre}).{asociacionParte2Regla}(p => p.{destinoPropiedadNavegacionNombre}){(asociacionTieneReglaForeignKey ? $".HasForeignKey(p => p.{a.DestinoPropiedad.Nombre})" : "")}");
+        asociaciones.Add($"{asociacionParte1Regla}(p => p.{origenPropiedadNavegacion}).{asociacionParte2Regla}(p => p.{destinoPropiedadNavegacion}){(asociacionTieneReglaForeignKey ? $".HasForeignKey(p => p.{a.DestinoPropiedad.Nombre})" : "")}");
     }
 }
 <!DOCTYPE html>
@@ -141,15 +146,15 @@
 <body>
     <pre><code>
 using namasdev.Data.Entity.Config;
-using @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades;
+using @(namespaces.Aplicacion).Entidades;
 
-namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Datos.Sql.Config
+namespace @(namespaces.Aplicacion).Datos.Sql.Config
 {
-    public class @nombreClase : @claseConfigBase<@Model.Nombre>
+    public class @clases.Config : @($"{clases.ConfigBase}<{Model.Nombre}>")
     {
-        public @(nombreClase)()
+        public @(clases.Config)()
         {
-            ToTable(@(claseMetadata).BD.TABLA);
+            ToTable(@(clases.Metadata).BD.TABLA);
         @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
         {
             <text>HasKey(p => p.Id);</text>

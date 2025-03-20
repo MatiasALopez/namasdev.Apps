@@ -323,6 +323,9 @@
     <Content Include="Views\Templates\SqlConfig.cshtml" />
     <Content Include="Views\Templates\Repositorio.cshtml" />
     <Content Include="Views\Templates\Negocio.cshtml" />
+    <Content Include="Views\Templates\EntidadMetadata.cshtml" />
+    <Content Include="Views\Templates\Controller.cshtml" />
+    <Content Include="Views\Templates\Mapper.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

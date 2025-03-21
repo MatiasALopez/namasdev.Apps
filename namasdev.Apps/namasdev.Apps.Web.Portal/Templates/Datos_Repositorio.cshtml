@@ -31,11 +31,11 @@ using @(namespaces.Datos).Sql;
 
 namespace @(namespaces.Datos)
 {
-    public interface @interfaces.Repositorio @(usarRepositorioBase ? string.Format(": IRepositorio<{0}>", tiposGenericosEntidadYId) : "")
+    public interface @interfaces.Repositorio @Raw(usarRepositorioBase ? string.Format(": IRepositorio<{0}>", tiposGenericosEntidadYId) : "")
     {
     }
 
-    public class @clases.Repositorio : @(usarRepositorioBase ? string.Format("Repositorio<SqlContext, {0}>, ", tiposGenericosEntidadYId) : "")@interfaces.Repositorio
+    public class @clases.Repositorio : @Raw(usarRepositorioBase ? string.Format("Repositorio<SqlContext, {0}>, ", tiposGenericosEntidadYId) : "")@interfaces.Repositorio
     {
     }
 }

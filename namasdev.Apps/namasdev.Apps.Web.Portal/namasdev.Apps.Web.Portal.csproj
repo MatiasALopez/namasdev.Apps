@@ -316,20 +316,8 @@
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesTexto.cshtml" />
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesDecimal.cshtml" />
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesEntero.cshtml" />
-    <Content Include="Views\Templates\Tabla.cshtml" />
-    <Content Include="Views\Templates\Entidad.cshtml" />
     <Content Include="Views\Shared\_EntidadesLayout.cshtml" />
     <Content Include="Views\EntidadesAsociaciones\Index.cshtml" />
-    <Content Include="Views\Templates\SqlConfig.cshtml" />
-    <Content Include="Views\Templates\Repositorio.cshtml" />
-    <Content Include="Views\Templates\Negocio.cshtml" />
-    <Content Include="Views\Templates\EntidadMetadata.cshtml" />
-    <Content Include="Views\Templates\Controller.cshtml" />
-    <Content Include="Views\Templates\Mapper.cshtml" />
-    <Content Include="Views\Templates\ItemModel.cshtml" />
-    <Content Include="Views\Templates\ListaViewModel.cshtml" />
-    <Content Include="Views\Templates\EntidadViewModel.cshtml" />
-    <Content Include="Views\Templates\ViewsMetadata.cshtml" />
     <Content Include="Templates\Datos_Repositorio.cshtml" />
     <Content Include="Templates\Datos_SqlConfig.cshtml" />
     <Content Include="Templates\Entidades_Entidad.cshtml" />
@@ -342,6 +330,7 @@
     <Content Include="Templates\Web_ListaViewModel.cshtml" />
     <Content Include="Templates\Web_Mapper.cshtml" />
     <Content Include="Templates\Web_ViewsMetadata.cshtml" />
+    <Content Include="Templates\Web_IndexView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

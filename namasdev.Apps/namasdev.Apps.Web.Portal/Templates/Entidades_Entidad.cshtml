@@ -49,9 +49,11 @@
 }
 using System;
 
+using namasdev.Core.Entity;
+
 namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades
 {
-    public partial class @Model.Nombre @claseBase
+    public partial class @Model.Nombre @Raw(claseBase)
     {
     @foreach (var p in Model.Propiedades)
     {
@@ -64,7 +66,7 @@ namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades
 
     @foreach (var p in propiedadesNavegacion)
     {
-        <text>public virtual @p { get; set; }</text>
+        <text>public virtual @Raw(p) { get; set; }</text>
     }
     }
 }

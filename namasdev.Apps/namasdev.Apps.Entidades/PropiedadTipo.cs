@@ -38,10 +38,6 @@ namespace namasdev.Apps.Entidades
                     var especificacionesDecimal = propiedad.EspecificacionesDecimal;
                     return $"{TSQLType}({especificacionesDecimal.DigitosEnteros+especificacionesDecimal.DigitosDecimales},{especificacionesDecimal.DigitosDecimales})";
 
-                case PropiedadTipos.DECIMAL_LARGO:
-                    var especificacionesDecimalLargo = propiedad.EspecificacionesDecimalLargo;
-                    return $"{TSQLType}({especificacionesDecimalLargo.DigitosEnteros + especificacionesDecimalLargo.DigitosDecimales},{especificacionesDecimalLargo.DigitosDecimales})";
-
                 default:
                     return TSQLType;
             }

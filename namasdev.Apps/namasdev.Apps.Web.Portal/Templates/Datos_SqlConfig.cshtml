@@ -1,5 +1,5 @@
 ﻿@using namasdev.Core.Types;
-@using namasdev.Apps.Entidades;
+@using namasdev.Apps.Entidades.Metadata;
 @using namasdev.Apps.Entidades.Valores;
 @model namasdev.Apps.Entidades.Entidad
 @{
@@ -14,7 +14,7 @@
             Model.PropiedadesDefault.IDPropiedadTipoId.HasValue && Model.PropiedadesDefault.AuditoriaBorrado
             ? "EntidadBorradoConfigBase"
             : "EntityTypeConfiguration",
-        Metadata = string.Format("Entidades.Metadata.EntidadMetadata.{0}Metadata", Model.Nombre),
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
     };
 
     var propiedadesReglas = new Dictionary<string, string>();
@@ -48,16 +48,10 @@
                     propiedadReglas.Add(string.Format("HasPrecision({0},{1})", p.EspecificacionesDecimal.DigitosEnteros + p.EspecificacionesDecimal.DigitosDecimales, p.EspecificacionesDecimal.DigitosDecimales));
                 }
                 break;
-            case PropiedadTipos.DECIMAL_LARGO:
-                if (p.EspecificacionesDecimalLargo != null)
-                {
-                    propiedadReglas.Add(string.Format("HasPrecision({0},{1})", p.EspecificacionesDecimalLargo.DigitosEnteros + p.EspecificacionesDecimalLargo.DigitosDecimales, p.EspecificacionesDecimalLargo.DigitosDecimales));
-                }
-                break;
         }
         if (propiedadReglas.Any())
         {
-            propiedadesReglas.Add(p.Nombre, Formateador.FormatoLista(propiedadReglas, "."));
+            propiedadesReglas.Add(string.Format("p.{0}", p.Nombre), Formateador.FormatoLista(propiedadReglas, "."));
         }
     }
 
@@ -140,14 +134,15 @@
 }
 using namasdev.Data.Entity.Config;
 using @(namespaces.Aplicacion).Entidades;
+using @(namespaces.Aplicacion).Entidades.Metadata;
 
 namespace @(namespaces.Aplicacion).Datos.Sql.Config
 {
-    public class @clases.Config : @(string.Format("{0}<{1}>", clases.ConfigBase, Model.Nombre))
+    public class @clases.Config : @Raw(string.Format("{0}<{1}>", clases.ConfigBase, Model.Nombre))
     {
-    public @(clases.Config)()
-    {
-    ToTable(@(clases.Metadata).BD.TABLA);
+        public @(clases.Config)()
+        {
+            ToTable(@(clases.Metadata).BD.TABLA);
     @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
     {
         <text>HasKey(p => p.Id);</text>
@@ -162,11 +157,12 @@ namespace @(namespaces.Aplicacion).Datos.Sql.Config
     }
     @foreach (var p in propiedadesReglas)
     {
-        <text>Property(p => @p.Key).@p.Value;
-        </text>}
+        <text>Property(p => @p.Key).@p.Value;</text>
+    }
     @foreach (var a in asociaciones)
     {
-        <text>@a;</text>}
+        <text>@a;</text>
     }
+        }
     }
-    }
+}

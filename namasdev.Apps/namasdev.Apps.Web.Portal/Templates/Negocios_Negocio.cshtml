@@ -29,7 +29,7 @@
         {
             continue;
         }
-        if (!p.EsCalculada)
+        if (!p.EsCalculada && !p.EsAuditoria())
         {
             agregarParametros.Add(string.Format("{0} {1}", (p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType), p.NombreCamelCase));
             agregarPropiedadesAsignacion.Add(string.Format("{0} = {1}", p.Nombre, p.NombreCamelCase));
@@ -54,10 +54,10 @@ namespace @(namespaceBase).Negocio
         @clasesNombres.Entidad Agregar(@agregarListaParametros, string @variablesNombres.UsuarioId);
         void Actualizar(@clasesNombres.Entidad entidad, string @variablesNombres.UsuarioId);
         @if (Model.PropiedadesDefault.AuditoriaBorrado) 
-        {<text> 
-        void MarcarComoBorrado(Guid id, string usuarioLogueadoId);
-        void DesmarcarComoBorrado(Guid id);
-        </text>}
+        {
+        <text>void MarcarComoBorrado(Guid id, string @variablesNombres.UsuarioId);
+        void DesmarcarComoBorrado(Guid id);</text>
+        }
     }
 
     public class @clasesNombres.Negocio : @interfacesNombres.Negocio
@@ -71,27 +71,29 @@ namespace @(namespaceBase).Negocio
             _@variablesNombres.Repositorio = @variablesNombres.Repositorio;
         }
 
-        public @clasesNombres.Entidad Agregar(@agregarListaParametros)
+        public @clasesNombres.Entidad Agregar(@agregarListaParametros, string @variablesNombres.UsuarioId)
         {
             DateTime fechaHora = DateTime.Now;
 
             var entidad = new @clasesNombres.Entidad
             {
-                @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
-                {
-                    <text>Id = Guid.NewGuid(),</text>
-                }
-                @foreach (var p in agregarPropiedadesAsignacion)
-                {
-                    <text>@p,</text>
-                }
+            @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
+            {
+                <text>Id = Guid.NewGuid(),</text>
+            }
+            @foreach (var p in agregarPropiedadesAsignacion)
+            {
+                <text>@p,</text>
+            }
             };
-            @if (Model.PropiedadesDefault.AuditoriaCreado) {<text>
-            entidad.EstablecerDatosCreado(@variablesNombres.UsuarioId, fechaHora);
-            </text> }
-            @if (Model.PropiedadesDefault.AuditoriaUltimaModificacion) {<text>
-            entidad.EstablecerDatosModificacion(@variablesNombres.UsuarioId, fechaHora);
-            </text> }
+            @if (Model.PropiedadesDefault.AuditoriaCreado) 
+            {
+            <text>entidad.EstablecerDatosCreado(@variablesNombres.UsuarioId, fechaHora);</text> 
+            }
+            @if (Model.PropiedadesDefault.AuditoriaUltimaModificacion) 
+            {
+            <text>entidad.EstablecerDatosModificacion(@variablesNombres.UsuarioId, fechaHora);</text> 
+            }
             ValidarDatos(entidad);
 
             _@(variablesNombres.Repositorio).Agregar(entidad);
@@ -111,7 +113,8 @@ namespace @(namespaceBase).Negocio
             _@(variablesNombres.Repositorio).Actualizar(entidad);
         }
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
-        {<text>
+        {
+        <text>
         public void MarcarComoBorrado(Guid id, string @variablesNombres.UsuarioId)
         {
             var entidad = new @clasesNombres.Entidad
@@ -125,37 +128,36 @@ namespace @(namespaceBase).Negocio
         public void DesmarcarComoBorrado(Guid id)
         {
             _@(variablesNombres.Repositorio).ActualizarDatosBorrado(new @clasesNombres.Entidad { Id = id });
-        }
-        </text>}
+        }</text>}
 
         private void ValidarDatos(@clasesNombres.Entidad entidad)
         {
-            var errores = new List&lt;string&gt;();
+            var errores = new List@(Raw("<string>"))();
 
-            @foreach (var p in Model.Propiedades)
-            {
-                switch (p.PropiedadTipoId)
-                {
-                    case PropiedadTipos.TEXTO:
-                        <text>Validador.ValidarStringYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, tamañoMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.TamañoMaximo), valorNull: "null"), tamañoExacto: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.TamañoExacto), valorNull: "null"), regEx: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.RegEx), valorNull: "null"));</text>
-                        break;
-                    case PropiedadTipos.ENTERO:
-                        <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEntero.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEntero.ValorMaximo), valorNull: "null"));</text>
-                        break;
-                    case PropiedadTipos.ENTERO_CORTO:
-                        <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroCorto.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroCorto.ValorMaximo), valorNull: "null"));</text>
-                        break;
-                    case PropiedadTipos.ENTERO_LARGO:
-                        <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroLargo.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroLargo.ValorMaximo), valorNull: "null"));</text>
-                        break;
-                    case PropiedadTipos.DECIMAL:
-                        <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.DigitosDecimales), valorNull: "null"));</text>
-                        break;
-                    case PropiedadTipos.DECIMAL_LARGO:
-                        <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalLargo.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalLargo.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalLargo.DigitosDecimales), valorNull: "null"));</text>
-                        break;
-                }
-            }
+    @foreach (var p in Model.Propiedades)
+    {
+        switch (p.PropiedadTipoId)
+        {
+            case PropiedadTipos.TEXTO:
+                <text>Validador.ValidarStringYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, tamañoMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.TamañoMaximo), valorNull: "null"), tamañoExacto: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.TamañoExacto), valorNull: "null"), regEx: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.RegEx), valorNull: "null"));</text>
+                break;
+            case PropiedadTipos.ENTERO:
+                <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEntero.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEntero.ValorMaximo), valorNull: "null"));</text>
+                break;
+            case PropiedadTipos.ENTERO_CORTO:
+                <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroCorto.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroCorto.ValorMaximo), valorNull: "null"));</text>
+                break;
+            case PropiedadTipos.ENTERO_LARGO:
+                <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroLargo.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroLargo.ValorMaximo), valorNull: "null"));</text>
+                break;
+            case PropiedadTipos.DECIMAL:
+                <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.DigitosDecimales), valorNull: "null"));</text>
+                break;
+            case PropiedadTipos.DECIMAL_LARGO:
+                <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.Nombre).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalLargo.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalLargo.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalLargo.DigitosDecimales), valorNull: "null"));</text>
+                break;
+        }
+    }
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

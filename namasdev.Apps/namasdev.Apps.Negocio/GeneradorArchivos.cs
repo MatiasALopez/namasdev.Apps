@@ -6,17 +6,26 @@ using RazorEngine;
 using RazorEngine.Templating;
 
 using namasdev.Core.IO;
-using namasdev.Apps.Entidades;
 using namasdev.Core.Validation;
+using namasdev.Apps.Entidades;
 
 namespace namasdev.Apps.Negocio
 {
     public interface IGeneradorArchivos
     {
         string GenerarDatosRepositorio(Entidad entidad, Guid? grupoId = null);
+        string GenerarDatosSqlConfig(Entidad entidad, Guid? grupoId = null);
         string GenerarEntidadesEntidad(Entidad entidad, Guid? grupoId = null);
         string GenerarEntidadesEntidadMetadata(Entidad entidad, Guid? grupoId = null);
-        string GenerarNegociosNegocio(Entidad entidad, Guid? grupoId = null);
+        string GenerarNegocio(Entidad entidad, Guid? grupoId = null);
+        string GenerarSQLTabla(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebController(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebEntidadViewModel(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebIndexView(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebItemModel(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebListaViewModel(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebMapper(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebViewsMetadata(Entidad entidad, Guid? grupoId = null);
         string GenerarZipTodos(Entidad entidad);
     }
 
@@ -27,7 +36,7 @@ namespace namasdev.Apps.Negocio
         public GeneradorArchivos(string templatesDirectorio)
         {
             Validador.ValidarArgumentRequeridoYThrow(templatesDirectorio, nameof(templatesDirectorio));
-            
+
             _templatesDirectorio = templatesDirectorio;
         }
 
@@ -40,17 +49,18 @@ namespace namasdev.Apps.Negocio
             GenerarEntidadesEntidadMetadata(entidad, grupoId: grupoId);
             GenerarDatosSqlConfig(entidad, grupoId: grupoId);
             GenerarDatosRepositorio(entidad, grupoId: grupoId);
-            GenerarNegociosNegocio(entidad, grupoId: grupoId);
+            GenerarNegocio(entidad, grupoId: grupoId);
             GenerarWebItemModel(entidad, grupoId: grupoId);
             GenerarWebEntidadViewModel(entidad, grupoId: grupoId);
             GenerarWebListaViewModel(entidad, grupoId: grupoId);
             GenerarWebMapper(entidad, grupoId: grupoId);
             GenerarWebViewsMetadata(entidad, grupoId: grupoId);
             GenerarWebController(entidad, grupoId: grupoId);
+            GenerarWebIndexView(entidad, grupoId: grupoId);
 
             var zipPath = Path.Combine(GenerarPathDirectorioBase(grupoId), $"{entidad.AplicacionVersion.Aplicacion.Nombre}{ArchivoExtensiones.Application.ZIP}");
             ZipFile.CreateFromDirectory(
-                GenerarPathDirectorioArchivos(grupoId), 
+                GenerarPathDirectorioArchivos(grupoId),
                 zipPath);
 
             return zipPath;
@@ -111,7 +121,7 @@ namespace namasdev.Apps.Negocio
                 grupoId);
         }
 
-        public string GenerarNegociosNegocio(Entidad entidad,
+        public string GenerarNegocio(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
@@ -188,6 +198,17 @@ namespace namasdev.Apps.Negocio
                 grupoId);
         }
 
+        public string GenerarWebIndexView(Entidad entidad,
+            Guid? grupoId = null)
+        {
+            return GenerarDesdeTemplate(
+                "Web_IndexView.cshtml",
+                entidad,
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
+                $"Index.cshtml",
+                grupoId);
+        }
+
         private string GenerarDesdeTemplate(string template, object modelo, string destinoSubdirectorio, string destinoArchivo,
             Guid? grupoId = null)
         {
@@ -209,7 +230,7 @@ namespace namasdev.Apps.Negocio
 
         private string GenerarPathDirectorioBase(Guid? grupoId)
         {
-            return Path.Combine(Path.GetTempPath(), "Generados", (grupoId ?? Guid.NewGuid()).ToString());
+            return Path.Combine(Path.GetTempPath(), "namasdev.Apps", "Generados", (grupoId ?? Guid.NewGuid()).ToString());
         }
 
         private string GenerarPathDirectorioArchivos(Guid? grupoId)

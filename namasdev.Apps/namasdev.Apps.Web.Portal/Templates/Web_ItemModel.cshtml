@@ -1,0 +1,30 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        ItemModel = string.Format("{0}ItemModel", Model.Nombre),
+        MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
+    };
+}
+using System;
+using System.ComponentModel.DataAnnotations;
+
+using @(namespaces.Aplicacion).Entidades.Metadata;
+
+namespace @(namespaces.Aplicacion).Web.Portal.Models.@Model.NombrePlural
+{
+    public class @clases.ItemModel
+    {
+    @foreach(var p in Model.Propiedades)
+    {
+        if (p.EsCalculada || p.EsAuditoria()) { continue; }
+        <text>[Display(Name = @(clases.MetadataPropiedades).@(p.Nombre).ETIQUETA)]
+        public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @p.Nombre { get; set; }
+        </text>
+    }
+    }
+}

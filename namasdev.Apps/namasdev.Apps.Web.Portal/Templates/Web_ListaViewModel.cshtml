@@ -1,0 +1,30 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        ItemModel = string.Format("{0}ItemModel", Model.Nombre),
+        ListaViewModel = string.Format("{0}ViewModel", Model.NombrePlural),
+    };
+}
+using System.ComponentModel.DataAnnotations;
+
+using namasdev.Web.ViewModels;
+using @(namespaces.Aplicacion).Web.Portal.Models.@Model.NombrePlural;
+
+namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
+{
+    public class @clases.ListaViewModel : ListadoConPaginacionViewModel@(string.Format("<{0}>", clases.ItemModel))
+    {
+        public @(clases.ListaViewModel)()
+        {
+            ItemsPorPagina = 20;    
+        }
+
+        [Display(Name = "Búsqueda (Nombre)")]
+        public string Busqueda { get; set; }
+    }
+}

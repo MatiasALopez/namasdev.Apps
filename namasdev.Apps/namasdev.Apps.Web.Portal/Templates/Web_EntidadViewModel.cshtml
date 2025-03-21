@@ -1,0 +1,55 @@
+﻿@using namasdev.Apps.Entidades;
+@model Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
+        MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
+    };
+
+    string propiedadIdNombre = null;
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+
+using namasdev.Core.Validation;
+using namasdev.Web.Models;
+using @(namespaces.Aplicacion).Entidades.Metadata;
+
+namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
+{
+    public class @clases.EntidadViewModel : IValidatableObject
+    {
+        public PaginaModo PaginaModo { get; set; }
+
+    @foreach(var p in Model.Propiedades)
+    {
+        if (p.EsCalculada || p.EsAuditoria()) { continue; }
+        if (p.EsId()) { propiedadIdNombre = p.Nombre; }
+        <text>[Display(Name = @(clases.MetadataPropiedades).@(p.Nombre).ETIQUETA)]
+        @if (!p.PermiteNull && !p.EsId())
+        {
+        <text>[Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)</text>
+        }
+        public @p.Tipo.CLRTypeNullable @p.Nombre { get; set; }
+        </text>
+    }
+        public IEnumerable@("<ValidationResult>") Validate(ValidationContext validationContext)
+        {
+        @if (!string.IsNullOrWhiteSpace(propiedadIdNombre))
+        {
+            <text>if (PaginaModo == PaginaModo.Editar
+                && !@(propiedadIdNombre).HasValue)
+            {
+                yield return new ValidationResult(Validador.MensajeRequerido(@(clases.Metadata).ETIQUETA));
+            }</text>
+        }
+        }
+    }
+}

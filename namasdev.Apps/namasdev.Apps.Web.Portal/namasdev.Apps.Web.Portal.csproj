@@ -330,6 +330,18 @@
     <Content Include="Views\Templates\ListaViewModel.cshtml" />
     <Content Include="Views\Templates\EntidadViewModel.cshtml" />
     <Content Include="Views\Templates\ViewsMetadata.cshtml" />
+    <Content Include="Templates\Datos_Repositorio.cshtml" />
+    <Content Include="Templates\Datos_SqlConfig.cshtml" />
+    <Content Include="Templates\Entidades_Entidad.cshtml" />
+    <Content Include="Templates\Entidades_EntidadMetadata.cshtml" />
+    <Content Include="Templates\Negocios_Negocio.cshtml" />
+    <Content Include="Templates\SQL_Tabla.cshtml" />
+    <Content Include="Templates\Web_Controller.cshtml" />
+    <Content Include="Templates\Web_EntidadViewModel.cshtml" />
+    <Content Include="Templates\Web_ItemModel.cshtml" />
+    <Content Include="Templates\Web_ListaViewModel.cshtml" />
+    <Content Include="Templates\Web_Mapper.cshtml" />
+    <Content Include="Templates\Web_ViewsMetadata.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

@@ -73,6 +73,8 @@
                                     <div class="btn-group">
                                         <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-code" data-toggle="tooltip" title="Generar"></i></button>
                                         <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="@Url.Action("DescargarTodos", "Templates", new { id = item.EntidadId })" target="_blank">Descargar todos</a>
+                                            <div class="dropdown-divider"></div>
                                             <h6 class="dropdown-header">SQL</h6>
                                             <a class="dropdown-item" href="@Url.Action("Tabla", "Templates", new { id = item.EntidadId })" target="_blank">Tabla</a>
                                             <div class="dropdown-divider"></div>

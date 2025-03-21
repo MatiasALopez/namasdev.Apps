@@ -1,0 +1,223 @@
+﻿@using namasdev.Core.Types;
+@using namasdev.Core.Types;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
+        MetadataMensajes = string.Format("{0}Metadata.Mensajes", Model.Nombre),
+        Negocio = string.Format("{0}Negocio", Model.NombrePlural),
+        Repositorio = string.Format("{0}Repositorio", Model.NombrePlural),
+        Controller = string.Format("{0}Controller", Model.NombrePlural),
+        ListaViewModel = string.Format("{0}ViewModel", Model.NombrePlural),
+        EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
+        Mapper = string.Format("{0}Mapper", Model.NombrePlural),
+        Views = string.Format("{0}Views", Model.NombrePlural),
+    };
+    var interfaces = new
+    {
+        Negocio = string.Format("I{0}", clases.Negocio),
+        Repositorio = string.Format("I{0}", clases.Repositorio)
+    };
+    var variables = new
+    {
+        Repositorio = clases.Repositorio.ToFirstLetterLowercase(),
+        Negocio = clases.Negocio.ToFirstLetterLowercase(),
+        Entidad = Model.Nombre.ToFirstLetterLowercase(),
+        ViewModel = "model",
+    };
+    var constantes = new
+    {
+        ViewsEntidad = string.Format("{0}.ENTIDAD", clases.Views),
+    };
+
+    var agregarParametros = new List<string>();
+    foreach (var p in Model.Propiedades)
+    {
+        if (!p.EsPropiedadDefault()
+            && !p.GeneradaAlCrear
+            && !p.EsCalculada)
+        {
+            agregarParametros.Add(string.Format("{0}.{1}", variables.ViewModel, p.Nombre));
+        }
+    }
+}
+using System;
+using System.Web.Mvc;
+
+using namasdev.Core.Validation;
+using namasdev.Web.Helpers;
+using namasdev.Web.Models;
+using @(namespaces.Aplicacion).Entidades.Metadata;
+using @(namespaces.Aplicacion).Entidades.Valores;
+using @(namespaces.Aplicacion).Datos;
+using @(namespaces.Aplicacion).Negocio;
+using @(namespaces.Aplicacion).Web.Portal.Mappers;
+using @(namespaces.Aplicacion).Web.Portal.Metadata.Views;
+using @(namespaces.Aplicacion).Web.Portal.ViewModels.@(Model.NombrePlural);
+
+namespace @(namespaces.Aplicacion).Web.Portal.Controllers
+{
+    [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
+    public class @clases.Controller : ControllerBase
+    {
+        public const string NAME = "@Model.NombrePlural";
+
+        private readonly @interfaces.Repositorio _@variables.Repositorio;
+        private readonly @interfaces.Negocio _@variables.Negocio;
+
+        public @(clases.Controller)(@interfaces.Repositorio @variables.Repositorio, @interfaces.Negocio @variables.Negocio)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Repositorio, nameof(@variables.Repositorio));
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Negocio, nameof(@variables.Negocio));
+
+            _@variables.Repositorio = @variables.Repositorio;
+            _@variables.Negocio = @variables.Negocio;
+        }
+
+        #region Acciones
+
+        public ActionResult Index(
+            string busqueda = null,
+            string orden = null,
+            int pagina = 1)
+        {
+            var modelo = new @clases.ListaViewModel
+            {
+                Busqueda = busqueda,
+                Pagina = pagina,
+                Orden = orden,
+            };
+
+            Cargar@(clases.ListaViewModel)(modelo);
+            return View(modelo);
+        }
+
+        @if (Model.PropiedadesDefault.AuditoriaBorrado)
+        {
+            <text>
+            [HttpPost,
+            ValidateAntiForgeryToken]
+            public ActionResult Eliminar(Guid id)
+            {
+                var @variables.Entidad = _@(variables.Repositorio).Obtener(id);
+                if (@variables.Entidad == null)
+                {
+                    return Json(new { success = false, message = Validador.MensajeEntidadInexistente(@(clases.Metadata).ETIQUETA, id) });
+                }
+
+                try
+                {
+                    _@(variables.Negocio).MarcarComoBorrado(id, UsuarioId);
+                }
+                catch (Exception)
+                {
+                    return Json(new { success = false, message = @(clases.MetadataMensajes).ELIMINAR_ERROR });
+                }
+
+                return Json(new { success = true });
+            }
+
+            </text>
+        }
+
+        public ActionResult Agregar()
+        {
+            var @variables.ViewModel = new @(clases.EntidadViewModel)();
+            Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Agregar);
+
+            return View(@constantes.ViewsEntidad, modelo);
+        }
+
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Agregar(@clases.EntidadViewModel @variables.ViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _@(variables.Negocio).Agregar(@Formateador.FormatoLista(agregarParametros, ", "), UsuarioId);
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception ex)
+            {
+                ControllerHelper.CargarMensajesError(ex.Message);
+            }
+
+            Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Agregar);
+            return View(@constantes.ViewsEntidad, modelo);
+        }
+
+        public ActionResult Editar(Guid id)
+        {
+            var @variables.Entidad = _@(variables.Repositorio).Obtener(id);
+            if (@variables.Entidad == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var @variables.ViewModel = @(clases.Mapper).MapearEntidadA@(clases.EntidadViewModel)(@variables.Entidad);
+            Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Editar);
+
+            return View(@constantes.ViewsEntidad, @variables.ViewModel);
+        }
+
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Editar(@clases.EntidadViewModel @variables.ViewModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var @variables.Entidad = @(clases.Mapper).Mapear@(clases.EntidadViewModel)AEntidad(@variables.ViewModel);
+                    _@(variables.Negocio).Actualizar(@variables.Entidad, UsuarioId);
+
+                    ControllerHelper.CargarMensajeResultadoOk(@(clases.MetadataMensajes).EDITAR_OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                ControllerHelper.CargarMensajesError(ex.Message);
+            }
+
+            Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Editar);
+        
+            return View(@constantes.ViewsEntidad, @variables.ViewModel);
+        }
+
+        #endregion Acciones
+
+        #region Metodos
+
+        private void Cargar@(clases.ListaViewModel)(@clases.ListaViewModel @variables.ViewModel)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.ViewModel, nameof(@variables.ViewModel));
+
+            var op = @(variables.ViewModel).CrearOrdenYPaginacionParametros();
+
+            @(variables.ViewModel).Items = @(clases.Mapper).MapearEntidadesAModelos(
+                entidades: _@(variables.Repositorio).ObtenerLista(
+                    busqueda: @(variables.ViewModel).Busqueda,
+                    op: op));
+
+            @(variables.ViewModel).CargarPaginacion(op);
+        }
+
+        private void Cargar@(clases.EntidadViewModel)(@clases.EntidadViewModel @variables.ViewModel, PaginaModo paginaModo)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.ViewModel, nameof(@variables.ViewModel));
+
+            @(variables.ViewModel).PaginaModo = paginaModo;
+        }
+
+        #endregion Metodos
+    }
+}

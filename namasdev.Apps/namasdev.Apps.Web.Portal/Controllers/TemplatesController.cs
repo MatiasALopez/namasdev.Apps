@@ -2,26 +2,38 @@
 using System.Linq;
 using System.Web.Mvc;
 
-using namasdev.Apps.Datos;
-using namasdev.Apps.Entidades;
 using namasdev.Core.Validation;
+using namasdev.Web.Helpers;
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Datos;
+using namasdev.Apps.Negocio;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
-    public class TemplatesController : Controller
+    public class TemplatesController : ControllerBase
     {
         public const string NAME = "Templates";
 
         private readonly IEntidadesRepositorio _entidadesRepositorio;
+        private readonly IGeneradorArchivos _generadorArchivos;
 
-        public TemplatesController(IEntidadesRepositorio entidadesRepositorio)
+        public TemplatesController(IEntidadesRepositorio entidadesRepositorio, IGeneradorArchivos generadorArchivos)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
-            
+            Validador.ValidarArgumentRequeridoYThrow(generadorArchivos, nameof(generadorArchivos));
+
             _entidadesRepositorio = entidadesRepositorio;
+            _generadorArchivos = generadorArchivos;
         }
 
         #region Actions
+
+        public ActionResult DescargarTodos(Guid id)
+        {
+            var entidad = ObtenerEntidad(id);
+            return ControllerHelper.CrearActionResultArchivo(
+                _generadorArchivos.GenerarZipTodos(entidad));
+        }
 
         public ActionResult Tabla(Guid id)
         {

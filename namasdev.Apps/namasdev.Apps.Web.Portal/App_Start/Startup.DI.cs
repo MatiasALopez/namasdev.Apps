@@ -12,6 +12,7 @@ using namasdev.Apps.Datos;
 using namasdev.Apps.Datos.Sql;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Controllers;
+using System.Web;
 
 namespace namasdev.Apps.Web.Portal
 {
@@ -51,8 +52,9 @@ namespace namasdev.Apps.Web.Portal
 
         private void RegisterNegocios(ServiceCollection services)
         {
-            services.AddSingleton<ServidorDeCorreosParametros>((sp) => JsonConvert.DeserializeObject<ServidorDeCorreosParametros>(sp.GetService<IParametrosRepositorio>().Obtener(Parametros.SERVIDOR_CORREOS)));
-            
+            services.AddSingleton<ServidorDeCorreosParametros>((f) => JsonConvert.DeserializeObject<ServidorDeCorreosParametros>(f.GetService<IParametrosRepositorio>().Obtener(Parametros.SERVIDOR_CORREOS)));
+            services.AddSingleton<IGeneradorArchivos>((f) => new GeneradorArchivos(HttpContext.Current.Server.MapPath("~/Templates")));
+
             services.AddScoped<IServidorDeCorreos, ServidorDeCorreos>();
             services.AddScoped<ICorreosNegocio, CorreosNegocio>();
             services.AddScoped<IUsuariosNegocio, UsuariosNegocio>();

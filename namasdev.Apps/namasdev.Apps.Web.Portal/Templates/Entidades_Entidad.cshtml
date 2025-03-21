@@ -1,0 +1,70 @@
+﻿@using namasdev.Apps.Entidades.Valores;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    string claseBase =
+        Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
+        ? string.Format(
+            ": Entidad{0}{1}{2}<{3}>",
+            (Model.PropiedadesDefault.AuditoriaCreado ? "Creado" : ""),
+            (Model.PropiedadesDefault.AuditoriaUltimaModificacion ? "Modificado" : ""),
+            (Model.PropiedadesDefault.AuditoriaBorrado ? "Borrado" : ""),
+            Model.PropiedadesDefault.IDTipo.CLRType)
+        : "";
+
+    var propiedadesNavegacion = new List<string>();
+    string propiedadTipo,
+        propiedadNombre;
+    foreach (var a in Model.AsociacionesOrigen)
+    {
+        if (a.DestinoAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS)
+        {
+            propiedadTipo = string.Format("List<{0}>", a.DestinoEntidad.Nombre);
+            propiedadNombre = a.DestinoEntidad.NombrePlural;
+        }
+        else
+        {
+            propiedadTipo = a.DestinoEntidad.Nombre;
+            propiedadNombre =
+                a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
+                ? namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id")
+                : a.DestinoEntidad.Nombre;
+        }
+
+        propiedadesNavegacion.Add(string.Format("{0} {1}", propiedadTipo, propiedadNombre));
+    }
+    foreach (var a in Model.AsociacionesDestino)
+    {
+        if (a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS)
+        {
+            propiedadTipo = string.Format("List<{0}>", a.OrigenEntidad.Nombre);
+            propiedadNombre = a.OrigenEntidad.NombrePlural;
+        }
+        else
+        {
+            propiedadTipo = a.OrigenEntidad.Nombre;
+            propiedadNombre = namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id");
+        }
+        propiedadesNavegacion.Add(string.Format("{0} {1}", propiedadTipo, propiedadNombre));
+    }
+}
+using System;
+
+namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades
+{
+    public partial class @Model.Nombre @claseBase
+    {
+    @foreach (var p in Model.Propiedades)
+    {
+        if (p.EsPropiedadDefault())
+        {
+            continue;
+        }
+        <text>public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @p.Nombre { get; set; }</text>
+    }
+
+    @foreach (var p in propiedadesNavegacion)
+    {
+        <text>public virtual @p { get; set; }</text>
+    }
+    }
+}

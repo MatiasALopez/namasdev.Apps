@@ -1,0 +1,41 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Datos = string.Format("{0}.Datos", Model.AplicacionVersion.Aplicacion.Nombre),
+    };
+    var clases = new
+    {
+        Repositorio = string.Format("{0}Repositorio", Model.NombrePlural)
+    };
+    var interfaces = new 
+    {
+        Repositorio = string.Format("I{0}", clases.Repositorio)
+    };
+
+    string claveTipo = Model.PropiedadesDefault.IDTipo != null ? Model.PropiedadesDefault.IDTipo.CLRType : null,
+        tiposGenericosEntidadYId = string.Format("{0}, {1}", Model.Nombre, claveTipo);
+
+    bool usarRepositorioBase = !string.IsNullOrWhiteSpace(claveTipo);
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using namasdev.Core.Types;
+using namasdev.Data;
+using namasdev.Data.Entity;
+using @(namespaces.Aplicacion).Entidades;
+using @(namespaces.Datos).Sql;
+
+namespace @(namespaces.Datos)
+{
+    public interface @interfaces.Repositorio @(usarRepositorioBase ? string.Format(": IRepositorio<{0}>", tiposGenericosEntidadYId) : "")
+    {
+    }
+
+    public class @clases.Repositorio : @(usarRepositorioBase ? string.Format("Repositorio<SqlContext, {0}>, ", tiposGenericosEntidadYId) : "")@interfaces.Repositorio
+    {
+    }
+}

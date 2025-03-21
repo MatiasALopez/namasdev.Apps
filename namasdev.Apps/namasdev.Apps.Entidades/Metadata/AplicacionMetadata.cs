@@ -34,6 +34,7 @@ namespace namasdev.Apps.Entidades.Metadata
 
             public const string ELIMINAR_OK = AplicacionMetadata.ETIQUETA + " eliminada correctamente.";
             public const string ELIMINAR_ERROR = "No se pudo eliminar la " + AplicacionMetadata.ETIQUETA;
+            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar la " + AplicacionMetadata.ETIQUETA + " seleccionada?";
         }
     }
 }

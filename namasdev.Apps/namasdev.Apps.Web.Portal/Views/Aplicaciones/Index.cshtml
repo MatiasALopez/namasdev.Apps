@@ -1,6 +1,7 @@
-﻿@using namasdev.Apps.Entidades; 
+﻿@using namasdev.Web.Helpers;
+@using namasdev.Apps.Entidades; 
 @using namasdev.Apps.Entidades.Metadata;
-@using namasdev.Web.Helpers;
+@using namasdev.Apps.Web.Portal.Controllers;
 @model namasdev.Apps.Web.Portal.ViewModels.Aplicaciones.AplicacionesViewModel
 @{
     ViewBag.Title = AplicacionMetadata.ETIQUETA_PLURAL;
@@ -25,10 +26,10 @@
 @Html.Partial("_Errores")
 <div class="row my-3">
     <div class="col-md-3">
-        <a href="@Url.Action("Agregar")" class="btn btn-primary">Agregar</a>
+        <a href="@Url.Action(nameof(AplicacionesController.Agregar))" class="btn btn-primary">Agregar</a>
     </div>
     <div class="col-md-9 text-right filtros">
-        @using (Html.BeginForm("Index", "Aplicaciones", FormMethod.Get, new { @class = "form-inline pull-right" }))
+        @using (Html.BeginForm(nameof(AplicacionesController.Index), AplicacionesController.NAME, FormMethod.Get, new { @class = "form-inline pull-right" }))
         {
             @Html.TextBoxFor(m => m.Busqueda, new { @class = "form-control ml-1", placeholder = displayNames.Busqueda, title = displayNames.Busqueda, data_toggle = "tooltip" })
             <button type="submit" class="btn btn-secondary ml-1">Buscar</button>
@@ -56,7 +57,7 @@
                             <tr>
                                 <td>@item.Nombre</td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Editar", new { id = item.AplicacionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                    <a href="@Url.Action(nameof(AplicacionesController.Editar), new { id = item.AplicacionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
                                     <a href="@Url.Action("Index", "Versiones", new { item.AplicacionId })" class="btn btn-sm btn-outline-info"><i class="fa fa-tag" data-toggle="tooltip" title="@AplicacionVersionMetadata.ETIQUETA_PLURAL"></i></a>
                                     <a href="@Url.Action("Index", "Entidades", new { item.AplicacionId })" class="btn btn-sm btn-outline-info"><i class="fa fa-list" data-toggle="tooltip" title="@EntidadMetadata.ETIQUETA_PLURAL"></i></a>
                                     <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.AplicacionId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
@@ -70,7 +71,7 @@
         }
         else
         {
-            <div class="alert alert-warning">No hay aplicaciones para mostrar.</div>
+            <div class="alert alert-warning">No hay @AplicacionMetadata.ETIQUETA_PLURAL para mostrar.</div>
         }
     </div>
 </div>
@@ -91,16 +92,16 @@
                     var options = {
                         showLoadingSelector: '#@controlesIds.TablaContainer',
                         confirm: true,
-                        confirmTitle: 'Eliminar aplicación',
-                        confirmMessage: '¿Estás seguro que deseas eliminar la aplicación seleccionada?'
+                        confirmTitle: 'Eliminar @AplicacionMetadata.ETIQUETA',
+                        confirmMessage: '@AplicacionMetadata.Mensajes.ELIMINAR_CONFIRMACION'
                     };
                     namasdevApps.postJson(
-                        '@Url.Action("Eliminar")/' + id,
+                        '@Url.Action(nameof(AplicacionesController.Eliminar))/' + id,
                         nmd.ui.forms.createDataWithAntiForgeryToken('#@controlesIds.Form'),
                         function (response) {
                             if (response.success) {
                                 nmd.ui.controls.showSuccessModal(
-                                    'La aplicación fue eliminada correctamente.',
+                                    '@AplicacionMetadata.Mensajes.ELIMINAR_OK',
                                     function () {
                                         nmd.page.reloadPage();
                                     });

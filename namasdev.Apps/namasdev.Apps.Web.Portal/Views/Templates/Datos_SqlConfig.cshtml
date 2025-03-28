@@ -138,7 +138,7 @@ using @(namespaces.Aplicacion).Entidades.Metadata;
 
 namespace @(namespaces.Aplicacion).Datos.Sql.Config
 {
-    public class @clases.Config : @Raw(string.Format("{0}<{1}>", clases.ConfigBase, Model.Nombre))
+    public class @clases.Config : @Html.Raw(string.Format("{0}<{1}>", clases.ConfigBase, Model.Nombre))
     {
         public @(clases.Config)()
         {

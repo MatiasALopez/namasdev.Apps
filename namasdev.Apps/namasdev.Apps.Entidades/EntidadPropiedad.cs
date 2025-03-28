@@ -10,6 +10,10 @@ namespace namasdev.Apps.Entidades
     {
         public Guid EntidadId { get; set; }
         public string Nombre { get; set; }
+        public string NombreOId
+        {
+            get { return EsId() ? "Id" : Nombre; }
+        }
 
         private string _nombreCamelCase;
         public string NombreCamelCase
@@ -60,15 +64,15 @@ namespace namasdev.Apps.Entidades
             }
         }
 
-        private PropiedadTipoEspecificacionesDecimalLargo _especificacionesDecimalLargo;
-        public PropiedadTipoEspecificacionesDecimalLargo EspecificacionesDecimalLargo
+        private PropiedadTipoEspecificacionesDecimalFlotante _especificacionesDecimalFlotante;
+        public PropiedadTipoEspecificacionesDecimalFlotante EspecificacionesDecimalFlotante
         {
             get
             {
-                return _especificacionesDecimalLargo ??
-                    (_especificacionesDecimalLargo = 
-                        PropiedadTipoId == PropiedadTipos.DECIMAL_LARGO
-                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimalLargo>(PropiedadTipoEspecificaciones)
+                return _especificacionesDecimalFlotante ??
+                    (_especificacionesDecimalFlotante = 
+                        PropiedadTipoId == PropiedadTipos.DECIMAL_FLOTANTE
+                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimalFlotante>(PropiedadTipoEspecificaciones)
                         : null);
             }
         }

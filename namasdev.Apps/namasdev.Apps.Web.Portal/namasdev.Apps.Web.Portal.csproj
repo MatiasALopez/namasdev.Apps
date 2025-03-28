@@ -210,6 +210,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\FormatoHelper.cs" />
     <Compile Include="Helpers\ListasHelper.cs" />
     <Compile Include="Helpers\UsuarioHelper.cs" />
     <Compile Include="Mappers\EntidadesPropiedadesMapper.cs" />
@@ -318,19 +319,20 @@
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesEntero.cshtml" />
     <Content Include="Views\Shared\_EntidadesLayout.cshtml" />
     <Content Include="Views\EntidadesAsociaciones\Index.cshtml" />
-    <Content Include="Templates\Datos_Repositorio.cshtml" />
-    <Content Include="Templates\Datos_SqlConfig.cshtml" />
-    <Content Include="Templates\Entidades_Entidad.cshtml" />
-    <Content Include="Templates\Entidades_EntidadMetadata.cshtml" />
-    <Content Include="Templates\Negocios_Negocio.cshtml" />
-    <Content Include="Templates\SQL_Tabla.cshtml" />
-    <Content Include="Templates\Web_Controller.cshtml" />
-    <Content Include="Templates\Web_EntidadViewModel.cshtml" />
-    <Content Include="Templates\Web_ItemModel.cshtml" />
-    <Content Include="Templates\Web_ListaViewModel.cshtml" />
-    <Content Include="Templates\Web_Mapper.cshtml" />
-    <Content Include="Templates\Web_ViewsMetadata.cshtml" />
-    <Content Include="Templates\Web_IndexView.cshtml" />
+    <Content Include="Views\Templates\Entidades_Entidad.cshtml" />
+    <Content Include="Views\Templates\_ViewStart.cshtml" />
+    <Content Include="Views\Templates\Entidades_EntidadMetadata.cshtml" />
+    <Content Include="Views\Templates\Datos_Repositorio.cshtml" />
+    <Content Include="Views\Templates\Datos_SqlConfig.cshtml" />
+    <Content Include="Views\Templates\Negocio_Negocio.cshtml" />
+    <Content Include="Views\Templates\SQL_Tabla.cshtml" />
+    <Content Include="Views\Templates\Web_Controller.cshtml" />
+    <Content Include="Views\Templates\Web_EntidadViewModel.cshtml" />
+    <Content Include="Views\Templates\Web_IndexView.cshtml" />
+    <Content Include="Views\Templates\Web_ItemModel.cshtml" />
+    <Content Include="Views\Templates\Web_ListaViewModel.cshtml" />
+    <Content Include="Views\Templates\Web_Mapper.cshtml" />
+    <Content Include="Views\Templates\Web_ViewsMetadata.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

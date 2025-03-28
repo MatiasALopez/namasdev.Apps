@@ -45,7 +45,7 @@ insert into dbo.PropiedadTipos (PropiedadTipoId,Nombre,CLRType,TSQLType) values
 (4,'Entero corto','short','smallint'),
 (5,'Entero largo','long','bigint'),
 (6,'Decimal','decimal','decimal'),
-(7,'Decimal largo','double','float'),
+(7,'Decimal flotante','double','float'),
 (8,'Importe','decimal','money'),
 (9,'Fecha/Hora','DateTime','datetime'),
 (10,'Fecha','DateTime','date'),

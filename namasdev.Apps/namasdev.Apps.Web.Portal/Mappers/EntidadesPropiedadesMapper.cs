@@ -111,21 +111,21 @@ namespace namasdev.Apps.Web.Portal.Mappers
                         {
                             especificaciones = new PropiedadTipoEspecificacionesDecimal
                             {
-                                ValorMinimo = (double?)modelo.PropiedadTipoEspecificacionesDecimal.ValorMinimo,
-                                ValorMaximo = (double?)modelo.PropiedadTipoEspecificacionesDecimal.ValorMaximo,
+                                ValorMinimo = modelo.PropiedadTipoEspecificacionesDecimal.ValorMinimo,
+                                ValorMaximo = modelo.PropiedadTipoEspecificacionesDecimal.ValorMaximo,
                                 DigitosEnteros = modelo.PropiedadTipoEspecificacionesDecimal.DigitosEnteros.Value,
                                 DigitosDecimales = modelo.PropiedadTipoEspecificacionesDecimal.DigitosDecimales.Value,
                             };
                         }
                         break;
 
-                    case PropiedadTipos.DECIMAL_LARGO:
+                    case PropiedadTipos.DECIMAL_FLOTANTE:
                         if (modelo.PropiedadTipoEspecificacionesDecimal != null)
                         {
-                            especificaciones = new PropiedadTipoEspecificacionesDecimalLargo
+                            especificaciones = new PropiedadTipoEspecificacionesDecimalFlotante
                             {
-                                ValorMinimo = modelo.PropiedadTipoEspecificacionesDecimal.ValorMinimo,
-                                ValorMaximo = modelo.PropiedadTipoEspecificacionesDecimal.ValorMaximo,
+                                ValorMinimo = (double?)modelo.PropiedadTipoEspecificacionesDecimal.ValorMinimo,
+                                ValorMaximo = (double?)modelo.PropiedadTipoEspecificacionesDecimal.ValorMaximo,
                                 DigitosEnteros = modelo.PropiedadTipoEspecificacionesDecimal.DigitosEnteros.Value,
                                 DigitosDecimales = modelo.PropiedadTipoEspecificacionesDecimal.DigitosDecimales.Value,
                             };
@@ -193,22 +193,22 @@ namespace namasdev.Apps.Web.Portal.Mappers
             {
                 modelo.PropiedadTipoEspecificacionesDecimal = new PropiedadTipoEspecificacionesDecimalViewModel
                 {
-                    ValorMinimo = (decimal?)especificacionesDecimal.ValorMinimo,
-                    ValorMaximo = (decimal?)especificacionesDecimal.ValorMaximo,
+                    ValorMinimo = especificacionesDecimal.ValorMinimo,
+                    ValorMaximo = especificacionesDecimal.ValorMaximo,
                     DigitosEnteros = especificacionesDecimal.DigitosEnteros,
                     DigitosDecimales = especificacionesDecimal.DigitosDecimales,
                 };
             }
 
-            var especificacionesDecimalLargo = entidad.EspecificacionesDecimalLargo;
-            if (especificacionesDecimalLargo != null)
+            var especificacionesDecimalFlotante = entidad.EspecificacionesDecimalFlotante;
+            if (especificacionesDecimalFlotante != null)
             {
                 modelo.PropiedadTipoEspecificacionesDecimal = new PropiedadTipoEspecificacionesDecimalViewModel
                 {
-                    ValorMinimo = especificacionesDecimalLargo.ValorMinimo,
-                    ValorMaximo = especificacionesDecimalLargo.ValorMaximo,
-                    DigitosEnteros = especificacionesDecimalLargo.DigitosEnteros,
-                    DigitosDecimales = especificacionesDecimalLargo.DigitosDecimales,
+                    ValorMinimo = (decimal?)especificacionesDecimalFlotante.ValorMinimo,
+                    ValorMaximo = (decimal?)especificacionesDecimalFlotante.ValorMaximo,
+                    DigitosEnteros = especificacionesDecimalFlotante.DigitosEnteros,
+                    DigitosDecimales = especificacionesDecimalFlotante.DigitosDecimales,
                 };
             }
 

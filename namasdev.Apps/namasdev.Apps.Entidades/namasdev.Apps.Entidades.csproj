@@ -78,7 +78,7 @@
     <Compile Include="PropiedadTipoEspecificacionesDecimal.cs" />
     <Compile Include="PropiedadTipoEspecificacionesDecimalBase.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroBase.cs" />
-    <Compile Include="PropiedadTipoEspecificacionesDecimalLargo.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesDecimalFlotante.cs" />
     <Compile Include="PropiedadTipoEspecificacionesTexto.cs" />
     <Compile Include="IPropiedadTipoEspecificaciones.cs" />
     <Compile Include="Metadata\AspNetRoleMetadata.cs" />

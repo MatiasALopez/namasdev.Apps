@@ -38,7 +38,7 @@ namespace namasdev.Apps.Datos
         {
             using (var ctx = new SqlContext())
             {
-                return ctx.Entidades
+                var entidad = ctx.Entidades
                     .IncludeIf(e => e.AplicacionVersion.Aplicacion, cargarDatosAdicionales)
                     .IncludeIf(e => e.PropiedadesDefault.IDTipo, cargarDatosAdicionales)
                     .IncludeIf(e => e.Propiedades.Select(p => p.Tipo), cargarDatosAdicionales)
@@ -59,6 +59,10 @@ namespace namasdev.Apps.Datos
                     .IncludeIf(e => e.AsociacionesDestino.Select(a => a.UpdateRegla), cargarDatosAdicionales)
                     .IncludeIf(e => e.Indices.Select(i => i.Propiedades.Select(p => p.Propiedad)), cargarDatosAdicionales)
                     .FirstOrDefault(e => e.Id == entidadId && !e.Borrado);
+
+                entidad.EliminarPropiedadesBorradas();
+
+                return entidad;
             }
         }
     }

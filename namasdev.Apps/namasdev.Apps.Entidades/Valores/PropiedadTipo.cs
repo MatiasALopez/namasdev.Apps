@@ -9,7 +9,7 @@ namespace namasdev.Apps.Entidades.Valores
         public const short ENTERO_CORTO = 4;
         public const short ENTERO_LARGO = 5;
         public const short DECIMAL = 6;
-        public const short DECIMAL_LARGO = 7;
+        public const short DECIMAL_FLOTANTE = 7;
         public const short IMPORTE = 8;
         public const short FECHA_HORA = 9;
         public const short FECHA = 10;

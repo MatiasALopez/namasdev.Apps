@@ -125,9 +125,9 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Negocios_Negocio.cshtml",
+                "Negocio_Negocio.cshtml",
                 entidad,
-                $"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocios",
+                $"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio",
                 $"{entidad.NombrePlural}Negocio.cs",
                 grupoId);
         }
@@ -240,7 +240,8 @@ namespace namasdev.Apps.Negocio
 
         private string ObtenerTemplate(string template)
         {
-            return File.ReadAllText(Path.Combine(_templatesDirectorio, template));
+            return File.ReadAllText(Path.Combine(_templatesDirectorio, template))
+                .Replace("Html.Raw", "Raw");
         }
     }
 }

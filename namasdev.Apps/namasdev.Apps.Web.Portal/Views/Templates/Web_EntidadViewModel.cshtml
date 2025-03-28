@@ -31,16 +31,16 @@ namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
     @foreach(var p in Model.Propiedades)
     {
         if (p.EsCalculada || p.EsAuditoria()) { continue; }
-        if (p.EsId()) { propiedadIdNombre = p.Nombre; }
-        <text>[Display(Name = @(clases.MetadataPropiedades).@(p.Nombre).ETIQUETA)]
+        if (p.EsId()) { propiedadIdNombre = p.NombreOId; }
+        <text>[Display(Name = @(clases.MetadataPropiedades).@(p.NombreOId).ETIQUETA)]
         @if (!p.PermiteNull && !p.EsId())
         {
-        <text>[Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)</text>
+        <text>[Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]</text>
         }
-        public @p.Tipo.CLRTypeNullable @p.Nombre { get; set; }
+        public @p.Tipo.CLRTypeNullable @p.NombreOId { get; set; }
         </text>
     }
-        public IEnumerable@("<ValidationResult>") Validate(ValidationContext validationContext)
+        public IEnumerable@(Html.Raw("<ValidationResult>")) Validate(ValidationContext validationContext)
         {
         @if (!string.IsNullOrWhiteSpace(propiedadIdNombre))
         {

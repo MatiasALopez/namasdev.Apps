@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
+using namasdev.Core.IO;
 using namasdev.Core.Validation;
 using namasdev.Web.Helpers;
 using namasdev.Apps.Entidades;
@@ -126,6 +128,24 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 _generadorArchivos.GenerarWebIndexView(entidad));
         }
 
+        #region Debug
+
+        public ActionResult Entidades_Entidad(Guid id)
+        {
+            var entidad = ObtenerEntidad(id);
+            var contenido = RenderViewToString("Entidades_Entidad", entidad);
+            return Content(contenido, ArchivoContentTypes.Text.TXT);
+        }
+
+        public ActionResult Entidades_EntidadMetadata(Guid id)
+        {
+            var entidad = ObtenerEntidad(id);
+            var contenido = RenderViewToString("Entidades_EntidadMetadata", entidad);
+            return Content(contenido, ArchivoContentTypes.Text.TXT);
+        }
+
+        #endregion
+
         #endregion
 
         #region Metodos
@@ -138,6 +158,19 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 entidad.Propiedades = entidad.Propiedades.OrderBy(p => p.Orden).ToList();
             }
             return entidad;
+        }
+
+        public string RenderViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+
+            using (var sw = new StringWriter())
+            {
+                ViewEngineResult viewResult = ViewEngines.Engines.FindView(ControllerContext, viewName, null);
+                ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                return sw.GetStringBuilder().ToString();
+            }
         }
 
         #endregion

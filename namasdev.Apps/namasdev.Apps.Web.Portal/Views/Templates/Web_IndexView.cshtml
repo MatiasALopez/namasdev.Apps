@@ -33,8 +33,8 @@
             case PropiedadTipos.DECIMAL:
                 propiedades.Add(p.Nombre, string.Format("Formateador.FormatoNumero(item.{0}, cantDecimales: {1})", p.Nombre, p.EspecificacionesDecimal.DigitosDecimales));
                 break;
-            case PropiedadTipos.DECIMAL_LARGO:
-                propiedades.Add(p.Nombre, string.Format("Formateador.FormatoNumero(item.{0}, cantDecimales: {1})", p.Nombre, p.EspecificacionesDecimalLargo.DigitosDecimales));
+            case PropiedadTipos.DECIMAL_FLOTANTE:
+                propiedades.Add(p.Nombre, string.Format("Formateador.FormatoNumero(item.{0}, cantDecimales: {1})", p.Nombre, p.EspecificacionesDecimalFlotante.DigitosDecimales));
                 break;
             case PropiedadTipos.IMPORTE:
                 propiedades.Add(p.Nombre, string.Format("Formateador.FormatoMoneda(item.{0}, cantDecimales: 2)", p.Nombre));

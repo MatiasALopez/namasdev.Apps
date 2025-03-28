@@ -22,8 +22,8 @@ namespace @(namespaces.Aplicacion).Web.Portal.Models.@Model.NombrePlural
     @foreach(var p in Model.Propiedades)
     {
         if (p.EsCalculada || p.EsAuditoria()) { continue; }
-        <text>[Display(Name = @(clases.MetadataPropiedades).@(p.Nombre).ETIQUETA)]
-        public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @p.Nombre { get; set; }
+        <text>[Display(Name = @(clases.MetadataPropiedades).@(p.NombreOId).ETIQUETA)]
+        public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @p.NombreOId { get; set; }
         </text>
     }
     }

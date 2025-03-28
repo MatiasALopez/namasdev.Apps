@@ -1,6 +1,6 @@
 ﻿namespace namasdev.Apps.Entidades
 {
-    public class PropiedadTipoEspecificacionesDecimal : PropiedadTipoEspecificacionesDecimalBase<double>
+    public class PropiedadTipoEspecificacionesDecimal : PropiedadTipoEspecificacionesDecimalBase<decimal>
     {
     }
 }

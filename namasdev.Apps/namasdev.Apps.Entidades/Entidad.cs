@@ -20,6 +20,14 @@ namespace namasdev.Apps.Entidades
         public virtual List<EntidadClave> Claves { get; set; }
         public virtual List<EntidadIndice> Indices { get; set; }
 
+        public void EliminarPropiedadesBorradas()
+        {
+            if (Propiedades != null)
+            {
+                Propiedades.RemoveAll(p => p.Borrado);
+            }
+        }
+
         public override string ToString()
         {
             return Nombre;

@@ -1,0 +1,171 @@
+﻿@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var clases = new
+    {
+        Metadata = string.Format("{0}Metadata", Model.Nombre)
+    };
+    var variables = new
+    {
+        Repositorio = "repositorio",
+        UsuarioId = "usuarioId",
+    };
+    var constantesDefiniciones = new
+    {
+        Etiqueta = "string ETIQUETA",
+        TamañoMax = "int TAMAÑO_MAX",
+        ValorMinimoEntero = "int VALOR_MINIMO",
+        ValorMaximoEntero = "int VALOR_MAXIMO",
+        ValorMinimoEnteroCorto = "short VALOR_MINIMO",
+        ValorMaximoEnteroCorto = "short VALOR_MAXIMO",
+        ValorMinimoEnteroLargo = "long VALOR_MINIMO",
+        ValorMaximoEnteroLargo = "long VALOR_MAXIMO",
+        ValorMinimoDecimal = "decimal VALOR_MINIMO",
+        ValorMaximoDecimal = "decimal VALOR_MAXIMO",
+        ValorMinimoDecimalFlotante = "double VALOR_MINIMO",
+        ValorMaximoDecimalFlotante = "double VALOR_MAXIMO",
+        DigitosDecimales = "int DIGITOS_DECIMALES",
+    };
+
+    string textoPudo =
+        Model.Nombre.EndsWith("s")
+        ? "pudieron"
+        : "pudo";
+
+    string textoArticulo,
+        textoOperacionSufijoGenero;
+    if (Model.Nombre.EndsWith("as"))
+    {
+        textoArticulo = "las";
+        textoOperacionSufijoGenero = "as";
+    }
+    else if (Model.Nombre.EndsWith("s"))
+    {
+        textoArticulo = "los";
+        textoOperacionSufijoGenero = "os";
+    }
+    else if (Model.Nombre.EndsWith("a"))
+    {
+        textoArticulo = "la";
+        textoOperacionSufijoGenero = "a";
+    }
+    else
+    {
+        textoArticulo = "el";
+        textoOperacionSufijoGenero = "o";
+    }
+
+    Dictionary<string, string> propiedadConstantes;
+}
+namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades.Metadata
+{
+    public class @clases.Metadata
+    {
+        public const string NOMBRE = "@Model.Nombre";
+        public const string NOMBRE_PLURAL = "@Model.NombrePlural";
+
+        public const string ETIQUETA = "@Model.Etiqueta";
+        public const string ETIQUETA_PLURAL = "@Model.EtiquetaPlural";
+
+        public class BD
+        {
+            public const string TABLA = "@Model.NombrePlural";
+        @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
+        {
+            <text>public const string ID = "@(Model.Nombre)Id";</text>
+        }
+        }
+
+        public class Propiedades
+        {
+        @foreach(var p in Model.Propiedades)
+        {
+            propiedadConstantes = new Dictionary<string, string>
+            {
+                { "string ETIQUETA", string.Format("\"{0}\"", p.Etiqueta) }
+            };
+            switch (p.PropiedadTipoId)
+            {
+                case PropiedadTipos.TEXTO:
+                    if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.TamañoMax, p.EspecificacionesTexto.TamañoMaximo.ToString());
+                    }
+                    break;
+                case PropiedadTipos.ENTERO:
+                    if (p.EspecificacionesEntero.ValorMinimo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEntero, p.EspecificacionesEntero.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesEntero.ValorMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEntero, p.EspecificacionesEntero.ValorMaximo.ToString());
+                    }
+                    break;
+                case PropiedadTipos.ENTERO_CORTO:
+                    if (p.EspecificacionesEnteroCorto.ValorMinimo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEnteroCorto, p.EspecificacionesEnteroCorto.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesEnteroCorto.ValorMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEnteroCorto, p.EspecificacionesEnteroCorto.ValorMaximo.ToString());
+                    }
+                    break;
+                case PropiedadTipos.ENTERO_LARGO:
+                    if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEnteroLargo, p.EspecificacionesEnteroLargo.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEnteroLargo, p.EspecificacionesEnteroLargo.ValorMaximo.ToString());
+                    }
+                    break;
+                case PropiedadTipos.DECIMAL:
+                    if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, FormatoHelper.FormatoValorConSufijo(p.EspecificacionesDecimal.ValorMinimo));
+                    }
+                    if (p.EspecificacionesDecimal.ValorMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, FormatoHelper.FormatoValorConSufijo(p.EspecificacionesDecimal.ValorMaximo));
+                    }
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimal.DigitosDecimales.ToString());
+                    break;
+                case PropiedadTipos.DECIMAL_FLOTANTE:
+                    if (p.EspecificacionesDecimalFlotante.ValorMinimo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimalFlotante, p.EspecificacionesDecimalFlotante.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesDecimalFlotante.ValorMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimalFlotante, p.EspecificacionesDecimalFlotante.ValorMaximo.ToString());
+                    }
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimalFlotante.DigitosDecimales.ToString());
+                    break;
+            }
+            <text>public class @Html.Raw(p.EsId() ? "Id" : p.Nombre)
+            {
+                @foreach (var c in propiedadConstantes)
+                {
+                <text>public const @Html.Raw(c.Key) = @Html.Raw(c.Value);</text>
+                }
+            }</text>
+        }
+        }
+
+        public class Mensajes
+        {
+            public const string AGREGAR_OK = @(clases.Metadata).ETIQUETA + " agregad@(textoOperacionSufijoGenero) correctamente.";
+            public const string AGREGAR_ERROR = "No se @textoPudo agregar @textoArticulo " + @(clases.Metadata).ETIQUETA;
+
+            public const string EDITAR_OK = @(clases.Metadata).ETIQUETA + " actualizad@(textoOperacionSufijoGenero) correctamente.";
+            public const string EDITAR_ERROR = "No se @textoPudo actualizar @textoArticulo " + @(clases.Metadata).ETIQUETA;
+
+            public const string ELIMINAR_OK = @(clases.Metadata).ETIQUETA + " eliminad@(textoOperacionSufijoGenero) correctamente.";
+            public const string ELIMINAR_ERROR = "No se @textoPudo eliminar @textoArticulo " + @(clases.Metadata).ETIQUETA;
+        }
+    }
+}

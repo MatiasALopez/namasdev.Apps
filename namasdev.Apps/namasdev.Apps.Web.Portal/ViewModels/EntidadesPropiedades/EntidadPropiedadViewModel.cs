@@ -74,7 +74,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
                 switch (PropiedadTipoId.Value)
                 {
                     case PropiedadTipos.DECIMAL:
-                    case PropiedadTipos.DECIMAL_LARGO:
+                    case PropiedadTipos.DECIMAL_FLOTANTE:
                         if (!PropiedadTipoEspecificacionesDecimal.DigitosEnteros.HasValue)
                         {
                             yield return new ValidationResult(Validador.MensajeRequerido(PropiedadTipoEspecificacionesDecimalMetadata.Propiedades.DigitosEnteros.ETIQUETA), new[] { $"{nameof(PropiedadTipoEspecificacionesDecimal)}.{nameof(PropiedadTipoEspecificacionesDecimal.DigitosEnteros)}" });

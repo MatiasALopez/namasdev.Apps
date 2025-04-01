@@ -17,7 +17,7 @@ using @(namespaces.Aplicacion).Web.Portal.Models.@Model.NombrePlural;
 
 namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
 {
-    public class @clases.ListaViewModel : ListadoConPaginacionViewModel@(string.Format("<{0}>", clases.ItemModel))
+    public class @clases.ListaViewModel : ListadoConPaginacionViewModel@(Html.Raw(string.Format("<{0}>", clases.ItemModel)))
     {
         public @(clases.ListaViewModel)()
         {

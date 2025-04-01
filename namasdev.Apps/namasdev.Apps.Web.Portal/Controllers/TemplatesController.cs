@@ -144,6 +144,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return Content(contenido, ArchivoContentTypes.Text.TXT);
         }
 
+        public ActionResult Web_IndexView(Guid id)
+        {
+            var entidad = ObtenerEntidad(id);
+            var contenido = RenderViewToString("Web_IndexView", entidad);
+            return Content(contenido, ArchivoContentTypes.Text.TXT);
+        }
+
         #endregion
 
         #endregion

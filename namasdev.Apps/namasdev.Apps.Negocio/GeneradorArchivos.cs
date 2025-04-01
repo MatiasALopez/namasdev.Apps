@@ -206,11 +206,13 @@ namespace namasdev.Apps.Negocio
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
                 $"Index.cshtml",
-                grupoId);
+                grupoId,
+                reemplazarHtmlRaw: false);
         }
 
         private string GenerarDesdeTemplate(string template, object modelo, string destinoSubdirectorio, string destinoArchivo,
-            Guid? grupoId = null)
+            Guid? grupoId = null,
+            bool reemplazarHtmlRaw = true)
         {
             string directorioGenerados = Path.Combine(GenerarPathDirectorioArchivos(grupoId), destinoSubdirectorio);
             Directory.CreateDirectory(directorioGenerados);
@@ -220,7 +222,7 @@ namespace namasdev.Apps.Negocio
             File.WriteAllText(
                 pathArchivo,
                 Engine.Razor.RunCompile(
-                    ObtenerTemplate(template),
+                    ObtenerTemplate(template, reemplazarHtmlRaw),
                     Path.GetFileName(template),
                     null,
                     modelo));
@@ -238,10 +240,15 @@ namespace namasdev.Apps.Negocio
             return Path.Combine(GenerarPathDirectorioBase(grupoId), "Archivos");
         }
 
-        private string ObtenerTemplate(string template)
+        private string ObtenerTemplate(string template,
+            bool reemplazarHtmlRaw = true)
         {
-            return File.ReadAllText(Path.Combine(_templatesDirectorio, template))
-                .Replace("Html.Raw", "Raw");
+            var contenido = File.ReadAllText(Path.Combine(_templatesDirectorio, template));
+            if (reemplazarHtmlRaw)
+            {
+                contenido = contenido.Replace("Html.Raw", "Raw");
+            }
+            return contenido;
         }
     }
 }

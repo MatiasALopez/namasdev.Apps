@@ -8,12 +8,17 @@ namespace namasdev.Apps.Entidades
     {
         public string Nombre { get; set; }
         public string CLRType { get; set; }
+
+        public bool CLRTypeEsNullable 
+        {
+            get { return Id != PropiedadTipos.TEXTO; }
+        }
+
         public string CLRTypeNullable 
         {
             get 
             { 
-                return 
-                    Id != PropiedadTipos.TEXTO
+                return CLRTypeEsNullable
                     ? $"{CLRType}?"
                     : CLRType;
             }

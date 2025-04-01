@@ -42,7 +42,7 @@
             && !p.GeneradaAlCrear
             && !p.EsCalculada)
         {
-            agregarParametros.Add(string.Format("{0}.{1}", variables.ViewModel, p.Nombre));
+            agregarParametros.Add(string.Format("{0}.{1}{2}", variables.ViewModel, p.Nombre, !p.PermiteNull && p.Tipo.CLRTypeEsNullable ? ".Value" : ""));
         }
     }
 }
@@ -52,8 +52,8 @@ using System.Web.Mvc;
 using namasdev.Core.Validation;
 using namasdev.Web.Helpers;
 using namasdev.Web.Models;
+using @(namespaces.Aplicacion).Entidades;
 using @(namespaces.Aplicacion).Entidades.Metadata;
-using @(namespaces.Aplicacion).Entidades.Valores;
 using @(namespaces.Aplicacion).Datos;
 using @(namespaces.Aplicacion).Negocio;
 using @(namespaces.Aplicacion).Web.Portal.Mappers;
@@ -86,15 +86,15 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             string orden = null,
             int pagina = 1)
         {
-            var modelo = new @clases.ListaViewModel
+            var @variables.ViewModel = new @clases.ListaViewModel
             {
                 Busqueda = busqueda,
                 Pagina = pagina,
                 Orden = orden,
             };
 
-            Cargar@(clases.ListaViewModel)(modelo);
-            return View(modelo);
+            Cargar@(clases.ListaViewModel)(@variables.ViewModel);
+            return View(@variables.ViewModel);
         }
 
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
@@ -130,7 +130,7 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             var @variables.ViewModel = new @(clases.EntidadViewModel)();
             Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Agregar);
 
-            return View(@constantes.ViewsEntidad, modelo);
+            return View(@constantes.ViewsEntidad, @variables.ViewModel);
         }
 
         [HttpPost,
@@ -141,7 +141,7 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _@(variables.Negocio).Agregar(@Formateador.FormatoLista(agregarParametros, ", "), UsuarioId);
+                    _@(variables.Negocio).Agregar(@Formateador.Lista(agregarParametros, ", "), UsuarioId);
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -152,7 +152,7 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             }
 
             Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Agregar);
-            return View(@constantes.ViewsEntidad, modelo);
+            return View(@constantes.ViewsEntidad, @variables.ViewModel);
         }
 
         public ActionResult Editar(Guid id)

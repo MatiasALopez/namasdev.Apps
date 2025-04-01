@@ -30,9 +30,9 @@
             continue;
         }
 
-        entidadAItemModelAsignaciones.Add(string.Format("{0} = e.{1}", p.Nombre, p.EsId() ? "Id" : p.Nombre));
-        entidadAViewModelEntidadAsignaciones.Add(string.Format("{0} = entidad.{1}", p.Nombre, p.EsId() ? "Id" : p.Nombre));
-        viewModelAEntidadAsignaciones.Add(string.Format("{0} = {1}.{2}{3}", p.EsId() ? "Id" : p.Nombre, variables.ViewModel, p.Nombre, p.EsId() ? "default" : ""));
+        entidadAItemModelAsignaciones.Add(string.Format("{0} = e.{1}", p.NombreOId, p.NombreOId));
+        entidadAViewModelEntidadAsignaciones.Add(string.Format("{0} = entidad.{1}", p.NombreOId, p.NombreOId));
+        viewModelAEntidadAsignaciones.Add(string.Format("{0} = {1}.{2}{3}", p.NombreOId, variables.ViewModel, p.NombreOId, p.EsId() ? " ?? default" : (!p.PermiteNull && p.Tipo.CLRTypeEsNullable ? ".Value" : "")));
     }
 }
 using System;
@@ -48,7 +48,7 @@ namespace @(namespaces.Aplicacion).Web.Portal.Mappers
 {
     public class @clases.Mapper
     {
-        public static List@(string.Format("<{0}>", clases.ItemModel)) MapearEntidadesAModelos(IEnumerable@(string.Format("<{0}>", clases.Entidad)) @variables.Entidades)
+        public static List@(Html.Raw(string.Format("<{0}>", clases.ItemModel))) MapearEntidadesAModelos(IEnumerable@(Html.Raw(string.Format("<{0}>", clases.Entidad))) @variables.Entidades)
         {
             Validador.ValidarArgumentListaRequeridaYThrow(@variables.Entidades, nameof(@variables.Entidades), validarNoVacia: false);
 

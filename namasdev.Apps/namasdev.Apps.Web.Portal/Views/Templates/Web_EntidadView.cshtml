@@ -1,0 +1,98 @@
+﻿@using namasdev.Core.Types;
+@using namasdev.Apps.Entidades.Valores;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        Entidad = Model.Nombre,
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
+        EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
+        Controller = string.Format("{0}Controller", Model.NombrePlural),
+    };
+
+    string propiedadIdNombre = Model.Propiedades
+        .Where(p => p.EsId())
+        .Select(p => p.NombreOId)
+        .FirstOrDefault();
+}
+@@using namasdev.Core.Types;
+@@using namasdev.Web.Helpers;
+@@using @(namespaces.Aplicacion).Entidades;
+@@using @(namespaces.Aplicacion).Entidades.Metadata;
+@@using @(namespaces.Aplicacion).Web.Portal.Controllers;
+@@model @(namespaces.Aplicacion).Web.Portal.ViewModels.@(Model.NombrePlural).@(clases.EntidadViewModel)
+@@{
+    ViewBag.Title = $"{Model.PaginaModo} {@(clases.Metadata).NOMBRE}";
+
+    var controlesIds = new
+    {
+        Form = $"frm{@(clases.Metadata).NOMBRE}"
+    };
+}
+<h2 class="my-3">@ViewBag.Title</h2>
+<form id="@("controlesIds.Form")" action="@("@Url.Action()")" method="post" class="mt-3">
+    @@Html.AntiForgeryToken()
+    @@Html.ValidationSummary(excludePropertyErrors: true)
+    @@Html.Partial("_Errores")
+    @@Html.Partial("_ResultadoOk")
+    @if (propiedadIdNombre != null)
+    {
+    <text>@@Html.HiddenFor(m => m.UsuarioId)</text>
+    }
+    @@Html.HiddenFor(m => m.PaginaModo)
+    <div class="form-row">
+        @foreach (var p in Model.Propiedades)
+        {
+            if (p.EsCalculada || p.EsAuditoria() || p.EsId())
+            {
+                continue;
+            }
+            switch (p.PropiedadTipoId)
+            {
+                case PropiedadTipos.TEXTO:
+                    <text>@Html.Partial("Web_PropiedadTextoPartial", p)</text>
+                    break;
+                case PropiedadTipos.ENTERO:
+                case PropiedadTipos.ENTERO_CORTO:
+                case PropiedadTipos.ENTERO_LARGO:
+                    <text>@Html.Partial("Web_PropiedadEnteroPartial", p)</text>
+                    break;
+                case PropiedadTipos.DECIMAL:
+                case PropiedadTipos.DECIMAL_FLOTANTE:
+                    <text>@Html.Partial("Web_PropiedadDecimalPartial", p)</text>
+                    break;
+                case PropiedadTipos.IMPORTE:
+
+                    break;
+                case PropiedadTipos.FECHA_HORA:
+
+                    break;
+                case PropiedadTipos.FECHA:
+
+                    break;
+                case PropiedadTipos.HORA:
+
+                    break;
+                case PropiedadTipos.BOOLEANO:
+
+                    break;
+                default:
+
+                    break;
+            }
+        }
+    </div>
+    <button type="submit" class="btn btn-primary" data-toggle-state-container="#@("@controlesIds.Form")">Guardar</button>
+    <a href="@(Html.Raw(string.Format("@Url.Action(nameof({0}.Index))", clases.Controller)))" class="btn btn-secondary">Volver</a>
+</form>
+@@section bodyScripts {
+    <script type="text/javascript">
+        $(function () {
+            namasdevApps.setActiveMenuOption('@Model.NombrePlural.ToFirstLetterLowercase()');
+        });
+    </script>
+}

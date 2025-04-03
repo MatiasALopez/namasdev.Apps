@@ -128,6 +128,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 _generadorArchivos.GenerarWebIndexView(entidad));
         }
 
+        public ActionResult EntidadView(Guid id)
+        {
+            var entidad = ObtenerEntidad(id);
+            return ControllerHelper.CrearActionResultArchivo(
+                _generadorArchivos.GenerarWebEntidadView(entidad));
+        }
+
         #region Debug
 
         public ActionResult Entidades_Entidad(Guid id)
@@ -148,6 +155,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             var entidad = ObtenerEntidad(id);
             var contenido = RenderViewToString("Web_IndexView", entidad);
+            return Content(contenido, ArchivoContentTypes.Text.TXT);
+        }
+
+        public ActionResult Web_EntidadView(Guid id)
+        {
+            var entidad = ObtenerEntidad(id);
+            var contenido = RenderViewToString("Web_EntidadView", entidad);
             return Content(contenido, ArchivoContentTypes.Text.TXT);
         }
 

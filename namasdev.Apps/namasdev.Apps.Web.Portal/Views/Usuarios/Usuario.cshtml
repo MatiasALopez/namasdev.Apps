@@ -1,5 +1,6 @@
 ﻿@using namasdev.Apps.Entidades.Metadata; 
 @using namasdev.Apps.Web.Portal.ViewModels.Usuarios;
+@using namasdev.Apps.Web.Portal.Controllers;
 @model UsuarioViewModel
 @{
     ViewBag.Title = $"{Model.PaginaModo} {UsuarioMetadata.NOMBRE}";
@@ -42,7 +43,7 @@
         </div>
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
-    <a href="@Url.Action("Index")" class="btn btn-secondary">Volver</a>
+    <a href="@Url.Action(nameof(UsuariosController.Index))" class="btn btn-secondary">Volver</a>
 </form>
 @section bodyScripts {
     <script type="text/javascript">

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 
@@ -8,6 +9,7 @@ using RazorEngine.Templating;
 using namasdev.Core.IO;
 using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
+using System.Linq;
 
 namespace namasdev.Apps.Negocio
 {
@@ -21,11 +23,12 @@ namespace namasdev.Apps.Negocio
         string GenerarSQLTabla(Entidad entidad, Guid? grupoId = null);
         string GenerarWebController(Entidad entidad, Guid? grupoId = null);
         string GenerarWebEntidadViewModel(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebIndexView(Entidad entidad, Guid? grupoId = null);
         string GenerarWebItemModel(Entidad entidad, Guid? grupoId = null);
         string GenerarWebListaViewModel(Entidad entidad, Guid? grupoId = null);
         string GenerarWebMapper(Entidad entidad, Guid? grupoId = null);
         string GenerarWebViewsMetadata(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebIndexView(Entidad entidad, Guid? grupoId = null);
+        string GenerarWebEntidadView(Entidad entidad, Guid? grupoId = null);
         string GenerarZipTodos(Entidad entidad);
     }
 
@@ -57,6 +60,7 @@ namespace namasdev.Apps.Negocio
             GenerarWebViewsMetadata(entidad, grupoId: grupoId);
             GenerarWebController(entidad, grupoId: grupoId);
             GenerarWebIndexView(entidad, grupoId: grupoId);
+            GenerarWebEntidadView(entidad, grupoId: grupoId);
 
             var zipPath = Path.Combine(GenerarPathDirectorioBase(grupoId), $"{entidad.AplicacionVersion.Aplicacion.Nombre}{ArchivoExtensiones.Application.ZIP}");
             ZipFile.CreateFromDirectory(
@@ -205,29 +209,71 @@ namespace namasdev.Apps.Negocio
                 "Web_IndexView.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
-                $"Index.cshtml",
+                "Index.cshtml",
                 grupoId,
-                reemplazarHtmlRaw: false);
+                esHtmlView: true);
+        }
+
+        public string GenerarWebEntidadView(Entidad entidad,
+           Guid? grupoId = null)
+        {
+            return GenerarDesdeTemplate(
+                "Web_EntidadView.cshtml",
+                entidad,
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
+                $"{entidad.Nombre}.cshtml",
+                grupoId,
+                esHtmlView: true,
+                partialViews: new[] 
+                {
+                    "Web_PropiedadTextoPartial.cshtml",
+                    "Web_PropiedadEnteroPartial.cshtml",
+                    "Web_PropiedadDecimalPartial.cshtml"
+                });
         }
 
         private string GenerarDesdeTemplate(string template, object modelo, string destinoSubdirectorio, string destinoArchivo,
             Guid? grupoId = null,
-            bool reemplazarHtmlRaw = true)
+            bool esHtmlView = true,
+            IEnumerable<string> partialViews = null)
         {
+            var razor = Engine.Razor;
+
+            var templateNames = new List<string>
+            {
+                AgregarTemplateARazorYObtenerNombre(template, razor, esHtmlView)
+            };
+
+            foreach (var pv in partialViews)
+            {
+                templateNames.Add(AgregarTemplateARazorYObtenerNombre(pv, razor, esHtmlView));
+            }
+
+            foreach (var tn in templateNames)
+            {
+                razor.Compile(tn);
+            }
+            
             string directorioGenerados = Path.Combine(GenerarPathDirectorioArchivos(grupoId), destinoSubdirectorio);
             Directory.CreateDirectory(directorioGenerados);
 
             string pathArchivo = Path.Combine(directorioGenerados, destinoArchivo);
-
             File.WriteAllText(
                 pathArchivo,
-                Engine.Razor.RunCompile(
-                    ObtenerTemplate(template, reemplazarHtmlRaw),
-                    Path.GetFileName(template),
+                razor.Run(
+                    templateNames[0],
                     null,
                     modelo));
 
             return pathArchivo;
+        }
+
+        private string AgregarTemplateARazorYObtenerNombre(string template, IRazorEngineService razor,
+            bool esHtmlView = false)
+        { 
+            string templateName = Path.GetFileNameWithoutExtension(template);
+            razor.AddTemplate(templateName, ObtenerTemplate(template, esHtmlView));
+            return templateName;
         }
 
         private string GenerarPathDirectorioBase(Guid? grupoId)
@@ -241,12 +287,14 @@ namespace namasdev.Apps.Negocio
         }
 
         private string ObtenerTemplate(string template,
-            bool reemplazarHtmlRaw = true)
+            bool esHtmlView = false)
         {
             var contenido = File.ReadAllText(Path.Combine(_templatesDirectorio, template));
-            if (reemplazarHtmlRaw)
+            if (esHtmlView)
             {
-                contenido = contenido.Replace("Html.Raw", "Raw");
+                contenido = contenido
+                    .Replace("Html.Raw", "Raw")
+                    .Replace("Html.Partial", "Include");
             }
             return contenido;
         }

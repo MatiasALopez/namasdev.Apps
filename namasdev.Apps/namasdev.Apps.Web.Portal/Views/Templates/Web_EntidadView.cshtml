@@ -1,5 +1,6 @@
 ﻿@using namasdev.Core.Types;
 @using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
@@ -18,6 +19,11 @@
         .Where(p => p.EsId())
         .Select(p => p.NombreOId)
         .FirstOrDefault();
+
+    string controlTipo;
+    List<string> controlCssClasses;
+    Dictionary<string, string> labelHtmlAttributes,
+        controlHtmlAttributes;
 }
 @@using namasdev.Core.Types;
 @@using namasdev.Web.Helpers;
@@ -41,58 +47,133 @@
     @@Html.Partial("_ResultadoOk")
     @if (propiedadIdNombre != null)
     {
-    <text>@@Html.HiddenFor(m => m.UsuarioId)</text>
+    <text>@@Html.HiddenFor(m => m.@(propiedadIdNombre))</text>
     }
     @@Html.HiddenFor(m => m.PaginaModo)
     <div class="form-row">
-        @foreach (var p in Model.Propiedades)
+    @foreach (var p in Model.Propiedades)
+    {
+        if (p.EsCalculada || p.EsAuditoria() || p.EsId())
         {
-            if (p.EsCalculada || p.EsAuditoria() || p.EsId())
-            {
-                continue;
-            }
-            switch (p.PropiedadTipoId)
-            {
-                case PropiedadTipos.TEXTO:
-                    <text>@Html.Partial("Web_PropiedadTextoPartial", p)</text>
-                    break;
-                case PropiedadTipos.ENTERO:
-                case PropiedadTipos.ENTERO_CORTO:
-                case PropiedadTipos.ENTERO_LARGO:
-                    <text>@Html.Partial("Web_PropiedadEnteroPartial", p)</text>
-                    break;
-                case PropiedadTipos.DECIMAL:
-                case PropiedadTipos.DECIMAL_FLOTANTE:
-                    <text>@Html.Partial("Web_PropiedadDecimalPartial", p)</text>
-                    break;
-                case PropiedadTipos.IMPORTE:
-
-                    break;
-                case PropiedadTipos.FECHA_HORA:
-
-                    break;
-                case PropiedadTipos.FECHA:
-
-                    break;
-                case PropiedadTipos.HORA:
-
-                    break;
-                case PropiedadTipos.BOOLEANO:
-
-                    break;
-                default:
-
-                    break;
-            }
+            continue;
         }
+        controlTipo = "TextBox";
+        controlCssClasses = new List<string> { "form-control" };
+        labelHtmlAttributes = new Dictionary<string, string>();
+        controlHtmlAttributes = new Dictionary<string, string>();
+        if (!p.PermiteNull)
+        {
+            labelHtmlAttributes.Add("class", "requerido");
+            controlCssClasses.Add("form-control-required");
+        }
+        switch (p.PropiedadTipoId)
+        {
+            case PropiedadTipos.TEXTO:
+                if (p.EspecificacionesTexto != null)
+                {
+                    if (p.EspecificacionesTexto.EsMultilinea)
+                    {
+                        controlTipo = "TextArea";
+                    }
+                    if (p.EspecificacionesTexto.TamañoMaximo.HasValue
+                        || p.EspecificacionesTexto.TamañoExacto.HasValue)
+                    {
+                        controlHtmlAttributes.Add("maxlength", (p.EspecificacionesTexto.TamañoExacto ?? p.EspecificacionesTexto.TamañoMaximo).ToString());
+                    }
+                }
+                break;
+            case PropiedadTipos.ENTERO:
+                controlCssClasses.Add("inputmask-integer");
+                if (p.EspecificacionesEntero != null)
+                {
+                    if (p.EspecificacionesEntero.ValorMinimo.HasValue)
+                    {
+                        controlHtmlAttributes.Add("data_inputmask_min", p.EspecificacionesEntero.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesEntero.ValorMaximo.HasValue)
+                    {
+                        controlHtmlAttributes.Add("data_inputmask_max", p.EspecificacionesEntero.ValorMaximo.ToString());
+                    }
+                }
+                break;
+            case PropiedadTipos.ENTERO_CORTO:
+                controlCssClasses.Add("inputmask-integer");
+                if (p.EspecificacionesEnteroCorto != null)
+                {
+                    if (p.EspecificacionesEnteroCorto.ValorMinimo.HasValue)
+                    {
+                        controlHtmlAttributes.Add("data_inputmask_min", p.EspecificacionesEnteroCorto.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesEnteroCorto.ValorMaximo.HasValue)
+                    {
+                        controlHtmlAttributes.Add("data_inputmask_max", p.EspecificacionesEnteroCorto.ValorMaximo.ToString());
+                    }
+                }
+                break;
+            case PropiedadTipos.ENTERO_LARGO:
+                controlCssClasses.Add("inputmask-integer");
+                if (p.EspecificacionesEnteroLargo != null)
+                {
+                    if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
+                    {
+                        controlHtmlAttributes.Add("data_inputmask_min", p.EspecificacionesEnteroLargo.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
+                    {
+                        controlHtmlAttributes.Add("data_inputmask_max", p.EspecificacionesEnteroLargo.ValorMaximo.ToString());
+                    }
+                }
+                break;
+            case PropiedadTipos.DECIMAL:
+                controlCssClasses.Add("inputmask-numeric");
+                if (p.EspecificacionesDecimal != null)
+                {
+                    controlHtmlAttributes.Add("data_inputmask_digits", p.EspecificacionesDecimal.DigitosDecimales.ToString());
+                    controlHtmlAttributes.Add("data_inputmask_min", (p.EspecificacionesDecimal.ValorMinimo ?? p.EspecificacionesDecimal.ValorMinimoDesdeDigitos).ToString());
+                    controlHtmlAttributes.Add("data_inputmask_max", (p.EspecificacionesDecimal.ValorMaximo ?? p.EspecificacionesDecimal.ValorMaximoDesdeDigitos).ToString());
+                }
+                break;
+            case PropiedadTipos.DECIMAL_FLOTANTE:
+                controlCssClasses.Add("inputmask-numeric");
+                if (p.EspecificacionesDecimalFlotante != null)
+                {
+                    controlHtmlAttributes.Add("data_inputmask_digits", p.EspecificacionesDecimalFlotante.DigitosDecimales.ToString());
+                    controlHtmlAttributes.Add("data_inputmask_min", (p.EspecificacionesDecimalFlotante.ValorMinimo ?? p.EspecificacionesDecimalFlotante.ValorMinimoDesdeDigitos).ToString());
+                    controlHtmlAttributes.Add("data_inputmask_max", (p.EspecificacionesDecimalFlotante.ValorMaximo ?? p.EspecificacionesDecimalFlotante.ValorMaximoDesdeDigitos).ToString());
+                }
+                break;
+            case PropiedadTipos.IMPORTE:
+                controlCssClasses.Add("inputmask-numeric");
+                controlHtmlAttributes.Add("data_inputmask_digits", "2");
+                break;
+            case PropiedadTipos.FECHA_HORA:
+                controlCssClasses.Add("datepicker");
+                break;
+            case PropiedadTipos.FECHA:
+                controlCssClasses.Add("datepicker");
+                break;
+            case PropiedadTipos.HORA:
+                // TODO (ML): completar
+                break;
+            case PropiedadTipos.BOOLEANO:
+                // TODO (ML): completar
+                break;
+        }
+        controlHtmlAttributes.Add("class", Formateador.Lista(controlCssClasses, separador: " "));
+        <div class="form-group col-md-6">
+            @@Html.LabelFor(m => m.@(p.NombreOId)@(Html.Raw(FormatoHelper.AtributosHtmlString(labelHtmlAttributes))))
+            @@Html.@(controlTipo)For(m => m.@(p.NombreOId)@(Html.Raw(FormatoHelper.AtributosHtmlString(controlHtmlAttributes))))
+            @@Html.ValidationMessageFor(m => m.@(p.NombreOId))
+        </div>
+    }
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@("@controlesIds.Form")">Guardar</button>
     <a href="@(Html.Raw(string.Format("@Url.Action(nameof({0}.Index))", clases.Controller)))" class="btn btn-secondary">Volver</a>
 </form>
 @@section bodyScripts {
-    <script type="text/javascript">
-        $(function () {
-            namasdevApps.setActiveMenuOption('@Model.NombrePlural.ToFirstLetterLowercase()');
-        });
-    </script>
+<script type="text/javascript">
+    $(function () {
+        namasdevApps.setActiveMenuOption('@Model.NombrePlural.ToFirstLetterLowercase()');
+    });
+</script>
 }

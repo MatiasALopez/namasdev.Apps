@@ -334,9 +334,6 @@
     <Content Include="Views\Templates\Web_Mapper.cshtml" />
     <Content Include="Views\Templates\Web_ViewsMetadata.cshtml" />
     <Content Include="Views\Templates\Web_EntidadView.cshtml" />
-    <Content Include="Views\Templates\Web_PropiedadTextoPartial.cshtml" />
-    <Content Include="Views\Templates\Web_PropiedadEnteroPartial.cshtml" />
-    <Content Include="Views\Templates\Web_PropiedadDecimalPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

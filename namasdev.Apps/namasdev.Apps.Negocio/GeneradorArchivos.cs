@@ -223,13 +223,7 @@ namespace namasdev.Apps.Negocio
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
                 $"{entidad.Nombre}.cshtml",
                 grupoId,
-                esHtmlView: true,
-                partialViews: new[] 
-                {
-                    "Web_PropiedadTextoPartial.cshtml",
-                    "Web_PropiedadEnteroPartial.cshtml",
-                    "Web_PropiedadDecimalPartial.cshtml"
-                });
+                esHtmlView: true);
         }
 
         private string GenerarDesdeTemplate(string template, object modelo, string destinoSubdirectorio, string destinoArchivo,
@@ -244,9 +238,12 @@ namespace namasdev.Apps.Negocio
                 AgregarTemplateARazorYObtenerNombre(template, razor, esHtmlView)
             };
 
-            foreach (var pv in partialViews)
+            if (partialViews != null)
             {
-                templateNames.Add(AgregarTemplateARazorYObtenerNombre(pv, razor, esHtmlView));
+                foreach (var pv in partialViews)
+                {
+                    templateNames.Add(AgregarTemplateARazorYObtenerNombre(pv, razor, esHtmlView));
+                }
             }
 
             foreach (var tn in templateNames)
@@ -294,7 +291,7 @@ namespace namasdev.Apps.Negocio
             {
                 contenido = contenido
                     .Replace("Html.Raw", "Raw")
-                    .Replace("Html.Partial", "Include");
+                    .Replace("<text>@Html.Partial", "<text>@Include");
             }
             return contenido;
         }

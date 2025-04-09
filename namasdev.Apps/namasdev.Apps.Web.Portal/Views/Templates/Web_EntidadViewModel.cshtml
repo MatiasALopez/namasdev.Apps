@@ -1,4 +1,5 @@
 ﻿@using namasdev.Apps.Entidades;
+@using namasdev.Apps.Entidades.Valores; 
 @model Entidad
 @{
     var namespaces = new
@@ -13,10 +14,13 @@
     };
 
     string propiedadIdNombre = null;
+    bool tienePropiedadesBoolean = false,
+        tienePropiedadesHora = false;
 }
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
@@ -32,6 +36,9 @@ namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
     {
         if (p.EsCalculada || p.EsAuditoria()) { continue; }
         if (p.EsId()) { propiedadIdNombre = p.NombreOId; }
+        if (p.PropiedadTipoId == PropiedadTipos.BOOLEANO) { tienePropiedadesBoolean = true; }
+        else if (p.PropiedadTipoId == PropiedadTipos.FECHA_HORA
+            || p.PropiedadTipoId == PropiedadTipos.HORA) { tienePropiedadesHora = true; }
         <text>[Display(Name = @(clases.MetadataPropiedades).@(p.NombreOId).ETIQUETA)]
         @if (!p.PermiteNull && !p.EsId())
         {
@@ -40,6 +47,15 @@ namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
         public @p.Tipo.CLRTypeNullable @p.NombreOId { get; set; }
         </text>
     }
+    @if (tienePropiedadesBoolean) 
+    { 
+    <text>public SelectList SiNoSelectList { get; set; }</text>
+    }
+    @if (tienePropiedadesHora) 
+    { 
+    <text>public SelectList HoraSelectList { get; set; }</text>
+    }
+
         public IEnumerable@(Html.Raw("<ValidationResult>")) Validate(ValidationContext validationContext)
         {
         @if (!string.IsNullOrWhiteSpace(propiedadIdNombre))

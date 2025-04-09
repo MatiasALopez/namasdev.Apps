@@ -22,17 +22,21 @@
     foreach (var p in Model.Propiedades)
     {
         propiedadReglas = new List<string>();
+        if (p.Nombre == namasdev.Apps.Entidades.EntidadPropiedad.IdNombre(Model))
+        {
+            propiedadReglas.Add(string.Format("HasColumnName({0}.BD.ID)", clases.Metadata));
+        }
+        if (p.EsCalculada)
+        {
+            propiedadReglas.Add("HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed)");
+        }
+        else if (!p.PermiteNull)
+        {
+            propiedadReglas.Add("IsRequired()");
+        }
         switch (p.PropiedadTipoId)
         {
             case PropiedadTipos.TEXTO:
-                if (p.Nombre == namasdev.Apps.Entidades.EntidadPropiedad.IdNombre(Model))
-                {
-                    propiedadReglas.Add(string.Format("HasColumnName({0}.BD.ID)", clases.Metadata));
-                }
-                if (!p.PermiteNull)
-                {
-                    propiedadReglas.Add("IsRequired()");
-                }
                 if (p.EspecificacionesTexto != null)
                 {
                     var maxLength = p.EspecificacionesTexto.TamañoMaximo ?? p.EspecificacionesTexto.TamañoExacto;
@@ -51,7 +55,7 @@
         }
         if (propiedadReglas.Any())
         {
-            propiedadesReglas.Add(string.Format("p.{0}", p.Nombre), Formateador.Lista(propiedadReglas, "."));
+            propiedadesReglas.Add(string.Format("p.{0}", p.NombreOId), Formateador.Lista(propiedadReglas, "."));
         }
     }
 
@@ -132,6 +136,8 @@
         asociaciones.Add(string.Format("{0}(p => p.{1}).{2}(p => p.{3}){4}", asociacionParte1Regla, origenPropiedadNavegacion, asociacionParte2Regla, destinoPropiedadNavegacion, (asociacionTieneReglaForeignKey ? string.Format(".HasForeignKey(p => p.{0})", a.DestinoPropiedad.Nombre) : "")));
     }
 }
+using System.ComponentModel.DataAnnotations.Schema;
+
 using namasdev.Data.Entity.Config;
 using @(namespaces.Aplicacion).Entidades;
 using @(namespaces.Aplicacion).Entidades.Metadata;
@@ -143,26 +149,28 @@ namespace @(namespaces.Aplicacion).Datos.Sql.Config
         public @(clases.Config)()
         {
             ToTable(@(clases.Metadata).BD.TABLA);
-    @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
-    {
-        <text>HasKey(p => p.Id);</text>
-    }
-    else if (Model.Claves.Count == 1)
-    {
-        <text>HasKey(p => p.@Model.Claves[0].Propiedad.Nombre);</text>
-    }
-    else if (Model.Claves.Count > 1)
-    {
-        <text>HasKey(p => new { @string.Join(", ", Model.Claves.Select(c => string.Format("p.{0}", c.Propiedad.Nombre))) });</text>
-    }
-    @foreach (var p in propiedadesReglas)
-    {
-        <text>Property(p => @p.Key).@p.Value;</text>
-    }
-    @foreach (var a in asociaciones)
-    {
-        <text>@a;</text>
-    }
+            @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
+            {
+            <text>HasKey(p => p.Id);</text>
+            }
+            else if (Model.Claves.Count == 1)
+            {
+            <text>HasKey(p => p.@Model.Claves[0].Propiedad.Nombre);</text>
+            }
+            else if (Model.Claves.Count > 1)
+            {
+            <text>HasKey(p => new { @string.Join(", ", Model.Claves.Select(c => string.Format("p.{0}", c.Propiedad.Nombre))) });</text>
+            }
+
+            @foreach (var p in propiedadesReglas)
+            {
+            <text>Property(p => @p.Key).@p.Value;</text>
+            }
+
+            @foreach (var a in asociaciones)
+            {
+            <text>@a;</text>
+            }
         }
     }
 }

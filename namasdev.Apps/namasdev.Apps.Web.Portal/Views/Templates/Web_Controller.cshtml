@@ -1,5 +1,6 @@
 ﻿@using namasdev.Core.Types;
 @using namasdev.Core.Types;
+@using namasdev.Apps.Entidades.Valores;
 @model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
@@ -44,6 +45,14 @@
         {
             agregarParametros.Add(string.Format("{0}.{1}{2}", variables.ViewModel, p.Nombre, !p.PermiteNull && p.Tipo.CLRTypeEsNullable ? ".Value" : ""));
         }
+    }
+    bool tienePropiedadesBoolean = false,
+        tienePropiedadesHora = false;
+    foreach(var p in Model.Propiedades)
+    {
+        if (p.PropiedadTipoId == PropiedadTipos.BOOLEANO) { tienePropiedadesBoolean = true; }
+        else if (p.PropiedadTipoId == PropiedadTipos.FECHA_HORA
+            || p.PropiedadTipoId == PropiedadTipos.HORA) { tienePropiedadesHora = true; }
     }
 }
 using System;
@@ -216,6 +225,11 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             Validador.ValidarArgumentRequeridoYThrow(@variables.ViewModel, nameof(@variables.ViewModel));
 
             @(variables.ViewModel).PaginaModo = paginaModo;
+        @if (tienePropiedadesBoolean) {<text>
+            @(variables.ViewModel).SiNoSelectList = ListasHelper.ObtenerSiNoSelectList();</text>}
+        @if (tienePropiedadesHora) {<text>
+            @(variables.ViewModel).HoraSelectList = ListasHelper.ObtenerHoraMinSelectList();
+</text>}
         }
 
         #endregion Metodos

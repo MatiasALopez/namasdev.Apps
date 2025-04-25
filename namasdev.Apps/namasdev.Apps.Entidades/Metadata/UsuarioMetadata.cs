@@ -53,14 +53,14 @@ namespace namasdev.Apps.Entidades.Metadata
 
         public class Mensajes
         {
-            public const string AGREGAR_OK = ErrorMetadata.ETIQUETA + " agregado correctamente.";
-            public const string AGREGAR_ERROR = "No se pudo agregar el " + ErrorMetadata.ETIQUETA;
+            public const string AGREGAR_OK = UsuarioMetadata.ETIQUETA + " agregado correctamente.";
+            public const string AGREGAR_ERROR = "No se pudo agregar el " + UsuarioMetadata.ETIQUETA;
 
-            public const string EDITAR_OK = ErrorMetadata.ETIQUETA + " actualizado correctamente.";
-            public const string EDITAR_ERROR = "No se pudo actualizar el " + ErrorMetadata.ETIQUETA;
+            public const string EDITAR_OK = UsuarioMetadata.ETIQUETA + " actualizado correctamente.";
+            public const string EDITAR_ERROR = "No se pudo actualizar el " + UsuarioMetadata.ETIQUETA;
 
-            public const string ELIMINAR_OK = ErrorMetadata.ETIQUETA + " eliminado correctamente.";
-            public const string ELIMINAR_ERROR = "No se pudo eliminar el " + ErrorMetadata.ETIQUETA;
+            public const string ELIMINAR_OK = UsuarioMetadata.ETIQUETA + " eliminado correctamente.";
+            public const string ELIMINAR_ERROR = "No se pudo eliminar el " + UsuarioMetadata.ETIQUETA;
         }
     }
 }

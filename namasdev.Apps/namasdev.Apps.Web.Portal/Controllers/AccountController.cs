@@ -12,8 +12,8 @@ using namasdev.Web.Helpers;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.ViewModels;
-using namasdev.Apps.Web.Portal.Metadata.Views;
 using namasdev.Apps.Web.Portal.Metadata;
+using namasdev.Apps.Web.Portal.Metadata.Views;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {

@@ -10,6 +10,8 @@ namespace namasdev.Apps.Negocio.Automapper
         {
             CreateMap<AgregarParametros, Usuario>();
             CreateMap<ActualizarParametros, Usuario>();
+            CreateMap<MarcarComoBorradoParametros, Usuario>();
+            CreateMap<DesmarcarComoBorradoParametros, Usuario>();
         }
     }
 }

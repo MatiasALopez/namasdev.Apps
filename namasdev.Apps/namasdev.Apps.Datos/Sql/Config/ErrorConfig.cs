@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+
 using namasdev.Apps.Entidades;
 
 namespace namasdev.Apps.Datos.Sql.Config

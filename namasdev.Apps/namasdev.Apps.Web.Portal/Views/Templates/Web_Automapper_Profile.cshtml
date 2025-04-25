@@ -1,0 +1,39 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new 
+    {
+        Profile = string.Format("{0}Profile", Model.Nombre),
+        Entidad = Model.Nombre,
+        EntidadViewModel = "EntidadViewModel",
+    };
+}
+using AutoMapper;
+
+using @(namespaces.Aplicacion).Entidades;
+using @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural);
+using @(namespaces.Aplicacion).Web.Portal.Models.@(Model.NombrePlural);
+using @(namespaces.Aplicacion).Web.Portal.ViewModels.@(Model.NombrePlural);
+
+namespace @(namespaces.Aplicacion).Web.Portal.Automapper
+{
+    public class @clases.Profile : Profile
+    {
+        public @(clases.Profile)()
+        {
+            CreateMap@(string.Format("<{0},{1}>", clases.Entidad, clases.EntidadViewModel))()
+                .ReverseMap();
+
+            CreateMap@(string.Format("<{0},EntidadItemModel>", clases.Entidad))();
+
+            CreateMap@(string.Format("<AgregarParametros,{0}>", clases.EntidadViewModel))()
+                .ReverseMap();
+
+            CreateMap@(string.Format("<ActualizarParametros,{0}>", clases.EntidadViewModel))()
+                .ReverseMap();
+        }
+    }
+}

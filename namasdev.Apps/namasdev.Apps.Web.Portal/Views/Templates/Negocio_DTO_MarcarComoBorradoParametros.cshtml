@@ -1,0 +1,23 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+
+    var clases = new
+    {
+        ClaseBase =
+            Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
+            ? string.Format("ParametrosEntidadBase<{0}>", Model.PropiedadesDefault.IDTipo.CLRType)
+            : string.Format("ParametrosConUsuarioBase"),
+    };
+}
+using System;
+
+namespace @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural)
+{
+    public class MarcarComoBorradoParametros : @clases.ClaseBase
+    {
+    }
+}

@@ -9,27 +9,14 @@ using RazorEngine.Templating;
 using namasdev.Core.IO;
 using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
-using System.Linq;
+using namasdev.Apps.Negocio.DTO.GeneradorArchivos;
+using namasdev.Core.Exceptions;
 
 namespace namasdev.Apps.Negocio
 {
     public interface IGeneradorArchivos
     {
-        string GenerarDatosRepositorio(Entidad entidad, Guid? grupoId = null);
-        string GenerarDatosSqlConfig(Entidad entidad, Guid? grupoId = null);
-        string GenerarEntidadesEntidad(Entidad entidad, Guid? grupoId = null);
-        string GenerarEntidadesEntidadMetadata(Entidad entidad, Guid? grupoId = null);
-        string GenerarNegocio(Entidad entidad, Guid? grupoId = null);
-        string GenerarSQLTabla(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebController(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebEntidadViewModel(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebItemModel(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebListaViewModel(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebMapper(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebViewsMetadata(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebIndexView(Entidad entidad, Guid? grupoId = null);
-        string GenerarWebEntidadView(Entidad entidad, Guid? grupoId = null);
-        string GenerarZipTodos(Entidad entidad);
+        string GenerarZip(GenerarZipParametros parametros);
     }
 
     public class GeneradorArchivos : IGeneradorArchivos
@@ -43,26 +30,117 @@ namespace namasdev.Apps.Negocio
             _templatesDirectorio = templatesDirectorio;
         }
 
-        public string GenerarZipTodos(Entidad entidad)
+        public string GenerarZip(GenerarZipParametros parametros)
         {
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+            Validador.ValidarArgumentRequeridoYThrow(parametros.Entidad, nameof(parametros.Entidad));
+
+            if (!parametros.GenerarAlMenosUnArchivo)
+            {
+                throw new ExcepcionMensajeAlUsuario("Debe seleccionar al menos un archivo para generar.");
+            }
+
             var grupoId = Guid.NewGuid();
 
-            GenerarSQLTabla(entidad, grupoId: grupoId);
-            GenerarEntidadesEntidad(entidad, grupoId: grupoId);
-            GenerarEntidadesEntidadMetadata(entidad, grupoId: grupoId);
-            GenerarDatosSqlConfig(entidad, grupoId: grupoId);
-            GenerarDatosRepositorio(entidad, grupoId: grupoId);
-            GenerarNegocio(entidad, grupoId: grupoId);
-            GenerarWebItemModel(entidad, grupoId: grupoId);
-            GenerarWebEntidadViewModel(entidad, grupoId: grupoId);
-            GenerarWebListaViewModel(entidad, grupoId: grupoId);
-            GenerarWebMapper(entidad, grupoId: grupoId);
-            GenerarWebViewsMetadata(entidad, grupoId: grupoId);
-            GenerarWebController(entidad, grupoId: grupoId);
-            GenerarWebIndexView(entidad, grupoId: grupoId);
-            GenerarWebEntidadView(entidad, grupoId: grupoId);
+            if (parametros.GenerarDatabaseTabla) 
+            {
+                GenerarDatabaseTabla(parametros.Entidad, grupoId: grupoId);
+            }
+            
+            if (parametros.GenerarEntidadesEntidad)
+            {
+                GenerarEntidadesEntidad(parametros.Entidad, grupoId: grupoId);
+            }
 
-            var zipPath = Path.Combine(GenerarPathDirectorioBase(grupoId), $"{entidad.AplicacionVersion.Aplicacion.Nombre}{ArchivoExtensiones.Application.ZIP}");
+            if (parametros.GenerarEntidadesMetadataEntidadMetadata)
+            {
+                GenerarEntidadesMetadataEntidadMetadata(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarDatosSqlConfig)
+            {
+                GenerarDatosSqlConfig(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarDatosRepositorio)
+            {
+                GenerarDatosRepositorio(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarNegocio)
+            {
+                GenerarNegocio(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarNegocioAutomapperProfile)
+            {
+                GenerarNegocioAutomapperProfile(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarNegocioDTOAgregarParametros)
+            {
+                GenerarNegocioDTOAgregarParametros(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarNegocioDTOActualizarParametros)
+            {
+                GenerarNegocioDTOActualizarParametros(parametros.Entidad, grupoId: grupoId);
+            }
+            
+            if (parametros.Entidad.PropiedadesDefault.AuditoriaBorrado)
+            {
+                if (parametros.GenerarNegocioDTOMarcarComoBorradoParametros)
+                {
+                    GenerarNegocioDTOMarcarComoBorradoParametros(parametros.Entidad, grupoId: grupoId);
+                }
+
+                if (parametros.GenerarNegocioDTODesmarcarComoBorradoParametros)
+                {
+                    GenerarNegocioDTODesmarcarComoBorradoParametros(parametros.Entidad, grupoId: grupoId);
+                }
+            }
+
+            if (parametros.GenerarWebModelsItemModel)
+            {
+                GenerarWebModelsItemModel(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarWebViewModelsEntidadViewModel)
+            {
+                GenerarWebViewModelsEntidadViewModel(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarWebViewModelsListaViewModel)
+            {
+                GenerarWebViewModelsListaViewModel(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarWebAutomapperProfile)
+            {
+                GenerarWebAutomapperProfile(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarWebViewsMetadata)
+            {
+                GenerarWebMetadataViews(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarWebController)
+            {
+                GenerarWebController(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarWebViewsIndex)
+            {
+                GenerarWebViewsIndex(parametros.Entidad, grupoId: grupoId);
+            }
+
+            if (parametros.GenerarWebViewsEntidad)
+            {
+                GenerarWebViewsEntidad(parametros.Entidad, grupoId: grupoId);
+            }
+
+            var zipPath = Path.Combine(GenerarPathDirectorioBase(grupoId), $"{parametros.Entidad.AplicacionVersion.Aplicacion.Nombre}{ArchivoExtensiones.Application.ZIP}");
             ZipFile.CreateFromDirectory(
                 GenerarPathDirectorioArchivos(grupoId),
                 zipPath);
@@ -70,18 +148,18 @@ namespace namasdev.Apps.Negocio
             return zipPath;
         }
 
-        public string GenerarSQLTabla(Entidad entidad,
+        private string GenerarDatabaseTabla(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "SQL_Tabla.cshtml",
+                "Database_Tabla.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Database", "dbo", "Tables"),
                 $"{entidad.NombrePlural}.sql",
                 grupoId);
         }
 
-        public string GenerarEntidadesEntidad(Entidad entidad,
+        private string GenerarEntidadesEntidad(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
@@ -92,18 +170,18 @@ namespace namasdev.Apps.Negocio
                 grupoId);
         }
 
-        public string GenerarEntidadesEntidadMetadata(Entidad entidad,
+        private string GenerarEntidadesMetadataEntidadMetadata(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Entidades_EntidadMetadata.cshtml",
+                "Entidades_Metadata_EntidadMetadata.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Entidades", "Metadata"),
                 $"{entidad.Nombre}Metadata.cs",
                 grupoId);
         }
 
-        public string GenerarDatosSqlConfig(Entidad entidad,
+        private string GenerarDatosSqlConfig(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
@@ -114,7 +192,7 @@ namespace namasdev.Apps.Negocio
                 grupoId);
         }
 
-        public string GenerarDatosRepositorio(Entidad entidad,
+        private string GenerarDatosRepositorio(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
@@ -125,7 +203,7 @@ namespace namasdev.Apps.Negocio
                 grupoId);
         }
 
-        public string GenerarNegocio(Entidad entidad,
+        private string GenerarNegocio(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
@@ -136,62 +214,117 @@ namespace namasdev.Apps.Negocio
                 grupoId);
         }
 
-        public string GenerarWebItemModel(Entidad entidad,
+        private string GenerarNegocioAutomapperProfile(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_ItemModel.cshtml",
+                "Negocio_Automapper_Profile.cshtml",
+                entidad,
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "Automapper"),
+                $"{entidad.NombrePlural}Profile.cs",
+                grupoId);
+        }
+
+        private string GenerarNegocioDTOAgregarParametros(Entidad entidad,
+            Guid? grupoId = null)
+        {
+            return GenerarDesdeTemplate(
+                "Negocio_DTO_AgregarParametros.cshtml",
+                entidad,
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                "AgregarParametros.cs",
+                grupoId);
+        }
+
+        private string GenerarNegocioDTOActualizarParametros(Entidad entidad,
+            Guid? grupoId = null)
+        {
+            return GenerarDesdeTemplate(
+                "Negocio_DTO_ActualizarParametros.cshtml",
+                entidad,
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                "ActualizarParametros.cs",
+                grupoId);
+        }
+
+        private string GenerarNegocioDTOMarcarComoBorradoParametros(Entidad entidad,
+            Guid? grupoId = null)
+        {
+            return GenerarDesdeTemplate(
+                "Negocio_DTO_MarcarComoBorradoParametros.cshtml",
+                entidad,
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                "MarcarComoBorradoParametros.cs",
+                grupoId);
+        }
+
+        private string GenerarNegocioDTODesmarcarComoBorradoParametros(Entidad entidad,
+            Guid? grupoId = null)
+        {
+            return GenerarDesdeTemplate(
+                "Negocio_DTO_DesmarcarComoBorradoParametros.cshtml",
+                entidad,
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                "DesmarcarComoBorradoParametros.cs",
+                grupoId);
+        }
+
+        private string GenerarWebModelsItemModel(Entidad entidad,
+            Guid? grupoId = null)
+        {
+            return GenerarDesdeTemplate(
+                "Web_Models_ItemModel.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Models", entidad.NombrePlural),
                 $"{entidad.Nombre}ItemModel.cs",
                 grupoId);
         }
 
-        public string GenerarWebEntidadViewModel(Entidad entidad,
+        private string GenerarWebViewModelsEntidadViewModel(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_EntidadViewModel.cshtml",
+                "Web_ViewModels_EntidadViewModel.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "ViewModels", entidad.NombrePlural),
                 $"{entidad.Nombre}ViewModel.cs",
                 grupoId);
         }
 
-        public string GenerarWebListaViewModel(Entidad entidad,
+        private string GenerarWebViewModelsListaViewModel(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_ListaViewModel.cshtml",
+                "Web_ViewModels_ListaViewModel.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "ViewModels", entidad.NombrePlural),
                 $"{entidad.NombrePlural}ViewModel.cs",
                 grupoId);
         }
 
-        public string GenerarWebMapper(Entidad entidad,
+        private string GenerarWebAutomapperProfile(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_Mapper.cshtml",
+                "Web_Automapper_Profile.cshtml",
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Mappers"),
-                $"{entidad.NombrePlural}Mapper.cs",
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Automapper"),
+                $"{entidad.NombrePlural}Profile.cs",
                 grupoId);
         }
 
-        public string GenerarWebViewsMetadata(Entidad entidad,
+        private string GenerarWebMetadataViews(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_ViewsMetadata.cshtml",
+                "Web_Metadata_Views.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Metadata", "Views"),
                 $"{entidad.NombrePlural}Views.cs",
                 grupoId);
         }
 
-        public string GenerarWebController(Entidad entidad,
+        private string GenerarWebController(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
@@ -202,11 +335,11 @@ namespace namasdev.Apps.Negocio
                 grupoId);
         }
 
-        public string GenerarWebIndexView(Entidad entidad,
+        private string GenerarWebViewsIndex(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_IndexView.cshtml",
+                "Web_Views_Index.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
                 "Index.cshtml",
@@ -214,11 +347,11 @@ namespace namasdev.Apps.Negocio
                 esHtmlView: true);
         }
 
-        public string GenerarWebEntidadView(Entidad entidad,
+        private string GenerarWebViewsEntidad(Entidad entidad,
            Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_EntidadView.cshtml",
+                "Web_Views_Entidad.cshtml",
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
                 $"{entidad.Nombre}.cshtml",

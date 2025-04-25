@@ -1,0 +1,24 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+}
+using System;
+using @(namespaces.Aplicacion).Entidades;
+
+namespace @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural)
+{
+    public class AgregarParametros : ParametrosConUsuarioBase
+    {
+    @foreach (var p in Model.Propiedades)
+    {
+        if (p.GeneradaAlCrear || p.EsCalculada || p.EsAuditoria())
+        {
+            continue;
+        }
+        <text>public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @p.NombreOId { get; set; }</text>
+    }
+    }
+}

@@ -1,0 +1,176 @@
+﻿@using namasdev.Apps.Web.Portal.ViewModels.Templates;
+@model GenerarArchivosViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Generar archivos";
+    ViewBag.ExcluirHeaderYFooter = true;
+
+    var controlesIds = new
+    {
+        Form = $"frmGenerarArchivos"
+    };
+    var clases = new
+    {
+        CheckBoxHead = "checkbox-head",
+        CheckBoxBody = "checkbox-body"
+    };
+}
+<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mt-3">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(excludePropertyErrors: true)
+    @Html.Partial("_Errores")
+    @Html.Partial("_ResultadoOk")
+    @Html.HiddenFor(m => m.EntidadId)
+    <div class="@clases.CheckBoxHead">
+        <div class="form-group">
+            <div class="custom-control custom-switch">
+                <input id="chkTodos" type="checkbox" class="custom-control-input" />
+                <label for="chkTodos" class="custom-control-label">Todos</label>
+            </div>
+        </div>
+    </div>
+    <div class="@clases.CheckBoxBody">
+        <fieldset>
+            <legend>Database</legend>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarDatabaseTabla, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarDatabaseTabla, new { @class = "custom-control-label" })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Entidades</legend>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarEntidadesEntidad, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarEntidadesEntidad, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarEntidadesMetadataEntidadMetadata, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarEntidadesMetadataEntidadMetadata, new { @class = "custom-control-label" })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Datos</legend>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarDatosSqlConfig, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarDatosSqlConfig, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarDatosRepositorio, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarDatosRepositorio, new { @class = "custom-control-label" })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Negocio</legend>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarNegocioDTOAgregarParametros, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarNegocioDTOAgregarParametros, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarNegocioDTOActualizarParametros, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarNegocioDTOActualizarParametros, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarNegocioDTOMarcarComoBorradoParametros, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarNegocioDTOMarcarComoBorradoParametros, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarNegocioDTODesmarcarComoBorradoParametros, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarNegocioDTODesmarcarComoBorradoParametros, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarNegocioAutomapperProfile, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarNegocioAutomapperProfile, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarNegocio, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarNegocio, new { @class = "custom-control-label" })
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Web.Portal</legend>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarWebModelsItemModel, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarWebModelsItemModel, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarWebViewModelsEntidadViewModel, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarWebViewModelsEntidadViewModel, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarWebViewModelsListaViewModel, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarWebViewModelsListaViewModel, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarWebAutomapperProfile, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarWebAutomapperProfile, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarWebViewsMetadata, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarWebViewsMetadata, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarWebViewsEntidad, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarWebViewsEntidad, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarWebViewsIndex, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarWebViewsIndex, new { @class = "custom-control-label" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    @Html.CheckBoxFor(m => m.GenerarWebController, new { @class = "custom-control-input" })
+                    @Html.LabelFor(m => m.GenerarWebController, new { @class = "custom-control-label" })
+                </div>
+            </div>
+        </fieldset>
+    </div>
+    <button type="submit" class="btn btn-primary">Generar</button>
+</form>
+@section bodyScripts {
+    <script type="text/javascript">
+        $(function () {
+            nmd.ui.controls.initCheckBoxSelection(
+                '#@controlesIds.Form',
+                {
+                    checkBoxAllSelector: '.@clases.CheckBoxHead input[type="checkbox"]',
+                    checkBoxOneSelector: '.@clases.CheckBoxBody input[type="checkbox"]',
+                });
+        });
+    </script>    
+}

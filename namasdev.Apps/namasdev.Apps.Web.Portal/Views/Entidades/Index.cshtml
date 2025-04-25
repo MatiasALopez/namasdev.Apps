@@ -68,39 +68,11 @@
                                 <td>@item.Nombre</td>
                                 <td>@item.Etiqueta</td>
                                 <td class="text-center">
-                                    <a href="@Url.Action("Editar", new { id = item.EntidadId, aplicacionVersionId = item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <a href="@Url.Action("Index", "EntidadesPropiedades", new { entidadId = item.EntidadId })" class="btn btn-sm btn-outline-info"><i class="fa fa-list-ul" data-toggle="tooltip" title="@EntidadPropiedadMetadata.ETIQUETA_PLURAL"></i></a>
-                                    <div class="btn-group">
-                                        <button class="btn btn-sm btn-outline-info dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-code" data-toggle="tooltip" title="Generar"></i></button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="@Url.Action("DescargarTodos", "Templates", new { id = item.EntidadId })" target="_blank">Descargar todos</a>
-                                            <div class="dropdown-divider"></div>
-                                            <h6 class="dropdown-header">SQL</h6>
-                                            <a class="dropdown-item" href="@Url.Action("Tabla", "Templates", new { id = item.EntidadId })" target="_blank">Tabla</a>
-                                            <div class="dropdown-divider"></div>
-                                            <h6 class="dropdown-header">Entidades</h6>
-                                            <a class="dropdown-item" href="@Url.Action("Entidad", "Templates", new { id = item.EntidadId })" target="_blank">Entidad</a>
-                                            <a class="dropdown-item" href="@Url.Action("EntidadMetadata", "Templates", new { id = item.EntidadId })" target="_blank">Metadata</a>
-                                            <div class="dropdown-divider"></div>
-                                            <h6 class="dropdown-header">Datos</h6>
-                                            <a class="dropdown-item" href="@Url.Action("SqlConfig", "Templates", new { id = item.EntidadId })" target="_blank">SQL Config</a>
-                                            <a class="dropdown-item" href="@Url.Action("Repositorio", "Templates", new { id = item.EntidadId })" target="_blank">Repositorio</a>
-                                            <div class="dropdown-divider"></div>
-                                            <h6 class="dropdown-header">Negocio</h6>
-                                            <a class="dropdown-item" href="@Url.Action("Negocio", "Templates", new { id = item.EntidadId })" target="_blank">Negocio</a>
-                                            <div class="dropdown-divider"></div>
-                                            <h6 class="dropdown-header">Web</h6>
-                                            <a class="dropdown-item" href="@Url.Action("ItemModel", "Templates", new { id = item.EntidadId })" target="_blank">Item Model</a>
-                                            <a class="dropdown-item" href="@Url.Action("ListaViewModel", "Templates", new { id = item.EntidadId })" target="_blank">Lista ViewModel</a>
-                                            <a class="dropdown-item" href="@Url.Action("EntidadViewModel", "Templates", new { id = item.EntidadId })" target="_blank">Entidad ViewModel</a>
-                                            <a class="dropdown-item" href="@Url.Action("Mapper", "Templates", new { id = item.EntidadId })" target="_blank">Mapper</a>
-                                            <a class="dropdown-item" href="@Url.Action("ViewsMetadata", "Templates", new { id = item.EntidadId })" target="_blank">Views Metadata</a>
-                                            <a class="dropdown-item" href="@Url.Action("Controller", "Templates", new { id = item.EntidadId })" target="_blank">Controller</a>
-                                            <a class="dropdown-item" href="@Url.Action("IndexView", "Templates", new { id = item.EntidadId })" target="_blank">Index View</a>
-                                            <a class="dropdown-item" href="@Url.Action("EntidadView", "Templates", new { id = item.EntidadId })" target="_blank">Entidad View</a>
-                                        </div>
-                                    </div>
-                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    <a href="@Url.Action("Editar", new { item.Id, item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                    <a href="@Url.Action("Index", "EntidadesPropiedades", new { item.Id })" class="btn btn-sm btn-outline-info"><i class="fa fa-list-ul" data-toggle="tooltip" title="@EntidadPropiedadMetadata.ETIQUETA_PLURAL"></i></a>
+                                    <a href="@Url.Action("_GenerarArchivos", "Templates", new { item.Id })" class="btn btn-sm btn-outline-info"
+                                       data-iframe data-iframe-title="Generar archivos de @item.Etiqueta" data-iframe-height="500px"><i class="fa fa-files-o" data-toggle="tooltip" title="Generar archivos"></i></a>
+                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.Id"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         }

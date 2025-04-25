@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
+using AutoMapper;
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
+
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
 using namasdev.Apps.Negocio;
-using namasdev.Apps.Web.Portal.Mappers;
+using namasdev.Apps.Negocio.DTO.Entidades;
 using namasdev.Apps.Web.Portal.ViewModels.Entidades;
 using namasdev.Apps.Web.Portal.Helpers;
 using namasdev.Apps.Web.Portal.Metadata.Views;
+using namasdev.Apps.Web.Portal.Models.Entidades;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -30,7 +34,9 @@ namespace namasdev.Apps.Web.Portal.Controllers
             IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
             IEntidadesRepositorio entidadesRepositorio, 
             IEntidadesNegocio entidadesNegocio, 
-            IAplicacionesVersionesRepositorio aplicacionesVersionesRepositorio)
+            IAplicacionesVersionesRepositorio aplicacionesVersionesRepositorio,
+            IMapper mapper)
+            : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
@@ -50,6 +56,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             string busqueda = null,
             string orden = null,
             int pagina = 1)
+        
         {
             var modelo = new EntidadesViewModel
             {
@@ -83,7 +90,12 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             try
             {
-                _entidadesNegocio.MarcarComoBorrado(id, UsuarioId);
+                _entidadesNegocio.MarcarComoBorrado(
+                    new MarcarComoBorradoParametros 
+                    { 
+                        Id = id, 
+                        UsuarioLogueadoId = UsuarioId 
+                    });
             }
             catch (Exception)
             {
@@ -113,12 +125,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var entidad = _entidadesNegocio.Agregar(
-                        modelo.AplicacionVersionId, modelo.Nombre, modelo.NombrePlural, modelo.Etiqueta, modelo.EtiquetaPlural,
-                        UsuarioId,
-                        propiedadesDefault: EntidadesMapper.MapearEntidadViewModelAEntidadPropiedadesDefault(modelo)
-                        );
-
+                    var entidad = _entidadesNegocio.Agregar(Mapear<AgregarParametros>(modelo));
                     return RedirectToAction(nameof(EntidadesPropiedadesController.Index), EntidadesPropiedadesController.NAME, new { entidadId = entidad.Id });
                 }
             }
@@ -139,7 +146,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 return RedirectToAction(nameof(Index), new { aplicacionVersionId });
             }
 
-            var modelo = EntidadesMapper.MapearEntidadAEntidadViewModel(entidad);
+            var modelo = Mapear<EntidadViewModel>(entidad);
             CargarEntidadViewModel(modelo, PaginaModo.Editar);
 
             return View(EntidadesViews.ENTIDAD, modelo);
@@ -153,8 +160,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var entidad = EntidadesMapper.MapearEntidadViewModelAEntidad(modelo);
-                    _entidadesNegocio.Actualizar(entidad, UsuarioId);
+                    _entidadesNegocio.Actualizar(Mapear<ActualizarParametros>(modelo));
 
                     ControllerHelper.CargarMensajeResultadoOk(EntidadMetadata.Mensajes.EDITAR_OK);
                 }
@@ -205,11 +211,10 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             var op = modelo.CrearOrdenYPaginacionParametros();
 
-            modelo.Items = EntidadesMapper.MapearEntidadesAModelos(
-                entidades: _entidadesRepositorio.ObtenerLista(
-                    version.Id,
-                    busqueda: modelo.Busqueda,
-                    op: op));
+            modelo.Items = Mapear<List<EntidadItemModel>>(_entidadesRepositorio.ObtenerLista(
+                version.Id,
+                busqueda: modelo.Busqueda,
+                op: op));
 
             modelo.CargarPaginacion(op);
         }

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Web.Mvc;
 
+using AutoMapper;
 using namasdev.Core.Validation;
+
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
@@ -25,7 +27,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
             IEntidadesAsociacionesRepositorio entidadesAsociacionesRepositorio, 
             IEntidadesAsociacionesNegocio entidadesAsociacionesNegocio, 
             IEntidadesRepositorio entidadesRepositorio,
-            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio)
+            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio, IMapper mapper)
+            : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesAsociacionesRepositorio, nameof(entidadesAsociacionesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesAsociacionesNegocio, nameof(entidadesAsociacionesNegocio));

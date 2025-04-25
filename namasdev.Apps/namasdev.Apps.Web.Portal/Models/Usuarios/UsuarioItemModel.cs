@@ -5,7 +5,7 @@ namespace namasdev.Apps.Web.Portal.Models.Usuarios
 {
     public class UsuarioItemModel
     {
-        public string UsuarioId { get; set; }
+        public string Id { get; set; }
 
         [Display(Name = UsuarioMetadata.Propiedades.Nombres.ETIQUETA)]
         public string Nombres { get; set; }

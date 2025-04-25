@@ -2,80 +2,82 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using AutoMapper;
 using namasdev.Core.Entity;
 using namasdev.Core.Transactions;
 using namasdev.Core.Validation;
+
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
+using namasdev.Apps.Negocio.DTO.Entidades;
 
 namespace namasdev.Apps.Negocio
 {
     public interface IEntidadesNegocio
     {
-        Entidad Agregar(Guid aplicacionVersionId, string nombre, string nombrePlural, string etiqueta, string etiquetaPlural, string usuarioId, EntidadPropiedadesDefault propiedadesDefault);
-        void Actualizar(Entidad aplicacion, string usuarioId);
-        void MarcarComoBorrado(Guid entidadId, string usuarioLogueadoId);
-        void DesmarcarComoBorrado(Guid entidadId);
+        Entidad Agregar(AgregarParametros parametros);
+        void Actualizar(ActualizarParametros parametros);
+        void MarcarComoBorrado(MarcarComoBorradoParametros parametros);
+        void DesmarcarComoBorrado(DesmarcarComoBorradoParametros parametros);
     }
 
-    public class EntidadesNegocio : IEntidadesNegocio
+    public class EntidadesNegocio : NegocioBase<IEntidadesRepositorio>, IEntidadesNegocio
     {
-        private IEntidadesRepositorio _entidadesRepositorio;
-        private IEntidadesPropiedadesDefaultRepositorio _entidadesPropiedadesDefaultRepositorio;
-        private IEntidadesClavesRepositorio _entidadesClavesRepositorio;
-        private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
+        private readonly IEntidadesPropiedadesDefaultRepositorio _entidadesPropiedadesDefaultRepositorio;
+        private readonly IEntidadesClavesRepositorio _entidadesClavesRepositorio;
+        private readonly IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
 
-        public EntidadesNegocio(IEntidadesRepositorio entidadesRepositorio, IEntidadesPropiedadesDefaultRepositorio entidadesPropiedadesDefaultRepositorio,
+        public EntidadesNegocio(
+            IEntidadesPropiedadesDefaultRepositorio entidadesPropiedadesDefaultRepositorio,
             IEntidadesClavesRepositorio entidadesClavesRepositorio,
-            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio)
+            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
+            IEntidadesRepositorio entidadesRepositorio, IErroresNegocio erroresNegocio, IMapper mapper)
+            : base(entidadesRepositorio, erroresNegocio, mapper)
         {
-            Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesDefaultRepositorio, nameof(entidadesPropiedadesDefaultRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesClavesRepositorio, nameof(entidadesClavesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
 
-            _entidadesRepositorio = entidadesRepositorio;
             _entidadesPropiedadesDefaultRepositorio = entidadesPropiedadesDefaultRepositorio;
             _entidadesClavesRepositorio = entidadesClavesRepositorio;
             _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
         }
 
-        public Entidad Agregar(Guid aplicacionVersionId, string nombre, string nombrePlural, string etiqueta, string etiquetaPlural, string usuarioId,
-            EntidadPropiedadesDefault propiedadesDefault)
+        public Entidad Agregar(AgregarParametros parametros)
         {
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+
             DateTime fechaHora = DateTime.Now;
 
-            var entidad = new Entidad
-            {
-                Id = Guid.NewGuid(),
-                AplicacionVersionId = aplicacionVersionId,
-                Nombre = nombre,
-                NombrePlural = nombrePlural,
-                Etiqueta = etiqueta,
-                EtiquetaPlural = etiquetaPlural
-            };
-            entidad.EstablecerDatosCreado(usuarioId, fechaHora);
-            entidad.EstablecerDatosModificacion(usuarioId, fechaHora);
+            var entidad = Mapper.Map<Entidad>(parametros);
+            entidad.Id = Guid.NewGuid();
+            entidad.EstablecerDatosCreado(parametros.UsuarioLogueadoId, fechaHora);
+            entidad.EstablecerDatosModificacion(parametros.UsuarioLogueadoId, fechaHora);
+            
             ValidarDatos(entidad);
 
-            propiedadesDefault = propiedadesDefault ?? new EntidadPropiedadesDefault();
-            propiedadesDefault.Id = entidad.Id;
+            IEnumerable<EntidadPropiedad> propiedades = null;
+            IEnumerable<EntidadClave> claves = null;
+            if (parametros.PropiedadesDefault != null)
+            {
+                entidad.PropiedadesDefault.Id = entidad.Id;
 
-            var propiedades = CrearPropiedadesParaEntidad(entidad, propiedadesDefault);
-            var claves = CrearClavesParaEntidad(entidad, propiedadesDefault, propiedades);
+                propiedades = CrearPropiedadesParaEntidad(entidad, entidad.PropiedadesDefault);
+                claves = CrearClavesParaEntidad(entidad, entidad.PropiedadesDefault, propiedades);
+            }
 
             using (var ts = TransactionScopeFactory.Crear())
             {
-                _entidadesRepositorio.Agregar(entidad);
-                _entidadesPropiedadesDefaultRepositorio.Agregar(propiedadesDefault);
+                Repositorio.Agregar(entidad);
+                _entidadesPropiedadesDefaultRepositorio.Agregar(entidad.PropiedadesDefault);
 
-                if (propiedades != null)
+                if (propiedades != null && propiedades.Any())
                 {
                     _entidadesPropiedadesRepositorio.Agregar(propiedades);
                 }
-                if (claves != null)
+                if (claves != null && claves.Any())
                 {
                     _entidadesClavesRepositorio.Agregar(claves);
                 }
@@ -86,31 +88,52 @@ namespace namasdev.Apps.Negocio
             return entidad;
         }
 
-        public void Actualizar(Entidad entidad, string usuarioId)
+        public void Actualizar(ActualizarParametros parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(entidad, nameof(entidad));
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
 
             DateTime fechaHora = DateTime.Now;
 
-            entidad.EstablecerDatosModificacion(usuarioId, fechaHora);
+            var entidad = Obtener(parametros.Id);
+            Mapper.Map(parametros, entidad);
+            entidad.EstablecerDatosModificacion(parametros.UsuarioLogueadoId, fechaHora);
+            
             ValidarDatos(entidad);
 
-            _entidadesRepositorio.Actualizar(entidad);
+            Repositorio.Actualizar(entidad);
         }
 
-        public void MarcarComoBorrado(Guid entidadId, string usuarioLogueadoId)
+        public void MarcarComoBorrado(MarcarComoBorradoParametros parametros)
         {
-            var entidad = new Entidad 
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+
+            DateTime fechaHora = DateTime.Now;
+
+            var entidad = Mapper.Map<Entidad>(parametros);
+            entidad.EstablecerDatosBorrado(parametros.UsuarioLogueadoId, DateTime.Now);
+
+            Repositorio.ActualizarDatosBorrado(entidad);
+        }
+
+        public void DesmarcarComoBorrado(DesmarcarComoBorradoParametros parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+
+            var entidad = Mapper.Map<Entidad>(parametros);
+            Repositorio.ActualizarDatosBorrado(entidad);
+        }
+
+        private Entidad Obtener(Guid id,
+            bool validarExistencia = true)
+        {
+            var entidad = Repositorio.Obtener(id);
+            if (validarExistencia
+                && entidad == null)
             {
-                Id = entidadId
-            };
-            entidad.EstablecerDatosBorrado(usuarioLogueadoId, DateTime.Now);
-            _entidadesRepositorio.ActualizarDatosBorrado(entidad);
-        }
+                throw new Exception(Validador.MensajeEntidadInexistente(EntidadMetadata.ETIQUETA, id));
+            }
 
-        public void DesmarcarComoBorrado(Guid entidadId)
-        {
-            _entidadesRepositorio.ActualizarDatosBorrado(new Entidad { Id = entidadId });
+            return entidad;
         }
 
         private void ValidarDatos(Entidad entidad)

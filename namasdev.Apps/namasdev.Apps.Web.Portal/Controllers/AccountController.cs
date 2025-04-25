@@ -3,11 +3,12 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
+using AutoMapper;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-
 using namasdev.Core.Validation;
 using namasdev.Web.Helpers;
+
 using namasdev.Apps.Datos;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.ViewModels;
@@ -27,7 +28,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
         private readonly IUsuariosNegocio _usuariosNegocio;
         private readonly ICorreosNegocio _correosNegocio;
 
-        public AccountController(IUsuariosRepositorio usuariosRepositorio, IUsuariosNegocio usuariosNegocio, ICorreosNegocio correosNegocio)
+        public AccountController(IUsuariosRepositorio usuariosRepositorio, IUsuariosNegocio usuariosNegocio, ICorreosNegocio correosNegocio, IMapper mapper)
+            : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(usuariosRepositorio, nameof(usuariosRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(usuariosNegocio, nameof(usuariosNegocio));
@@ -38,7 +40,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
             _correosNegocio = correosNegocio;
         }
 
-        public AccountController(ApplicationSignInManager signInManager)
+        public AccountController(ApplicationSignInManager signInManager, IMapper mapper)
+            : base(mapper)
         {
             SignInManager = signInManager;
         }

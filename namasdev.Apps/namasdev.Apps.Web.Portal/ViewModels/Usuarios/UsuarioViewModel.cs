@@ -13,7 +13,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
     {
         public PaginaModo PaginaModo { get; set; }
 
-        public string UsuarioId { get; set; }
+        public string Id { get; set; }
 
         [Display(Name = UsuarioMetadata.Propiedades.Nombres.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
@@ -39,9 +39,9 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Usuarios
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (PaginaModo == PaginaModo.Editar
-                && String.IsNullOrWhiteSpace(UsuarioId))
+                && String.IsNullOrWhiteSpace(Id))
             {
-                yield return new ValidationResult(Validador.MensajeRequerido(UsuarioMetadata.ETIQUETA), new string[] { nameof(UsuarioId) });
+                yield return new ValidationResult(Validador.MensajeRequerido(UsuarioMetadata.ETIQUETA), new string[] { nameof(Id) });
             }
         }
     }

@@ -19,115 +19,96 @@
     var variablesNombres = new
     {
         Repositorio = "repositorio",
+        ErroresNegocio = "erroresNegocio",
+        Mapper = "mapper",
+        Parametros = "parametros",
+        Entidad = "entidad",
         UsuarioId = "usuarioId",
     };
-
-    var agregarParametros = new List<string>();
-    var agregarPropiedadesAsignacion = new List<string>();
-    foreach (var p in Model.Propiedades)
-    {
-        if (p.EsId())
-        {
-            continue;
-        }
-        if (!p.EsCalculada && !p.EsAuditoria())
-        {
-            agregarParametros.Add(string.Format("{0} {1}", (p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType), p.NombreCamelCase));
-            agregarPropiedadesAsignacion.Add(string.Format("{0} = {1}", p.Nombre, p.NombreCamelCase));
-        }
-    }
-
-    string agregarListaParametros = Formateador.Lista(agregarParametros, ", ");
 }
 using System;
 using System.Collections.Generic;
+
+using AutoMapper;
 
 using namasdev.Core.Entity;
 using namasdev.Core.Validation;
 using @(namespaceBase).Datos;
 using @(namespaceBase).Entidades;
 using @(namespaceBase).Entidades.Metadata;
+using @(namespaceBase).Negocio.DTO.@(Model.NombrePlural);
 
 namespace @(namespaceBase).Negocio
 {
     public interface @interfacesNombres.Negocio
     {
-        @clasesNombres.Entidad Agregar(@agregarListaParametros, string @variablesNombres.UsuarioId);
-        void Actualizar(@clasesNombres.Entidad entidad, string @variablesNombres.UsuarioId);
+        @clasesNombres.Entidad Agregar(AgregarParametros parametros);
+        void Actualizar(ActualizarParametros parametros);
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {
-        <text>void MarcarComoBorrado(Guid id, string @variablesNombres.UsuarioId);
-        void DesmarcarComoBorrado(Guid id);</text>
+        <text>void MarcarComoBorrado(MarcarComoBorradoParametros parametros);
+        void DesmarcarComoBorrado(DesmarcarComoBorradoParametros parametros);</text>
         }
     }
 
-    public class @clasesNombres.Negocio : @interfacesNombres.Negocio
+    public class @clasesNombres.Negocio : @string.Format("NegocioBase<{0}>", clasesNombres.Repositorio)
     {
-        private @interfacesNombres.Repositorio _@variablesNombres.Repositorio;
-
-        public @(clasesNombres.Negocio)(@interfacesNombres.Repositorio @variablesNombres.Repositorio)
+        public @(clasesNombres.Negocio)(@interfacesNombres.Repositorio @variablesNombres.Repositorio, IErroresNegocio @variablesNombres.ErroresNegocio, IMapper @variablesNombres.Mapper)
+            : base(@variablesNombres.Repositorio, @variablesNombres.ErroresNegocio, @variablesNombres.Mapper)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Repositorio, nameof(@variablesNombres.Repositorio));
-
-            _@variablesNombres.Repositorio = @variablesNombres.Repositorio;
         }
 
-        public @clasesNombres.Entidad Agregar(@agregarListaParametros, string @variablesNombres.UsuarioId)
+        public @clasesNombres.Entidad Agregar(AgregarParametros @variablesNombres.Parametros)
         {
-            DateTime fechaHora = DateTime.Now;
-
-            var entidad = new @clasesNombres.Entidad
-            {
-            @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
-            {
-                <text>Id = Guid.NewGuid(),</text>
-            }
-            @foreach (var p in agregarPropiedadesAsignacion)
-            {
-                <text>@p,</text>
-            }
-            };
-            @if (Model.PropiedadesDefault.AuditoriaCreado)
-            {
-            <text>entidad.EstablecerDatosCreado(@variablesNombres.UsuarioId, fechaHora);</text>
-            }
-            @if (Model.PropiedadesDefault.AuditoriaUltimaModificacion)
-            {
-            <text>entidad.EstablecerDatosModificacion(@variablesNombres.UsuarioId, fechaHora);</text>
-            }
-            ValidarDatos(entidad);
-
-            _@(variablesNombres.Repositorio).Agregar(entidad);
-
-            return entidad;
-        }
-
-        public void Actualizar(@clasesNombres.Entidad entidad, string @variablesNombres.UsuarioId)
-        {
-            Validador.ValidarArgumentRequeridoYThrow(entidad, nameof(entidad));
+            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Parametros, nameof(@variablesNombres.Parametros));
 
             DateTime fechaHora = DateTime.Now;
 
-            entidad.EstablecerDatosModificacion(@variablesNombres.UsuarioId, fechaHora);
-            ValidarDatos(entidad);
+            var @variablesNombres.Entidad = @(string.Format("Mapper.Map<{0}>", clasesNombres.Entidad))(@variablesNombres.Parametros);
+            @(variablesNombres.Entidad).EstablecerDatosCreado(@(variablesNombres).UsuarioLogueadoId, fechaHora);
+            @(variablesNombres.Entidad).EstablecerDatosModificacion(@(variablesNombres).UsuarioLogueadoId, fechaHora);
 
-            _@(variablesNombres.Repositorio).Actualizar(entidad);
+            ValidarDatos(@variablesNombres.Entidad);
+
+            Repositorio.Agregar(@variablesNombres.Entidad);
+
+            return @variablesNombres.Entidad;
+        }
+
+        public void Actualizar(ActualizarParametros @variablesNombres.Parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Parametros, nameof(@variablesNombres.Parametros));
+
+            DateTime fechaHora = DateTime.Now;
+
+            var @variablesNombres.Entidad = Obtener(@(variablesNombres.Parametros).Id);
+            Mapper.Map(@variablesNombres.Parametros, @variablesNombres.Entidad);
+            @(variablesNombres.Entidad).EstablecerDatosModificacion(@(variablesNombres.Parametros).UsuarioLogueadoId, fechaHora);
+
+            ValidarDatos(@variablesNombres.Entidad);
+
+            Repositorio.Actualizar(@variablesNombres.Entidad);
         }
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {<text>
-        public void MarcarComoBorrado(Guid id, string @variablesNombres.UsuarioId)
+        public void MarcarComoBorrado(MarcarComoBorradoParametros @variablesNombres.Parametros)
         {
-            var entidad = new @clasesNombres.Entidad
-            {
-                Id = id
-            };
-            entidad.EstablecerDatosBorrado(@variablesNombres.UsuarioId, DateTime.Now);
-            _@(variablesNombres.Repositorio).ActualizarDatosBorrado(entidad);
+            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Parametros, nameof(@variablesNombres.Parametros));
+    
+            DateTime fechaHora = DateTime.Now;
+
+            var @variablesNombres.Entidad = @(string.Format("Mapper.Map<{0}>", clasesNombres.Entidad))(@variablesNombres.Parametros);
+            @(variablesNombres.Entidad).EstablecerDatosBorrado(@(variablesNombres.Parametros).UsuarioLogueadoId, fechaHora);
+
+            Repositorio.ActualizarDatosBorrado(@variablesNombres.Entidad);
         }
 
-        public void DesmarcarComoBorrado(Guid id)
+        public void DesmarcarComoBorrado(DesmarcarComoBorradoParametros @variablesNombres.Parametros)
         {
-            _@(variablesNombres.Repositorio).ActualizarDatosBorrado(new @clasesNombres.Entidad { Id = id });
+            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Parametros, nameof(@variablesNombres.Parametros));
+
+            var @variablesNombres.Entidad = @(string.Format("Mapper.Map<{0}>", clasesNombres.Entidad))(@variablesNombres.Parametros);
+            Repositorio.ActualizarDatosBorrado(@variablesNombres.Entidad);
         }
         </text>}
 
@@ -152,7 +133,7 @@ namespace @(namespaceBase).Negocio
             <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroLargo.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroLargo.ValorMaximo), valorNull: "null"));</text>
             break;
         case PropiedadTipos.DECIMAL:
-            <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(FormatoHelper.FormatoValorConSufijo(p.EspecificacionesDecimal.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(FormatoHelper.FormatoValorConSufijo(p.EspecificacionesDecimal.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.DigitosDecimales), valorNull: "null"));</text>
+            <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.DigitosDecimales), valorNull: "null"));</text>
             break;
         case PropiedadTipos.DECIMAL_FLOTANTE:
             <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalFlotante.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalFlotante.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalFlotante.DigitosDecimales), valorNull: "null"));</text>

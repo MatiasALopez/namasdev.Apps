@@ -1,21 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
+using AutoMapper;
 using Microsoft.AspNet.Identity;
-
 using namasdev.Core.Validation;
 using namasdev.Web.Helpers;
 using namasdev.Web.Models;
+
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
 using namasdev.Apps.Negocio;
-using namasdev.Apps.Web.Portal.Mappers;
-using namasdev.Apps.Web.Portal.Models;
-using namasdev.Apps.Web.Portal.ViewModels.Usuarios;
+using namasdev.Apps.Negocio.DTO.Usuarios;
 using namasdev.Apps.Web.Portal.Metadata.Views;
+using namasdev.Apps.Web.Portal.Models;
+using namasdev.Apps.Web.Portal.Models.Usuarios;
+using namasdev.Apps.Web.Portal.ViewModels.Usuarios;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -33,7 +36,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
         private readonly IUsuariosNegocio _usuariosNegocio;
         private readonly ICorreosNegocio _correosNegocio;
 
-        public UsuariosController(IUsuariosRepositorio usuariosRepositorio, IUsuariosNegocio usuariosNegocio, ICorreosNegocio correosNegocio)
+        public UsuariosController(IUsuariosRepositorio usuariosRepositorio, IUsuariosNegocio usuariosNegocio, ICorreosNegocio correosNegocio, IMapper mapper)
+            : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(usuariosRepositorio, nameof(usuariosRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(usuariosNegocio, nameof(usuariosNegocio));
@@ -61,12 +65,16 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             var op = modelo.CrearOrdenYPaginacionParametros();
 
-            modelo.Items = UsuariosMapper.MapearUsuariosEntidadesAModelos(
-                entidades: _usuariosRepositorio.ObtenerListado(
-                    busqueda: modelo.Busqueda, rol: modelo.Rol,
-                    cargarRoles: true,
-                    op: op),
-                idsNoActivados: UserManager.ObtenerIdsUsuariosNoActivados());
+            modelo.Items = Mapear<List<UsuarioItemModel>>(_usuariosRepositorio.ObtenerListado(
+                busqueda: modelo.Busqueda, rol: modelo.Rol,
+                cargarRoles: true,
+                op: op));
+
+            var idsNoActivados = UserManager.ObtenerIdsUsuariosNoActivados();
+            foreach (var i in modelo.Items)
+            {
+                i.Activado = !idsNoActivados.Contains(i.Id);
+            }
 
             modelo.CargarPaginacion(op);
 
@@ -105,9 +113,11 @@ namespace namasdev.Apps.Web.Portal.Controllers
                         resultado = UserManager.AddToRoles(usuarioIdentity.Id, modelo.Rol);
                         ValidarIdentityResult(resultado);
 
+                        modelo.Id = usuarioIdentity.Id;
+
                         try
                         {
-                            var usuario = _usuariosNegocio.Agregar(usuarioIdentity.Id, modelo.Nombres, modelo.Apellidos, modelo.Email, UsuarioId);
+                            var usuario = _usuariosNegocio.Agregar(Mapear<AgregarParametros>(modelo));
                             EnviarCorreoActivacion(usuario);
                         }
                         catch (Exception)
@@ -137,7 +147,11 @@ namespace namasdev.Apps.Web.Portal.Controllers
         ValidateAntiForgeryToken]
         public ActionResult DesmarcarComoBorrado(string id)
         {
-            _usuariosNegocio.DesmarcarComoBorrado(id);
+            _usuariosNegocio.DesmarcarComoBorrado(new DesmarcarComoBorradoParametros
+            {
+                Id = id,
+                UsuarioLogueadoId = UsuarioId
+            });
             DesbloquearUsuario(id);
 
             return Json(new { success = true });
@@ -151,7 +165,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var modelo = UsuariosMapper.MapearUsuarioEntidadAViewModel(usuario);
+            var modelo = Mapear<UsuarioViewModel>(usuario);
             CargarUsuarioViewModel(modelo, PaginaModo.Editar);
 
             return View(UsuariosViews.USUARIO, modelo);
@@ -165,9 +179,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var usuarioEntidad = UsuariosMapper.MapearUsuarioViewModelAEntidad(modelo);
-
-                    var usuarioIdentity = UserManager.FindById(modelo.UsuarioId);
+                    var usuarioIdentity = UserManager.FindById(modelo.Id);
 
                     IdentityResult resultado;
 
@@ -193,7 +205,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
                     try
                     {
-                        _usuariosNegocio.Actualizar(usuarioEntidad, UsuarioId);
+                        _usuariosNegocio.Actualizar(Mapear<ActualizarParametros>(modelo));
                     }
                     catch (Exception)
                     {
@@ -301,7 +313,11 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             try
             {
-                _usuariosNegocio.MarcarComoBorrado(id, UsuarioId);
+                _usuariosNegocio.MarcarComoBorrado(new MarcarComoBorradoParametros 
+                { 
+                    Id = id, 
+                    UsuarioLogueadoId = UsuarioId 
+                });
                 BloquearUsuario(id);
             }
             catch (Exception)

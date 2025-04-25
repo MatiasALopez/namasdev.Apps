@@ -126,11 +126,11 @@ namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades.Metadata
                 case PropiedadTipos.DECIMAL:
                     if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
                     {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, FormatoHelper.FormatoValorConSufijo(p.EspecificacionesDecimal.ValorMinimo));
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMinimo));
                     }
                     if (p.EspecificacionesDecimal.ValorMaximo.HasValue)
                     {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, FormatoHelper.FormatoValorConSufijo(p.EspecificacionesDecimal.ValorMaximo));
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo));
                     }
                     propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimal.DigitosDecimales.ToString());
                     break;

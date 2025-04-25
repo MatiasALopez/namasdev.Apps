@@ -7,8 +7,8 @@ namespace namasdev.Apps.Web.Portal.Models.Entidades
 {
     public class EntidadItemModel
     {
+        public Guid Id { get; set; }
         public Guid AplicacionVersionId { get; set; }
-        public Guid EntidadId { get; set; }
 
         [Display(Name = EntidadMetadata.Propiedades.Nombre.ETIQUETA)]
         public string Nombre { get; set; }

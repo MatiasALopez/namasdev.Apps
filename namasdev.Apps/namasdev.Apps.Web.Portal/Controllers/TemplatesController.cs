@@ -3,12 +3,16 @@ using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 
+using AutoMapper;
 using namasdev.Core.IO;
 using namasdev.Core.Validation;
 using namasdev.Web.Helpers;
+
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Negocio;
+using namasdev.Apps.Negocio.DTO.GeneradorArchivos;
+using namasdev.Apps.Web.Portal.ViewModels.Templates;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -19,7 +23,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
         private readonly IEntidadesRepositorio _entidadesRepositorio;
         private readonly IGeneradorArchivos _generadorArchivos;
 
-        public TemplatesController(IEntidadesRepositorio entidadesRepositorio, IGeneradorArchivos generadorArchivos)
+        public TemplatesController(IEntidadesRepositorio entidadesRepositorio, IGeneradorArchivos generadorArchivos, IMapper mapper)
+            : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(generadorArchivos, nameof(generadorArchivos));
@@ -30,109 +35,32 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Actions
 
-        public ActionResult DescargarTodos(Guid id)
+        public ActionResult _GenerarArchivos(Guid id)
         {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarZipTodos(entidad));
+            var model = new GenerarArchivosViewModel { EntidadId = id };
+            model.MarcarTodos();
+
+            return View(model);
         }
 
-        public ActionResult Tabla(Guid id)
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult _GenerarArchivos(GenerarArchivosViewModel model)
         {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarSQLTabla(entidad));
-        }
+            try
+            {
+                var parametros = Mapear<GenerarZipParametros>(model);
+                parametros.Entidad = ObtenerEntidad(model.EntidadId);
 
-        public ActionResult Entidad(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarEntidadesEntidad(entidad));
-        }
+                return ControllerHelper.CrearActionResultArchivo(
+                    _generadorArchivos.GenerarZip(parametros));
+            }
+            catch (Exception ex)
+            {
+                ControllerHelper.CargarMensajesError(ex.Message);
+            }
 
-        public ActionResult EntidadMetadata(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarEntidadesEntidadMetadata(entidad));
-        }
-
-        public ActionResult SqlConfig(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarDatosSqlConfig(entidad));
-        }
-
-        public ActionResult Repositorio(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarDatosRepositorio(entidad));
-        }
-
-        public ActionResult Negocio(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarNegocio(entidad));
-        }
-
-        public ActionResult Mapper(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarWebMapper(entidad));
-        }
-
-        public ActionResult ItemModel(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarWebItemModel(entidad));
-        }
-
-        public ActionResult ListaViewModel(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarWebListaViewModel(entidad));
-        }
-
-        public ActionResult EntidadViewModel(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarWebEntidadViewModel(entidad));
-        }
-
-        public ActionResult ViewsMetadata(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarWebViewsMetadata(entidad));
-        }
-
-        public ActionResult Controller(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarWebController(entidad));
-        }
-
-        public ActionResult IndexView(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarWebIndexView(entidad));
-        }
-
-        public ActionResult EntidadView(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            return ControllerHelper.CrearActionResultArchivo(
-                _generadorArchivos.GenerarWebEntidadView(entidad));
+            return View(model);
         }
 
         #region Debug

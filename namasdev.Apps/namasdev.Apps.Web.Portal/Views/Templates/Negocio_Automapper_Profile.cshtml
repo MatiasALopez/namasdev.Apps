@@ -1,0 +1,33 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        Profile = string.Format("{0}Profile", Model.Nombre),
+        Entidad = Model.Nombre,
+    };
+}
+using AutoMapper;
+
+using @(namespaces.Aplicacion).Entidades;
+using @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural);
+
+namespace @(namespaces.Aplicacion).Negocio.Automapper
+{
+    public class @clases.Profile : Profile
+    {
+        public @(clases.Profile)()
+        {
+            CreateMap<AgregarParametros, @clases.Entidad>();
+            CreateMap<ActualizarParametros, @clases.Entidad>();
+        @if (Model.PropiedadesDefault.AuditoriaBorrado)
+        {
+        <text>CreateMap<MarcarComoBorradoParametros, @clases.Entidad>();
+            CreateMap<DesmarcarComoBorradoParametros, @clases.Entidad>();</text>
+        }
+        }
+    }
+}

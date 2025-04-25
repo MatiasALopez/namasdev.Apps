@@ -46,6 +46,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Extensions.Microsoft.DependencyInjection, Version=0.0.0.0, Culture=neutral, PublicKeyToken=e767ac9c89543656, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.Extensions.Microsoft.DependencyInjection.7.0.0\lib\netstandard2.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -197,6 +203,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.DI.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Automapper\TemplatesProfile.cs" />
+    <Compile Include="Automapper\EntidadesProfile.cs" />
+    <Compile Include="Automapper\UsuariosProfile.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EntidadesAsociacionesController.cs" />
     <Compile Include="Controllers\EntidadesPropiedadesController.cs" />
@@ -214,10 +223,8 @@
     <Compile Include="Helpers\ListasHelper.cs" />
     <Compile Include="Helpers\UsuarioHelper.cs" />
     <Compile Include="Mappers\EntidadesPropiedadesMapper.cs" />
-    <Compile Include="Mappers\EntidadesMapper.cs" />
     <Compile Include="Mappers\VersionesMapper.cs" />
     <Compile Include="Mappers\AplicacionesMapper.cs" />
-    <Compile Include="Mappers\UsuariosMapper.cs" />
     <Compile Include="Metadata\Textos.cs" />
     <Compile Include="Metadata\Views\AccountViews.cs" />
     <Compile Include="Metadata\Views\AplicacionesViews.cs" />
@@ -249,6 +256,7 @@
     <Compile Include="ViewModels\EntidadesPropiedades\PropiedadTipoEspecificacionesTextoViewModel.cs" />
     <Compile Include="ViewModels\Entidades\EntidadesViewModel.cs" />
     <Compile Include="ViewModels\Entidades\EntidadViewModel.cs" />
+    <Compile Include="ViewModels\Templates\GenerarArchivosViewModel.cs" />
     <Compile Include="ViewModels\Versiones\VersionesViewModel.cs" />
     <Compile Include="ViewModels\Versiones\VersionViewModel.cs" />
     <Compile Include="ViewModels\Aplicaciones\AplicacionesViewModel.cs" />
@@ -321,19 +329,25 @@
     <Content Include="Views\EntidadesAsociaciones\Index.cshtml" />
     <Content Include="Views\Templates\Entidades_Entidad.cshtml" />
     <Content Include="Views\Templates\_ViewStart.cshtml" />
-    <Content Include="Views\Templates\Entidades_EntidadMetadata.cshtml" />
+    <Content Include="Views\Templates\Entidades_Metadata_EntidadMetadata.cshtml" />
     <Content Include="Views\Templates\Datos_Repositorio.cshtml" />
     <Content Include="Views\Templates\Datos_SqlConfig.cshtml" />
     <Content Include="Views\Templates\Negocio_Negocio.cshtml" />
-    <Content Include="Views\Templates\SQL_Tabla.cshtml" />
+    <Content Include="Views\Templates\Database_Tabla.cshtml" />
     <Content Include="Views\Templates\Web_Controller.cshtml" />
-    <Content Include="Views\Templates\Web_EntidadViewModel.cshtml" />
-    <Content Include="Views\Templates\Web_IndexView.cshtml" />
-    <Content Include="Views\Templates\Web_ItemModel.cshtml" />
-    <Content Include="Views\Templates\Web_ListaViewModel.cshtml" />
-    <Content Include="Views\Templates\Web_Mapper.cshtml" />
-    <Content Include="Views\Templates\Web_ViewsMetadata.cshtml" />
-    <Content Include="Views\Templates\Web_EntidadView.cshtml" />
+    <Content Include="Views\Templates\Web_ViewModels_EntidadViewModel.cshtml" />
+    <Content Include="Views\Templates\Web_Views_Index.cshtml" />
+    <Content Include="Views\Templates\Web_Models_ItemModel.cshtml" />
+    <Content Include="Views\Templates\Web_ViewModels_ListaViewModel.cshtml" />
+    <Content Include="Views\Templates\Web_Metadata_Views.cshtml" />
+    <Content Include="Views\Templates\Web_Views_Entidad.cshtml" />
+    <Content Include="Views\Templates\Negocio_Automapper_Profile.cshtml" />
+    <Content Include="Views\Templates\Negocio_DTO_AgregarParametros.cshtml" />
+    <Content Include="Views\Templates\Negocio_DTO_ActualizarParametros.cshtml" />
+    <Content Include="Views\Templates\Negocio_DTO_MarcarComoBorradoParametros.cshtml" />
+    <Content Include="Views\Templates\Negocio_DTO_DesmarcarComoBorradoParametros.cshtml" />
+    <Content Include="Views\Templates\Web_Automapper_Profile.cshtml" />
+    <Content Include="Views\Templates\_GenerarArchivos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

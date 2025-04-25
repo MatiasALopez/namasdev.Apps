@@ -1,5 +1,7 @@
 ﻿using System.Web.Mvc;
 
+using AutoMapper;
+
 namespace namasdev.Apps.Web.Portal.Controllers
 {
     [Authorize]
@@ -7,7 +9,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
     {
         public const string NAME = "Home";
 
-        public HomeController()
+        public HomeController(IMapper mapper)
+            : base(mapper)
         {
         }
 
@@ -19,14 +22,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
             //{
             //    return RedirectToAction("Ventas", "Reportes");
             //}
-
             return View();
         }
 
         #endregion
 
         #region Metodos
-        
+
         #endregion
     }
 }

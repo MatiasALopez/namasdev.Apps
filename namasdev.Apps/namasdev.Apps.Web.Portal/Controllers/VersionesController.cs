@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Web.Mvc;
 
+using AutoMapper;
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
+
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
 using namasdev.Apps.Negocio;
-using namasdev.Apps.Web.Portal.Mappers;
-using namasdev.Apps.Web.Portal.ViewModels.Versiones;
 using namasdev.Apps.Web.Portal.Helpers;
+using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.Metadata.Views;
+using namasdev.Apps.Web.Portal.ViewModels.Versiones;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -26,7 +28,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
         public VersionesController(
             IAplicacionesVersionesRepositorio aplicacionesVersionesRepositorio, 
             IAplicacionesVersionesNegocio aplicacionesVersionesNegocio,
-            IAplicacionesRepositorio aplicacionesRepositorio)
+            IAplicacionesRepositorio aplicacionesRepositorio, IMapper mapper)
+            : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(aplicacionesVersionesRepositorio, nameof(aplicacionesVersionesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(aplicacionesVersionesNegocio, nameof(aplicacionesVersionesNegocio));

@@ -98,6 +98,7 @@
         nmd.ui.controls.initToggleStateControls();
         nmd.ui.controls.initBootstrapTooltips();
         nmd.ui.controls.initBootstrapCustomFileInput();
+        nmd.ui.controls.initCheckBoxSelection();
         nmd.ui.controls.initTableCheckBoxSelection();
         nmd.ui.controls.initTableSorting();
         nmd.ui.controls.initTableOrderPOST();

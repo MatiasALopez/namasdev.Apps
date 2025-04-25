@@ -2,8 +2,10 @@
 using System.Linq;
 using System.Web.Mvc;
 
+using AutoMapper;
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
+
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
@@ -30,7 +32,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
         public EntidadesPropiedadesController(
             IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio, 
             IEntidadesPropiedadesNegocio entidadesPropiedadesNegocio, 
-            IEntidadesRepositorio entidadesRepositorio)
+            IEntidadesRepositorio entidadesRepositorio, IMapper mapper)
+            : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesNegocio, nameof(entidadesPropiedadesNegocio));

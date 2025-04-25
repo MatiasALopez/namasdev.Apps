@@ -11,7 +11,13 @@ using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Negocio
 {
-    public class ErroresNegocio
+    public interface IErroresNegocio
+    {
+        string AgregarYObtenerMensajeAlUsuario(Exception ex, params object[] argumentos);
+        string AgregarYObtenerMensajeAlUsuario(Exception ex, string userId, params object[] argumentos);
+    }
+
+    public class ErroresNegocio : IErroresNegocio
     {
         private IErroresRepositorio _erroresRepositorio;
         private IParametrosRepositorio _parametrosRepositorio;

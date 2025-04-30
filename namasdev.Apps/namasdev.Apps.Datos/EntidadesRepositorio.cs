@@ -33,7 +33,7 @@ namespace namasdev.Apps.Datos
             }
         }
 
-        public Entidad Obtener(Guid entidadId, 
+        public Entidad Obtener(Guid entidadId,
             bool cargarDatosAdicionales = false)
         {
             using (var ctx = new SqlContext())

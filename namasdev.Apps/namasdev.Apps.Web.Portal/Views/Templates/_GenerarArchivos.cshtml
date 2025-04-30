@@ -15,7 +15,7 @@
         CheckBoxBody = "checkbox-body"
     };
 }
-<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mt-3">
+<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="m-2">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(excludePropertyErrors: true)
     @Html.Partial("_Errores")

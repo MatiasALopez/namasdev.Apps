@@ -161,6 +161,7 @@ namespace namasdev.Apps.Negocio
                     Nombre = EntidadPropiedad.IdNombre(entidad),
                     Etiqueta = EntidadPropiedades.Id.ETIQUETA,
                     PropiedadTipoId = propiedadesDefault.IDPropiedadTipoId.Value,
+                    PropiedadTipoEspecificaciones = CrearPropiedadEspecificacionesDefault(propiedadesDefault.IDPropiedadTipoId.Value),
                     PermiteNull = false,
                     Orden = 1,
                     GeneradaAlCrear = true,
@@ -303,6 +304,27 @@ namespace namasdev.Apps.Negocio
             }
 
             return propiedades;
+        }
+
+        private string CrearPropiedadEspecificacionesDefault(short propiedadTipoId)
+        {
+            switch (propiedadTipoId)
+            {
+                case PropiedadTipos.TEXTO:
+                    return PropiedadTiposEspecificaciones.ID_TEXTO_DEFAULT;
+                
+                case PropiedadTipos.ENTERO:
+                case PropiedadTipos.ENTERO_CORTO:
+                case PropiedadTipos.ENTERO_LARGO:
+                    return PropiedadTiposEspecificaciones.ID_ENTERO_DEFAULT;
+                
+                case PropiedadTipos.DECIMAL:
+                case PropiedadTipos.DECIMAL_FLOTANTE:
+                    return PropiedadTiposEspecificaciones.ID_DECIMAL_DEFAULT;
+                
+                default:
+                    return null;
+            }
         }
 
         private IEnumerable<EntidadClave> CrearClavesParaEntidad(Entidad entidad, EntidadPropiedadesDefault propiedadesDefault, IEnumerable<EntidadPropiedad> propiedades)

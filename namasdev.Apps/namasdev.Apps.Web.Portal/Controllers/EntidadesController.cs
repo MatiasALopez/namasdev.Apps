@@ -126,7 +126,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 if (ModelState.IsValid)
                 {
                     var entidad = _entidadesNegocio.Agregar(Mapear<AgregarParametros>(modelo));
-                    return RedirectToAction(nameof(EntidadesPropiedadesController.Index), EntidadesPropiedadesController.NAME, new { entidadId = entidad.Id });
+                    return RedirectToAction(nameof(EntidadesPropiedadesController.Index), EntidadesPropiedadesController.NAME, new { entidad.Id });
                 }
             }
             catch (Exception ex)

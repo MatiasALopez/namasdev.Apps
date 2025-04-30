@@ -1,11 +1,7 @@
-﻿
-using namasdev.Apps.Entidades;
-
-namespace namasdev.Apps.Negocio.DTO.GeneradorArchivos
+﻿namespace namasdev.Apps.Negocio.DTO.GeneradorArchivos
 {
-    public class GenerarZipParametros
+    public abstract class GenerarArchivosParametrosBase
     {
-        public Entidad Entidad { get; set; }
         public bool GenerarDatabaseTabla { get; set; }
         public bool GenerarDatosRepositorio { get; set; }
         public bool GenerarDatosSqlConfig { get; set; }

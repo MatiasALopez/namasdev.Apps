@@ -30,12 +30,12 @@
 </div>
 <div class="row mt-3">
     <div class="col-md-3">
-        <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { Model.EntidadId })" class="btn btn-primary">Agregar</a>
+        <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { entidadId = Model.Id })" class="btn btn-primary">Agregar</a>
     </div>
     <div class="col-md-9 text-right filtros">
         @using (Html.BeginForm("Index", "EntidadesPropiedades", FormMethod.Get, new { @class = "form-inline pull-right" }))
         {
-            @Html.HiddenFor(m => m.EntidadId)
+            @Html.HiddenFor(m => m.Id)
             @Html.TextBoxFor(m => m.Busqueda, new { @class = "form-control ml-1", placeholder = displayNames.Busqueda, title = displayNames.Busqueda, data_toggle = "tooltip" })
             <button type="submit" class="btn btn-secondary ml-1">Buscar</button>
         }

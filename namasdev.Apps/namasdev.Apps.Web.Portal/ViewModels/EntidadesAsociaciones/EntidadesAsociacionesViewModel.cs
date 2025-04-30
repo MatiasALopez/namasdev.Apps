@@ -9,7 +9,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones
 {
     public class EntidadesAsociacionesViewModel : ListadoViewModel<EntidadAsociacionItemModel>
     {
-        public Guid EntidadId { get; set; }
+        public Guid Id { get; set; }
         public Guid AplicacionVersionId { get; set; }
 
         [Display(Name = EntidadMetadata.ETIQUETA)]

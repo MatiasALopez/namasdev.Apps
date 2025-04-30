@@ -256,7 +256,9 @@
     <Compile Include="ViewModels\EntidadesPropiedades\PropiedadTipoEspecificacionesTextoViewModel.cs" />
     <Compile Include="ViewModels\Entidades\EntidadesViewModel.cs" />
     <Compile Include="ViewModels\Entidades\EntidadViewModel.cs" />
-    <Compile Include="ViewModels\Templates\GenerarArchivosViewModel.cs" />
+    <Compile Include="ViewModels\Templates\GenerarArchivosAplicacionViewModel.cs" />
+    <Compile Include="ViewModels\Templates\GenerarArchivosEntidadViewModel.cs" />
+    <Compile Include="ViewModels\Templates\GenerarArchivosViewModelBase.cs" />
     <Compile Include="ViewModels\Versiones\VersionesViewModel.cs" />
     <Compile Include="ViewModels\Versiones\VersionViewModel.cs" />
     <Compile Include="ViewModels\Aplicaciones\AplicacionesViewModel.cs" />
@@ -347,7 +349,8 @@
     <Content Include="Views\Templates\Negocio_DTO_MarcarComoBorradoParametros.cshtml" />
     <Content Include="Views\Templates\Negocio_DTO_DesmarcarComoBorradoParametros.cshtml" />
     <Content Include="Views\Templates\Web_Automapper_Profile.cshtml" />
-    <Content Include="Views\Templates\_GenerarArchivos.cshtml" />
+    <Content Include="Views\Templates\_GenerarArchivosEntidad.cshtml" />
+    <Content Include="Views\Templates\_GenerarArchivosAplicacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

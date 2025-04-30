@@ -9,7 +9,8 @@ namespace namasdev.Apps.Web.Portal.Automapper
     {
         public TemplatesProfile()
         {
-            CreateMap<GenerarArchivosViewModel, GenerarZipParametros>();
+            CreateMap<GenerarArchivosEntidadViewModel, GenerarArchivosDeEntidadParametros>();
+            CreateMap<GenerarArchivosAplicacionViewModel, GenerarArchivosDeEntidadesParametros>();
         }
     }
 }

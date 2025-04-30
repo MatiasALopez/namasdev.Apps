@@ -13,6 +13,8 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
     {
         public PaginaModo PaginaModo { get; set; }
 
+        public Guid? Id { get; set; }
+
         public Guid AplicacionId { get; set; }
 
         [Display(Name = AplicacionMetadata.ETIQUETA)]
@@ -23,8 +25,6 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
 
         [Display(Name = EntidadMetadata.Propiedades.AplicacionVersionId.ETIQUETA)]
         public string AplicacionVersionNombre { get; set; }
-
-        public Guid? EntidadId { get; set; }
 
         [Display(Name = EntidadMetadata.Propiedades.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
@@ -66,7 +66,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (PaginaModo == PaginaModo.Editar
-                && !EntidadId.HasValue)
+                && !Id.HasValue)
             {
                 yield return new ValidationResult(Validador.MensajeRequerido(EntidadMetadata.ETIQUETA));
             }

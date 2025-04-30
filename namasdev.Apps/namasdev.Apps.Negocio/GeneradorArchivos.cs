@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 
 using RazorEngine;
 using RazorEngine.Templating;
@@ -16,7 +17,8 @@ namespace namasdev.Apps.Negocio
 {
     public interface IGeneradorArchivos
     {
-        string GenerarZip(GenerarZipParametros parametros);
+        string GenerarArchivosDeEntidad(GenerarArchivosDeEntidadParametros parametros);
+        string GenerarArchivosDeEntidades(GenerarArchivosDeEntidadesParametros parametros);
     }
 
     public class GeneradorArchivos : IGeneradorArchivos
@@ -30,7 +32,27 @@ namespace namasdev.Apps.Negocio
             _templatesDirectorio = templatesDirectorio;
         }
 
-        public string GenerarZip(GenerarZipParametros parametros)
+        public string GenerarArchivosDeEntidades(GenerarArchivosDeEntidadesParametros parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+            Validador.ValidarArgumentListaRequeridaYThrow(parametros.Entidades, nameof(parametros.Entidades));
+
+            if (!parametros.GenerarAlMenosUnArchivo)
+            {
+                throw new ExcepcionMensajeAlUsuario("Debe seleccionar al menos un archivo para generar.");
+            }
+            
+            var grupoId = Guid.NewGuid();
+
+            foreach (var e in parametros.Entidades)
+            {
+                GenerarArchivosDeEntidad(e, parametros, grupoId);
+            }
+
+            return GenerarYGuardarZip(parametros.Entidades.First().AplicacionVersion.Aplicacion.Nombre, grupoId);
+        }
+
+        public string GenerarArchivosDeEntidad(GenerarArchivosDeEntidadParametros parametros)
         {
             Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
             Validador.ValidarArgumentRequeridoYThrow(parametros.Entidad, nameof(parametros.Entidad));
@@ -42,105 +64,115 @@ namespace namasdev.Apps.Negocio
 
             var grupoId = Guid.NewGuid();
 
-            if (parametros.GenerarDatabaseTabla) 
+            GenerarArchivosDeEntidad(parametros.Entidad, parametros, grupoId);
+
+            return GenerarYGuardarZip(parametros.Entidad.AplicacionVersion.Aplicacion.Nombre, grupoId);
+        }
+
+        private void GenerarArchivosDeEntidad(Entidad entidad, GenerarArchivosParametrosBase parametros, Guid grupoId)
+        {
+            if (parametros.GenerarDatabaseTabla)
             {
-                GenerarDatabaseTabla(parametros.Entidad, grupoId: grupoId);
+                GenerarDatabaseTabla(entidad, grupoId: grupoId);
             }
-            
+
             if (parametros.GenerarEntidadesEntidad)
             {
-                GenerarEntidadesEntidad(parametros.Entidad, grupoId: grupoId);
+                GenerarEntidadesEntidad(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarEntidadesMetadataEntidadMetadata)
             {
-                GenerarEntidadesMetadataEntidadMetadata(parametros.Entidad, grupoId: grupoId);
+                GenerarEntidadesMetadataEntidadMetadata(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarDatosSqlConfig)
             {
-                GenerarDatosSqlConfig(parametros.Entidad, grupoId: grupoId);
+                GenerarDatosSqlConfig(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarDatosRepositorio)
             {
-                GenerarDatosRepositorio(parametros.Entidad, grupoId: grupoId);
+                GenerarDatosRepositorio(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarNegocio)
             {
-                GenerarNegocio(parametros.Entidad, grupoId: grupoId);
+                GenerarNegocio(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarNegocioAutomapperProfile)
             {
-                GenerarNegocioAutomapperProfile(parametros.Entidad, grupoId: grupoId);
+                GenerarNegocioAutomapperProfile(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarNegocioDTOAgregarParametros)
             {
-                GenerarNegocioDTOAgregarParametros(parametros.Entidad, grupoId: grupoId);
+                GenerarNegocioDTOAgregarParametros(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarNegocioDTOActualizarParametros)
             {
-                GenerarNegocioDTOActualizarParametros(parametros.Entidad, grupoId: grupoId);
+                GenerarNegocioDTOActualizarParametros(entidad, grupoId: grupoId);
             }
-            
-            if (parametros.Entidad.PropiedadesDefault.AuditoriaBorrado)
+
+            if (entidad.PropiedadesDefault.AuditoriaBorrado)
             {
                 if (parametros.GenerarNegocioDTOMarcarComoBorradoParametros)
                 {
-                    GenerarNegocioDTOMarcarComoBorradoParametros(parametros.Entidad, grupoId: grupoId);
+                    GenerarNegocioDTOMarcarComoBorradoParametros(entidad, grupoId: grupoId);
                 }
 
                 if (parametros.GenerarNegocioDTODesmarcarComoBorradoParametros)
                 {
-                    GenerarNegocioDTODesmarcarComoBorradoParametros(parametros.Entidad, grupoId: grupoId);
+                    GenerarNegocioDTODesmarcarComoBorradoParametros(entidad, grupoId: grupoId);
                 }
             }
 
             if (parametros.GenerarWebModelsItemModel)
             {
-                GenerarWebModelsItemModel(parametros.Entidad, grupoId: grupoId);
+                GenerarWebModelsItemModel(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarWebViewModelsEntidadViewModel)
             {
-                GenerarWebViewModelsEntidadViewModel(parametros.Entidad, grupoId: grupoId);
+                GenerarWebViewModelsEntidadViewModel(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarWebViewModelsListaViewModel)
             {
-                GenerarWebViewModelsListaViewModel(parametros.Entidad, grupoId: grupoId);
+                GenerarWebViewModelsListaViewModel(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarWebAutomapperProfile)
             {
-                GenerarWebAutomapperProfile(parametros.Entidad, grupoId: grupoId);
+                GenerarWebAutomapperProfile(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarWebViewsMetadata)
             {
-                GenerarWebMetadataViews(parametros.Entidad, grupoId: grupoId);
+                GenerarWebMetadataViews(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarWebController)
             {
-                GenerarWebController(parametros.Entidad, grupoId: grupoId);
+                GenerarWebController(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarWebViewsIndex)
             {
-                GenerarWebViewsIndex(parametros.Entidad, grupoId: grupoId);
+                GenerarWebViewsIndex(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarWebViewsEntidad)
             {
-                GenerarWebViewsEntidad(parametros.Entidad, grupoId: grupoId);
+                GenerarWebViewsEntidad(entidad, grupoId: grupoId);
             }
+        }
 
-            var zipPath = Path.Combine(GenerarPathDirectorioBase(grupoId), $"{parametros.Entidad.AplicacionVersion.Aplicacion.Nombre}{ArchivoExtensiones.Application.ZIP}");
+        private string GenerarYGuardarZip(string aplicacionNombre, Guid grupoId)
+        {
+            var zipPath = Path.Combine(GenerarPathDirectorioBase(grupoId), $"{aplicacionNombre}{ArchivoExtensiones.Application.ZIP}");
             ZipFile.CreateFromDirectory(
                 GenerarPathDirectorioArchivos(grupoId),
                 zipPath);

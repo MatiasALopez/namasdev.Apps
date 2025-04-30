@@ -8,9 +8,9 @@
     @RenderSection("headScripts", required: false)
 }
 <ul id="tabsEntidad" class="nav nav-tabs mb-2">
-    <li class="nav-item"><a id="tabEntidad" class="nav-link" href="@Url.Action("Editar", "Entidades", new { id = Model.EntidadId })">Entidad</a></li>
-    <li class="nav-item"><a id="tabPropiedades" class="nav-link" href="@Url.Action("Index", "EntidadesPropiedades", new { entidadId = Model.EntidadId })">Propiedades</a></li>
-    <li class="nav-item"><a id="tabAsociaciones" class="nav-link" href="@Url.Action("Index", "EntidadesAsociaciones", new { entidadId = Model.EntidadId })">Asociaciones</a></li>
+    <li class="nav-item"><a id="tabEntidad" class="nav-link" href="@Url.Action("Editar", "Entidades", new { Model.Id })">Entidad</a></li>
+    <li class="nav-item"><a id="tabPropiedades" class="nav-link" href="@Url.Action("Index", "EntidadesPropiedades", new { Model.Id })">Propiedades</a></li>
+    <li class="nav-item"><a id="tabAsociaciones" class="nav-link" href="@Url.Action("Index", "EntidadesAsociaciones", new { Model.Id })">Asociaciones</a></li>
 </ul>
 @RenderBody()
 @section bodyScripts {

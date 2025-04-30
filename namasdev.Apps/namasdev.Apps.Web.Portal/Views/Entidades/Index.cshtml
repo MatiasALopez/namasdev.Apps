@@ -70,7 +70,7 @@
                                 <td class="text-center">
                                     <a href="@Url.Action("Editar", new { item.Id, item.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
                                     <a href="@Url.Action("Index", "EntidadesPropiedades", new { item.Id })" class="btn btn-sm btn-outline-info"><i class="fa fa-list-ul" data-toggle="tooltip" title="@EntidadPropiedadMetadata.ETIQUETA_PLURAL"></i></a>
-                                    <a href="@Url.Action("_GenerarArchivos", "Templates", new { item.Id })" class="btn btn-sm btn-outline-info"
+                                    <a href="@Url.Action("_GenerarArchivosEntidad", "Templates", new { item.Id })" class="btn btn-sm btn-outline-info"
                                        data-iframe data-iframe-title="Generar archivos de @item.Etiqueta" data-iframe-height="500px"><i class="fa fa-files-o" data-toggle="tooltip" title="Generar archivos"></i></a>
                                     <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.Id"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                 </td>

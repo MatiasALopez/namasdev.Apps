@@ -13,7 +13,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
     {
         public const string OPERACION_ESTABLECER_CLAVE = "EstablecerClave";
 
-        public Guid EntidadId { get; set; }
+        public Guid Id { get; set; }
         public Guid AplicacionVersionId { get; set; }
 
         [Display(Name = EntidadMetadata.ETIQUETA)]

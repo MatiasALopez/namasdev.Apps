@@ -80,7 +80,7 @@
         @Html.Partial("_PropiedadTipoEspecificacionesDecimal", Model)
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
-    <a href="@Url.Action("Index", new { entidadId = Model.EntidadId })" class="btn btn-secondary">Volver</a>
+    <a href="@Url.Action("Index", new { Id = Model.EntidadId })" class="btn btn-secondary">Volver</a>
 </form>
 @section bodyScripts {
     <script type="text/javascript">

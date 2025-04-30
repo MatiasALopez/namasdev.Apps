@@ -60,6 +60,8 @@
                                     <a href="@Url.Action(nameof(AplicacionesController.Editar), new { id = item.AplicacionId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
                                     <a href="@Url.Action("Index", "Versiones", new { item.AplicacionId })" class="btn btn-sm btn-outline-info"><i class="fa fa-tag" data-toggle="tooltip" title="@AplicacionVersionMetadata.ETIQUETA_PLURAL"></i></a>
                                     <a href="@Url.Action("Index", "Entidades", new { item.AplicacionId })" class="btn btn-sm btn-outline-info"><i class="fa fa-list" data-toggle="tooltip" title="@EntidadMetadata.ETIQUETA_PLURAL"></i></a>
+                                    <a href="@Url.Action("_GenerarArchivosAplicacion", "Templates", new { id = item.AplicacionId })" class="btn btn-sm btn-outline-info"
+                                       data-iframe data-iframe-title="Generar archivos de @item.Nombre" data-iframe-height="500px"><i class="fa fa-files-o" data-toggle="tooltip" title="Generar archivos"></i></a>
                                     <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.AplicacionId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                 </td>
                             </tr>

@@ -1,5 +1,5 @@
 ﻿@using namasdev.Apps.Web.Portal.ViewModels.Templates;
-@model GenerarArchivosViewModel
+@model GenerarArchivosEntidadViewModel
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
     ViewBag.Title = "Generar archivos";
@@ -20,7 +20,7 @@
     @Html.ValidationSummary(excludePropertyErrors: true)
     @Html.Partial("_Errores")
     @Html.Partial("_ResultadoOk")
-    @Html.HiddenFor(m => m.EntidadId)
+    @Html.HiddenFor(m => m.Id)
     <div class="@clases.CheckBoxHead">
         <div class="form-group">
             <div class="custom-control custom-switch">

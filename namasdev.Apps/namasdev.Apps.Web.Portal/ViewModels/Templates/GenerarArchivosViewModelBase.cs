@@ -3,10 +3,8 @@ using System.ComponentModel.DataAnnotations;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Templates
 {
-    public class GenerarArchivosViewModel
+    public class GenerarArchivosViewModelBase
     {
-        public Guid EntidadId { get; set; }
-
         [Display(Name = "Tabla")]
         public bool GenerarDatabaseTabla { get; set; }
 

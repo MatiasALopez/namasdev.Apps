@@ -90,7 +90,9 @@
     <Compile Include="DTO\Entidades\MarcarComoBorradoParametros.cs" />
     <Compile Include="DTO\Entidades\ActualizarParametros.cs" />
     <Compile Include="DTO\Entidades\AgregarParametros.cs" />
-    <Compile Include="DTO\GeneradorArchivos\GenerarZipParametros.cs" />
+    <Compile Include="DTO\GeneradorArchivos\GenerarArchivosDeEntidadesParametros.cs" />
+    <Compile Include="DTO\GeneradorArchivos\GenerarArchivosParametrosBase.cs" />
+    <Compile Include="DTO\GeneradorArchivos\GenerarArchivosDeEntidadParametros.cs" />
     <Compile Include="DTO\ParametrosEntidadBase.cs" />
     <Compile Include="DTO\ParametrosConUsuarioBase.cs" />
     <Compile Include="DTO\Usuarios\ActualizarParametros.cs" />

@@ -47,13 +47,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
         #region Acciones
 
         public ActionResult Index(
-            Guid entidadId,
+            Guid id,
             string busqueda = null,
             string orden = null)
         {
             var modelo = new EntidadesPropiedadesViewModel
             {
-                EntidadId = entidadId,
+                Id = id,
                 Busqueda = busqueda,
                 Orden = orden,
             };
@@ -73,7 +73,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     switch (model.Operacion)
                     {
                         case EntidadesPropiedadesViewModel.OPERACION_ESTABLECER_CLAVE:
-                            _entidadesPropiedadesNegocio.EstablecerComoClave(model.EntidadId, model.ItemsSeleccionados.Select(i => i.EntidadPropiedadId));
+                            _entidadesPropiedadesNegocio.EstablecerComoClave(model.Id, model.ItemsSeleccionados.Select(i => i.EntidadPropiedadId));
 
                             ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.ESTABLECER_CLAVE_OK);
                             ModelState.Clear();
@@ -138,7 +138,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     var propiedadTipoEspecificaciones = EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(modelo);
                     _entidadesPropiedadesNegocio.Agregar(modelo.EntidadId, modelo.Nombre, modelo.Etiqueta, modelo.PropiedadTipoId.Value, propiedadTipoEspecificaciones, modelo.Orden.Value, modelo.PermiteNull.Value, modelo.GeneradaAlCrear.Value, modelo.Editable.Value, modelo.CalculadaFormula, UsuarioId);
 
-                    return RedirectToAction(nameof(Index), new { modelo.EntidadId });
+                    return RedirectToAction(nameof(Index), new { id = modelo.EntidadId });
                 }
             }
             catch (Exception ex)
@@ -155,7 +155,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var propiedad = _entidadesPropiedadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
             if (propiedad == null)
             {
-                return RedirectToAction(nameof(Index), new { entidadId });
+                return RedirectToAction(nameof(Index), new { id = entidadId });
             }
 
             var modelo = EntidadesPropiedadesMapper.MapearEntidadAEntidadPropiedadViewModel(propiedad);
@@ -197,7 +197,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
-            var entidad = _entidadesRepositorio.Obtener(modelo.EntidadId, cargarDatosAdicionales: true);
+            var entidad = _entidadesRepositorio.Obtener(modelo.Id, cargarDatosAdicionales: true);
             modelo.EntidadNombre = entidad.Nombre;
             modelo.AplicacionVersionId = entidad.AplicacionVersionId;
 

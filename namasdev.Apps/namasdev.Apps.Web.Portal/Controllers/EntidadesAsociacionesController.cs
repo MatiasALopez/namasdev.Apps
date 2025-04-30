@@ -9,7 +9,7 @@ using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
 using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
-using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
+using namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -48,14 +48,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
             string busqueda = null,
             string orden = null)
         {
-            var modelo = new EntidadesPropiedadesViewModel
+            var modelo = new EntidadesAsociacionesViewModel
             {
-                EntidadId = entidadId,
-                Busqueda = busqueda,
+                Id = entidadId,
                 Orden = orden,
             };
 
-            CargarEntidadesPropiedadesViewModel(modelo);
+            CargarEntidadesAsociacionesViewModel(modelo);
             return View(modelo);
         }
 
@@ -85,20 +84,19 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Metodos
 
-        private void CargarEntidadesPropiedadesViewModel(EntidadesPropiedadesViewModel modelo)
+        private void CargarEntidadesAsociacionesViewModel(EntidadesAsociacionesViewModel modelo)
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
-            var entidad = _entidadesRepositorio.Obtener(modelo.EntidadId, cargarDatosAdicionales: true);
+            var entidad = _entidadesRepositorio.Obtener(modelo.Id, cargarDatosAdicionales: true);
             modelo.EntidadNombre = entidad.Nombre;
             modelo.AplicacionVersionId = entidad.AplicacionVersionId;
 
-            modelo.Items = EntidadesPropiedadesMapper.MapearEntidadesAModelos(
-                entidades: _entidadesPropiedadesRepositorio.ObtenerLista(
-                    entidad.Id,
-                    busqueda: modelo.Busqueda,
-                    cargarDatosAdicionales: true),
-                claves: entidad.Claves);
+            //modelo.Items = EntidadesAsociacionesMapper.MapearEntidadesAModelos(
+            //    entidades: _entidadesAsociacionesRepositorio.ObtenerLista(
+            //        entidad.Id,
+            //        cargarDatosAdicionales: true),
+            //    claves: entidad.Claves);
 
             modelo.OrdenarItems();
         }

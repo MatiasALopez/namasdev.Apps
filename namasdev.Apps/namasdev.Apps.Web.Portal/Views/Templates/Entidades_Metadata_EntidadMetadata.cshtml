@@ -25,6 +25,7 @@
         ValorMaximoDecimal = "decimal VALOR_MAXIMO",
         ValorMinimoDecimalFlotante = "double VALOR_MINIMO",
         ValorMaximoDecimalFlotante = "double VALOR_MAXIMO",
+        DigitosEnteros = "int DIGITOS_ENTEROS",
         DigitosDecimales = "int DIGITOS_DECIMALES",
     };
 
@@ -132,6 +133,7 @@ namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades.Metadata
                     {
                         propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo));
                     }
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosEnteros, p.EspecificacionesDecimal.DigitosEnteros.ToString());
                     propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimal.DigitosDecimales.ToString());
                     break;
                 case PropiedadTipos.DECIMAL_FLOTANTE:
@@ -143,6 +145,7 @@ namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades.Metadata
                     {
                         propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimalFlotante, p.EspecificacionesDecimalFlotante.ValorMaximo.ToString());
                     }
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosEnteros, p.EspecificacionesDecimalFlotante.DigitosEnteros.ToString());
                     propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimalFlotante.DigitosDecimales.ToString());
                     break;
             }

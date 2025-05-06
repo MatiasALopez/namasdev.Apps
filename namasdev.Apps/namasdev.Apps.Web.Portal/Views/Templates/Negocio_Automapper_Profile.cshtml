@@ -1,4 +1,5 @@
-﻿@model namasdev.Apps.Entidades.Entidad
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
     {
@@ -21,12 +22,12 @@ namespace @(namespaces.Aplicacion).Negocio.Automapper
     {
         public @(clases.Profile)()
         {
-            CreateMap<AgregarParametros, @clases.Entidad>();
-            CreateMap<ActualizarParametros, @clases.Entidad>();
+            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "AgregarParametros", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "ActualizarParametros", clases.Entidad)))();
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {
-        <text>CreateMap<MarcarComoBorradoParametros, @clases.Entidad>();
-            CreateMap<DesmarcarComoBorradoParametros, @clases.Entidad>();</text>
+        <text>@(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "MarcarComoBorradoParametros", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "DesmarcarComoBorradoParametros", clases.Entidad)))();</text>
         }
         }
     }

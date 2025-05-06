@@ -106,38 +106,10 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Debug
 
-        public ActionResult Entidades_Entidad(Guid id)
+        public ActionResult Debug(Guid id, string template)
         {
             var entidad = ObtenerEntidad(id);
-            var contenido = RenderViewToString("Entidades_Entidad", entidad);
-            return Content(contenido, ArchivoContentTypes.Text.TXT);
-        }
-
-        public ActionResult Entidades_EntidadMetadata(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            var contenido = RenderViewToString("Entidades_EntidadMetadata", entidad);
-            return Content(contenido, ArchivoContentTypes.Text.TXT);
-        }
-
-        public ActionResult Web_Controller(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            var contenido = RenderViewToString("Web_Controller", entidad);
-            return Content(contenido, ArchivoContentTypes.Text.TXT);
-        }
-
-        public ActionResult Web_IndexView(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            var contenido = RenderViewToString("Web_IndexView", entidad);
-            return Content(contenido, ArchivoContentTypes.Text.TXT);
-        }
-
-        public ActionResult Web_EntidadView(Guid id)
-        {
-            var entidad = ObtenerEntidad(id);
-            var contenido = RenderViewToString("Web_EntidadView", entidad);
+            var contenido = RenderViewToString(template, entidad);
             return Content(contenido, ArchivoContentTypes.Text.TXT);
         }
 

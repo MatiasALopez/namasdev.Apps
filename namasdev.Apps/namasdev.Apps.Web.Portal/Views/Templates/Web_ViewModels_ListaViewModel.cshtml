@@ -1,4 +1,5 @@
-﻿@model namasdev.Apps.Entidades.Entidad
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
     {
@@ -17,7 +18,7 @@ using @(namespaces.Aplicacion).Web.Portal.Models.@Model.NombrePlural;
 
 namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
 {
-    public class @clases.ListaViewModel : ListadoConPaginacionViewModel@(Html.Raw(string.Format("<{0}>", clases.ItemModel)))
+    public class @clases.ListaViewModel : @Html.Raw(FormatoHelper.ClaseGenerica("ListadoConPaginacionViewModel", clases.ItemModel))
     {
         public @(clases.ListaViewModel)()
         {

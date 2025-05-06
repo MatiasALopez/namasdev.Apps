@@ -171,6 +171,10 @@
                     checkBoxAllSelector: '.@clases.CheckBoxHead input[type="checkbox"]',
                     checkBoxOneSelector: '.@clases.CheckBoxBody input[type="checkbox"]',
                 });
+
+            $('#@controlesIds.Form').on('submit', function () {
+                nmd.ui.controls.showLoading();
+            });
         });
     </script>    
 }

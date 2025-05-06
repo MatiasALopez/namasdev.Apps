@@ -1,4 +1,5 @@
-﻿@model namasdev.Apps.Entidades.Entidad
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
     {
@@ -9,7 +10,7 @@
     {
         ClaseBase =
             Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
-            ? string.Format("ParametrosEntidadBase<{0}>", Model.PropiedadesDefault.IDTipo.CLRType)
+            ? FormatoHelper.ClaseGenerica("ParametrosEntidadBase", Model.PropiedadesDefault.IDTipo.CLRType)
             : string.Format("ParametrosConUsuarioBase"),
     };
 }
@@ -17,7 +18,7 @@ using System;
 
 namespace @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural)
 {
-    public class DesmarcarComoBorradoParametros : @clases.ClaseBase
+    public class DesmarcarComoBorradoParametros : @Html.Raw(clases.ClaseBase)
     {
     }
 }

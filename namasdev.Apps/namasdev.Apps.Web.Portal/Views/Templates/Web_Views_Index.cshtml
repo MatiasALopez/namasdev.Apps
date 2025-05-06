@@ -69,9 +69,9 @@
 
     var controlesIds = new
     {
-        Form = string.Format("frm{0}", @(clases.Metadata).NOMBRE_PLURAL),
-        TablaContainer = string.Format("div{0}Container", @(clases.Metadata).NOMBRE_PLURAL),
-        Tabla = string.Format("tbl{0}", @(clases.Metadata).NOMBRE_PLURAL),
+        Form = $"frm{@(clases.Metadata).NOMBRE_PLURAL}",
+        TablaContainer = $"div{@(clases.Metadata).NOMBRE_PLURAL}Container",
+        Tabla = $"tbl{@(clases.Metadata).NOMBRE_PLURAL}",
     };
     var displayNames = new
     {
@@ -108,10 +108,10 @@
                 <table id="@("@controlesIds.Tabla")" class="table table-striped table-bordered">
                     <thead>
                         <tr>
-                            @foreach (var p in propiedades)
-                            {
+                        @foreach (var p in propiedades)
+                        {
                             <text><th><a href="@string.Format("@URLHelper.GenerarUrlConOrden(Request.Url, nameof({0}.{1}))", clases.Entidad, p.Key)">@@Html.DisplayNameFor(m => m.Items[0].@(p.Key)) <i class="fa fa-sort ml-2"></i></a></th></text>
-                            }
+                        }
                             <th></th>
                         </tr>
                     </thead>
@@ -119,10 +119,10 @@
                         @@foreach (var item in Model.Items)
                         {
                             <tr>
-                                @foreach (var p in propiedades)
-                                {
+                            @foreach (var p in propiedades)
+                            {
                                 <text><td>@p.Value</td></text>
-                                }
+                            }
                                 <td class="text-center">
                                     <a href="@string.Format("@Url.Action(nameof({0}.Editar), new {{ id = item.{1} }})", clases.Controller, propiedadIdNombre)" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
                                     <button class="btn btn-sm btn-outline-danger @("@clasesCss.BotonEliminar")" data-id="@string.Format("@item.{0}", propiedadIdNombre))"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>

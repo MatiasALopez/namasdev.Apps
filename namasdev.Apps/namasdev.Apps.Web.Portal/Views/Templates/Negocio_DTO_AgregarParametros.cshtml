@@ -6,7 +6,6 @@
     };
 }
 using System;
-using @(namespaces.Aplicacion).Entidades;
 
 namespace @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural)
 {
@@ -18,7 +17,7 @@ namespace @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural)
         {
             continue;
         }
-        <text>public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @p.NombreOId { get; set; }</text>
+        <text>public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @Html.Raw(p.NombreOId) { get; set; }</text>
     }
     }
 }

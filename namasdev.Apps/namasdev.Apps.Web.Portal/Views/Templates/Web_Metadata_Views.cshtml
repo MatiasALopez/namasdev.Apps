@@ -10,6 +10,6 @@ namespace @(namespaces.Aplicacion).Web.Portal.Metadata.Views
     public class @(Model.NombrePlural)Views
     {
         public const string INDEX = "Index";
-        public const string ENTIDAD = "@Model.Nombre";
+        public const string @Model.Nombre.ToUpper() = "@Model.Nombre";
     }
 }

@@ -1,4 +1,5 @@
-﻿@model namasdev.Apps.Entidades.Entidad
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
     {
@@ -31,11 +32,11 @@ using @(namespaces.Datos).Sql;
 
 namespace @(namespaces.Datos)
 {
-    public interface @interfaces.Repositorio @Html.Raw(usarRepositorioBase ? string.Format(": IRepositorio<{0}>", tiposGenericosEntidadYId) : "")
+    public interface @interfaces.Repositorio @Html.Raw(usarRepositorioBase ? string.Format(":{0}", FormatoHelper.ClaseGenerica("IRepositorio", tiposGenericosEntidadYId)) : "")
     {
     }
 
-    public class @clases.Repositorio : @Html.Raw(usarRepositorioBase ? string.Format("Repositorio<SqlContext, {0}>, ", tiposGenericosEntidadYId) : "")@interfaces.Repositorio
+    public class @clases.Repositorio : @Html.Raw(usarRepositorioBase ? FormatoHelper.ClaseGenerica("Repositorio", "SqlContext", tiposGenericosEntidadYId) : ""), @interfaces.Repositorio
     {
     }
 }

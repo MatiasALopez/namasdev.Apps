@@ -1,4 +1,5 @@
-﻿@model namasdev.Apps.Entidades.Entidad
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
     {
@@ -8,7 +9,8 @@
     {
         Profile = string.Format("{0}Profile", Model.Nombre),
         Entidad = Model.Nombre,
-        EntidadViewModel = "EntidadViewModel",
+        EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
+        EntidadItemModel = string.Format("{0}ItemModel", Model.Nombre)
     };
 }
 using AutoMapper;
@@ -24,15 +26,15 @@ namespace @(namespaces.Aplicacion).Web.Portal.Automapper
     {
         public @(clases.Profile)()
         {
-            CreateMap@(string.Format("<{0},{1}>", clases.Entidad, clases.EntidadViewModel))()
+            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", clases.Entidad, clases.EntidadViewModel)))()
                 .ReverseMap();
 
-            CreateMap@(string.Format("<{0},EntidadItemModel>", clases.Entidad))();
+            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", clases.Entidad, clases.EntidadItemModel)))();
 
-            CreateMap@(string.Format("<AgregarParametros,{0}>", clases.EntidadViewModel))()
+            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "AgregarParametros", clases.EntidadViewModel)))()
                 .ReverseMap();
 
-            CreateMap@(string.Format("<ActualizarParametros,{0}>", clases.EntidadViewModel))()
+            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "ActualizarParametros", clases.EntidadViewModel)))()
                 .ReverseMap();
         }
     }

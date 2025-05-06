@@ -1,5 +1,6 @@
 ﻿@using namasdev.Core.Types;
 @using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
@@ -16,10 +17,12 @@
         Metadata = string.Format("{0}Metadata", Model.Nombre),
     };
 
+    string propiedadMetadataBase;
     var propiedadesReglas = new Dictionary<string, string>();
     List<string> propiedadReglas;
     foreach (var p in Model.Propiedades)
     {
+        propiedadMetadataBase = string.Format("{0}.Propiedades.{1}.", clases.Metadata, p.Nombre);
         propiedadReglas = new List<string>();
         if (p.Nombre == namasdev.Apps.Entidades.EntidadPropiedad.IdNombre(Model))
         {
@@ -41,14 +44,14 @@
                     var maxLength = p.EspecificacionesTexto.TamañoMaximo ?? p.EspecificacionesTexto.TamañoExacto;
                     if (maxLength.HasValue)
                     {
-                        propiedadReglas.Add(string.Format("HasMaxLength({0})", maxLength));
+                        propiedadReglas.Add(string.Format("HasMaxLength({0}TAMAÑO_MAX)", propiedadMetadataBase));
                     }
                 }
                 break;
             case PropiedadTipos.DECIMAL:
                 if (p.EspecificacionesDecimal != null)
                 {
-                    propiedadReglas.Add(string.Format("HasPrecision({0},{1})", p.EspecificacionesDecimal.DigitosEnteros + p.EspecificacionesDecimal.DigitosDecimales, p.EspecificacionesDecimal.DigitosDecimales));
+                    propiedadReglas.Add(string.Format("HasPrecision({0}DIGITOS_ENTEROS + {0}DIGITOS_DECIMALES,{0}DIGITOS_DECIMALES)", propiedadMetadataBase));
                 }
                 break;
         }
@@ -143,7 +146,7 @@ using @(namespaces.Aplicacion).Entidades.Metadata;
 
 namespace @(namespaces.Aplicacion).Datos.Sql.Config
 {
-    public class @clases.Config : @Html.Raw(string.Format("{0}<{1}>", clases.ConfigBase, Model.Nombre))
+    public class @clases.Config : @Html.Raw(FormatoHelper.ClaseGenerica(clases.ConfigBase, Model.Nombre))
     {
         public @(clases.Config)()
         {

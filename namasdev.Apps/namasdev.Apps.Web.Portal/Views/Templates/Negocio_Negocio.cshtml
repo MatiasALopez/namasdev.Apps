@@ -4,19 +4,20 @@
 @model namasdev.Apps.Entidades.Entidad
 @{
     string namespaceBase = Model.AplicacionVersion.Aplicacion.Nombre;
-    var clasesNombres = new
+    var clases = new
     {
         Entidad = Model.Nombre,
         Negocio = string.Format("{0}Negocio", Model.NombrePlural),
         Repositorio = string.Format("{0}Repositorio", Model.NombrePlural),
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
         MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
     };
-    var interfacesNombres = new
+    var interfaces = new
     {
-        Negocio = string.Format("I{0}", clasesNombres.Negocio),
-        Repositorio = string.Format("I{0}", clasesNombres.Repositorio)
+        Negocio = string.Format("I{0}", clases.Negocio),
+        Repositorio = string.Format("I{0}", clases.Repositorio)
     };
-    var variablesNombres = new
+    var variables = new
     {
         Repositorio = "repositorio",
         ErroresNegocio = "erroresNegocio",
@@ -25,6 +26,123 @@
         Entidad = "entidad",
         UsuarioId = "usuarioId",
     };
+    var parametros = new
+    {
+        Requerido = "requerido",
+        TamañoExacto = "tamañoExacto",
+        TamañoMaximo = "tamañoMaximo",
+        TamañoMinimo = "tamañoMinimo",
+        ValorMaximo = "valorMaximo",
+        ValorMinimo = "valorMinimo",
+        CantDecimales = "cantDecimales",
+        RegEx = "regEx"
+    };
+    var validaciones = new List<string>();
+    string validacionMetodo,
+        propiedadNombre;
+    Dictionary<string, string> validacionParametros;
+    foreach (var p in Model.Propiedades)
+    {
+        validacionMetodo = null;
+        propiedadNombre = p.NombreOId;
+        validacionParametros = new Dictionary<string, string>();
+        switch (p.PropiedadTipoId)
+        {
+            case PropiedadTipos.TEXTO:
+                validacionMetodo = "ValidarStringYAgregarAListaErrores";
+                if (p.EspecificacionesTexto.TamañoExacto.HasValue)
+                {
+                    validacionParametros.Add(parametros.TamañoMaximo, p.EspecificacionesTexto.TamañoExacto.ToString());
+                }
+                else if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.TamañoExacto, p.EspecificacionesTexto.TamañoMaximo.ToString());
+                }
+                if (p.EspecificacionesTexto.TamañoMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.TamañoMinimo, p.EspecificacionesTexto.TamañoMinimo.ToString());
+                }
+                if (!string.IsNullOrWhiteSpace(p.EspecificacionesTexto.RegEx))
+                {
+                    validacionParametros.Add(parametros.RegEx, string.Format("\"p.EspecificacionesTexto.RegEx\""));
+                }
+                break;
+
+            case PropiedadTipos.ENTERO:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                if (p.EspecificacionesEntero.ValorMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMaximo, p.EspecificacionesEntero.ValorMinimo.ToString());
+                }
+                if (p.EspecificacionesEntero.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMinimo, p.EspecificacionesEntero.ValorMaximo.ToString());
+                }
+                break;
+
+            case PropiedadTipos.ENTERO_CORTO:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                if (p.EspecificacionesEnteroCorto.ValorMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMaximo, p.EspecificacionesEnteroCorto.ValorMinimo.ToString());
+                }
+                if (p.EspecificacionesEnteroCorto.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMinimo, p.EspecificacionesEnteroCorto.ValorMaximo.ToString());
+                }
+                break;
+
+            case PropiedadTipos.ENTERO_LARGO:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMaximo, p.EspecificacionesEnteroLargo.ValorMinimo.ToString());
+                }
+                if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMinimo, p.EspecificacionesEnteroLargo.ValorMaximo.ToString());
+                }
+                break;
+
+            case PropiedadTipos.DECIMAL:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMinimo));
+                }
+                if (p.EspecificacionesDecimal.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo));
+                }
+                if (p.EspecificacionesDecimal.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.CantDecimales, p.EspecificacionesDecimal.DigitosDecimales.ToString());
+                }
+                break;
+
+            case PropiedadTipos.DECIMAL_FLOTANTE:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                if (p.EspecificacionesDecimalFlotante.ValorMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMaximo, p.EspecificacionesDecimalFlotante.ValorMinimo.ToString());
+                }
+                if (p.EspecificacionesDecimalFlotante.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMinimo, p.EspecificacionesDecimalFlotante.ValorMaximo.ToString());
+                }
+                validacionParametros.Add(parametros.CantDecimales, p.EspecificacionesDecimalFlotante.DigitosDecimales.ToString());
+                break;
+        }
+        if (!string.IsNullOrWhiteSpace(validacionMetodo))
+        {
+            validaciones.Add(string.Format("Validador.{0}(entidad.{1}, {2}.{1}.ETIQUETA, requerido: {3}, errores{4})",
+                validacionMetodo,
+                propiedadNombre,
+                clases.MetadataPropiedades,
+                (!p.PermiteNull).ToString().ToLower(),
+                validacionParametros.Count > 0 ? ", " + FormatoHelper.ListaParametros(validacionParametros) : ""));
+        }
+    }
 }
 using System;
 using System.Collections.Generic;
@@ -40,9 +158,9 @@ using @(namespaceBase).Negocio.DTO.@(Model.NombrePlural);
 
 namespace @(namespaceBase).Negocio
 {
-    public interface @interfacesNombres.Negocio
+    public interface @interfaces.Negocio
     {
-        @clasesNombres.Entidad Agregar(AgregarParametros parametros);
+        @clases.Entidad Agregar(AgregarParametros parametros);
         void Actualizar(ActualizarParametros parametros);
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {
@@ -51,97 +169,97 @@ namespace @(namespaceBase).Negocio
         }
     }
 
-    public class @clasesNombres.Negocio : @string.Format("NegocioBase<{0}>", clasesNombres.Repositorio)
+    public class @clases.Negocio : @Html.Raw(FormatoHelper.ClaseGenerica("NegocioBase", interfaces.Repositorio)), @interfaces.Negocio
     {
-        public @(clasesNombres.Negocio)(@interfacesNombres.Repositorio @variablesNombres.Repositorio, IErroresNegocio @variablesNombres.ErroresNegocio, IMapper @variablesNombres.Mapper)
-            : base(@variablesNombres.Repositorio, @variablesNombres.ErroresNegocio, @variablesNombres.Mapper)
+        public @(clases.Negocio)(@interfaces.Repositorio @variables.Repositorio, IErroresNegocio @variables.ErroresNegocio, IMapper @variables.Mapper)
+            : base(@variables.Repositorio, @variables.ErroresNegocio, @variables.Mapper)
         {
         }
 
-        public @clasesNombres.Entidad Agregar(AgregarParametros @variablesNombres.Parametros)
+        public @clases.Entidad Agregar(AgregarParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Parametros, nameof(@variablesNombres.Parametros));
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
 
-            DateTime fechaHora = DateTime.Now;
+            var @variables.Entidad = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            @if (Model.PropiedadesDefault.AuditoriaCreado || Model.PropiedadesDefault.AuditoriaUltimaModificacion)
+            {
+            <text>
+            DateTime fechaHora = DateTime.Now;</text>}
+            @if (Model.PropiedadesDefault.AuditoriaCreado)
+            {
+            <text>@(variables.Entidad).EstablecerDatosCreado(@(variables.Parametros).UsuarioLogueadoId, fechaHora);</text>}
+            @if (Model.PropiedadesDefault.AuditoriaUltimaModificacion)
+            {
+            <text>@(variables.Entidad).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, fechaHora);</text>}
 
-            var @variablesNombres.Entidad = @(string.Format("Mapper.Map<{0}>", clasesNombres.Entidad))(@variablesNombres.Parametros);
-            @(variablesNombres.Entidad).EstablecerDatosCreado(@(variablesNombres).UsuarioLogueadoId, fechaHora);
-            @(variablesNombres.Entidad).EstablecerDatosModificacion(@(variablesNombres).UsuarioLogueadoId, fechaHora);
+            ValidarDatos(@variables.Entidad);
 
-            ValidarDatos(@variablesNombres.Entidad);
+            Repositorio.Agregar(@variables.Entidad);
 
-            Repositorio.Agregar(@variablesNombres.Entidad);
-
-            return @variablesNombres.Entidad;
+            return @variables.Entidad;
         }
 
-        public void Actualizar(ActualizarParametros @variablesNombres.Parametros)
+        public void Actualizar(ActualizarParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Parametros, nameof(@variablesNombres.Parametros));
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
 
-            DateTime fechaHora = DateTime.Now;
+            var @variables.Entidad = Obtener(@(variables.Parametros).Id);
+            Mapper.Map(@variables.Parametros, @variables.Entidad);
+            @if (Model.PropiedadesDefault.AuditoriaUltimaModificacion)
+            {
+            <text>@(variables.Entidad).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);</text>}
 
-            var @variablesNombres.Entidad = Obtener(@(variablesNombres.Parametros).Id);
-            Mapper.Map(@variablesNombres.Parametros, @variablesNombres.Entidad);
-            @(variablesNombres.Entidad).EstablecerDatosModificacion(@(variablesNombres.Parametros).UsuarioLogueadoId, fechaHora);
+            ValidarDatos(@variables.Entidad);
 
-            ValidarDatos(@variablesNombres.Entidad);
-
-            Repositorio.Actualizar(@variablesNombres.Entidad);
+            Repositorio.Actualizar(@variables.Entidad);
         }
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {<text>
-        public void MarcarComoBorrado(MarcarComoBorradoParametros @variablesNombres.Parametros)
+        public void MarcarComoBorrado(MarcarComoBorradoParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Parametros, nameof(@variablesNombres.Parametros));
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
     
             DateTime fechaHora = DateTime.Now;
 
-            var @variablesNombres.Entidad = @(string.Format("Mapper.Map<{0}>", clasesNombres.Entidad))(@variablesNombres.Parametros);
-            @(variablesNombres.Entidad).EstablecerDatosBorrado(@(variablesNombres.Parametros).UsuarioLogueadoId, fechaHora);
+            var @variables.Entidad = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            @(variables.Entidad).EstablecerDatosBorrado(@(variables.Parametros).UsuarioLogueadoId, fechaHora);
 
-            Repositorio.ActualizarDatosBorrado(@variablesNombres.Entidad);
+            Repositorio.ActualizarDatosBorrado(@variables.Entidad);
         }
 
-        public void DesmarcarComoBorrado(DesmarcarComoBorradoParametros @variablesNombres.Parametros)
+        public void DesmarcarComoBorrado(DesmarcarComoBorradoParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variablesNombres.Parametros, nameof(@variablesNombres.Parametros));
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
 
-            var @variablesNombres.Entidad = @(string.Format("Mapper.Map<{0}>", clasesNombres.Entidad))(@variablesNombres.Parametros);
-            Repositorio.ActualizarDatosBorrado(@variablesNombres.Entidad);
+            var @variables.Entidad = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            Repositorio.ActualizarDatosBorrado(@variables.Entidad);
         }
         </text>}
 
-        private void ValidarDatos(@clasesNombres.Entidad entidad)
+        private @clases.Entidad Obtener(@Model.PropiedadesDefault.IDTipo.CLRType id,
+            bool validarExistencia = true)
         {
-            var errores = new List@(Html.Raw("<string>"))();
+            var entidad = Repositorio.Obtener(id);
+            if (validarExistencia
+                && entidad == null)
+            {
+                throw new Exception(Validador.MensajeEntidadInexistente(@(clases.Metadata).ETIQUETA, id));
+            }
 
-@foreach (var p in Model.Propiedades)
-{
-    switch (p.PropiedadTipoId)
-    {
-        case PropiedadTipos.TEXTO:
-            <text>Validador.ValidarStringYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, tamañoMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.TamañoMaximo), valorNull: "null"), tamañoExacto: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.TamañoExacto), valorNull: "null"), regEx: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesTexto.RegEx), valorNull: "null"));</text>
-            break;
-        case PropiedadTipos.ENTERO:
-            <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEntero.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEntero.ValorMaximo), valorNull: "null"));</text>
-            break;
-        case PropiedadTipos.ENTERO_CORTO:
-            <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroCorto.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroCorto.ValorMaximo), valorNull: "null"));</text>
-            break;
-        case PropiedadTipos.ENTERO_LARGO:
-            <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroLargo.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesEnteroLargo.ValorMaximo), valorNull: "null"));</text>
-            break;
-        case PropiedadTipos.DECIMAL:
-            <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimal.DigitosDecimales), valorNull: "null"));</text>
-            break;
-        case PropiedadTipos.DECIMAL_FLOTANTE:
-            <text>Validador.ValidarNumeroYAgregarAListaErrores(entidad.@p.Nombre, @(clasesNombres.MetadataPropiedades).@(p.NombreOId).ETIQUETA, requerido: @((!p.PermiteNull).ToString().ToLower()), errores, valorMinimo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalFlotante.ValorMinimo), valorNull: "null"), valorMaximo: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalFlotante.ValorMaximo), valorNull: "null"), cantDecimales: @StringExtensiones.ValueNotEmptyOrNull(Convert.ToString(p.EspecificacionesDecimalFlotante.DigitosDecimales), valorNull: "null"));</text>
-            break;
-    }
-}
+            return entidad;
+        }
+
+        private void ValidarDatos(@clases.Entidad entidad)
+        {
+            var errores = new @(Html.Raw(FormatoHelper.ClaseGenerica("List", "string")))();
+
+        @foreach (var v in validaciones)
+        {
+            <text>@Html.Raw(v);</text>
+        }
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }
     }
 }
+

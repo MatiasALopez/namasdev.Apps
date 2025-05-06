@@ -1,6 +1,7 @@
 ﻿@using namasdev.Core.Types;
 @using namasdev.Core.Types;
 @using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
@@ -14,9 +15,9 @@
         Negocio = string.Format("{0}Negocio", Model.NombrePlural),
         Repositorio = string.Format("{0}Repositorio", Model.NombrePlural),
         Controller = string.Format("{0}Controller", Model.NombrePlural),
+        EntidadItemModel = string.Format("{0}ItemModel", Model.Nombre),
         ListaViewModel = string.Format("{0}ViewModel", Model.NombrePlural),
         EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
-        Mapper = string.Format("{0}Mapper", Model.NombrePlural),
         Views = string.Format("{0}Views", Model.NombrePlural),
     };
     var interfaces = new
@@ -48,7 +49,7 @@
     }
     bool tienePropiedadesBoolean = false,
         tienePropiedadesHora = false;
-    foreach(var p in Model.Propiedades)
+    foreach (var p in Model.Propiedades)
     {
         if (p.PropiedadTipoId == PropiedadTipos.BOOLEANO) { tienePropiedadesBoolean = true; }
         else if (p.PropiedadTipoId == PropiedadTipos.FECHA_HORA
@@ -56,17 +57,22 @@
     }
 }
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
+using AutoMapper;
 using namasdev.Core.Validation;
 using namasdev.Web.Helpers;
 using namasdev.Web.Models;
+
 using @(namespaces.Aplicacion).Entidades;
 using @(namespaces.Aplicacion).Entidades.Metadata;
+using @(namespaces.Aplicacion).Entidades.Valores;
 using @(namespaces.Aplicacion).Datos;
 using @(namespaces.Aplicacion).Negocio;
-using @(namespaces.Aplicacion).Web.Portal.Mappers;
+using @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural);
 using @(namespaces.Aplicacion).Web.Portal.Metadata.Views;
+using @(namespaces.Aplicacion).Web.Portal.Models.@(Model.NombrePlural);
 using @(namespaces.Aplicacion).Web.Portal.ViewModels.@(Model.NombrePlural);
 
 namespace @(namespaces.Aplicacion).Web.Portal.Controllers
@@ -79,7 +85,8 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
         private readonly @interfaces.Repositorio _@variables.Repositorio;
         private readonly @interfaces.Negocio _@variables.Negocio;
 
-        public @(clases.Controller)(@interfaces.Repositorio @variables.Repositorio, @interfaces.Negocio @variables.Negocio)
+        public @(clases.Controller)(@interfaces.Repositorio @variables.Repositorio, @interfaces.Negocio @variables.Negocio, IMapper mapper)
+            : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Repositorio, nameof(@variables.Repositorio));
             Validador.ValidarArgumentRequeridoYThrow(@variables.Negocio, nameof(@variables.Negocio));
@@ -105,10 +112,10 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             Cargar@(clases.ListaViewModel)(@variables.ViewModel);
             return View(@variables.ViewModel);
         }
-
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {
             <text>
+
             [HttpPost,
             ValidateAntiForgeryToken]
             public ActionResult Eliminar(Guid id)
@@ -150,7 +157,7 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _@(variables.Negocio).Agregar(@Formateador.Lista(agregarParametros, ", "), UsuarioId);
+                    _@(variables.Negocio).Agregar(@(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", "AgregarParametros")))(@variables.ViewModel));
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -172,7 +179,7 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var @variables.ViewModel = @(clases.Mapper).MapearEntidadA@(clases.EntidadViewModel)(@variables.Entidad);
+            var @variables.ViewModel = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", clases.EntidadViewModel)))(@variables.Entidad);
             Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Editar);
 
             return View(@constantes.ViewsEntidad, @variables.ViewModel);
@@ -186,8 +193,7 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var @variables.Entidad = @(clases.Mapper).Mapear@(clases.EntidadViewModel)AEntidad(@variables.ViewModel);
-                    _@(variables.Negocio).Actualizar(@variables.Entidad, UsuarioId);
+                    _@(variables.Negocio).Actualizar(@(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", "ActualizarParametros")))(@variables.ViewModel));
 
                     ControllerHelper.CargarMensajeResultadoOk(@(clases.MetadataMensajes).EDITAR_OK);
                 }
@@ -212,8 +218,8 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
 
             var op = @(variables.ViewModel).CrearOrdenYPaginacionParametros();
 
-            @(variables.ViewModel).Items = @(clases.Mapper).MapearEntidadesAModelos(
-                entidades: _@(variables.Repositorio).ObtenerLista(
+            @(variables.ViewModel).Items = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", FormatoHelper.ClaseGenerica("List", clases.EntidadItemModel))))(
+                _@(variables.Repositorio).ObtenerLista(
                     busqueda: @(variables.ViewModel).Busqueda,
                     op: op));
 
@@ -228,8 +234,7 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
         @if (tienePropiedadesBoolean) {<text>
             @(variables.ViewModel).SiNoSelectList = ListasHelper.ObtenerSiNoSelectList();</text>}
         @if (tienePropiedadesHora) {<text>
-            @(variables.ViewModel).HoraSelectList = ListasHelper.ObtenerHoraMinSelectList();
-</text>}
+            @(variables.ViewModel).HoraSelectList = ListasHelper.ObtenerHoraMinSelectList();</text>}
         }
 
         #endregion Metodos

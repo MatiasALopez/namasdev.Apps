@@ -16,7 +16,6 @@
             : "EntityTypeConfiguration",
         Metadata = string.Format("{0}Metadata", Model.Nombre),
     };
-
     string propiedadMetadataBase;
     var propiedadesReglas = new Dictionary<string, string>();
     List<string> propiedadReglas;
@@ -60,7 +59,6 @@
             propiedadesReglas.Add(string.Format("p.{0}", p.NombreOId), Formateador.Lista(propiedadReglas, "."));
         }
     }
-
     var asociaciones = new List<string>();
     string asociacionParte1Regla,
         asociacionParte2Regla,
@@ -141,37 +139,38 @@
 using System.ComponentModel.DataAnnotations.Schema;
 
 using namasdev.Data.Entity.Config;
-using @(namespaces.Aplicacion).Entidades;
-using @(namespaces.Aplicacion).Entidades.Metadata;
 
-namespace @(namespaces.Aplicacion).Datos.Sql.Config
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Datos.Sql.Config
 {
-    public class @clases.Config : @Html.Raw(FormatoHelper.ClaseGenerica(clases.ConfigBase, Model.Nombre))
+    public class @Html.Raw(clases.Config) : @Html.Raw(FormatoHelper.ClaseGenerica(clases.ConfigBase, Model.Nombre))
     {
-        public @(clases.Config)()
+        public @(Html.Raw(clases.Config))()
         {
-            ToTable(@(clases.Metadata).BD.TABLA);
+            ToTable(@(Html.Raw(clases.Metadata)).BD.TABLA);
             @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
             {
             <text>HasKey(p => p.Id);</text>
             }
             else if (Model.Claves.Count == 1)
             {
-            <text>HasKey(p => p.@Model.Claves[0].Propiedad.Nombre);</text>
+            <text>HasKey(p => p.@Html.Raw(Model.Claves[0].Propiedad.Nombre));</text>
             }
             else if (Model.Claves.Count > 1)
             {
-            <text>HasKey(p => new { @string.Join(", ", Model.Claves.Select(c => string.Format("p.{0}", c.Propiedad.Nombre))) });</text>
+            <text>HasKey(p => new { @Html.Raw(string.Join(", ", Model.Claves.Select(c => string.Format("p.{0}", c.Propiedad.Nombre)))) });</text>
             }
 
             @foreach (var p in propiedadesReglas)
             {
-            <text>Property(p => @p.Key).@p.Value;</text>
+            <text>Property(p => @Html.Raw(p.Key)).@Html.Raw(p.Value);</text>
             }
 
             @foreach (var a in asociaciones)
             {
-            <text>@a;</text>
+            <text>@Html.Raw(a);</text>
             }
         }
     }

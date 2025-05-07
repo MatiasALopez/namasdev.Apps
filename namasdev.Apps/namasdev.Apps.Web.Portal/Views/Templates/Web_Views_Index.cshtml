@@ -60,18 +60,18 @@
 }
 @@using namasdev.Core.Types;
 @@using namasdev.Web.Helpers;
-@@using @(namespaces.Aplicacion).Entidades;
-@@using @(namespaces.Aplicacion).Entidades.Metadata;
-@@using @(namespaces.Aplicacion).Web.Portal.Controllers;
-@@model @(namespaces.Aplicacion).Web.Portal.ViewModels.@(Model.NombrePlural).@(clases.ListaViewModel)
+@@using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+@@using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+@@using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers;
+@@model @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@(Html.Raw(Model.NombrePlural)).@(Html.Raw(clases.ListaViewModel))
 @@{
-    ViewBag.Title = @(clases.Metadata).ETIQUETA_PLURAL;
+    ViewBag.Title = @(Html.Raw(clases.Metadata)).ETIQUETA_PLURAL;
 
     var controlesIds = new
     {
-        Form = $"frm{@(clases.Metadata).NOMBRE_PLURAL}",
-        TablaContainer = $"div{@(clases.Metadata).NOMBRE_PLURAL}Container",
-        Tabla = $"tbl{@(clases.Metadata).NOMBRE_PLURAL}",
+        Form = $"frm{@(Html.Raw(clases.Metadata)).NOMBRE_PLURAL}",
+        TablaContainer = $"div{@(Html.Raw(clases.Metadata)).NOMBRE_PLURAL}Container",
+        Tabla = $"tbl{@(Html.Raw(clases.Metadata)).NOMBRE_PLURAL}",
     };
     var displayNames = new
     {
@@ -87,10 +87,10 @@
 @@Html.Partial("_Errores")
 <div class="row my-3">
     <div class="col-md-3">
-        <a href="@string.Format("@Url.Action(nameof({0}.Agregar))", clases.Controller)" class="btn btn-primary">Agregar</a>
+        <a href="@Html.Raw(string.Format("@Url.Action(nameof({0}.Agregar))", clases.Controller))" class="btn btn-primary">Agregar</a>
     </div>
     <div class="col-md-9 text-right filtros">
-        @@using (Html.BeginForm(@string.Format("nameof({0}.Index)", clases.Controller), @(clases.Controller).NAME, FormMethod.Get, new { @@class = "form-inline pull-right" }))
+        @@using (Html.BeginForm(@Html.Raw(string.Format("nameof({0}.Index)", clases.Controller)), @(Html.Raw(clases.Controller)).NAME, FormMethod.Get, new { @@class = "form-inline pull-right" }))
         {
             @@Html.TextBoxFor(m => m.Busqueda, new { @@class = "form-control ml-1", placeholder = displayNames.Busqueda, title = displayNames.Busqueda, data_toggle = "tooltip" })
             <button type="submit" class="btn btn-secondary ml-1">Buscar</button>
@@ -110,7 +110,7 @@
                         <tr>
                         @foreach (var p in propiedades)
                         {
-                            <text><th><a href="@string.Format("@URLHelper.GenerarUrlConOrden(Request.Url, nameof({0}.{1}))", clases.Entidad, p.Key)">@@Html.DisplayNameFor(m => m.Items[0].@(p.Key)) <i class="fa fa-sort ml-2"></i></a></th></text>
+                            <text><th><a href="@Html.Raw(string.Format("@URLHelper.GenerarUrlConOrden(Request.Url, nameof({0}.{1}))", clases.Entidad, p.Key))">@@Html.DisplayNameFor(m => m.Items[0].@(Html.Raw(p.Key))) <i class="fa fa-sort ml-2"></i></a></th></text>
                         }
                             <th></th>
                         </tr>
@@ -121,11 +121,11 @@
                             <tr>
                             @foreach (var p in propiedades)
                             {
-                                <text><td>@p.Value</td></text>
+                                <text><td>@Html.Raw(p.Value)</td></text>
                             }
                                 <td class="text-center">
-                                    <a href="@string.Format("@Url.Action(nameof({0}.Editar), new {{ id = item.{1} }})", clases.Controller, propiedadIdNombre)" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <button class="btn btn-sm btn-outline-danger @("@clasesCss.BotonEliminar")" data-id="@string.Format("@item.{0}", propiedadIdNombre))"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    <a href="@Html.Raw(string.Format("@Url.Action(nameof({0}.Editar), new {{ id = item.{1} }})", clases.Controller, propiedadIdNombre))" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                    <button class="btn btn-sm btn-outline-danger @("@clasesCss.BotonEliminar")" data-id="@Html.Raw(string.Format("@item.{0}", propiedadIdNombre)))"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         }
@@ -136,14 +136,14 @@
         }
         else
         {
-            <div class="alert alert-warning">No hay @@@(clases.Metadata).ETIQUETA_PLURAL para mostrar.</div>
+            <div class="alert alert-warning">No hay @@@(Html.Raw(clases.Metadata)).ETIQUETA_PLURAL para mostrar.</div>
         }
     </div>
 </div>
 @@section bodyScripts {
 <script type="text/javascript">
     $(function () {
-        namasdevApps.setActiveMenuOption('@Model.NombrePlural.ToFirstLetterLowercase()');
+        namasdevApps.setActiveMenuOption('@Html.Raw(Model.NombrePlural.ToFirstLetterLowercase())');
 
         $('#@@controlesIds.Tabla')
             .on('click', '.@@clasesCss.BotonEliminar', function (ev) {
@@ -157,16 +157,16 @@
                 var options = {
                     showLoadingSelector: '#@@controlesIds.TablaContainer',
                     confirm: true,
-                    confirmTitle: 'Eliminar @@@(clases.Metadata).ETIQUETA',
-                    confirmMessage: '@@@(clases.MetadataMensajes).ELIMINAR_CONFIRMACION'
+                    confirmTitle: 'Eliminar @@@(Html.Raw(clases.Metadata)).ETIQUETA',
+                    confirmMessage: '@@@(Html.Raw(clases.MetadataMensajes)).ELIMINAR_CONFIRMACION'
                 };
                 namasdevApps.postJson(
-                    '@@Url.Action(nameof(@(clases.Controller).Eliminar))/' + id,
+                    '@@Url.Action(nameof(@(Html.Raw(clases.Controller)).Eliminar))/' + id,
                     nmd.ui.forms.createDataWithAntiForgeryToken('#@@controlesIds.Form'),
                     function (response) {
                         if (response.success) {
                             nmd.ui.controls.showSuccessModal(
-                                '@@@(clases.MetadataMensajes).ELIMINAR_OK',
+                                '@@@(Html.Raw(clases.MetadataMensajes)).ELIMINAR_OK',
                                 function () {
                                     nmd.page.reloadPage();
                                 });

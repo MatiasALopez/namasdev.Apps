@@ -24,19 +24,19 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using namasdev.Core.Types;
 using namasdev.Data;
 using namasdev.Data.Entity;
-using @(namespaces.Aplicacion).Entidades;
-using @(namespaces.Datos).Sql;
 
-namespace @(namespaces.Datos)
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Datos)).Sql;
+
+namespace @Html.Raw(namespaces.Datos)
 {
-    public interface @interfaces.Repositorio @Html.Raw(usarRepositorioBase ? string.Format(":{0}", FormatoHelper.ClaseGenerica("IRepositorio", tiposGenericosEntidadYId)) : "")
+    public interface @Html.Raw(interfaces.Repositorio) @Html.Raw(usarRepositorioBase ? string.Format(":{0}", FormatoHelper.ClaseGenerica("IRepositorio", tiposGenericosEntidadYId)) : "")
     {
     }
 
-    public class @clases.Repositorio : @Html.Raw(usarRepositorioBase ? FormatoHelper.ClaseGenerica("Repositorio", "SqlContext", tiposGenericosEntidadYId) : ""), @interfaces.Repositorio
+    public class @Html.Raw(clases.Repositorio) : @Html.Raw(usarRepositorioBase ? FormatoHelper.ClaseGenerica("Repositorio", "SqlContext", tiposGenericosEntidadYId) : ""), @Html.Raw(interfaces.Repositorio)
     {
     }
 }

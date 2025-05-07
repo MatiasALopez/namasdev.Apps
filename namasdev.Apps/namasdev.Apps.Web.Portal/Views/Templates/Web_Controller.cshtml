@@ -65,52 +65,52 @@ using namasdev.Core.Validation;
 using namasdev.Web.Helpers;
 using namasdev.Web.Models;
 
-using @(namespaces.Aplicacion).Entidades;
-using @(namespaces.Aplicacion).Entidades.Metadata;
-using @(namespaces.Aplicacion).Entidades.Valores;
-using @(namespaces.Aplicacion).Datos;
-using @(namespaces.Aplicacion).Negocio;
-using @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural);
-using @(namespaces.Aplicacion).Web.Portal.Metadata.Views;
-using @(namespaces.Aplicacion).Web.Portal.Models.@(Model.NombrePlural);
-using @(namespaces.Aplicacion).Web.Portal.ViewModels.@(Model.NombrePlural);
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+using @(Html.Raw(namespaces.Aplicacion)).Entidades.Valores;
+using @(Html.Raw(namespaces.Aplicacion)).Datos;
+using @(Html.Raw(namespaces.Aplicacion)).Negocio;
+using @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Metadata.Views;
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@(Html.Raw(Model.NombrePlural));
 
-namespace @(namespaces.Aplicacion).Web.Portal.Controllers
+namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
 {
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
-    public class @clases.Controller : ControllerBase
+    public class @Html.Raw(clases.Controller) : ControllerBase
     {
         public const string NAME = "@Model.NombrePlural";
 
-        private readonly @interfaces.Repositorio _@variables.Repositorio;
-        private readonly @interfaces.Negocio _@variables.Negocio;
+        private readonly @Html.Raw(interfaces.Repositorio) _@Html.Raw(variables.Repositorio);
+        private readonly @Html.Raw(interfaces.Negocio) _@Html.Raw(variables.Negocio);
 
-        public @(clases.Controller)(@interfaces.Repositorio @variables.Repositorio, @interfaces.Negocio @variables.Negocio, IMapper mapper)
+        public @(Html.Raw(clases.Controller))(@Html.Raw(interfaces.Repositorio) @Html.Raw(variables.Repositorio), @Html.Raw(interfaces.Negocio) @Html.Raw(variables.Negocio), IMapper mapper)
             : base(mapper)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variables.Repositorio, nameof(@variables.Repositorio));
-            Validador.ValidarArgumentRequeridoYThrow(@variables.Negocio, nameof(@variables.Negocio));
+            Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.Repositorio), nameof(@Html.Raw(variables.Repositorio)));
+            Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.Negocio), nameof(@Html.Raw(variables.Negocio)));
 
-            _@variables.Repositorio = @variables.Repositorio;
-            _@variables.Negocio = @variables.Negocio;
+            _@Html.Raw(variables.Repositorio) = @Html.Raw(variables.Repositorio);
+            _@Html.Raw(variables.Negocio) = @Html.Raw(variables.Negocio);
         }
 
         #region Acciones
 
         public ActionResult Index(
             string busqueda = null,
-            string orden = null,
-            int pagina = 1)
+            int pagina = 1,
+            string orden = null)
         {
-            var @variables.ViewModel = new @clases.ListaViewModel
+            var @Html.Raw(variables.ViewModel) = new @Html.Raw(clases.ListaViewModel)
             {
                 Busqueda = busqueda,
                 Pagina = pagina,
                 Orden = orden,
             };
 
-            Cargar@(clases.ListaViewModel)(@variables.ViewModel);
-            return View(@variables.ViewModel);
+            Cargar@(Html.Raw(clases.ListaViewModel))(@Html.Raw(variables.ViewModel));
+            return View(@Html.Raw(variables.ViewModel));
         }
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {
@@ -120,19 +120,19 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
             ValidateAntiForgeryToken]
             public ActionResult Eliminar(Guid id)
             {
-                var @variables.Entidad = _@(variables.Repositorio).Obtener(id);
-                if (@variables.Entidad == null)
+                var @Html.Raw(variables.Entidad) = _@(Html.Raw(variables.Repositorio)).Obtener(id);
+                if (@Html.Raw(variables.Entidad) == null)
                 {
-                    return Json(new { success = false, message = Validador.MensajeEntidadInexistente(@(clases.Metadata).ETIQUETA, id) });
+                    return Json(new { success = false, message = Validador.MensajeEntidadInexistente(@(Html.Raw(clases.Metadata)).ETIQUETA, id) });
                 }
 
                 try
                 {
-                    _@(variables.Negocio).MarcarComoBorrado(id, UsuarioId);
+                    _@(Html.Raw(variables.Negocio)).MarcarComoBorrado(id, UsuarioId);
                 }
                 catch (Exception)
                 {
-                    return Json(new { success = false, message = @(clases.MetadataMensajes).ELIMINAR_ERROR });
+                    return Json(new { success = false, message = @(Html.Raw(clases.MetadataMensajes)).ELIMINAR_ERROR });
                 }
 
                 return Json(new { success = true });
@@ -143,21 +143,21 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
 
         public ActionResult Agregar()
         {
-            var @variables.ViewModel = new @(clases.EntidadViewModel)();
-            Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Agregar);
+            var @Html.Raw(variables.ViewModel) = new @(Html.Raw(clases.EntidadViewModel))();
+            Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Agregar);
 
-            return View(@constantes.ViewsEntidad, @variables.ViewModel);
+            return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult Agregar(@clases.EntidadViewModel @variables.ViewModel)
+        public ActionResult Agregar(@Html.Raw(clases.EntidadViewModel) @Html.Raw(variables.ViewModel))
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _@(variables.Negocio).Agregar(@(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", "AgregarParametros")))(@variables.ViewModel));
+                    _@(Html.Raw(variables.Negocio)).Agregar(@(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", "AgregarParametros")))(@Html.Raw(variables.ViewModel)));
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -167,35 +167,35 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
                 ControllerHelper.CargarMensajesError(ex.Message);
             }
 
-            Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Agregar);
-            return View(@constantes.ViewsEntidad, @variables.ViewModel);
+            Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Agregar);
+            return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
         }
 
         public ActionResult Editar(Guid id)
         {
-            var @variables.Entidad = _@(variables.Repositorio).Obtener(id);
-            if (@variables.Entidad == null)
+            var @Html.Raw(variables.Entidad) = _@(Html.Raw(variables.Repositorio)).Obtener(id);
+            if (@Html.Raw(variables.Entidad) == null)
             {
                 return RedirectToAction(nameof(Index));
             }
 
-            var @variables.ViewModel = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", clases.EntidadViewModel)))(@variables.Entidad);
-            Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Editar);
+            var @Html.Raw(variables.ViewModel) = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", clases.EntidadViewModel)))(@Html.Raw(variables.Entidad));
+            Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Editar);
 
-            return View(@constantes.ViewsEntidad, @variables.ViewModel);
+            return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult Editar(@clases.EntidadViewModel @variables.ViewModel)
+        public ActionResult Editar(@Html.Raw(clases.EntidadViewModel) @Html.Raw(variables.ViewModel))
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _@(variables.Negocio).Actualizar(@(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", "ActualizarParametros")))(@variables.ViewModel));
+                    _@(Html.Raw(variables.Negocio)).Actualizar(@(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", "ActualizarParametros")))(@Html.Raw(variables.ViewModel)));
 
-                    ControllerHelper.CargarMensajeResultadoOk(@(clases.MetadataMensajes).EDITAR_OK);
+                    ControllerHelper.CargarMensajeResultadoOk(@(Html.Raw(clases.MetadataMensajes)).EDITAR_OK);
                 }
             }
             catch (Exception ex)
@@ -203,38 +203,38 @@ namespace @(namespaces.Aplicacion).Web.Portal.Controllers
                 ControllerHelper.CargarMensajesError(ex.Message);
             }
 
-            Cargar@(clases.EntidadViewModel)(@variables.ViewModel, PaginaModo.Editar);
+            Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Editar);
         
-            return View(@constantes.ViewsEntidad, @variables.ViewModel);
+            return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
         }
 
         #endregion Acciones
 
         #region Metodos
 
-        private void Cargar@(clases.ListaViewModel)(@clases.ListaViewModel @variables.ViewModel)
+        private void Cargar@(Html.Raw(clases.ListaViewModel))(@Html.Raw(clases.ListaViewModel) @Html.Raw(variables.ViewModel))
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variables.ViewModel, nameof(@variables.ViewModel));
+            Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.ViewModel), nameof(@Html.Raw(variables.ViewModel)));
 
-            var op = @(variables.ViewModel).CrearOrdenYPaginacionParametros();
+            var op = @(Html.Raw(variables.ViewModel)).CrearOrdenYPaginacionParametros();
 
-            @(variables.ViewModel).Items = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", FormatoHelper.ClaseGenerica("List", clases.EntidadItemModel))))(
-                _@(variables.Repositorio).ObtenerLista(
-                    busqueda: @(variables.ViewModel).Busqueda,
+            @(Html.Raw(variables.ViewModel)).Items = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", FormatoHelper.ClaseGenerica("List", clases.EntidadItemModel))))(
+                _@(Html.Raw(variables.Repositorio)).ObtenerLista(
+                    busqueda: @(Html.Raw(variables.ViewModel)).Busqueda,
                     op: op));
 
-            @(variables.ViewModel).CargarPaginacion(op);
+            @(Html.Raw(variables.ViewModel)).CargarPaginacion(op);
         }
 
-        private void Cargar@(clases.EntidadViewModel)(@clases.EntidadViewModel @variables.ViewModel, PaginaModo paginaModo)
+        private void Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(clases.EntidadViewModel) @Html.Raw(variables.ViewModel), PaginaModo paginaModo)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variables.ViewModel, nameof(@variables.ViewModel));
+            Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.ViewModel), nameof(@Html.Raw(variables.ViewModel)));
 
-            @(variables.ViewModel).PaginaModo = paginaModo;
+            @(Html.Raw(variables.ViewModel)).PaginaModo = paginaModo;
         @if (tienePropiedadesBoolean) {<text>
-            @(variables.ViewModel).SiNoSelectList = ListasHelper.ObtenerSiNoSelectList();</text>}
+            @(Html.Raw(variables.ViewModel)).SiNoSelectList = ListasHelper.ObtenerSiNoSelectList();</text>}
         @if (tienePropiedadesHora) {<text>
-            @(variables.ViewModel).HoraSelectList = ListasHelper.ObtenerHoraMinSelectList();</text>}
+            @(Html.Raw(variables.ViewModel)).HoraSelectList = ListasHelper.ObtenerHoraMinSelectList();</text>}
         }
 
         #endregion Metodos

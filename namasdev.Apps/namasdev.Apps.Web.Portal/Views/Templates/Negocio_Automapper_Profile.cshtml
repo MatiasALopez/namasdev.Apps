@@ -13,20 +13,20 @@
 }
 using AutoMapper;
 
-using @(namespaces.Aplicacion).Entidades;
-using @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural);
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural));
 
-namespace @(namespaces.Aplicacion).Negocio.Automapper
+namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.Automapper
 {
-    public class @clases.Profile : Profile
+    public class @Html.Raw(clases.Profile) : Profile
     {
-        public @(clases.Profile)()
+        public @(Html.Raw(clases.Profile))()
         {
             @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "AgregarParametros", clases.Entidad)))();
             @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "ActualizarParametros", clases.Entidad)))();
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {
-        <text>@(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "MarcarComoBorradoParametros", clases.Entidad)))();
+            <text>@(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "MarcarComoBorradoParametros", clases.Entidad)))();
             @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "DesmarcarComoBorradoParametros", clases.Entidad)))();</text>
         }
         }

@@ -24,11 +24,12 @@ using System.Web.Mvc;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
-using @(namespaces.Aplicacion).Entidades.Metadata;
 
-namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
+using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@Html.Raw(Model.NombrePlural)
 {
-    public class @clases.EntidadViewModel : IValidatableObject
+    public class @Html.Raw(clases.EntidadViewModel) : IValidatableObject
     {
         public PaginaModo PaginaModo { get; set; }
 
@@ -39,12 +40,12 @@ namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
         if (p.PropiedadTipoId == PropiedadTipos.BOOLEANO) { tienePropiedadesBoolean = true; }
         else if (p.PropiedadTipoId == PropiedadTipos.FECHA_HORA
             || p.PropiedadTipoId == PropiedadTipos.HORA) { tienePropiedadesHora = true; }
-        <text>[Display(Name = @(clases.MetadataPropiedades).@(p.NombreOId).ETIQUETA)]
+        <text>[Display(Name = @(Html.Raw(clases.MetadataPropiedades)).@(Html.Raw(p.NombreOId)).ETIQUETA)]
         @if (!p.PermiteNull && !p.EsId())
         {
         <text>[Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]</text>
         }
-        public @p.Tipo.CLRTypeNullable @p.NombreOId { get; set; }
+        public @p.Tipo.CLRTypeNullable @Html.Raw(p.NombreOId) { get; set; }
         </text>
     }
     @if (tienePropiedadesBoolean) 
@@ -61,9 +62,9 @@ namespace @(namespaces.Aplicacion).Web.Portal.ViewModels.@Model.NombrePlural
         @if (!string.IsNullOrWhiteSpace(propiedadIdNombre))
         {
             <text>if (PaginaModo == PaginaModo.Editar
-                && !@(propiedadIdNombre).HasValue)
+                && !@(Html.Raw(propiedadIdNombre)).HasValue)
             {
-                yield return new ValidationResult(Validador.MensajeRequerido(@(clases.Metadata).ETIQUETA));
+                yield return new ValidationResult(Validador.MensajeRequerido(@(Html.Raw(clases.Metadata)).ETIQUETA));
             }</text>
         }
         }

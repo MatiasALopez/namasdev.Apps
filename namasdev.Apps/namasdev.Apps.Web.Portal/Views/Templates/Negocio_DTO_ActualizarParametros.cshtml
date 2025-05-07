@@ -16,7 +16,7 @@
 }
 using System;
 
-namespace @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural)
+namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural))
 {
     public class ActualizarParametros : @Html.Raw(clases.ClaseBase)
     {
@@ -26,7 +26,7 @@ namespace @(namespaces.Aplicacion).Negocio.DTO.@(Model.NombrePlural)
         {
             continue;
         }
-        <text>public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @Html.Raw(p.NombreOId) { get; set; }</text>
+        <text>public @Html.Raw(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @Html.Raw(p.NombreOId) { get; set; }</text>
     }
     }
 }

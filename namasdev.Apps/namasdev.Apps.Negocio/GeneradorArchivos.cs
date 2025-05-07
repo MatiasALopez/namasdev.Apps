@@ -71,9 +71,9 @@ namespace namasdev.Apps.Negocio
 
         private void GenerarArchivosDeEntidad(Entidad entidad, GenerarArchivosParametrosBase parametros, Guid grupoId)
         {
-            if (parametros.GenerarDatabaseTabla)
+            if (parametros.GenerarBDTabla)
             {
-                GenerarDatabaseTabla(entidad, grupoId: grupoId);
+                GenerarBDTabla(entidad, grupoId: grupoId);
             }
 
             if (parametros.GenerarEntidadesEntidad)
@@ -180,13 +180,13 @@ namespace namasdev.Apps.Negocio
             return zipPath;
         }
 
-        private string GenerarDatabaseTabla(Entidad entidad,
+        private string GenerarBDTabla(Entidad entidad,
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Database_Tabla.cshtml",
+                "BD_Tabla.cshtml",
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Database", "dbo", "Tables"),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.BD", "dbo", "Tables"),
                 $"{entidad.NombrePlural}.sql",
                 grupoId);
         }

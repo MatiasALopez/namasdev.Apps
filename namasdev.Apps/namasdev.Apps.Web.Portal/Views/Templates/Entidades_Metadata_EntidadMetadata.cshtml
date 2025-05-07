@@ -59,22 +59,22 @@
 
     Dictionary<string, string> propiedadConstantes;
 }
-namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades.Metadata
+namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metadata
 {
-    public class @clases.Metadata
+    public class @Html.Raw(clases.Metadata)
     {
-        public const string NOMBRE = "@Model.Nombre";
-        public const string NOMBRE_PLURAL = "@Model.NombrePlural";
+        public const string NOMBRE = "@Html.Raw(Model.Nombre)";
+        public const string NOMBRE_PLURAL = "@Html.Raw(Model.NombrePlural)";
 
-        public const string ETIQUETA = "@Model.Etiqueta";
-        public const string ETIQUETA_PLURAL = "@Model.EtiquetaPlural";
+        public const string ETIQUETA = "@Html.Raw(Model.Etiqueta)";
+        public const string ETIQUETA_PLURAL = "@Html.Raw(Model.EtiquetaPlural)";
 
         public class BD
         {
-            public const string TABLA = "@Model.NombrePlural";
+            public const string TABLA = "@Html.Raw(Model.NombrePlural)";
         @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
         {
-            <text>public const string ID = "@(Model.Nombre)Id";</text>
+            <text>public const string ID = "@(Html.Raw(Model.Nombre))Id";</text>
         }
         }
 
@@ -161,15 +161,15 @@ namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades.Metadata
 
         public class Mensajes
         {
-            public const string AGREGAR_OK = @(clases.Metadata).ETIQUETA + " agregad@(textoOperacionSufijoGenero) correctamente.";
-            public const string AGREGAR_ERROR = "No se @textoPudo agregar @textoArticulo " + @(clases.Metadata).ETIQUETA;
+            public const string AGREGAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " agregad@(textoOperacionSufijoGenero) correctamente.";
+            public const string AGREGAR_ERROR = "No se @textoPudo agregar @textoArticulo " + @(Html.Raw(clases.Metadata)).ETIQUETA;
 
-            public const string EDITAR_OK = @(clases.Metadata).ETIQUETA + " actualizad@(textoOperacionSufijoGenero) correctamente.";
-            public const string EDITAR_ERROR = "No se @textoPudo actualizar @textoArticulo " + @(clases.Metadata).ETIQUETA;
+            public const string EDITAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " actualizad@(textoOperacionSufijoGenero) correctamente.";
+            public const string EDITAR_ERROR = "No se @textoPudo actualizar @textoArticulo " + @(Html.Raw(clases.Metadata)).ETIQUETA;
 
-            public const string ELIMINAR_OK = @(clases.Metadata).ETIQUETA + " eliminad@(textoOperacionSufijoGenero) correctamente.";
-            public const string ELIMINAR_ERROR = "No se @textoPudo eliminar @textoArticulo " + @(clases.Metadata).ETIQUETA;
-            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar @textoArticulo " + @(clases.Metadata).ETIQUETA + " seleccionad@(textoOperacionSufijoGenero)?";
+            public const string ELIMINAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " eliminad@(textoOperacionSufijoGenero) correctamente.";
+            public const string ELIMINAR_ERROR = "No se @textoPudo eliminar @textoArticulo " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar @textoArticulo " + @(Html.Raw(clases.Metadata)).ETIQUETA + " seleccionad@(textoOperacionSufijoGenero)?";
         }
     }
 }

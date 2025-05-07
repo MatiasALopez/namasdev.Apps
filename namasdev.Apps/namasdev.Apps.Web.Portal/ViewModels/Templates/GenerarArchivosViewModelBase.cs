@@ -6,7 +6,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Templates
     public class GenerarArchivosViewModelBase
     {
         [Display(Name = "Tabla")]
-        public bool GenerarDatabaseTabla { get; set; }
+        public bool GenerarBDTabla { get; set; }
 
         [Display(Name = "Repositorio")]
         public bool GenerarDatosRepositorio { get; set; }
@@ -64,7 +64,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Templates
 
         public void MarcarTodos()
         {
-            GenerarDatabaseTabla =
+            GenerarBDTabla =
             GenerarDatosRepositorio =
             GenerarDatosSqlConfig =
             GenerarEntidadesEntidad =

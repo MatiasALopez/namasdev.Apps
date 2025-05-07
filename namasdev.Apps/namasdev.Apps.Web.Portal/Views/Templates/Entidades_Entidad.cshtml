@@ -52,9 +52,9 @@ using System;
 
 using namasdev.Core.Entity;
 
-namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades
+namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades
 {
-    public partial class @Model.Nombre @Html.Raw(claseBase)
+    public partial class @Html.Raw(Model.Nombre) @Html.Raw(claseBase)
     {
     @foreach (var p in Model.Propiedades)
     {
@@ -62,12 +62,15 @@ namespace @(Model.AplicacionVersion.Aplicacion.Nombre).Entidades
         {
             continue;
         }
-        <text>public @(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @p.Nombre { get; set; }</text>
+        <text>public @(Html.Raw(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType)) @Html.Raw(p.Nombre) { get; set; }</text>
     }
-
-    @foreach (var p in propiedadesNavegacion)
+    @if (propiedadesNavegacion.Count > 0)
     {
-        <text>public virtual @Html.Raw(p) { get; set; }</text>
-    }
-    }
+        <text></text>
+        foreach (var p in propiedadesNavegacion)
+        {
+            <text>public virtual @Html.Raw(p) { get; set; }</text>
+        }
+    }   
+}
 }

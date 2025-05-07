@@ -2,7 +2,7 @@
 {
     public abstract class GenerarArchivosParametrosBase
     {
-        public bool GenerarDatabaseTabla { get; set; }
+        public bool GenerarBDTabla { get; set; }
         public bool GenerarDatosRepositorio { get; set; }
         public bool GenerarDatosSqlConfig { get; set; }
         public bool GenerarEntidadesEntidad { get; set; }
@@ -26,7 +26,7 @@
         {
             get 
             {
-                return GenerarDatabaseTabla
+                return GenerarBDTabla
                     || GenerarDatosRepositorio
                     || GenerarDatosSqlConfig
                     || GenerarEntidadesEntidad

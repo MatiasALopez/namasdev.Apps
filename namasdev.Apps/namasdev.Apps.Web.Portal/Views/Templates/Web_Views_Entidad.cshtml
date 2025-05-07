@@ -28,16 +28,16 @@
 }
 @@using namasdev.Core.Types;
 @@using namasdev.Web.Helpers;
-@@using @(namespaces.Aplicacion).Entidades;
-@@using @(namespaces.Aplicacion).Entidades.Metadata;
-@@using @(namespaces.Aplicacion).Web.Portal.Controllers;
-@@model @(namespaces.Aplicacion).Web.Portal.ViewModels.@(Model.NombrePlural).@(clases.EntidadViewModel)
+@@using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+@@using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+@@using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers;
+@@model @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@(Html.Raw(Model.NombrePlural)).@(Html.Raw(clases.EntidadViewModel))
 @@{
-    ViewBag.Title = $"{Model.PaginaModo} {@(clases.Metadata).NOMBRE}";
+    ViewBag.Title = $"{Model.PaginaModo} {@(Html.Raw(clases.Metadata)).NOMBRE}";
 
     var controlesIds = new
     {
-        Form = $"frm{@(clases.Metadata).NOMBRE}"
+        Form = $"frm{@(Html.Raw(clases.Metadata)).NOMBRE}"
     };
 }
 <h2 class="my-3">@ViewBag.Title</h2>
@@ -48,7 +48,7 @@
     @@Html.Partial("_ResultadoOk")
     @if (propiedadIdNombre != null)
     {
-    <text>@@Html.HiddenFor(m => m.@(propiedadIdNombre))</text>
+    <text>@@Html.HiddenFor(m => m.@(Html.Raw(propiedadIdNombre)))</text>
     }
     @@Html.HiddenFor(m => m.PaginaModo)
     <div class="form-row">
@@ -167,9 +167,9 @@
         }
         controlHtmlAttributes.Add("class", Formateador.Lista(controlCssClasses, separador: " "));
         <div class="form-group col-md-6">
-            @@Html.LabelFor(m => m.@(p.NombreOId)@(Html.Raw(FormatoHelper.AtributosHtmlString(labelHtmlAttributes))))
-            @@Html.@(controlTipo)For(m => m.@(p.NombreOId)@Html.Raw(controlAdditionalParameters.Count > 0 ? ", " + Formateador.Lista(controlAdditionalParameters) : "")@(Html.Raw(FormatoHelper.AtributosHtmlString(controlHtmlAttributes))))
-            @@Html.ValidationMessageFor(m => m.@(p.NombreOId))
+            @@Html.LabelFor(m => m.@(Html.Raw(p.NombreOId))@(Html.Raw(FormatoHelper.AtributosHtmlString(labelHtmlAttributes))))
+            @@Html.@(controlTipo)For(m => m.@(Html.Raw(p.NombreOId))@Html.Raw(controlAdditionalParameters.Count > 0 ? ", " + Formateador.Lista(controlAdditionalParameters) : "")@(Html.Raw(FormatoHelper.AtributosHtmlString(controlHtmlAttributes))))
+            @@Html.ValidationMessageFor(m => m.@(Html.Raw(p.NombreOId)))
         </div>
     }
     </div>
@@ -179,7 +179,7 @@
 @@section bodyScripts {
 <script type="text/javascript">
     $(function () {
-        namasdevApps.setActiveMenuOption('@Model.NombrePlural.ToFirstLetterLowercase()');
+        namasdevApps.setActiveMenuOption('@Html.Raw(Model.NombrePlural.ToFirstLetterLowercase())');
     });
 </script>
 }

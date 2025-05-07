@@ -335,7 +335,7 @@
     <Content Include="Views\Templates\Datos_Repositorio.cshtml" />
     <Content Include="Views\Templates\Datos_SqlConfig.cshtml" />
     <Content Include="Views\Templates\Negocio_Negocio.cshtml" />
-    <Content Include="Views\Templates\Database_Tabla.cshtml" />
+    <Content Include="Views\Templates\BD_Tabla.cshtml" />
     <Content Include="Views\Templates\Web_Controller.cshtml" />
     <Content Include="Views\Templates\Web_ViewModels_EntidadViewModel.cshtml" />
     <Content Include="Views\Templates\Web_Views_Index.cshtml" />

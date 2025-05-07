@@ -5,11 +5,11 @@
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
     };
 }
-namespace @(namespaces.Aplicacion).Web.Portal.Metadata.Views
+namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Metadata.Views
 {
-    public class @(Model.NombrePlural)Views
+    public class @(Html.Raw(Model.NombrePlural))Views
     {
-        public const string INDEX = "Index";
-        public const string @Model.Nombre.ToUpper() = "@Model.Nombre";
+        public const string Index = "Index";
+        public const string @Html.Raw(Model.Nombre) = "@Model.Nombre";
     }
 }

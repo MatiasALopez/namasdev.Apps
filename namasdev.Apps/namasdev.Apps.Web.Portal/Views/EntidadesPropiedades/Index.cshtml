@@ -30,7 +30,8 @@
 </div>
 <div class="row mt-3">
     <div class="col-md-3">
-        <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { entidadId = Model.Id })" class="btn btn-primary">Agregar</a>
+        <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { entidadId = Model.Id })" class="btn btn-primary"
+           data-iframe data-iframe-title="Agregar propiedad" data-iframe-height="600px" data-iframe-onhidden="modalPropiedad_onHidden">Agregar</a>
     </div>
     <div class="col-md-9 text-right filtros">
         @using (Html.BeginForm("Index", "EntidadesPropiedades", FormMethod.Get, new { @class = "form-inline pull-right" }))
@@ -83,7 +84,8 @@
                                     <td>@Formateador.SiNo(Model.Items[i].PermiteNull)</td>
                                     <td>@Formateador.Numero(Model.Items[i].Orden)</td>
                                     <td class="text-center">
-                                        <a href="@Url.Action("Editar", new { id = Model.Items[i].EntidadPropiedadId, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                        <a href="@Url.Action("Editar", new { id = Model.Items[i].EntidadPropiedadId, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"
+                                           data-iframe data-iframe-title="Editar propiedad" data-iframe-height="600px" data-iframe-onhidden="modalPropiedad_onHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
                                         <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@Model.Items[i].EntidadPropiedadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
@@ -101,9 +103,6 @@
             <div class="alert alert-warning">No hay propiedades para mostrar.</div>
         }
     </div>
-</div>
-<div class="mt-2">
-    <a href="@Url.Action("Index", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-secondary">Volver</a>
 </div>
 @section bodyScripts {
     <script type="text/javascript">
@@ -147,5 +146,9 @@
                     return false;
                 });
         });
+
+        function modalPropiedad_onHidden() {
+            nmd.page.reloadPage();
+        }
     </script>
 }

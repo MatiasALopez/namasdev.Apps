@@ -138,7 +138,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     var propiedadTipoEspecificaciones = EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(modelo);
                     _entidadesPropiedadesNegocio.Agregar(modelo.EntidadId, modelo.Nombre, modelo.Etiqueta, modelo.PropiedadTipoId.Value, propiedadTipoEspecificaciones, modelo.Orden.Value, modelo.PermiteNull.Value, modelo.GeneradaAlCrear.Value, modelo.Editable.Value, modelo.CalculadaFormula, UsuarioId);
 
-                    return RedirectToAction(nameof(Index), new { id = modelo.EntidadId });
+                    ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.AGREGAR_OK);
+
+                    modelo = new EntidadPropiedadViewModel
+                    {
+                        EntidadId = modelo.EntidadId,
+                    };
+                    ModelState.Clear();
                 }
             }
             catch (Exception ex)
@@ -216,11 +222,6 @@ namespace namasdev.Apps.Web.Portal.Controllers
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
             modelo.PaginaModo = paginaModo;
-
-            if (string.IsNullOrWhiteSpace(modelo.EntidadNombre))
-            {
-                modelo.EntidadNombre = _entidadesRepositorio.Obtener(modelo.EntidadId).Nombre;
-            }
 
             modelo.GeneradaAlCrear = modelo.GeneradaAlCrear ?? false;
             modelo.Editable = modelo.Editable ?? true;

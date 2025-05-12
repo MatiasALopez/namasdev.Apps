@@ -7,6 +7,7 @@ namespace namasdev.Apps.Entidades
     public class EntidadAsociacion : Entidad<Guid>
     {
         public Guid OrigenEntidadId { get; set; }
+        public string Nombre { get; set; }
         public Guid OrigenEntidadPropiedadId { get; set; }
         public short OrigenAsociacionMultiplicidadId { get; set; }
         public Guid DestinoEntidadId { get; set; }

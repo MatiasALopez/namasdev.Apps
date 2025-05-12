@@ -203,6 +203,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.DI.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Automapper\EntidadesAsociacionesProfile.cs" />
     <Compile Include="Automapper\TemplatesProfile.cs" />
     <Compile Include="Automapper\EntidadesProfile.cs" />
     <Compile Include="Automapper\UsuariosProfile.cs" />
@@ -210,6 +211,7 @@
     <Compile Include="Controllers\EntidadesAsociacionesController.cs" />
     <Compile Include="Controllers\EntidadesPropiedadesController.cs" />
     <Compile Include="Controllers\EntidadesController.cs" />
+    <Compile Include="Controllers\ListasController.cs" />
     <Compile Include="Controllers\TemplatesController.cs" />
     <Compile Include="Controllers\VersionesController.cs" />
     <Compile Include="Controllers\ControllerBase.cs" />
@@ -351,6 +353,7 @@
     <Content Include="Views\Templates\Web_Automapper_Profile.cshtml" />
     <Content Include="Views\Templates\_GenerarArchivosEntidad.cshtml" />
     <Content Include="Views\Templates\_GenerarArchivosAplicacion.cshtml" />
+    <Content Include="Views\EntidadesAsociaciones\EntidadAsociacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 using namasdev.Data;
 using namasdev.Data.Entity;
@@ -26,13 +27,7 @@ namespace namasdev.Apps.Datos
             using (var ctx = new SqlContext())
             {
                 return ctx.EntidadesAsociaciones
-                    .IncludeIf(ea => ea.OrigenEntidad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.OrigenPropiedad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.OrigenMultiplicidad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.DestinoPropiedad.Entidad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.DestinoMultiplicidad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.DeleteRegla, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.UpdateRegla, cargarDatosAdicionales)
+                    .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
                     .Where(ep => ep.OrigenEntidadId == entidadId)
                     .ToList();
             }
@@ -44,13 +39,7 @@ namespace namasdev.Apps.Datos
             using (var ctx = new SqlContext())
             {
                 return ctx.EntidadesAsociaciones
-                    .IncludeIf(ea => ea.OrigenEntidad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.OrigenPropiedad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.OrigenMultiplicidad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.DestinoPropiedad.Entidad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.DestinoMultiplicidad, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.DeleteRegla, cargarDatosAdicionales)
-                    .IncludeIf(ea => ea.UpdateRegla, cargarDatosAdicionales)
+                    .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
                     .FirstOrDefault(ea => ea.Id == id);
             }
         }
@@ -69,6 +58,20 @@ namespace namasdev.Apps.Datos
             {
                 return ctx.AsociacionReglas.ToArray();
             }
+        }
+
+        private IEnumerable<Expression<Func<EntidadAsociacion, object>>> CrearPathsDatosAdicionales()
+        {
+            return new Expression<Func<EntidadAsociacion, object>>[]
+            {
+                ea => ea.OrigenEntidad,
+                ea => ea.OrigenPropiedad,
+                ea => ea.OrigenMultiplicidad,
+                ea => ea.DestinoPropiedad.Entidad,
+                ea => ea.DestinoMultiplicidad,
+                ea => ea.DeleteRegla,
+                ea => ea.UpdateRegla,
+            };
         }
     }
 }

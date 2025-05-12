@@ -20,11 +20,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
         }
 
         public PaginaModo PaginaModo { get; set; }
-
         public Guid EntidadId { get; set; }
-
-        [Display(Name = EntidadPropiedadMetadata.Propiedades.EntidadId.ETIQUETA)]
-        public string EntidadNombre { get; set; }
 
         public Guid? EntidadPropiedadId { get; set; }
 

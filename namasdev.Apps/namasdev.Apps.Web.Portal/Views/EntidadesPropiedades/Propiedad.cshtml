@@ -4,8 +4,9 @@
 @model EntidadPropiedadViewModel
 @{
     ViewBag.Title = $"{Model.PaginaModo} {EntidadPropiedadMetadata.ETIQUETA}";
+    ViewBag.ExcluirHeaderYFooter = true;
 
-    var controlesIds = new 
+    var controlesIds = new
     {
         Form = $"frm{EntidadPropiedadMetadata.NOMBRE}",
         EspecificacionesTextoRow = $"div{PropiedadTipoEspecificacionesTextoMetadata.NOMBRE}",
@@ -13,8 +14,7 @@
         EspecificacionesDecimalRow = $"div{PropiedadTipoEspecificacionesDecimalMetadata.NOMBRE}",
     };
 }
-<h2>@ViewBag.Title</h2>
-<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mt-3">
+<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mx-2">
     @Html.AntiForgeryToken()
     @Html.ValidationSummary(excludePropertyErrors: true)
     @Html.Partial("_Errores")
@@ -22,29 +22,23 @@
     @Html.HiddenFor(m => m.PaginaModo)
     @Html.HiddenFor(m => m.EntidadPropiedadId)
     @Html.HiddenFor(m => m.EntidadId)
-    @Html.HiddenFor(m => m.EntidadNombre)
     <div class="form-row">
-        <div class="form-group col-lg-5 col-md-6">
-            <div><strong>@Html.DisplayNameFor(m => m.EntidadNombre):</strong> @Model.EntidadNombre</div>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-lg-6 col-md-12">
+        <div class="form-group col-12">
             @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
             @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Propiedades.Nombre.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.Nombre)
         </div>
-        <div class="form-group col-lg-6 col-md-12">
+        <div class="form-group col-12">
             @Html.LabelFor(m => m.Etiqueta, new { @class = "requerido" })
             @Html.TextBoxFor(m => m.Etiqueta, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.Etiqueta)
         </div>
-        <div class="form-group col-lg-2 col-sm-4">
+        <div class="form-group col-6">
             @Html.LabelFor(m => m.PropiedadTipoId, new { @class = "requerido" })
             @Html.DropDownListFor(m => m.PropiedadTipoId, Model.TiposSelectList, "", new { @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.PropiedadTipoId)
         </div>
-        <div class="form-group col-lg-2 col-sm-4 col-6">
+        <div class="form-group col-6">
             @Html.LabelFor(m => m.Orden, new { @class = "requerido" })
             @Html.TextBoxFor(m => m.Orden, new { @class = "form-control inputmask-integer form-control-required", maxlength = 5 })
             @Html.ValidationMessageFor(m => m.Orden)
@@ -54,17 +48,17 @@
             @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control", maxlength = EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.CalculadaFormula)
         </div>
-        <div class="form-group col-lg-2 col-sm-4 col-6">
+        <div class="form-group col-6">
             @Html.LabelFor(m => m.PermiteNull, new { @class = "requerido" })
             @Html.DropDownListFor(m => m.PermiteNull, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.PermiteNull)
         </div>
-        <div class="form-group col-lg-2 col-sm-4 col-6">
+        <div class="form-group col-6">
             @Html.LabelFor(m => m.GeneradaAlCrear, new { @class = "requerido" })
             @Html.DropDownListFor(m => m.GeneradaAlCrear, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.GeneradaAlCrear)
         </div>
-        <div class="form-group col-lg-2 col-sm-4 col-6">
+        <div class="form-group col-6">
             @Html.LabelFor(m => m.Editable, new { @class = "requerido" })
             @Html.DropDownListFor(m => m.Editable, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.Editable)
@@ -80,13 +74,10 @@
         @Html.Partial("_PropiedadTipoEspecificacionesDecimal", Model)
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
-    <a href="@Url.Action("Index", new { Id = Model.EntidadId })" class="btn btn-secondary">Volver</a>
 </form>
 @section bodyScripts {
     <script type="text/javascript">
         $(function () {
-            namasdevApps.setActiveMenuOption('entidades');
-
             establecerVisibilidadEspecificacionesSegunTipo();
 
             $('#@Html.IdFor(m => m.PropiedadTipoId)')

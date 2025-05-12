@@ -1,22 +1,22 @@
 ﻿@using namasdev.Apps.Entidades.Metadata;
 @model namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades.EntidadPropiedadViewModel
 <div class="form-row">
-    <div class="form-group col-lg-2 col-md-3 col-6">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesDecimal.DigitosEnteros, new { @class = "requerido" })
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesDecimal.DigitosEnteros, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesDecimalMetadata.Propiedades.DigitosEnteros.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesDecimal.DigitosEnteros)
     </div>
-    <div class="form-group col-lg-2 col-md-3 col-6">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesDecimal.DigitosDecimales, new { @class = "requerido" })
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesDecimal.DigitosDecimales, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesDecimalMetadata.Propiedades.DigitosDecimales.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesDecimal.DigitosDecimales)
     </div>
-    <div class="form-group col-lg-2 col-md-3 col-6">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesDecimal.ValorMinimo)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesDecimal.ValorMinimo, new { @class = "form-control inputmask-numeric", maxlength = PropiedadTipoEspecificacionesDecimalMetadata.Propiedades.ValorMinimo.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesDecimal.ValorMinimo)
     </div>
-    <div class="form-group col-lg-2 col-md-3 col-6">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesDecimal.ValorMaximo)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesDecimal.ValorMaximo, new { @class = "form-control inputmask-numeric", maxlength = PropiedadTipoEspecificacionesDecimalMetadata.Propiedades.ValorMaximo.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesDecimal.ValorMaximo)

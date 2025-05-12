@@ -16,6 +16,17 @@
 
         public class Propiedades
         {
+            public class Id
+            {
+                public const string ETIQUETA = "ID";
+            }
+
+            public class Nombre
+            {
+                public const string ETIQUETA = "Nombre";
+                public const int TAMAÑO_MAX = 200;
+            }
+
             public class OrigenEntidadId
             {
                 public const string ETIQUETA = "Entidad (origen)";
@@ -29,6 +40,11 @@
             public class OrigenAsociacionMultiplicidadId
             {
                 public const string ETIQUETA = "Multiplicidad (origen)";
+            }
+
+            public class DestinoEntidadId
+            {
+                public const string ETIQUETA = "Entidad (destino)";
             }
 
             public class DestinoEntidadPropiedadId
@@ -69,6 +85,7 @@
 
             public const string ELIMINAR_OK = EntidadAsociacionMetadata.ETIQUETA + " eliminada correctamente.";
             public const string ELIMINAR_ERROR = "No se pudo eliminar la " + EntidadAsociacionMetadata.ETIQUETA;
+            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar la " + EntidadAsociacionMetadata.ETIQUETA + " seleccionada?";
         }
     }
 }

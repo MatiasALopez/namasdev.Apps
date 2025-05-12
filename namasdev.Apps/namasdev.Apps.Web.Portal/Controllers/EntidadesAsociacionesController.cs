@@ -1,15 +1,20 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 using AutoMapper;
 using namasdev.Core.Validation;
+using namasdev.Web.Models;
 
-using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
+using namasdev.Apps.Datos;
 using namasdev.Apps.Negocio;
-using namasdev.Apps.Web.Portal.Mappers;
+using namasdev.Apps.Negocio.DTO.EntidadesAsociaciones;
+using namasdev.Apps.Web.Portal.Metadata.Views;
+using namasdev.Apps.Web.Portal.Models.EntidadesAsociaciones;
 using namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones;
+using namasdev.Apps.Web.Portal.Helpers;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -25,9 +30,10 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public EntidadesAsociacionesController(
             IEntidadesAsociacionesRepositorio entidadesAsociacionesRepositorio, 
-            IEntidadesAsociacionesNegocio entidadesAsociacionesNegocio, 
+            IEntidadesAsociacionesNegocio entidadesAsociacionesNegocio,
             IEntidadesRepositorio entidadesRepositorio,
-            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio, IMapper mapper)
+            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
+            IMapper mapper)
             : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesAsociacionesRepositorio, nameof(entidadesAsociacionesRepositorio));
@@ -43,19 +49,17 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Acciones
 
-        public ActionResult Index(
-            Guid entidadId,
-            string busqueda = null,
+        public ActionResult Index(Guid id,
             string orden = null)
         {
-            var modelo = new EntidadesAsociacionesViewModel
+            var model = new EntidadesAsociacionesViewModel
             {
-                Id = entidadId,
+                Id = id,
                 Orden = orden,
             };
 
-            CargarEntidadesAsociacionesViewModel(modelo);
-            return View(modelo);
+            CargarEntidadesAsociacionesViewModel(model);
+            return View(model);
         }
 
         [HttpPost,
@@ -70,7 +74,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             try
             {
-                _entidadesAsociacionesNegocio.Eliminar(id, UsuarioId);
+                _entidadesAsociacionesRepositorio.EliminarPorId(id);
             }
             catch (Exception)
             {
@@ -80,25 +84,125 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return Json(new { success = true });
         }
 
+        public ActionResult Agregar(Guid entidadId, Guid aplicacionVersionId)
+        {
+            var model = new EntidadAsociacionViewModel 
+            { 
+                OrigenEntidadId = entidadId, 
+                AplicacionVersionId = aplicacionVersionId 
+            };
+            CargarEntidadAsociacionViewModel(model, PaginaModo.Agregar);
+
+            return View(EntidadesAsociacionesViews.EntidadAsociacion, model);
+        }
+
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Agregar(EntidadAsociacionViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _entidadesAsociacionesNegocio.Agregar(Mapear<AgregarParametros>(model));
+
+                    ControllerHelper.CargarMensajeResultadoOk(EntidadAsociacionMetadata.Mensajes.AGREGAR_OK);
+
+                    model = new EntidadAsociacionViewModel
+                    {
+                        OrigenEntidadId = model.OrigenEntidadId,
+                        AplicacionVersionId = model.AplicacionVersionId
+                    };
+                    ModelState.Clear();
+                }
+            }
+            catch (Exception ex)
+            {
+                ControllerHelper.CargarMensajesError(ex.Message);
+            }
+
+            CargarEntidadAsociacionViewModel(model, PaginaModo.Agregar);
+            return View(EntidadesAsociacionesViews.EntidadAsociacion, model);
+        }
+
+        public ActionResult Editar(Guid id, Guid aplicacionVersionId)
+        {
+            var entidadAsociacion = _entidadesAsociacionesRepositorio.Obtener(id);
+            if (entidadAsociacion == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var model = Mapear<EntidadAsociacionViewModel>(entidadAsociacion);
+            model.AplicacionVersionId = aplicacionVersionId;
+
+            CargarEntidadAsociacionViewModel(model, PaginaModo.Editar);
+
+            return View(EntidadesAsociacionesViews.EntidadAsociacion, model);
+        }
+
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Editar(EntidadAsociacionViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _entidadesAsociacionesNegocio.Actualizar(Mapear<ActualizarParametros>(model));
+
+                    ControllerHelper.CargarMensajeResultadoOk(EntidadAsociacionMetadata.Mensajes.EDITAR_OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                ControllerHelper.CargarMensajesError(ex.Message);
+            }
+
+            CargarEntidadAsociacionViewModel(model, PaginaModo.Editar);
+        
+            return View(EntidadesAsociacionesViews.EntidadAsociacion, model);
+        }
+
         #endregion Acciones
 
         #region Metodos
 
-        private void CargarEntidadesAsociacionesViewModel(EntidadesAsociacionesViewModel modelo)
+        private void CargarEntidadesAsociacionesViewModel(EntidadesAsociacionesViewModel model)
         {
-            Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
+            Validador.ValidarArgumentRequeridoYThrow(model, nameof(model));
 
-            var entidad = _entidadesRepositorio.Obtener(modelo.Id, cargarDatosAdicionales: true);
-            modelo.EntidadNombre = entidad.Nombre;
-            modelo.AplicacionVersionId = entidad.AplicacionVersionId;
+            var entidad = _entidadesRepositorio.Obtener(model.Id);
+            model.EntidadNombre = entidad.Nombre;
+            model.AplicacionVersionId = entidad.AplicacionVersionId;
 
-            //modelo.Items = EntidadesAsociacionesMapper.MapearEntidadesAModelos(
-            //    entidades: _entidadesAsociacionesRepositorio.ObtenerLista(
-            //        entidad.Id,
-            //        cargarDatosAdicionales: true),
-            //    claves: entidad.Claves);
+            model.Items = Mapear<List<EntidadAsociacionItemModel>>(
+                _entidadesAsociacionesRepositorio.ObtenerLista(model.Id, cargarDatosAdicionales: true));
 
-            modelo.OrdenarItems();
+            model.OrdenarItems();
+        }
+
+        private void CargarEntidadAsociacionViewModel(EntidadAsociacionViewModel model, PaginaModo paginaModo)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(model, nameof(model));
+
+            model.PaginaModo = paginaModo;
+
+            if (string.IsNullOrWhiteSpace(model.EntidadNombre))
+            {
+                model.EntidadNombre = _entidadesRepositorio.Obtener(model.OrigenEntidadId).Nombre;
+            }
+
+            model.OrigenPropiedadesSelectList = ListasHelper.ObtenerEntidadesPropiedadesSelectList(_entidadesPropiedadesRepositorio.ObtenerLista(model.OrigenEntidadId));
+
+            model.EntidadesSelectList = ListasHelper.ObtenerEntidadesSelectList(_entidadesRepositorio.ObtenerLista(model.AplicacionVersionId));
+            model.DestinoPropiedadesSelectList = 
+                model.DestinoEntidadId.HasValue
+                ? ListasHelper.ObtenerEntidadesPropiedadesSelectList(_entidadesPropiedadesRepositorio.ObtenerLista(model.DestinoEntidadId.Value))
+                : namasdev.Web.Helpers.ListasHelper.ObtenerSelectListVacio();
+
+            model.MultiplicidadesSelectList = ListasHelper.ObtenerAsociacionMultiplicidadesSelectList(_entidadesAsociacionesRepositorio.ObtenerMultiplicidades());
+            model.ReglasSelectList = ListasHelper.ObtenerAsociacionReglasSelectList(_entidadesAsociacionesRepositorio.ObtenerReglas());
         }
 
         #endregion Metodos

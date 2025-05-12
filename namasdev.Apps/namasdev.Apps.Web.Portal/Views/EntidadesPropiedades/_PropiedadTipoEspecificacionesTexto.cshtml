@@ -1,22 +1,22 @@
 ﻿@using namasdev.Apps.Entidades.Metadata;
 @model namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades.EntidadPropiedadViewModel
 <div class="form-row">
-    <div class="form-group col-lg-2 col-md-4 col-6">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMinimo)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMinimo, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesTextoMetadata.Propiedades.TamañoMinimo.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMinimo)
     </div>
-    <div class="form-group col-lg-2 col-md-4 col-6">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMaximo)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMaximo, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesTextoMetadata.Propiedades.TamañoMaximo.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoMaximo)
     </div>
-    <div class="form-group col-lg-2 col-md-4 col-6">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoExacto)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoExacto, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesTextoMetadata.Propiedades.TamañoExacto.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesTexto.TamañoExacto)
     </div>
-    <div class="form-group col-lg-6">
+    <div class="form-group col-12">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesTexto.RegEx)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesTexto.RegEx, new { @class = "form-control", maxlength = PropiedadTipoEspecificacionesTextoMetadata.Propiedades.RegEx.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesTexto.RegEx)

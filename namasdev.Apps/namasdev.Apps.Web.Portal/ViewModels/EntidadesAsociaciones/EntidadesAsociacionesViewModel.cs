@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 using namasdev.Web.ViewModels;
-using namasdev.Apps.Entidades.Metadata;
+
 using namasdev.Apps.Web.Portal.Models.EntidadesAsociaciones;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones
 {

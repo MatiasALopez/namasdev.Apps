@@ -8,14 +8,66 @@ namespace namasdev.Apps.Web.Portal.Helpers
 {
     public class ListasHelper
     {
+        public static SelectList ObtenerAsociacionMultiplicidadesSelectList(IEnumerable<AsociacionMultiplicidad> multiplicidades)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(multiplicidades, 
+                m => new SelectListItem
+                {
+                    Text = m.Nombre,
+                    Value = m.Id.ToString()
+                });
+        }
+
+        public static SelectList ObtenerAsociacionReglasSelectList(IEnumerable<AsociacionRegla> reglas)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(reglas,
+                r => new SelectListItem
+                {
+                    Text = r.Nombre,
+                    Value = r.Id.ToString()
+                });
+        }
+
+        public static SelectList ObtenerEntidadesSelectList(IEnumerable<Entidad> entidades)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeItems(ObtenerEntidadesSelectListItems(entidades));
+        }
+
+        public static IEnumerable<SelectListItem> ObtenerEntidadesSelectListItems(IEnumerable<Entidad> entidades)
+        {
+            return entidades
+                .Select(e => new SelectListItem 
+                {
+                    Text = e.Nombre,
+                    Value = e.Id.ToString()
+                })
+                .ToArray();
+        }
+
+        public static SelectList ObtenerEntidadesPropiedadesSelectList(IEnumerable<EntidadPropiedad> propiedades)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeItems(ObtenerEntidadesPropiedadesSelectListItems(propiedades));
+        }
+
+        public static IEnumerable<SelectListItem> ObtenerEntidadesPropiedadesSelectListItems(IEnumerable<EntidadPropiedad> propiedades)
+        {
+            return propiedades
+                .Select(p => new SelectListItem
+                {
+                    Text = p.Nombre,
+                    Value = p.Id.ToString()
+                })
+                .ToArray();
+        }
+
         public static SelectList ObtenerPropiedadTiposSelectList(IEnumerable<PropiedadTipo> tipos)
         {
             return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(
                 tipos,
-                av => new SelectListItem
+                pt => new SelectListItem
                 {
-                    Text = av.Nombre,
-                    Value = av.Id.ToString()
+                    Text = pt.Nombre,
+                    Value = pt.Id.ToString()
                 });
         }
 
@@ -23,10 +75,10 @@ namespace namasdev.Apps.Web.Portal.Helpers
         {
             return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(
                 versiones,
-                av => new SelectListItem
+                v => new SelectListItem
                 {
-                    Text = av.Nombre,
-                    Value = av.Id.ToString()
+                    Text = v.Nombre,
+                    Value = v.Id.ToString()
                 });
         }
 

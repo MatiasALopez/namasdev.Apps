@@ -1,0 +1,119 @@
+@using namasdev.Core.Types;
+@using namasdev.Web.Helpers;
+@using namasdev.Apps.Entidades;
+@using namasdev.Apps.Entidades.Metadata;
+@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Controllers;
+@model namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones.EntidadAsociacionViewModel
+@{
+    ViewBag.Title = $"{Model.PaginaModo} {EntidadAsociacionMetadata.NOMBRE}";
+    ViewBag.ExcluirHeaderYFooter = true;
+
+    var controlesIds = new
+    {
+        Form = $"frm{EntidadAsociacionMetadata.NOMBRE}",
+        BotonGenerarNombre = "btnGenerarNombre",
+        TablaAuxiliarContainer = "divTablaAuxiliar",
+    };
+}
+<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mx-2">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(excludePropertyErrors: true)
+    @Html.Partial("_Errores")
+    @Html.Partial("_ResultadoOk")
+    @Html.HiddenFor(m => m.PaginaModo)
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.EntidadNombre)
+    @Html.HiddenFor(m => m.OrigenEntidadId)
+    @Html.HiddenFor(m => m.AplicacionVersionId)
+    <div class="form-row">
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.OrigenEntidadPropiedadId, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.OrigenEntidadPropiedadId, Model.OrigenPropiedadesSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.OrigenEntidadPropiedadId)
+        </div>
+        <div class="form-group col-6">
+            @Html.LabelFor(m => m.OrigenAsociacionMultiplicidadId, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.OrigenAsociacionMultiplicidadId, Model.MultiplicidadesSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.OrigenAsociacionMultiplicidadId)
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.DestinoEntidadId, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.DestinoEntidadId, Model.EntidadesSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.DestinoEntidadId)
+        </div>
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.DestinoEntidadPropiedadId, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.DestinoEntidadPropiedadId, Model.DestinoPropiedadesSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.DestinoEntidadPropiedadId)
+        </div>
+        <div class="form-group col-6">
+            @Html.LabelFor(m => m.DestinoAsociacionMultiplicidadId, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.DestinoAsociacionMultiplicidadId, Model.MultiplicidadesSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.DestinoAsociacionMultiplicidadId)
+        </div>
+    </div>
+    <div id="@controlesIds.TablaAuxiliarContainer" class="form-row" style="display: none;">
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.TablaAuxiliarNombre, new { @class = "requerido" })
+            @Html.TextBoxFor(m => m.TablaAuxiliarNombre, new { @maxlength = "100", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.TablaAuxiliarNombre)
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.Nombre)
+            <button id="@controlesIds.BotonGenerarNombre" class="btn btn-xs btn-outline-info mt-1">Generar nombre</button>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-6">
+            @Html.LabelFor(m => m.DeleteAsociacionReglaId, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.DeleteAsociacionReglaId, Model.ReglasSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.DeleteAsociacionReglaId)
+        </div>
+        <div class="form-group col-6">
+            @Html.LabelFor(m => m.UpdateAsociacionReglaId, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.UpdateAsociacionReglaId, Model.ReglasSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.UpdateAsociacionReglaId)
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
+</form>
+@section bodyScripts {
+    <script type="text/javascript">
+    $(function () {
+        nmd.ui.controls.initComboCascadeAjax('@Html.IdFor(m => m.DestinoEntidadPropiedadId)', '@Html.IdFor(m => m.DestinoEntidadId)', '@Url.Action(nameof(ListasController.EntidadesPropiedades), ListasController.NAME)?entidadId={0}');
+        establecerVisibilidadTablaAuxiliar();
+
+        $('#@Html.IdFor(m => m.OrigenAsociacionMultiplicidadId),#@Html.IdFor(m => m.DestinoAsociacionMultiplicidadId)')
+            .on('change', function () {
+                establecerVisibilidadTablaAuxiliar();
+            });
+
+        $('#@controlesIds.BotonGenerarNombre')
+            .on('click', function (ev) {
+                ev.preventDefault();
+                generarNombre();
+                return false;
+            });
+
+        function establecerVisibilidadTablaAuxiliar() {
+            $('#@controlesIds.TablaAuxiliarContainer').hide();
+
+            if ($('#@Html.IdFor(m => m.OrigenAsociacionMultiplicidadId)').val() == '@AsociacionMultiplicidades.MUCHOS'
+                && $('#@Html.IdFor(m => m.DestinoAsociacionMultiplicidadId)').val() == '@AsociacionMultiplicidades.MUCHOS') {
+                $('#@controlesIds.TablaAuxiliarContainer').show();
+            }
+        }
+
+        function generarNombre() {
+            $('#@Html.IdFor(m => m.Nombre)').val(nmd.utils.stringFormat('FK_@(Model.EntidadNombre)_{0}', $('#@Html.IdFor(m => m.OrigenEntidadPropiedadId) option:selected').text()));
+        }
+    });
+    </script>
+}

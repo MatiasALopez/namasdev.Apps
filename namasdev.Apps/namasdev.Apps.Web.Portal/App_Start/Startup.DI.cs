@@ -75,6 +75,7 @@ namespace namasdev.Apps.Web.Portal
 
         private void RegisterControllers(ServiceCollection services)
         {
+            services.AddTransient<ListasController>();
             services.AddTransient<AccountController>();
             services.AddTransient<HomeController>();
             services.AddTransient<UsuariosController>();
@@ -82,6 +83,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddTransient<VersionesController>();
             services.AddTransient<EntidadesController>();
             services.AddTransient<EntidadesPropiedadesController>();
+            services.AddTransient<EntidadesAsociacionesController>();
             services.AddTransient<TemplatesController>();
         }
     }

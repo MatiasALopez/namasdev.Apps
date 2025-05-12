@@ -1,12 +1,12 @@
 ﻿@using namasdev.Apps.Entidades.Metadata;
 @model namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades.EntidadPropiedadViewModel
 <div class="form-row">
-    <div class="form-group col-lg-3 col-md-4">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesEntero.ValorMinimo)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesEntero.ValorMinimo, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesEnteroMetadata.Propiedades.ValorMinimo.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesEntero.ValorMinimo)
     </div>
-    <div class="form-group col-lg-3 col-md-4">
+    <div class="form-group col-6">
         @Html.LabelFor(m => m.PropiedadTipoEspecificacionesEntero.ValorMaximo)
         @Html.TextBoxFor(m => m.PropiedadTipoEspecificacionesEntero.ValorMaximo, new { @class = "form-control inputmask-integer", maxlength = PropiedadTipoEspecificacionesEnteroMetadata.Propiedades.ValorMaximo.TAMAÑO_MAX })
         @Html.ValidationMessageFor(m => m.PropiedadTipoEspecificacionesEntero.ValorMaximo)

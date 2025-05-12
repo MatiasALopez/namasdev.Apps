@@ -1,92 +1,80 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
-using Newtonsoft.Json;
+using AutoMapper;
 
-using namasdev.Core.Entity;
-using namasdev.Core.Transactions;
 using namasdev.Core.Validation;
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
+using namasdev.Apps.Negocio.DTO.EntidadesAsociaciones;
 
 namespace namasdev.Apps.Negocio
 {
     public interface IEntidadesAsociacionesNegocio
     {
-        EntidadAsociacion Agregar(
-            Guid entidadOrigenId, Guid entidadPropiedadId, short origenMultiplicidadId,
-            Guid destinoEntidadPropiedadId, short deleteAsociacionReglaId, short updateAsociacionReglaId,
-            string usuarioId,
-            string tablaAuxiliarNombre = null);
-
-        void Actualizar(EntidadAsociacion asociacion, string usuarioId);
-
-        void Eliminar(Guid asociacionId, string usuarioId);
+        EntidadAsociacion Agregar(AgregarParametros parametros);
+        void Actualizar(ActualizarParametros parametros);
     }
 
-    public class EntidadesAsociacionesNegocio : IEntidadesAsociacionesNegocio
+    public class EntidadesAsociacionesNegocio : NegocioBase<IEntidadesAsociacionesRepositorio>, IEntidadesAsociacionesNegocio
     {
-        private IEntidadesAsociacionesRepositorio _entidadesAsociacionesRepositorio;
-
-        public EntidadesAsociacionesNegocio(
-            IEntidadesAsociacionesRepositorio entidadesAsociacionesRepositorio)
+        public EntidadesAsociacionesNegocio(IEntidadesAsociacionesRepositorio repositorio, IErroresNegocio erroresNegocio, IMapper mapper)
+            : base(repositorio, erroresNegocio, mapper)
         {
-            Validador.ValidarArgumentRequeridoYThrow(entidadesAsociacionesRepositorio, nameof(entidadesAsociacionesRepositorio));
-
-            _entidadesAsociacionesRepositorio = entidadesAsociacionesRepositorio;
         }
 
-        public EntidadAsociacion Agregar(
-            Guid entidadOrigenId, Guid entidadPropiedadId, short origenMultiplicidadId, 
-            Guid destinoEntidadPropiedadId, short deleteAsociacionReglaId, short updateAsociacionReglaId,
-            string usuarioId,
-            string tablaAuxiliarNombre = null)
+        public EntidadAsociacion Agregar(AgregarParametros parametros)
         {
-            DateTime fechaHora = DateTime.Now;
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
 
-            var asociacion = new EntidadAsociacion
+            var entidad = Mapper.Map<EntidadAsociacion>(parametros);
+            entidad.Id = Guid.NewGuid();
+
+            ValidarDatos(entidad);
+
+            Repositorio.Agregar(entidad);
+
+            return entidad;
+        }
+
+        public void Actualizar(ActualizarParametros parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+
+            var entidad = Obtener(parametros.Id);
+            Mapper.Map(parametros, entidad);
+
+            ValidarDatos(entidad);
+
+            Repositorio.Actualizar(entidad);
+        }
+
+        private EntidadAsociacion Obtener(Guid id,
+            bool validarExistencia = true)
+        {
+            var entidad = Repositorio.Obtener(id);
+            if (validarExistencia
+                && entidad == null)
             {
-                Id = Guid.NewGuid(),
-                OrigenEntidadId = entidadOrigenId,
-                OrigenEntidadPropiedadId = entidadPropiedadId,
-                OrigenAsociacionMultiplicidadId = origenMultiplicidadId,
-                DestinoEntidadPropiedadId = destinoEntidadPropiedadId,
-                TablaAuxiliarNombre = tablaAuxiliarNombre,
-                DeleteAsociacionReglaId = deleteAsociacionReglaId,
-                UpdateAsociacionReglaId = updateAsociacionReglaId,
-            };
-            ValidarDatos(asociacion);
+                throw new Exception(Validador.MensajeEntidadInexistente(EntidadAsociacionMetadata.ETIQUETA, id));
+            }
 
-            _entidadesAsociacionesRepositorio.Agregar(asociacion);
-
-            return asociacion;
-        }
-
-        public void Actualizar(EntidadAsociacion asociacion, string usuarioId)
-        {
-            Validador.ValidarArgumentRequeridoYThrow(asociacion, nameof(asociacion));
-
-            DateTime fechaHora = DateTime.Now;
-
-            //asociacion.EstablecerDatosModificacion(usuarioId, fechaHora);
-            ValidarDatos(asociacion);
-
-            _entidadesAsociacionesRepositorio.Actualizar(asociacion);
-        }
-
-        public void Eliminar(Guid asociacionId, string usuarioId)
-        {
-            _entidadesAsociacionesRepositorio.Eliminar(new EntidadAsociacion { Id = asociacionId });
+            return entidad;
         }
 
         private void ValidarDatos(EntidadAsociacion entidad)
         {
             var errores = new List<string>();
 
-            // TODO (ML) completar
+            Validador.ValidarNumeroYAgregarAListaErrores(entidad.OrigenAsociacionMultiplicidadId, EntidadAsociacionMetadata.Propiedades.OrigenAsociacionMultiplicidadId.ETIQUETA, requerido: true, errores);
+            Validador.ValidarNumeroYAgregarAListaErrores(entidad.DestinoAsociacionMultiplicidadId, EntidadAsociacionMetadata.Propiedades.DestinoAsociacionMultiplicidadId.ETIQUETA, requerido: true, errores);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.TablaAuxiliarNombre, EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.ETIQUETA, requerido: false, errores, tamañoExacto: 100);
+            Validador.ValidarNumeroYAgregarAListaErrores(entidad.DeleteAsociacionReglaId, EntidadAsociacionMetadata.Propiedades.DeleteAsociacionReglaId.ETIQUETA, requerido: true, errores);
+            Validador.ValidarNumeroYAgregarAListaErrores(entidad.UpdateAsociacionReglaId, EntidadAsociacionMetadata.Propiedades.UpdateAsociacionReglaId.ETIQUETA, requerido: true, errores);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }
     }
 }
+

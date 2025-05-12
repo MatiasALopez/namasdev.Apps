@@ -145,7 +145,6 @@ namespace namasdev.Apps.Web.Portal.Mappers
             {
                 EntidadPropiedadId = entidad.Id,
                 EntidadId = entidad.EntidadId,
-                EntidadNombre = entidad.Entidad.Nombre,
                 Nombre = entidad.Nombre,
                 Etiqueta = entidad.Etiqueta,
                 PropiedadTipoId = entidad.PropiedadTipoId,

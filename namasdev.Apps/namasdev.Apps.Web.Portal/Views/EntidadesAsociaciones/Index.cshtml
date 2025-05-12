@@ -1,9 +1,9 @@
-ï»¿@using namasdev.Core.Types;
+@using namasdev.Core.Types;
+@using namasdev.Web.Helpers;
 @using namasdev.Apps.Entidades;
 @using namasdev.Apps.Entidades.Metadata;
-@using namasdev.Web.Helpers;
-@using namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones;
-@model EntidadesAsociacionesViewModel
+@using namasdev.Apps.Web.Portal.Controllers;
+@model namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones.EntidadesAsociacionesViewModel
 @{
     Layout = "~/Views/Shared/_EntidadesLayout.cshtml";
     ViewBag.Title = EntidadAsociacionMetadata.ETIQUETA_PLURAL;
@@ -12,11 +12,15 @@
     {
         Form = $"frm{EntidadAsociacionMetadata.NOMBRE_PLURAL}",
         TablaContainer = $"div{EntidadAsociacionMetadata.NOMBRE_PLURAL}Container",
-        Tabla = $"tbl{EntidadAsociacionMetadata.NOMBRE_PLURAL}"
+        Tabla = $"tbl{EntidadAsociacionMetadata.NOMBRE_PLURAL}",
     };
     var clasesCss = new
     {
         BotonEliminar = "btn-eliminar"
+    };
+    var controlesTamaños = new 
+    {
+        ModalEntidadAlto = "600px"
     };
 }
 @Html.Partial("_ResultadoOk")
@@ -26,62 +30,56 @@
 </div>
 <div class="row mt-3">
     <div class="col-md-3">
-        <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { Model.EntidadId })" class="btn btn-primary">Agregar</a>
+        <a href="@Url.Action(nameof(EntidadesAsociacionesController.Agregar), new { entidadId = Model.Id, aplicacionVersionId = Model.AplicacionVersionId })" class="btn btn-primary"
+           data-iframe data-iframe-title="Agregar asociación" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="modalAsociacion_onHidden">Agregar</a>
     </div>
 </div>
 <div class="row mt-3">
     <div class="col-md-12">
         @if (Model.TieneItems)
         {
-            <form id="@controlesIds.Form" action="@Url.Action()" method="post">
-                @Html.AntiForgeryToken()
-                <div id="@controlesIds.TablaContainer" class="table-responsive">
-                    <table id="@controlesIds.Tabla" class="table table-striped table-bordered">
-                        <thead>
+            <div id="@controlesIds.TablaContainer" class="table-responsive">
+                <form id="@controlesIds.Form">
+                    @Html.AntiForgeryToken()
+                </form>
+                <table id="@controlesIds.Tabla" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Items[0].Nombre)</th>
+                            <th>@Html.DisplayNameFor(m => m.Items[0].UpdateReglaNombre)</th>
+                            <th>@Html.DisplayNameFor(m => m.Items[0].DeleteReglaNombre)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
                             <tr>
-                                <th>@Html.DisplayNameFor(m => m.Items[0].OrigenPropiedadNombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Items[0].OrigenMultiplicidadNombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Items[0].DestinoPropiedadNombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Items[0].DestinoMultiplicidadNombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Items[0].DeleteReglaNombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Items[0].UpdateReglaNombre)</th>
+                                <td>@Html.Raw(item.Nombre)</td>
+                                <td>@Html.Raw(item.UpdateReglaNombre)</td>
+                                <td>@Html.Raw(item.DeleteReglaNombre)</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action(nameof(EntidadesAsociacionesController.Editar), new { id = item.Id, aplicacionVersionId = Model.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"
+                                       data-iframe data-iframe-title="Editar asociación" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="modalAsociacion_onHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.Id)"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model.Items)
-                            {
-                                <tr>
-                                    <td>@item.OrigenPropiedadNombre</td>
-                                    <td>@item.OrigenMultiplicidadNombre</td>
-                                    <td>@item.DestinoPropiedadNombre</td>
-                                    <td>@item.DestinoMultiplicidadNombre</td>
-                                    <td>@item.DeleteReglaNombre</td>
-                                    <td>@item.UpdateReglaNombre</td>
-                                    <td class="text-center">
-                                        <a href="@Url.Action("Editar", new { id = item.EntidadAsociacionId, item.EntidadId })" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                        <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.EntidadAsociacionId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
         else
         {
-            <div class="alert alert-warning">No hay propiedades para mostrar.</div>
+            <div class="alert alert-warning">No hay @EntidadAsociacionMetadata.ETIQUETA_PLURAL para mostrar.</div>
         }
     </div>
-</div>
-<div class="mt-2">
-    <a href="@Url.Action("Index", "Entidades", new { Model.AplicacionVersionId })" class="btn btn-secondary">Volver</a>
 </div>
 @section bodyScripts {
     <script type="text/javascript">
         $(function () {
-            namasdevApps.setActiveMenuOption('entidades');
-            $('#tabPropiedades').addClass('active');
+            namasdevApps.setActiveMenuOption('entidadesAsociaciones');
+            $('#tabAsociaciones').addClass('active');
 
             $('#@controlesIds.Tabla')
                 .on('click', '.@clasesCss.BotonEliminar', function (ev) {
@@ -95,16 +93,16 @@
                     var options = {
                         showLoadingSelector: '#@controlesIds.TablaContainer',
                         confirm: true,
-                        confirmTitle: 'Eliminar propiedad',
-                        confirmMessage: 'Â¿EstÃ¡s seguro que deseas eliminar la propiedad seleccionada?'
+                        confirmTitle: 'Eliminar @EntidadAsociacionMetadata.ETIQUETA',
+                        confirmMessage: '@EntidadAsociacionMetadata.Mensajes.ELIMINAR_CONFIRMACION'
                     };
                     namasdevApps.postJson(
-                        '@Url.Action("Eliminar")/' + id,
+                        '@Url.Action(nameof(EntidadesAsociacionesController.Eliminar))/' + id,
                         nmd.ui.forms.createDataWithAntiForgeryToken('#@controlesIds.Form'),
                         function (response) {
                             if (response.success) {
                                 nmd.ui.controls.showSuccessModal(
-                                    'La propiedad fue eliminada correctamente.',
+                                    '@EntidadAsociacionMetadata.Mensajes.ELIMINAR_OK',
                                     function () {
                                         nmd.page.reloadPage();
                                     });
@@ -119,5 +117,9 @@
                     return false;
                 });
         });
+
+        function modalAsociacion_onHidden() {
+            nmd.page.reloadPage();
+        }
     </script>
 }

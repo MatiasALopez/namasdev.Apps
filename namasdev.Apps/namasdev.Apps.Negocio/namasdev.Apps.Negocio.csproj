@@ -84,8 +84,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Automapper\EntidadesAsociacionesProfile.cs" />
     <Compile Include="Automapper\EntidadesProfile.cs" />
     <Compile Include="Automapper\UsuariosProfile.cs" />
+    <Compile Include="DTO\EntidadesAsociaciones\ActualizarParametros.cs" />
+    <Compile Include="DTO\EntidadesAsociaciones\AgregarParametros.cs" />
     <Compile Include="DTO\Entidades\DesmarcarComoBorradoParametros.cs" />
     <Compile Include="DTO\Entidades\MarcarComoBorradoParametros.cs" />
     <Compile Include="DTO\Entidades\ActualizarParametros.cs" />

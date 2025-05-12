@@ -7,7 +7,7 @@ create table dbo.@Html.Raw(nombreTabla)
 (
 @foreach (var p in Model.Propiedades)
 {
-    <text>@Html.Raw(p.Nombre) @Html.Raw(!string.IsNullOrWhiteSpace(p.CalculadaFormula) ? string.Format("AS {0}", p.CalculadaFormula) : string.Format("{0} {1}", p.Tipo.TSQLTypeConEspecificaciones(p), (p.PermiteNull ? "null" : " not null"))),</text>
+    <text>@Html.Raw(p.Nombre) @Html.Raw(!string.IsNullOrWhiteSpace(p.CalculadaFormula) ? string.Format("AS {0}", p.CalculadaFormula) : string.Format("{0} {1}", p.Tipo.TSQLTypeConEspecificaciones(p), (p.PermiteNull ? "null" : "not null"))),</text>
 }
 
 @if (Model.Claves != null && Model.Claves.Any())

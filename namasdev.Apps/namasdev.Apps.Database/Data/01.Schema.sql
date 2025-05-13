@@ -109,7 +109,7 @@ create table [dbo].[CorreosParametros]
 go
 --====
 
---=====
+--===
 CREATE TABLE [dbo].[Errores]
 (
 	[Id] uniqueidentifier NOT NULL,
@@ -123,9 +123,9 @@ CREATE TABLE [dbo].[Errores]
 	CONSTRAINT [PK_Errores] PRIMARY KEY CLUSTERED ([Id] ASC)
 )
 GO
---=====
+--===
 
---=====
+--===
 CREATE TABLE [dbo].[AuditoriaTipos] 
 (
     [AuditoriaTipoId] SMALLINT      NOT NULL,
@@ -137,9 +137,9 @@ GO
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_AuditoriaTipos_Nombre] ON [dbo].[AuditoriaTipos]([Nombre] ASC)
 go
---=====
+--===
 
---=====
+--===
 CREATE TABLE [dbo].[Auditorias] 
 (
     [Id]              UNIQUEIDENTIFIER NOT NULL,
@@ -153,9 +153,9 @@ CREATE TABLE [dbo].[Auditorias]
     CONSTRAINT [FK_Auditorias_AuditoriaTipoId] FOREIGN KEY ([AuditoriaTipoId]) REFERENCES [dbo].[AuditoriaTipos] ([AuditoriaTipoId])
 )
 go
---=====
+--===
 
---=====
+--===
 create table [dbo].[Usuarios]
 (
 	[UsuarioId] nvarchar(128) NOT NULL,
@@ -176,9 +176,9 @@ create table [dbo].[Usuarios]
 	constraint [FK_Usuarios_UsuarioId] foreign key ([UsuarioId]) references [dbo].[AspNetUsers] ([Id]) on delete cascade
 )
 go
---=====
+--===
 
---=====
+--===
 create table dbo.PropiedadTipos
 (
 	PropiedadTipoId smallint not null,
@@ -189,9 +189,9 @@ create table dbo.PropiedadTipos
 	constraint PK_PropiedadTipos primary key clustered (PropiedadTipoId)
 )
 go
---=====
+--===
 
---=====
+--===
 create table dbo.Aplicaciones
 (
 	AplicacionId uniqueidentifier not null,
@@ -207,9 +207,9 @@ create table dbo.Aplicaciones
 	constraint PK_Aplicaciones primary key clustered (AplicacionId)
 )
 go
---=====
+--===
 
---=====
+--===
 create table dbo.AplicacionesVersiones
 (
 	AplicacionVersionId uniqueidentifier not null,
@@ -230,9 +230,9 @@ go
 
 create nonclustered index IX_AplicacionesVersiones_AplicacionId on dbo.AplicacionesVersiones (AplicacionId)
 go
---=====
+--===
 
---=====
+--===
 create table dbo.Entidades
 (
 	EntidadId uniqueidentifier not null,
@@ -259,9 +259,9 @@ go
 
 create nonclustered index IX_Entidades_AplicacionVersionId on dbo.Entidades (AplicacionVersionId)
 go
---=====
+--===
 
---=====
+--===
 create table dbo.EntidadesPropiedadesDefault
 (
 	EntidadId uniqueidentifier not null,
@@ -275,9 +275,9 @@ create table dbo.EntidadesPropiedadesDefault
 	constraint FK_EntidadesPropiedadesDefault_IDPropiedadTipoId foreign key (IDPropiedadTipoId) references dbo.PropiedadTipos (PropiedadTipoId)
 )
 go
---=====
+--===
 
---=====
+--===
 create table dbo.EntidadesPropiedades
 (
 	EntidadPropiedadId uniqueidentifier not null,
@@ -310,9 +310,9 @@ go
 
 create unique nonclustered index IX_EntidadesPropiedades_EntidadIdYNombre on dbo.EntidadesPropiedades (EntidadId,Nombre)
 go
---=====
+--===
 
---=====
+--===
 create table dbo.AsociacionMultiplicidades
 (
 	AsociacionMultiplicidadId smallint not null,
@@ -324,9 +324,9 @@ go
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_AsociacionMultiplicidades_Nombre] ON [dbo].AsociacionMultiplicidades([Nombre] ASC)
 go
---=====
+--===
 
---=====
+--===
 create table dbo.AsociacionReglas
 (
 	AsociacionReglaId smallint not null,
@@ -338,9 +338,9 @@ go
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_AsociacionReglas_Nombre] ON [dbo].AsociacionReglas([Nombre] ASC)
 go
---=====
+--===
 
---=====
+--===
 create table dbo.EntidadesClaves
 (
 	EntidadClaveId uniqueidentifier not null,
@@ -355,15 +355,17 @@ go
 
 create nonclustered index IX_EntidadesClaves_EntidadId on dbo.EntidadesClaves (EntidadId)
 go
---=====
+--===
 
---=====
+--===
 create table dbo.EntidadesAsociaciones
 (
 	EntidadAsociacionId uniqueidentifier not null,
+	Nombre nvarchar(200) not null,
 	OrigenEntidadId uniqueidentifier not null,
 	OrigenEntidadPropiedadId uniqueidentifier not null,
 	OrigenAsociacionMultiplicidadId smallint not null,
+	DestinoEntidadId uniqueidentifier not null,
 	DestinoEntidadPropiedadId uniqueidentifier not null,
 	DestinoAsociacionMultiplicidadId smallint not null,
 	TablaAuxiliarNombre nvarchar(100) null,
@@ -374,6 +376,7 @@ create table dbo.EntidadesAsociaciones
 	constraint FK_EntidadesAsociaciones_OrigenEntidadId foreign key (OrigenEntidadId) references dbo.Entidades (EntidadId),
 	constraint FK_EntidadesAsociaciones_OrigenEntidadPropiedadId foreign key (OrigenEntidadPropiedadId) references dbo.EntidadesPropiedades (EntidadPropiedadId),
 	constraint FK_EntidadesAsociaciones_OrigenAsociacionMultiplicidadId foreign key (OrigenAsociacionMultiplicidadId) references dbo.AsociacionMultiplicidades (AsociacionMultiplicidadId),
+	constraint FK_EntidadesAsociaciones_DestinoEntidadId foreign key (DestinoEntidadId) references dbo.Entidades (EntidadId),
 	constraint FK_EntidadesAsociaciones_DestinoEntidadPropiedadId foreign key (DestinoEntidadPropiedadId) references dbo.EntidadesPropiedades (EntidadPropiedadId),
 	constraint FK_EntidadesAsociaciones_DestinoAsociacionMultiplicidadId foreign key (DestinoAsociacionMultiplicidadId) references dbo.AsociacionMultiplicidades (AsociacionMultiplicidadId),
 	constraint FK_EntidadesAsociaciones_DeleteAsociacionReglaId foreign key (DeleteAsociacionReglaId) references dbo.AsociacionReglas (AsociacionReglaId),
@@ -384,9 +387,9 @@ go
 
 create nonclustered index IX_EntidadesAsociaciones_OrigenEntidadId on dbo.EntidadesAsociaciones (OrigenEntidadId)
 go
---=====
+--===
 
---=====
+--===
 create table dbo.EntidadesIndices
 (
 	EntidadIndiceId uniqueidentifier not null,
@@ -404,9 +407,9 @@ go
 
 create unique nonclustered index IX_EntidadesIndices_EntidadIdYNombre on dbo.EntidadesIndices (EntidadId,Nombre)
 go
---=====
+--===
 
---=====
+--===
 create table dbo.EntidadesIndicesPropiedades
 (
 	EntidadIndicePropiedadId uniqueidentifier not null,
@@ -424,9 +427,9 @@ go
 
 create unique nonclustered index IX_EntidadesIndicesPropiedades_EntidadIndiceIdYEntidadPropiedadId on dbo.EntidadesIndicesPropiedades (EntidadIndiceId,EntidadPropiedadId)
 go
---=====
+--===
 
---=====
+--===
 go
 CREATE PROCEDURE [dbo].[uspClonarAplicacionVersion]
 	@AplicacionVersionIdOrigen uniqueidentifier,
@@ -454,4 +457,4 @@ BEGIN
 	return 0
 END
 go
---=====
+--===

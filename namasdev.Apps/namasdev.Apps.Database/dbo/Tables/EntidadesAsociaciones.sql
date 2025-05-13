@@ -1,6 +1,7 @@
 ﻿create table dbo.EntidadesAsociaciones
 (
 	EntidadAsociacionId uniqueidentifier not null,
+	Nombre nvarchar(200) not null,
 	OrigenEntidadId uniqueidentifier not null,
 	OrigenEntidadPropiedadId uniqueidentifier not null,
 	OrigenAsociacionMultiplicidadId smallint not null,

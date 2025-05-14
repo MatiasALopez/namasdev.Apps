@@ -29,6 +29,8 @@ namespace namasdev.Apps.Datos.Sql
         public DbSet<AsociacionMultiplicidad> AsociacionMultiplicidades { get; set; }
         public DbSet<AsociacionRegla> AsociacionReglas { get; set; }
         public DbSet<EntidadAsociacion> EntidadesAsociaciones { get; set; }
+        public DbSet<EntidadIndice> EntidadesIndices { get; set; }
+        public DbSet<EntidadIndicePropiedad> EntidadesIndicesPropiedades { get; set; }
 
         public void uspClonarAplicacionVersion(Guid aplicacionVersionIdOrigen, Guid aplicacionVersionIdDestino, string usuarioId, DateTime fechaHora)
         {

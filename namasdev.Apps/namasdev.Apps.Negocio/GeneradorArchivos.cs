@@ -66,7 +66,7 @@ namespace namasdev.Apps.Negocio
 
             GenerarArchivosDeEntidad(parametros.Entidad, parametros, grupoId);
 
-            return GenerarYGuardarZip(parametros.Entidad.AplicacionVersion.Aplicacion.Nombre, grupoId);
+            return GenerarYGuardarZip($"{parametros.Entidad.AplicacionVersion.Aplicacion.Nombre}-{parametros.Entidad.NombrePlural}", grupoId);
         }
 
         private void GenerarArchivosDeEntidad(Entidad entidad, GenerarArchivosParametrosBase parametros, Guid grupoId)
@@ -170,9 +170,9 @@ namespace namasdev.Apps.Negocio
             }
         }
 
-        private string GenerarYGuardarZip(string aplicacionNombre, Guid grupoId)
+        private string GenerarYGuardarZip(string archivoNombre, Guid grupoId)
         {
-            var zipPath = Path.Combine(GenerarPathDirectorioBase(grupoId), $"{aplicacionNombre}{ArchivoExtensiones.Application.ZIP}");
+            var zipPath = Path.Combine(GenerarPathDirectorioBase(grupoId), $"{archivoNombre}{ArchivoExtensiones.Application.ZIP}");
             ZipFile.CreateFromDirectory(
                 GenerarPathDirectorioArchivos(grupoId),
                 zipPath);

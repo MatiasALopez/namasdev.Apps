@@ -12,7 +12,7 @@ namespace namasdev.Apps.Datos
 {
     public interface IEntidadesAsociacionesRepositorio : IRepositorio<EntidadAsociacion, Guid>
     {
-        IEnumerable<EntidadAsociacion> ObtenerLista(Guid entidadId, bool cargarDatosAdicionales = false);
+        IEnumerable<EntidadAsociacion> ObtenerPorEntidad(Guid entidadId, bool cargarDatosAdicionales = false);
         EntidadAsociacion Obtener(Guid id, bool cargarDatosAdicionales = false);
         IEnumerable<AsociacionMultiplicidad> ObtenerMultiplicidades();
         IEnumerable<AsociacionRegla> ObtenerReglas();
@@ -20,7 +20,7 @@ namespace namasdev.Apps.Datos
 
     public class EntidadesAsociacionesRepositorio : Repositorio<SqlContext, EntidadAsociacion, Guid>, IEntidadesAsociacionesRepositorio
     {
-        public IEnumerable<EntidadAsociacion> ObtenerLista(
+        public IEnumerable<EntidadAsociacion> ObtenerPorEntidad(
             Guid entidadId,
             bool cargarDatosAdicionales = false)
         {

@@ -23,7 +23,7 @@
     @Html.Partial("_ResultadoOk")
     @Html.HiddenFor(m => m.PaginaModo)
     @Html.HiddenFor(m => m.Id)
-    @Html.HiddenFor(m => m.EntidadNombre)
+    @Html.HiddenFor(m => m.OrigenEntidadTablaNombre)
     @Html.HiddenFor(m => m.OrigenEntidadId)
     @Html.HiddenFor(m => m.AplicacionVersionId)
     <div class="form-row">
@@ -112,7 +112,7 @@
         }
 
         function generarNombre() {
-            $('#@Html.IdFor(m => m.Nombre)').val(nmd.utils.stringFormat('FK_@(Model.EntidadNombre)_{0}', $('#@Html.IdFor(m => m.OrigenEntidadPropiedadId) option:selected').text()));
+            $('#@Html.IdFor(m => m.Nombre)').val(nmd.utils.stringFormat('FK_@(Model.OrigenEntidadTablaNombre)_{0}', $('#@Html.IdFor(m => m.OrigenEntidadPropiedadId) option:selected').text()));
         }
     });
     </script>

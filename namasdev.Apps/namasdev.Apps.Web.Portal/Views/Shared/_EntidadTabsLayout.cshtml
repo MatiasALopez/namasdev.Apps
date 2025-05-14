@@ -1,0 +1,35 @@
+﻿@using namasdev.Apps.Entidades.Metadata;
+@using namasdev.Apps.Web.Portal.Controllers;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var controlesIds = new
+    {
+        TabsEntidad = $"tabs{EntidadMetadata.NOMBRE}",
+        TabEntidad = $"tab{EntidadMetadata.NOMBRE}",
+        TabPropiedades = $"tab{EntidadPropiedadMetadata.NOMBRE_PLURAL}",
+        TabAsociaciones = $"tab{EntidadAsociacionMetadata.NOMBRE_PLURAL}",
+        TabIndices = $"tab{EntidadIndiceMetadata.NOMBRE_PLURAL}",
+    };
+}
+@section headStyles {
+    @RenderSection("headStyles", required: false)
+}
+@section headScripts {
+    @RenderSection("headScripts", required: false)
+}
+<ul id="@controlesIds.TabsEntidad" class="nav nav-tabs mb-2">
+    <li class="nav-item"><a id="@controlesIds.TabEntidad" class="nav-link" href="@Url.Action(nameof(EntidadesController.Editar), EntidadesController.NAME, new { Model.Id })">@EntidadMetadata.ETIQUETA</a></li>
+    <li class="nav-item"><a id="@controlesIds.TabPropiedades" class="nav-link" href="@Url.Action(nameof(EntidadesPropiedadesController.Index), EntidadesPropiedadesController.NAME, new { Model.Id })">@EntidadPropiedadMetadata.ETIQUETA_PLURAL</a></li>
+    <li class="nav-item"><a id="@controlesIds.TabAsociaciones" class="nav-link" href="@Url.Action(nameof(EntidadesAsociacionesController.Index), EntidadesAsociacionesController.NAME, new { Model.Id })">@EntidadAsociacionMetadata.ETIQUETA_PLURAL</a></li>
+    <li class="nav-item"><a id="@controlesIds.TabIndices" class="nav-link" href="@Url.Action(nameof(EntidadesIndicesController.Index), EntidadesIndicesController.NAME, new { Model.Id })">@EntidadIndiceMetadata.ETIQUETA_PLURAL</a></li>
+</ul>
+@RenderBody()
+<div class="mt-2">
+    <a href="@Url.Action(nameof(EntidadesController.Index), EntidadesController.NAME, new { Model.AplicacionVersionId })" class="btn btn-secondary">Volver</a>
+</div>
+@section bodyScripts {
+    @RenderSection("bodyScripts", required: false)
+}
+@section modals {
+    @RenderSection("modals", required: false)
+}

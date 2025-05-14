@@ -13,13 +13,13 @@ namespace namasdev.Apps.Datos
 {
     public interface IEntidadesRepositorio : IRepositorio<Entidad, Guid>
     {
-        IEnumerable<Entidad> ObtenerLista(Guid aplicacionVersionId, bool cargarDatosAdicionales = false, string busqueda = null, OrdenYPaginacionParametros op = null);
+        IEnumerable<Entidad> ObtenerPorVersion(Guid aplicacionVersionId, bool cargarDatosAdicionales = false, string busqueda = null, OrdenYPaginacionParametros op = null);
         Entidad Obtener(Guid entidadId, bool cargarDatosAdicionales = false);
     }
 
     public class EntidadesRepositorio : Repositorio<SqlContext, Entidad, Guid>, IEntidadesRepositorio
     {
-        public IEnumerable<Entidad> ObtenerLista(
+        public IEnumerable<Entidad> ObtenerPorVersion(
             Guid aplicacionVersionId,
             bool cargarDatosAdicionales = false,
             string busqueda = null,

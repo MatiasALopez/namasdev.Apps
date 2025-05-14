@@ -1,15 +1,13 @@
-@using namasdev.Core.Types;
-@using namasdev.Web.Helpers;
-@using namasdev.Apps.Entidades;
 @using namasdev.Apps.Entidades.Metadata;
 @using namasdev.Apps.Web.Portal.Controllers;
 @model namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones.EntidadesAsociacionesViewModel
 @{
-    Layout = "~/Views/Shared/_EntidadesLayout.cshtml";
+    Layout = "~/Views/Shared/_EntidadTabsLayout.cshtml";
     ViewBag.Title = EntidadAsociacionMetadata.ETIQUETA_PLURAL;
 
     var controlesIds = new
     {
+        TabAsociaciones = $"tab{EntidadAsociacionMetadata.NOMBRE_PLURAL}",
         Form = $"frm{EntidadAsociacionMetadata.NOMBRE_PLURAL}",
         TablaContainer = $"div{EntidadAsociacionMetadata.NOMBRE_PLURAL}Container",
         Tabla = $"tbl{EntidadAsociacionMetadata.NOMBRE_PLURAL}",
@@ -18,9 +16,13 @@
     {
         BotonEliminar = "btn-eliminar"
     };
-    var controlesTamaños = new 
+    var controlesTamaños = new
     {
         ModalEntidadAlto = "600px"
+    };
+    var funcionesJS = new
+    {
+        ModalAsociacion_OnHidden = "modalAsociacion_onHidden"
     };
 }
 @Html.Partial("_ResultadoOk")
@@ -31,7 +33,7 @@
 <div class="row mt-3">
     <div class="col-md-3">
         <a href="@Url.Action(nameof(EntidadesAsociacionesController.Agregar), new { entidadId = Model.Id, aplicacionVersionId = Model.AplicacionVersionId })" class="btn btn-primary"
-           data-iframe data-iframe-title="Agregar asociación" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="modalAsociacion_onHidden">Agregar</a>
+           data-iframe data-iframe-title="Agregar @EntidadAsociacionMetadata.ETIQUETA" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalAsociacion_OnHidden">Agregar</a>
     </div>
 </div>
 <div class="row mt-3">
@@ -60,8 +62,8 @@
                                 <td>@Html.Raw(item.DeleteReglaNombre)</td>
                                 <td class="text-center">
                                     <a href="@Url.Action(nameof(EntidadesAsociacionesController.Editar), new { id = item.Id, aplicacionVersionId = Model.AplicacionVersionId })" class="btn btn-sm btn-outline-secondary"
-                                       data-iframe data-iframe-title="Editar asociación" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="modalAsociacion_onHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.Id)"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                       data-iframe data-iframe-title="Editar @EntidadAsociacionMetadata.ETIQUETA" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalAsociacion_OnHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.Id"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         }
@@ -79,7 +81,7 @@
     <script type="text/javascript">
         $(function () {
             namasdevApps.setActiveMenuOption('entidadesAsociaciones');
-            $('#tabAsociaciones').addClass('active');
+            $('#@controlesIds.TabAsociaciones').addClass('active');
 
             $('#@controlesIds.Tabla')
                 .on('click', '.@clasesCss.BotonEliminar', function (ev) {
@@ -118,7 +120,7 @@
                 });
         });
 
-        function modalAsociacion_onHidden() {
+        function @(funcionesJS.ModalAsociacion_OnHidden)() {
             nmd.page.reloadPage();
         }
     </script>

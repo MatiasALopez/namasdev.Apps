@@ -1,6 +1,11 @@
-﻿using System.Data.Entity.ModelConfiguration;
+
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+using namasdev.Data.Entity.Config;
 
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -8,11 +13,10 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public EntidadIndicePropiedadConfig()
         {
-            ToTable(Entidades.Metadata.EntidadIndicePropiedadMetadata.BD.TABLA);
+            ToTable(EntidadIndicePropiedadMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
-            Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.EntidadIndicePropiedadMetadata.BD.ID);
+            Property(p => p.Id).HasColumnName(EntidadIndicePropiedadMetadata.BD.ID);
 
             HasRequired(p => p.Indice)
                 .WithMany(p => p.Propiedades)

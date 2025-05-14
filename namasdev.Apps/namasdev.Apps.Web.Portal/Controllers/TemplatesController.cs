@@ -128,7 +128,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         private IEnumerable<Entidad> ObtenerEntidadesDeAplicacion(Guid aplicacionVersionId, 
             bool ordenarPropiedades = true)
         {
-            var entidades = _entidadesRepositorio.ObtenerLista(aplicacionVersionId, cargarDatosAdicionales: true);
+            var entidades = _entidadesRepositorio.ObtenerPorVersion(aplicacionVersionId, cargarDatosAdicionales: true);
             if (ordenarPropiedades)
             {
                 foreach (var e in entidades)

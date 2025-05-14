@@ -14,9 +14,9 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones
     {
         public PaginaModo PaginaModo { get; set; }
 
-        public string EntidadNombre { get; set; }
-        public Guid OrigenEntidadId { get; set; }
         public Guid AplicacionVersionId { get; set; }
+        public Guid OrigenEntidadId { get; set; }
+        public string OrigenEntidadTablaNombre { get; set; }
 
         [Display(Name = EntidadAsociacionMetadata.Propiedades.Id.ETIQUETA)]
         public Guid? Id { get; set; }

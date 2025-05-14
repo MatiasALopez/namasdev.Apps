@@ -35,7 +35,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             try
             {
-                var items = ListasHelper.ObtenerEntidadesSelectListItems(_entidadesRepositorio.ObtenerLista(aplicacionVersionId));
+                var items = ListasHelper.ObtenerEntidadesSelectListItems(_entidadesRepositorio.ObtenerPorVersion(aplicacionVersionId));
                 return Json(new { items }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
@@ -48,7 +48,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             try
             {
-                var items = ListasHelper.ObtenerEntidadesPropiedadesSelectListItems(_entidadesPropiedadesRepositorio.ObtenerLista(entidadId));
+                var items = ListasHelper.ObtenerEntidadesPropiedadesSelectListItems(_entidadesPropiedadesRepositorio.ObtenerPorEntidad(entidadId));
                 return Json(new { items }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

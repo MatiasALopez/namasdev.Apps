@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 using namasdev.Core.Types;
 using namasdev.Data;
@@ -12,14 +13,14 @@ namespace namasdev.Apps.Datos
 {
     public interface IEntidadesPropiedadesRepositorio : IRepositorio<EntidadPropiedad, Guid>
     {
-        IEnumerable<EntidadPropiedad> ObtenerLista(Guid entidadId, string busqueda = null, OrdenYPaginacionParametros op = null, bool cargarDatosAdicionales = false);
+        IEnumerable<EntidadPropiedad> ObtenerPorEntidad(Guid entidadId, string busqueda = null, OrdenYPaginacionParametros op = null, bool cargarDatosAdicionales = false);
         EntidadPropiedad Obtener(Guid entidadPropiedadId, bool cargarDatosAdicionales = false);
         IEnumerable<PropiedadTipo> ObtenerTipos();
     }
 
     public class EntidadesPropiedadesRepositorio : Repositorio<SqlContext, EntidadPropiedad, Guid>, IEntidadesPropiedadesRepositorio
     {
-        public IEnumerable<EntidadPropiedad> ObtenerLista(
+        public IEnumerable<EntidadPropiedad> ObtenerPorEntidad(
             Guid entidadId,
             string busqueda = null,
             OrdenYPaginacionParametros op = null, 
@@ -28,8 +29,7 @@ namespace namasdev.Apps.Datos
             using (var ctx = new SqlContext())
             {
                 return ctx.EntidadesPropiedades
-                    .IncludeIf(ep => ep.Entidad, cargarDatosAdicionales)
-                    .IncludeIf(ep => ep.Tipo, cargarDatosAdicionales)
+                    .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
                     .Where(ep => ep.EntidadId == entidadId && !ep.Borrado)
                     .WhereIf(ep => ep.Nombre.Contains(busqueda), !string.IsNullOrWhiteSpace(busqueda))
                     .OrdenarYPaginar(op, ordenDefault: nameof(EntidadPropiedad.Orden))
@@ -44,8 +44,7 @@ namespace namasdev.Apps.Datos
             using (var ctx = new SqlContext())
             {
                 return ctx.EntidadesPropiedades
-                    .IncludeIf(ep => ep.Entidad, cargarDatosAdicionales)
-                    .IncludeIf(ep => ep.Tipo, cargarDatosAdicionales)
+                    .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
                     .FirstOrDefault(ep => ep.Id == entidadPropiedadId && !ep.Borrado);
             }
         }
@@ -56,6 +55,15 @@ namespace namasdev.Apps.Datos
             {
                 return ctx.PropiedadTipos.ToList();
             }
+        }
+
+        private IEnumerable<Expression<Func<EntidadPropiedad, object>>> CrearPathsDatosAdicionales()
+        {
+            return new Expression<Func<EntidadPropiedad, object>>[]
+            {
+                ep => ep.Entidad,
+                ep => ep.Tipo,
+            };
         }
     }
 }

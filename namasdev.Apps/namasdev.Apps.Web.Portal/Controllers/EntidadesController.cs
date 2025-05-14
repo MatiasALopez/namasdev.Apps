@@ -211,7 +211,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             var op = modelo.CrearOrdenYPaginacionParametros();
 
-            modelo.Items = Mapear<List<EntidadItemModel>>(_entidadesRepositorio.ObtenerLista(
+            modelo.Items = Mapear<List<EntidadItemModel>>(_entidadesRepositorio.ObtenerPorVersion(
                 version.Id,
                 busqueda: modelo.Busqueda,
                 op: op));

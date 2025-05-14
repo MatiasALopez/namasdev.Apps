@@ -19,11 +19,11 @@ namespace namasdev.Apps.Web.Portal.Mappers
             return entidades
                 .Select(e => new EntidadPropiedadItemModel
                 {
-                    EntidadPropiedadId = e.Id,
+                    Id = e.Id,
                     EntidadId = e.EntidadId,
                     Nombre = e.Nombre,
                     PropiedadTipoId = e.PropiedadTipoId,
-                    PropiedadTipoNombre = e.Tipo.Nombre,
+                    TipoNombre = e.Tipo.Nombre,
                     PermiteNull = e.PermiteNull,
                     Orden = e.Orden,
                     EsClave = claves != null && claves.Any(c => c.EntidadPropiedadId == e.Id),

@@ -5,11 +5,12 @@
 @using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 @model EntidadesPropiedadesViewModel
 @{
-    Layout = "~/Views/Shared/_EntidadesLayout.cshtml";
+    Layout = "~/Views/Shared/_EntidadTabsLayout.cshtml";
     ViewBag.Title = EntidadPropiedadMetadata.ETIQUETA_PLURAL;
 
     var controlesIds = new
     {
+        TabPropiedades = $"tab{EntidadPropiedadMetadata.NOMBRE_PLURAL}",
         Form = $"frm{EntidadPropiedadMetadata.NOMBRE_PLURAL}",
         TablaContainer = $"div{EntidadPropiedadMetadata.NOMBRE_PLURAL}Container",
         Tabla = $"tbl{EntidadPropiedadMetadata.NOMBRE_PLURAL}"
@@ -22,6 +23,14 @@
     {
         BotonEliminar = "btn-eliminar"
     };
+    var controlesTamaños = new
+    {
+        ModalEntidadAlto = "600px"
+    };
+    var funcionesJS = new
+    {
+        ModalEntidad_OnHidden = $"modal{EntidadPropiedadMetadata.NOMBRE}_onHidden"
+    };
 }
 @Html.Partial("_ResultadoOk")
 @Html.Partial("_Errores")
@@ -31,7 +40,7 @@
 <div class="row mt-3">
     <div class="col-md-3">
         <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { entidadId = Model.Id })" class="btn btn-primary"
-           data-iframe data-iframe-title="Agregar propiedad" data-iframe-height="600px" data-iframe-onhidden="modalPropiedad_onHidden">Agregar</a>
+           data-iframe data-iframe-title="Agregar propiedad" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalEntidad_OnHidden">Agregar</a>
     </div>
     <div class="col-md-9 text-right filtros">
         @using (Html.BeginForm("Index", "EntidadesPropiedades", FormMethod.Get, new { @class = "form-inline pull-right" }))
@@ -55,7 +64,7 @@
                                 <th></th>
                                 <th></th>
                                 <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.Nombre))">@Html.DisplayNameFor(m => m.Items[0].Nombre) <i class="fa fa-sort ml-2"></i></a></th>
-                                <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, $"{nameof(EntidadPropiedad.Tipo)}.{nameof(PropiedadTipo.Nombre)}")">@Html.DisplayNameFor(m => m.Items[0].PropiedadTipoNombre) <i class="fa fa-sort ml-2"></i></a></th>
+                                <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, $"{nameof(EntidadPropiedad.Tipo)}.{nameof(PropiedadTipo.Nombre)}")">@Html.DisplayNameFor(m => m.Items[0].TipoNombre) <i class="fa fa-sort ml-2"></i></a></th>
                                 <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.PermiteNull))">@Html.DisplayNameFor(m => m.Items[0].PermiteNull) <i class="fa fa-sort ml-2"></i></a></th>
                                 <th><a href="@URLHelper.GenerarUrlConOrden(Request.Url, nameof(EntidadPropiedad.Orden))">@Html.DisplayNameFor(m => m.Items[0].Orden) <i class="fa fa-sort ml-2"></i></a></th>
                                 <th></th>
@@ -70,7 +79,7 @@
                             {
                                 <tr>
                                     <td class="text-center">
-                                        @Html.HiddenFor(m => m.Items[i].EntidadPropiedadId)
+                                        @Html.HiddenFor(m => m.Items[i].Id)
                                         @Html.CheckBoxFor(m => m.Items[i].Seleccionado)
                                     </td>
                                     <td class="text-center">
@@ -80,13 +89,13 @@
                                         }
                                     </td>
                                     <td>@Model.Items[i].Nombre</td>
-                                    <td>@Model.Items[i].PropiedadTipoNombre</td>
+                                    <td>@Model.Items[i].TipoNombre</td>
                                     <td>@Formateador.SiNo(Model.Items[i].PermiteNull)</td>
                                     <td>@Formateador.Numero(Model.Items[i].Orden)</td>
                                     <td class="text-center">
-                                        <a href="@Url.Action("Editar", new { id = Model.Items[i].EntidadPropiedadId, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"
-                                           data-iframe data-iframe-title="Editar propiedad" data-iframe-height="600px" data-iframe-onhidden="modalPropiedad_onHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                        <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@Model.Items[i].EntidadPropiedadId"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                        <a href="@Url.Action("Editar", new { id = Model.Items[i].Id, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"
+                                           data-iframe data-iframe-title="Editar propiedad" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalEntidad_OnHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                        <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@Model.Items[i].Id"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
                                     </td>
                                 </tr>
                             }
@@ -108,7 +117,7 @@
     <script type="text/javascript">
         $(function () {
             namasdevApps.setActiveMenuOption('entidades');
-            $('#tabPropiedades').addClass('active');
+            $('#@controlesIds.TabPropiedades').addClass('active');
 
             $('#@controlesIds.Tabla')
                 .on('click', '.@clasesCss.BotonEliminar', function (ev) {
@@ -147,7 +156,7 @@
                 });
         });
 
-        function modalPropiedad_onHidden() {
+        function @(funcionesJS.ModalEntidad_OnHidden)() {
             nmd.page.reloadPage();
         }
     </script>

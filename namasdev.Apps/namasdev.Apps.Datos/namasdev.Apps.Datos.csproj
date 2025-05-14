@@ -74,6 +74,8 @@
   <ItemGroup>
     <Compile Include="EntidadesClavesRepositorio.cs" />
     <Compile Include="EntidadesAsociacionesRepositorio.cs" />
+    <Compile Include="EntidadesIndicesPropiedadesRepositorio.cs" />
+    <Compile Include="EntidadesIndicesRepositorio.cs" />
     <Compile Include="EntidadesPropiedadesRepositorio.cs" />
     <Compile Include="EntidadesPropiedadesDefaultRepositorio.cs" />
     <Compile Include="EntidadesRepositorio.cs" />

@@ -1,0 +1,96 @@
+@using namasdev.Core.Types;
+@using namasdev.Web.Helpers;
+@using namasdev.Apps.Entidades;
+@using namasdev.Apps.Entidades.Metadata;
+@using namasdev.Apps.Web.Portal.Controllers;
+@model namasdev.Apps.Web.Portal.ViewModels.EntidadesIndices.EntidadIndiceViewModel
+@{
+    ViewBag.Title = $"{Model.PaginaModo} {EntidadIndiceMetadata.NOMBRE}";
+    ViewBag.ExcluirHeaderYFooter = true;
+
+    var controlesIds = new
+    {
+        Form = $"frm{EntidadIndiceMetadata.NOMBRE}",
+        TablaContainer = $"div{EntidadIndiceMetadata.NOMBRE_PLURAL}Container",
+        Tabla = $"tbl{EntidadIndiceMetadata.NOMBRE_PLURAL}",
+        BotonGenerarNombre = "btnGenerarNombre",
+    };
+}
+<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mx-2">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(excludePropertyErrors: true)
+    @Html.Partial("_Errores")
+    @Html.Partial("_ResultadoOk")
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.PaginaModo)
+    @Html.HiddenFor(m => m.AplicacionVersionId)
+    @Html.HiddenFor(m => m.EntidadId)
+    @Html.HiddenFor(m => m.EntidadTablaNombre)
+    <div id="@controlesIds.TablaContainer" class="table-responsive">
+        <table id="@controlesIds.Tabla" class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>@Html.DisplayNameFor(m => m.Propiedades[0].Nombre)</th>
+                    <th>@Html.DisplayNameFor(m => m.Propiedades[0].TipoNombre)</th>
+                    <th>@Html.DisplayNameFor(m => m.Propiedades[0].PermiteNull)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @{ int cant = Model.Propiedades.Count; }
+                @for (var i = 0; i < cant; i++)
+                {
+                    <tr>
+                        <td class="text-center">
+                            @Html.HiddenFor(m => m.Propiedades[i].Id)
+                            @Html.CheckBoxFor(m => m.Propiedades[i].Seleccionado, new { data_nombre = Model.Propiedades[i].Nombre })
+                        </td>
+                        <td>@Model.Propiedades[i].Nombre</td>
+                        <td>@Model.Propiedades[i].TipoNombre</td>
+                        <td>@Formateador.SiNo(Model.Propiedades[i].PermiteNull)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-6">
+            @Html.LabelFor(m => m.EsUnique, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.EsUnique, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.EsUnique)
+        </div>
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
+            @Html.TextBoxFor(m => m.Nombre, new { @maxlength = "200", @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.Nombre)
+            <div>
+                <button id="@controlesIds.BotonGenerarNombre" class="btn btn-xs btn-outline-info mt-1">Generar nombre</button>
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
+</form>
+@section bodyScripts {
+    <script type="text/javascript">
+        $(function () {
+            namasdevApps.setActiveMenuOption('entidadesIndices');
+
+            $('#@controlesIds.BotonGenerarNombre')
+                .on('click', function (ev) {
+                    ev.preventDefault();
+                    generarNombre();
+                    return false;
+                });
+
+            function generarNombre() {
+                var nombres = $('#@controlesIds.Tabla :checked').map(function (i, item) {
+                    return $(item).data('nombre');
+                }).get();
+
+                $('#@Html.IdFor(m => m.Nombre)')
+                    .val(nmd.utils.stringFormat('{0}_@(Model.EntidadTablaNombre)_{1}', $('#@Html.IdFor(m => m.EsUnique)').val().toLowerCase() == 'true' ? 'UX' : 'IX', nombres.join('Y')))
+                    .trigger('change');
+            }
+        });
+    </script>
+}

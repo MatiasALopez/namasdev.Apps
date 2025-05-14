@@ -7,7 +7,7 @@ namespace namasdev.Apps.Web.Portal.Models.EntidadesPropiedades
 {
     public class EntidadPropiedadItemModel
     {
-        public Guid EntidadPropiedadId { get; set; }
+        public Guid Id { get; set; }
         public Guid EntidadId { get; set; }
 
         [Display(Name = EntidadPropiedadMetadata.Propiedades.Nombre.ETIQUETA)]
@@ -17,7 +17,7 @@ namespace namasdev.Apps.Web.Portal.Models.EntidadesPropiedades
         public short PropiedadTipoId { get; set; }
 
         [Display(Name = EntidadPropiedadMetadata.Propiedades.PropiedadTipoId.ETIQUETA)]
-        public string PropiedadTipoNombre { get; set; }
+        public string TipoNombre { get; set; }
 
         [Display(Name = EntidadPropiedadMetadata.Propiedades.PermiteNull.ETIQUETA)]
         public bool PermiteNull { get; set; }

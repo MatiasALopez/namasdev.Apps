@@ -49,13 +49,11 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Acciones
 
-        public ActionResult Index(Guid id,
-            string orden = null)
+        public ActionResult Index(Guid id)
         {
             var model = new EntidadesAsociacionesViewModel
             {
                 Id = id,
-                Orden = orden,
             };
 
             CargarEntidadesAsociacionesViewModel(model);
@@ -177,9 +175,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             model.AplicacionVersionId = entidad.AplicacionVersionId;
 
             model.Items = Mapear<List<EntidadAsociacionItemModel>>(
-                _entidadesAsociacionesRepositorio.ObtenerLista(model.Id, cargarDatosAdicionales: true));
-
-            model.OrdenarItems();
+                _entidadesAsociacionesRepositorio.ObtenerPorEntidad(model.Id, cargarDatosAdicionales: true));
         }
 
         private void CargarEntidadAsociacionViewModel(EntidadAsociacionViewModel model, PaginaModo paginaModo)
@@ -188,17 +184,17 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             model.PaginaModo = paginaModo;
 
-            if (string.IsNullOrWhiteSpace(model.EntidadNombre))
+            if (string.IsNullOrWhiteSpace(model.OrigenEntidadTablaNombre))
             {
-                model.EntidadNombre = _entidadesRepositorio.Obtener(model.OrigenEntidadId).Nombre;
+                model.OrigenEntidadTablaNombre = _entidadesRepositorio.Obtener(model.OrigenEntidadId).NombrePlural;
             }
 
-            model.OrigenPropiedadesSelectList = ListasHelper.ObtenerEntidadesPropiedadesSelectList(_entidadesPropiedadesRepositorio.ObtenerLista(model.OrigenEntidadId));
+            model.OrigenPropiedadesSelectList = ListasHelper.ObtenerEntidadesPropiedadesSelectList(_entidadesPropiedadesRepositorio.ObtenerPorEntidad(model.OrigenEntidadId));
 
-            model.EntidadesSelectList = ListasHelper.ObtenerEntidadesSelectList(_entidadesRepositorio.ObtenerLista(model.AplicacionVersionId));
+            model.EntidadesSelectList = ListasHelper.ObtenerEntidadesSelectList(_entidadesRepositorio.ObtenerPorVersion(model.AplicacionVersionId));
             model.DestinoPropiedadesSelectList = 
                 model.DestinoEntidadId.HasValue
-                ? ListasHelper.ObtenerEntidadesPropiedadesSelectList(_entidadesPropiedadesRepositorio.ObtenerLista(model.DestinoEntidadId.Value))
+                ? ListasHelper.ObtenerEntidadesPropiedadesSelectList(_entidadesPropiedadesRepositorio.ObtenerPorEntidad(model.DestinoEntidadId.Value))
                 : namasdev.Web.Helpers.ListasHelper.ObtenerSelectListVacio();
 
             model.MultiplicidadesSelectList = ListasHelper.ObtenerAsociacionMultiplicidadesSelectList(_entidadesAsociacionesRepositorio.ObtenerMultiplicidades());

@@ -2,8 +2,8 @@
 {
     public class EntidadPropiedadMetadata
     {
-        public const string NOMBRE = "Propiedad";
-        public const string NOMBRE_PLURAL = "Propiedades";
+        public const string NOMBRE = "EntidadPropiedad";
+        public const string NOMBRE_PLURAL = "EntidadesPropiedades";
 
         public const string ETIQUETA = "Propiedad";
         public const string ETIQUETA_PLURAL = "Propiedades";

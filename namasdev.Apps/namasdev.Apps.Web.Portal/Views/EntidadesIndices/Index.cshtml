@@ -1,0 +1,123 @@
+@using namasdev.Apps.Entidades.Metadata;
+@using namasdev.Apps.Web.Portal.Controllers;
+@model namasdev.Apps.Web.Portal.ViewModels.EntidadesIndices.EntidadesIndicesViewModel
+@{
+    Layout = "~/Views/Shared/_EntidadTabsLayout.cshtml";
+    ViewBag.Title = EntidadIndiceMetadata.ETIQUETA_PLURAL;
+
+    var controlesIds = new
+    {
+        TabIndices = $"tab{EntidadIndiceMetadata.NOMBRE_PLURAL}",
+        Form = $"frm{EntidadIndiceMetadata.NOMBRE_PLURAL}",
+        TablaContainer = $"div{EntidadIndiceMetadata.NOMBRE_PLURAL}Container",
+        Tabla = $"tbl{EntidadIndiceMetadata.NOMBRE_PLURAL}",
+    };
+    var clasesCss = new
+    {
+        BotonEliminar = "btn-eliminar"
+    };
+    var controlesTamaños = new
+    {
+        ModalEntidadAlto = "600px"
+    };
+    var funcionesJS = new
+    {
+        ModalIndice_OnHidden = $"modal{EntidadIndiceMetadata.NOMBRE}_onHidden"
+    };
+}
+@Html.Partial("_ResultadoOk")
+@Html.Partial("_Errores")
+<div class="mt-3">
+    <strong>@Html.DisplayNameFor(m => m.EntidadNombre):</strong> @Model.EntidadNombre
+</div>
+<div class="row mt-3">
+    <div class="col-md-3">
+        <a href="@Url.Action(nameof(EntidadesIndicesController.Agregar), new { entidadId = Model.Id })" class="btn btn-primary"
+           data-iframe data-iframe-title="Agregar @EntidadIndiceMetadata.ETIQUETA" data-iframe-modal-size="lg" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalIndice_OnHidden">Agregar</a>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12">
+        @if (Model.TieneItems)
+        {
+            <div id="@controlesIds.TablaContainer" class="table-responsive">
+                <form id="@controlesIds.Form">
+                    @Html.AntiForgeryToken()
+                </form>
+                <table id="@controlesIds.Tabla" class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(m => m.Items[0].Nombre)</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Items)
+                        {
+                            <tr>
+                                <td>@Html.Raw(item.Nombre)</td>
+                                <td class="text-center">
+                                    <a href="@Url.Action(nameof(EntidadesIndicesController.Editar), new { id = item.Id })" class="btn btn-sm btn-outline-secondary"
+                                       data-iframe data-iframe-title="Editar @EntidadIndiceMetadata.ETIQUETA" data-iframe-modal-size="lg" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalIndice_OnHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                    <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@item.Id"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning">No hay @EntidadIndiceMetadata.ETIQUETA_PLURAL para mostrar.</div>
+        }
+    </div>
+</div>
+@section bodyScripts {
+    <script type="text/javascript">
+    $(function () {
+        namasdevApps.setActiveMenuOption('entidadesIndices');
+        $('#@controlesIds.TabIndices').addClass('active');
+
+        $('#@controlesIds.Tabla')
+            .on('click', '.@clasesCss.BotonEliminar', function (ev) {
+                ev.preventDefault();
+
+                var id = $(this).data('id');
+                if (!id) {
+                    return;
+                }
+
+                var options = {
+                    showLoadingSelector: '#@controlesIds.TablaContainer',
+                    confirm: true,
+                    confirmTitle: 'Eliminar @EntidadIndiceMetadata.ETIQUETA',
+                    confirmMessage: '@EntidadIndiceMetadata.Mensajes.ELIMINAR_CONFIRMACION'
+                };
+                namasdevApps.postJson(
+                    '@Url.Action(nameof(EntidadesIndicesController.Eliminar))/' + id,
+                    nmd.ui.forms.createDataWithAntiForgeryToken('#@controlesIds.Form'),
+                    function (response) {
+                        if (response.success) {
+                            nmd.ui.controls.showSuccessModal(
+                                '@EntidadIndiceMetadata.Mensajes.ELIMINAR_OK',
+                                function () {
+                                    nmd.page.reloadPage();
+                                });
+                        }
+                        else {
+                            namasdevApps.showErrorModal(response.message);
+                        }
+                    },
+                    options
+                );
+
+                return false;
+            });
+    });
+
+    function @(funcionesJS.ModalIndice_OnHidden)() {
+        nmd.page.reloadPage();
+    }
+    </script>
+}

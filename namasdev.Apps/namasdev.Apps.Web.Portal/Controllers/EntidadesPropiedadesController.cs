@@ -73,7 +73,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     switch (model.Operacion)
                     {
                         case EntidadesPropiedadesViewModel.OPERACION_ESTABLECER_CLAVE:
-                            _entidadesPropiedadesNegocio.EstablecerComoClave(model.Id, model.ItemsSeleccionados.Select(i => i.EntidadPropiedadId));
+                            _entidadesPropiedadesNegocio.EstablecerComoClave(model.Id, model.ItemsSeleccionados.Select(i => i.Id));
 
                             ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.ESTABLECER_CLAVE_OK);
                             ModelState.Clear();
@@ -208,7 +208,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             modelo.AplicacionVersionId = entidad.AplicacionVersionId;
 
             modelo.Items = EntidadesPropiedadesMapper.MapearEntidadesAModelos(
-                entidades: _entidadesPropiedadesRepositorio.ObtenerLista(
+                entidades: _entidadesPropiedadesRepositorio.ObtenerPorEntidad(
                     entidad.Id,
                     busqueda: modelo.Busqueda,
                     cargarDatosAdicionales: true),

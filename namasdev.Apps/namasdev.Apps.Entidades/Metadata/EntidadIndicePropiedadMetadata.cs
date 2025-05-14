@@ -1,4 +1,4 @@
-﻿namespace namasdev.Apps.Entidades.Metadata
+namespace namasdev.Apps.Entidades.Metadata
 {
     public class EntidadIndicePropiedadMetadata
     {
@@ -16,11 +16,14 @@
 
         public class Propiedades
         {
+            public class Id
+            {
+                public const string ETIQUETA = "ID";
+            }
             public class EntidadIndiceId
             {
                 public const string ETIQUETA = EntidadIndiceMetadata.ETIQUETA;
             }
-
             public class EntidadPropiedadId
             {
                 public const string ETIQUETA = EntidadPropiedadMetadata.ETIQUETA;
@@ -37,6 +40,7 @@
 
             public const string ELIMINAR_OK = EntidadIndicePropiedadMetadata.ETIQUETA + " eliminada correctamente.";
             public const string ELIMINAR_ERROR = "No se pudo eliminar la " + EntidadIndicePropiedadMetadata.ETIQUETA;
+            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar la " + EntidadIndicePropiedadMetadata.ETIQUETA + " seleccionada?";
         }
     }
 }

@@ -20,7 +20,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Templates
         [Display(Name = "Metadata Entidad")]
         public bool GenerarEntidadesMetadataEntidadMetadata { get; set; }
 
-        [Display(Name = "Repositorio")]
+        [Display(Name = "Negocio")]
         public bool GenerarNegocio { get; set; }
 
         [Display(Name = "Parámetros Agregar")]

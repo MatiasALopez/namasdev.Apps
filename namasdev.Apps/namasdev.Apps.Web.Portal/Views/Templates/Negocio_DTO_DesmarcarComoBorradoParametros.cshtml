@@ -10,7 +10,7 @@
     {
         ClaseBase =
             Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
-            ? FormatoHelper.ClaseGenerica("ParametrosEntidadBase", Model.PropiedadesDefault.IDTipo.CLRType)
+            ? FormatoHelper.Generic("ParametrosEntidadBase", Model.PropiedadesDefault.IDTipo.CLRType)
             : string.Format("ParametrosConUsuarioBase"),
     };
 }

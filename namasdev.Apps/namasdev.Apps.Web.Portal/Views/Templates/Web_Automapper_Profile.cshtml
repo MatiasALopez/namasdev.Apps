@@ -26,16 +26,16 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Automapper
     {
         public @(Html.Raw(clases.Profile))()
         {
-            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", clases.Entidad, clases.EntidadViewModel)))()
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", clases.Entidad, clases.EntidadViewModel)))()
                 .ReverseMap();
 
-            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "AgregarParametros", clases.EntidadViewModel)))()
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "AgregarParametros", clases.EntidadViewModel)))()
                 .ReverseMap();
 
-            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "ActualizarParametros", clases.EntidadViewModel)))()
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "ActualizarParametros", clases.EntidadViewModel)))()
                 .ReverseMap();
 
-            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", clases.Entidad, clases.EntidadItemModel)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", clases.Entidad, clases.EntidadItemModel)))();
         }
     }
 }

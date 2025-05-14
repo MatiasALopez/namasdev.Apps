@@ -121,7 +121,7 @@
                             <tr>
                             @foreach (var p in propiedades)
                             {
-                                <text><td>@Html.Raw(p.Value)</td></text>
+                                <text><td>@@Html.Raw(p.Value)</td></text>
                             }
                                 <td class="text-center">
                                     <a href="@Html.Raw(string.Format("@Url.Action(nameof({0}.Editar), new {{ id = item.{1} }})", clases.Controller, propiedadIdNombre))" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>

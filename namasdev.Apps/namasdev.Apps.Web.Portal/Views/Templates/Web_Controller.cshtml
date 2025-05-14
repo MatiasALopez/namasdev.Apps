@@ -34,9 +34,8 @@
     };
     var constantes = new
     {
-        ViewsEntidad = string.Format("{0}.ENTIDAD", clases.Views),
+        ViewsEntidad = string.Format("{0}.{1}", clases.Views, Model.Nombre),
     };
-
     var agregarParametros = new List<string>();
     foreach (var p in Model.Propiedades)
     {
@@ -51,9 +50,10 @@
         tienePropiedadesHora = false;
     foreach (var p in Model.Propiedades)
     {
-        if (p.PropiedadTipoId == PropiedadTipos.BOOLEANO) { tienePropiedadesBoolean = true; }
-        else if (p.PropiedadTipoId == PropiedadTipos.FECHA_HORA
-            || p.PropiedadTipoId == PropiedadTipos.HORA) { tienePropiedadesHora = true; }
+        if (p.PropiedadTipoId == PropiedadTipos.BOOLEANO) 
+        { tienePropiedadesBoolean = true; }
+        else if (p.PropiedadTipoId == PropiedadTipos.FECHA_HORA || p.PropiedadTipoId == PropiedadTipos.HORA) 
+        { tienePropiedadesHora = true; }
     }
 }
 using System;
@@ -157,7 +157,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _@(Html.Raw(variables.Negocio)).Agregar(@(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", "AgregarParametros")))(@Html.Raw(variables.ViewModel)));
+                    _@(Html.Raw(variables.Negocio)).Agregar(@(Html.Raw(FormatoHelper.Generic("Mapear", "AgregarParametros")))(@Html.Raw(variables.ViewModel)));
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -179,7 +179,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var @Html.Raw(variables.ViewModel) = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", clases.EntidadViewModel)))(@Html.Raw(variables.Entidad));
+            var @Html.Raw(variables.ViewModel) = @(Html.Raw(FormatoHelper.Generic("Mapear", clases.EntidadViewModel)))(@Html.Raw(variables.Entidad));
             Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Editar);
 
             return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
@@ -193,7 +193,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _@(Html.Raw(variables.Negocio)).Actualizar(@(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", "ActualizarParametros")))(@Html.Raw(variables.ViewModel)));
+                    _@(Html.Raw(variables.Negocio)).Actualizar(@(Html.Raw(FormatoHelper.Generic("Mapear", "ActualizarParametros")))(@Html.Raw(variables.ViewModel)));
 
                     ControllerHelper.CargarMensajeResultadoOk(@(Html.Raw(clases.MetadataMensajes)).EDITAR_OK);
                 }
@@ -218,7 +218,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
 
             var op = @(Html.Raw(variables.ViewModel)).CrearOrdenYPaginacionParametros();
 
-            @(Html.Raw(variables.ViewModel)).Items = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapear", FormatoHelper.ClaseGenerica("List", clases.EntidadItemModel))))(
+            @(Html.Raw(variables.ViewModel)).Items = @(Html.Raw(FormatoHelper.Generic("Mapear", FormatoHelper.Generic("List", clases.EntidadItemModel))))(
                 _@(Html.Raw(variables.Repositorio)).ObtenerLista(
                     busqueda: @(Html.Raw(variables.ViewModel)).Busqueda,
                     op: op));
@@ -231,10 +231,13 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.ViewModel), nameof(@Html.Raw(variables.ViewModel)));
 
             @(Html.Raw(variables.ViewModel)).PaginaModo = paginaModo;
-        @if (tienePropiedadesBoolean) {<text>
-            @(Html.Raw(variables.ViewModel)).SiNoSelectList = ListasHelper.ObtenerSiNoSelectList();</text>}
-        @if (tienePropiedadesHora) {<text>
-            @(Html.Raw(variables.ViewModel)).HoraSelectList = ListasHelper.ObtenerHoraMinSelectList();</text>}
+
+@if (tienePropiedadesBoolean) {
+            <text>@(Html.Raw(variables.ViewModel)).SiNoSelectList = ListasHelper.ObtenerSiNoSelectList();</text>
+}
+@if (tienePropiedadesHora) {
+            <text>@(Html.Raw(variables.ViewModel)).HoraSelectList = ListasHelper.ObtenerHoraMinSelectList();</text>
+}
         }
 
         #endregion Metodos

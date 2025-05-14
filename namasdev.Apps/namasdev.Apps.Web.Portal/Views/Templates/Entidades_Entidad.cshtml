@@ -15,11 +15,11 @@
     var propiedadesNavegacion = new List<string>();
     string propiedadTipo,
         propiedadNombre;
-    foreach (var a in Model.AsociacionesOrigen)
+    foreach (var a in Model.AsociacionesOrigen.OrderBy(ao => ao.OrigenPropiedad.Orden))
     {
         if (a.DestinoAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS)
         {
-            propiedadTipo = FormatoHelper.ClaseGenerica("List", a.DestinoEntidad.Nombre);
+            propiedadTipo = FormatoHelper.Generic("List", a.DestinoEntidad.Nombre);
             propiedadNombre = a.DestinoEntidad.NombrePlural;
         }
         else
@@ -33,11 +33,11 @@
 
         propiedadesNavegacion.Add(string.Format("{0} {1}", propiedadTipo, propiedadNombre));
     }
-    foreach (var a in Model.AsociacionesDestino)
+    foreach (var a in Model.AsociacionesDestino.OrderBy(ad => ad.DestinoPropiedad.Orden))
     {
         if (a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS)
         {
-            propiedadTipo = FormatoHelper.ClaseGenerica("List", a.OrigenEntidad.Nombre);
+            propiedadTipo = FormatoHelper.Generic("List", a.OrigenEntidad.Nombre);
             propiedadNombre = a.OrigenEntidad.NombrePlural;
         }
         else
@@ -49,6 +49,7 @@
     }
 }
 using System;
+using System.Collections.Generic;
 
 using namasdev.Core.Entity;
 
@@ -67,10 +68,10 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades
     @if (propiedadesNavegacion.Count > 0)
     {
         <text></text>
-        foreach (var p in propiedadesNavegacion)
-        {
-            <text>public virtual @Html.Raw(p) { get; set; }</text>
-        }
-    }   
-}
+    foreach (var p in propiedadesNavegacion)
+    {
+        <text>public virtual @Html.Raw(p) { get; set; }</text>
+    }
+    }
+    }
 }

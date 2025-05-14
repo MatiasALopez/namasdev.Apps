@@ -21,6 +21,10 @@
     List<string> propiedadReglas;
     foreach (var p in Model.Propiedades)
     {
+        if (p.EsAuditoriaBorrado())
+        {
+            continue;
+        }
         propiedadMetadataBase = string.Format("{0}.Propiedades.{1}.", clases.Metadata, p.Nombre);
         propiedadReglas = new List<string>();
         if (p.Nombre == namasdev.Apps.Entidades.EntidadPropiedad.IdNombre(Model))
@@ -31,7 +35,7 @@
         {
             propiedadReglas.Add("HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed)");
         }
-        else if (!p.PermiteNull)
+        else if (!p.PermiteNull && !p.Tipo.CLRTypeEsNullable)
         {
             propiedadReglas.Add("IsRequired()");
         }
@@ -65,12 +69,12 @@
         origenPropiedadNavegacion,
         destinoPropiedadNavegacion;
     bool asociacionTieneReglaForeignKey;
-    foreach (var a in Model.AsociacionesOrigen)
+    foreach (var a in Model.AsociacionesOrigen.OrderBy(ao => ao.OrigenPropiedad.Orden))
     {
         asociacionParte1Regla = asociacionParte2Regla = null;
         asociacionTieneReglaForeignKey = false;
         origenPropiedadNavegacion = namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id");
-        destinoPropiedadNavegacion = namasdev.Core.Types.StringExtensiones.TrimEnd(a.DestinoPropiedad.Nombre, "Id");
+        destinoPropiedadNavegacion = a.OrigenEntidad.NombrePlural;
         switch (a.DestinoAsociacionMultiplicidadId)
         {
             case AsociacionMultiplicidades.CERO_UNO:
@@ -137,6 +141,7 @@
     }
 }
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
 
 using namasdev.Data.Entity.Config;
 
@@ -145,7 +150,7 @@ using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
 
 namespace @(Html.Raw(namespaces.Aplicacion)).Datos.Sql.Config
 {
-    public class @Html.Raw(clases.Config) : @Html.Raw(FormatoHelper.ClaseGenerica(clases.ConfigBase, Model.Nombre))
+    public class @Html.Raw(clases.Config) : @Html.Raw(FormatoHelper.Generic(clases.ConfigBase, Model.Nombre))
     {
         public @(Html.Raw(clases.Config))()
         {

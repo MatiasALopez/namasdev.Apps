@@ -29,9 +29,9 @@
     var parametros = new
     {
         Requerido = "requerido",
-        TamañoExacto = "tamañoExacto",
-        TamañoMaximo = "tamañoMaximo",
         TamañoMinimo = "tamañoMinimo",
+        TamañoMaximo = "tamañoMaximo",
+        TamañoExacto = "tamañoExacto",
         ValorMaximo = "valorMaximo",
         ValorMinimo = "valorMinimo",
         CantDecimales = "cantDecimales",
@@ -39,12 +39,14 @@
     };
     var validaciones = new List<string>();
     string validacionMetodo,
-        propiedadNombre;
+        propiedadNombre,
+        claseMetadataPropiedad;
     Dictionary<string, string> validacionParametros;
     foreach (var p in Model.Propiedades)
     {
         validacionMetodo = null;
         propiedadNombre = p.NombreOId;
+        claseMetadataPropiedad = string.Format("{0}.{1}", clases.MetadataPropiedades, p.Nombre);
         validacionParametros = new Dictionary<string, string>();
         switch (p.PropiedadTipoId)
         {
@@ -52,19 +54,22 @@
                 validacionMetodo = "ValidarStringYAgregarAListaErrores";
                 if (p.EspecificacionesTexto.TamañoExacto.HasValue)
                 {
-                    validacionParametros.Add(parametros.TamañoMaximo, p.EspecificacionesTexto.TamañoExacto.ToString());
+                    validacionParametros.Add(parametros.TamañoExacto, string.Format("{0}.TAMAÑO_EXACTO", claseMetadataPropiedad));
                 }
-                else if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
+                else
                 {
-                    validacionParametros.Add(parametros.TamañoExacto, p.EspecificacionesTexto.TamañoMaximo.ToString());
-                }
-                if (p.EspecificacionesTexto.TamañoMinimo.HasValue)
-                {
-                    validacionParametros.Add(parametros.TamañoMinimo, p.EspecificacionesTexto.TamañoMinimo.ToString());
+                    if (p.EspecificacionesTexto.TamañoMinimo.HasValue)
+                    {
+                        validacionParametros.Add(parametros.TamañoMinimo, string.Format("{0}.TAMAÑO_MIN", claseMetadataPropiedad));
+                    }
+                    if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
+                    {
+                        validacionParametros.Add(parametros.TamañoMaximo, string.Format("{0}.TAMAÑO_MAX", claseMetadataPropiedad));
+                    }
                 }
                 if (!string.IsNullOrWhiteSpace(p.EspecificacionesTexto.RegEx))
                 {
-                    validacionParametros.Add(parametros.RegEx, string.Format("\"p.EspecificacionesTexto.RegEx\""));
+                    validacionParametros.Add(parametros.RegEx, string.Format("{0}.REG_EX", claseMetadataPropiedad));
                 }
                 break;
 
@@ -72,11 +77,11 @@
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEntero.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, p.EspecificacionesEntero.ValorMinimo.ToString());
+                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
                 }
                 if (p.EspecificacionesEntero.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, p.EspecificacionesEntero.ValorMaximo.ToString());
+                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
                 }
                 break;
 
@@ -84,11 +89,11 @@
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEnteroCorto.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, p.EspecificacionesEnteroCorto.ValorMinimo.ToString());
+                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
                 }
                 if (p.EspecificacionesEnteroCorto.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, p.EspecificacionesEnteroCorto.ValorMaximo.ToString());
+                    validacionParametros.Add(parametros.ValorMaximo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
                 }
                 break;
 
@@ -96,11 +101,11 @@
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, p.EspecificacionesEnteroLargo.ValorMinimo.ToString());
+                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
                 }
                 if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, p.EspecificacionesEnteroLargo.ValorMaximo.ToString());
+                    validacionParametros.Add(parametros.ValorMaximo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
                 }
                 break;
 
@@ -108,29 +113,26 @@
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMinimo));
+                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
                 }
                 if (p.EspecificacionesDecimal.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo));
+                    validacionParametros.Add(parametros.ValorMaximo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
                 }
-                if (p.EspecificacionesDecimal.ValorMaximo.HasValue)
-                {
-                    validacionParametros.Add(parametros.CantDecimales, p.EspecificacionesDecimal.DigitosDecimales.ToString());
-                }
+                validacionParametros.Add(parametros.CantDecimales, string.Format("{0}.DIGITOS_DECIMALES", claseMetadataPropiedad));
                 break;
 
             case PropiedadTipos.DECIMAL_FLOTANTE:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesDecimalFlotante.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, p.EspecificacionesDecimalFlotante.ValorMinimo.ToString());
+                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
                 }
                 if (p.EspecificacionesDecimalFlotante.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, p.EspecificacionesDecimalFlotante.ValorMaximo.ToString());
+                    validacionParametros.Add(parametros.ValorMaximo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
                 }
-                validacionParametros.Add(parametros.CantDecimales, p.EspecificacionesDecimalFlotante.DigitosDecimales.ToString());
+                validacionParametros.Add(parametros.CantDecimales, string.Format("{0}.DIGITOS_DECIMALES", claseMetadataPropiedad));
                 break;
         }
         if (!string.IsNullOrWhiteSpace(validacionMetodo))
@@ -169,7 +171,7 @@ namespace @(Html.Raw(namespaceBase)).Negocio
         }
     }
 
-    public class @Html.Raw(clases.Negocio) : @Html.Raw(FormatoHelper.ClaseGenerica("NegocioBase", interfaces.Repositorio)), @Html.Raw(interfaces.Negocio)
+    public class @Html.Raw(clases.Negocio) : @Html.Raw(FormatoHelper.Generic("NegocioBase", interfaces.Repositorio)), @Html.Raw(interfaces.Negocio)
     {
         public @(Html.Raw(clases.Negocio))(@Html.Raw(interfaces.Repositorio) @Html.Raw(variables.Repositorio), IErroresNegocio @variables.ErroresNegocio, IMapper @variables.Mapper)
             : base(@Html.Raw(variables.Repositorio), @variables.ErroresNegocio, @variables.Mapper)
@@ -180,7 +182,7 @@ namespace @(Html.Raw(namespaceBase)).Negocio
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
 
-            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
             @if (Model.PropiedadesDefault.AuditoriaCreado || Model.PropiedadesDefault.AuditoriaUltimaModificacion)
             {
             <text>
@@ -224,7 +226,7 @@ namespace @(Html.Raw(namespaceBase)).Negocio
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
     
-            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
             
             @(Html.Raw(variables.Entidad)).EstablecerDatosBorrado(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);
 
@@ -235,7 +237,7 @@ namespace @(Html.Raw(namespaceBase)).Negocio
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
 
-            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.ClaseGenerica("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
             
             Repositorio.ActualizarDatosBorrado(@Html.Raw(variables.Entidad));
         }
@@ -256,7 +258,7 @@ namespace @(Html.Raw(namespaceBase)).Negocio
 
         private void ValidarDatos(@Html.Raw(clases.Entidad) entidad)
         {
-            var errores = new @(Html.Raw(FormatoHelper.ClaseGenerica("List", "string")))();
+            var errores = new @(Html.Raw(FormatoHelper.Generic("List", "string")))();
 
         @foreach (var v in validaciones)
         {

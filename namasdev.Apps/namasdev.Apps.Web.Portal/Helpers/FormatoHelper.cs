@@ -7,9 +7,14 @@ namespace namasdev.Apps.Web.Portal.Helpers
 {
     public class FormatoHelper
     {
-        public static string ClaseGenerica(string claseNombre, params string[] tiposNombres)
+        public static string EntreComillas(string texto)
         {
-            return $"{claseNombre}<{Formateador.Lista(tiposNombres, ",")}>";
+            return $"\"{texto}\"";
+        }
+
+        public static string Generic(string nombre, params string[] tiposNombres)
+        {
+            return $"{nombre}<{Formateador.Lista(tiposNombres, ",")}>";
         }
 
         public static string ListaParametros(Dictionary<string, string> lista,
@@ -49,7 +54,7 @@ namespace namasdev.Apps.Web.Portal.Helpers
             string prefijo = ", ")
         {
             return atributos != null && atributos.Count > 0
-                ? $"{prefijo}new {{ {Formateador.Lista(atributos.Select(a => $"@{a.Key} = \"{a.Value}\""), separador: ", ")} }}"
+                ? $"{prefijo}new {{ {Formateador.Lista(atributos.Select(a => $"@{a.Key} = {EntreComillas(a.Value)}"), separador: ", ")} }}"
                 : "";
         }
     }

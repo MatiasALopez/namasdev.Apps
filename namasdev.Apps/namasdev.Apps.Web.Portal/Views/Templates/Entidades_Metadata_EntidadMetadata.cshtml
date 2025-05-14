@@ -14,7 +14,10 @@
     var constantesDefiniciones = new
     {
         Etiqueta = "string ETIQUETA",
+        TamañoExacto = "int TAMAÑO_EXACTO",
         TamañoMax = "int TAMAÑO_MAX",
+        TamañoMin = "int TAMAÑO_MIN",
+        RegEx = "string REG_EX",
         ValorMinimoEntero = "int VALOR_MINIMO",
         ValorMaximoEntero = "int VALOR_MAXIMO",
         ValorMinimoEnteroCorto = "short VALOR_MINIMO",
@@ -84,14 +87,29 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
         {
             propiedadConstantes = new Dictionary<string, string>
             {
-                { "string ETIQUETA", string.Format("\"{0}\"", p.Etiqueta) }
+                { "string ETIQUETA", FormatoHelper.EntreComillas(p.Etiqueta) }
             };
             switch (p.PropiedadTipoId)
             {
                 case PropiedadTipos.TEXTO:
-                    if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
+                    if (p.EspecificacionesTexto.TamañoExacto.HasValue)
                     {
-                        propiedadConstantes.Add(constantesDefiniciones.TamañoMax, p.EspecificacionesTexto.TamañoMaximo.ToString());
+                        propiedadConstantes.Add(constantesDefiniciones.TamañoExacto, p.EspecificacionesTexto.TamañoExacto.ToString());
+                    }
+                    else
+                    {
+                        if (p.EspecificacionesTexto.TamañoMinimo.HasValue)
+                        {
+                            propiedadConstantes.Add(constantesDefiniciones.TamañoMin, p.EspecificacionesTexto.TamañoMinimo.ToString());
+                        }
+                        if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
+                        {
+                            propiedadConstantes.Add(constantesDefiniciones.TamañoMax, p.EspecificacionesTexto.TamañoMaximo.ToString());
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(p.EspecificacionesTexto.RegEx))
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.RegEx, "@" + FormatoHelper.EntreComillas(p.EspecificacionesTexto.RegEx));
                     }
                     break;
                 case PropiedadTipos.ENTERO:

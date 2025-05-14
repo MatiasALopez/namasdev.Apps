@@ -149,20 +149,20 @@
                 controlHtmlAttributes.Add("data_inputmask_digits", "2");
                 break;
             case PropiedadTipos.FECHA_HORA:
-                controlAdditionalParameters = new List<string> { "\"{0:dd/MM/yyyy}\"" };
+                controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };
                 controlCssClasses.Add("datepicker");
                 break;
             case PropiedadTipos.FECHA:
-                controlAdditionalParameters = new List<string> { "\"{0:dd/MM/yyyy}\"" };
+                controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };
                 controlCssClasses.Add("datepicker");
                 break;
             case PropiedadTipos.HORA:
                 controlTipo = "DropDownList";
-                controlAdditionalParameters = new List<string> { "Model.HoraSelectList", "\"\"" };
+                controlAdditionalParameters = new List<string> { "Model.HoraSelectList", FormatoHelper.EntreComillas("") };
                 break;
             case PropiedadTipos.BOOLEANO:
                 controlTipo = "DropDownList";
-                controlAdditionalParameters = new List<string> { "Model.SiNoSelectList", "\"\"" };
+                controlAdditionalParameters = new List<string> { "Model.SiNoSelectList", FormatoHelper.EntreComillas("") };
                 break;
         }
         controlHtmlAttributes.Add("class", Formateador.Lista(controlCssClasses, separador: " "));

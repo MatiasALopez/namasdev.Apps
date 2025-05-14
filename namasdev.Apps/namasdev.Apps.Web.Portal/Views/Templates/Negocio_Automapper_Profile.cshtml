@@ -22,12 +22,12 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.Automapper
     {
         public @(Html.Raw(clases.Profile))()
         {
-            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "AgregarParametros", clases.Entidad)))();
-            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "ActualizarParametros", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "AgregarParametros", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "ActualizarParametros", clases.Entidad)))();
         @if (Model.PropiedadesDefault.AuditoriaBorrado)
         {
-            <text>@(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "MarcarComoBorradoParametros", clases.Entidad)))();
-            @(Html.Raw(FormatoHelper.ClaseGenerica("CreateMap", "DesmarcarComoBorradoParametros", clases.Entidad)))();</text>
+            <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "MarcarComoBorradoParametros", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "DesmarcarComoBorradoParametros", clases.Entidad)))();</text>
         }
         }
     }

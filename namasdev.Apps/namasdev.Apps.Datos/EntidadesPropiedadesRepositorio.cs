@@ -6,6 +6,7 @@ using System.Linq.Expressions;
 using namasdev.Core.Types;
 using namasdev.Data;
 using namasdev.Data.Entity;
+
 using namasdev.Apps.Datos.Sql;
 using namasdev.Apps.Entidades;
 
@@ -30,7 +31,7 @@ namespace namasdev.Apps.Datos
             {
                 return ctx.EntidadesPropiedades
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
-                    .Where(ep => ep.EntidadId == entidadId && !ep.Borrado)
+                    .Where(ep => ep.EntidadId == entidadId)
                     .WhereIf(ep => ep.Nombre.Contains(busqueda), !string.IsNullOrWhiteSpace(busqueda))
                     .OrdenarYPaginar(op, ordenDefault: nameof(EntidadPropiedad.Orden))
                     .ToList();
@@ -45,7 +46,7 @@ namespace namasdev.Apps.Datos
             {
                 return ctx.EntidadesPropiedades
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
-                    .FirstOrDefault(ep => ep.Id == entidadPropiedadId && !ep.Borrado);
+                    .FirstOrDefault(ep => ep.Id == entidadPropiedadId);
             }
         }
 

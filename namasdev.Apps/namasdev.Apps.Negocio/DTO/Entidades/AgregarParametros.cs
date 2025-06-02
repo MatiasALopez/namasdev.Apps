@@ -1,5 +1,4 @@
 ﻿using System;
-using namasdev.Apps.Entidades;
 
 namespace namasdev.Apps.Negocio.DTO.Entidades
 {
@@ -10,7 +9,5 @@ namespace namasdev.Apps.Negocio.DTO.Entidades
         public string NombrePlural { get; set; }
         public string Etiqueta { get; set; }
         public string EtiquetaPlural { get; set; }
-
-        public virtual EntidadPropiedadesDefault PropiedadesDefault { get; set; }
     }
 }

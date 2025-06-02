@@ -123,16 +123,12 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return View(EntidadesAsociacionesViews.EntidadAsociacion, model);
         }
 
-        public ActionResult Editar(Guid id, Guid aplicacionVersionId)
+        public ActionResult Editar(Guid id)
         {
-            var entidadAsociacion = _entidadesAsociacionesRepositorio.Obtener(id);
-            if (entidadAsociacion == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
+            var entidadAsociacion = _entidadesAsociacionesRepositorio.Obtener(id, cargarDatosAdicionales: true);
 
             var model = Mapear<EntidadAsociacionViewModel>(entidadAsociacion);
-            model.AplicacionVersionId = aplicacionVersionId;
+            model.AplicacionVersionId = entidadAsociacion.OrigenEntidad.AplicacionVersionId;
 
             CargarEntidadAsociacionViewModel(model, PaginaModo.Editar);
 

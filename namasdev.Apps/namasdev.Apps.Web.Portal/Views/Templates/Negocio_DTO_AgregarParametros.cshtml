@@ -13,7 +13,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.Nombre
     {
     @foreach (var p in Model.Propiedades)
     {
-        if (p.GeneradaAlCrear || p.EsCalculada || p.EsAuditoria())
+        if (p.GeneradaAlCrear || p.EsCalculada || p.EsAuditoria)
         {
             continue;
         }

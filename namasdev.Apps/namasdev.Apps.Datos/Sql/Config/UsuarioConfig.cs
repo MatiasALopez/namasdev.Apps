@@ -1,6 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using namasdev.Apps.Entidades;
+
 using namasdev.Data.Entity.Config;
+
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -8,25 +11,25 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public UsuarioConfig()
         {
-            ToTable(Entidades.Metadata.UsuarioMetadata.BD.TABLA);
+            ToTable(UsuarioMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.UsuarioMetadata.BD.ID)
+                .HasColumnName(UsuarioMetadata.BD.ID)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.UsuarioId.TAMAÑO_MAX);
+                .HasMaxLength(UsuarioMetadata.Propiedades.UsuarioId.TAMAÑO_MAX);
 
             Property(e => e.Email)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.Email.TAMAÑO_MAX);
+                .HasMaxLength(UsuarioMetadata.Propiedades.Email.TAMAÑO_MAX);
 
             Property(e => e.Nombres)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.Nombres.TAMAÑO_MAX);
+                .HasMaxLength(UsuarioMetadata.Propiedades.Nombres.TAMAÑO_MAX);
 
             Property(e => e.Apellidos)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.UsuarioMetadata.Propiedades.Apellidos.TAMAÑO_MAX);
+                .HasMaxLength(UsuarioMetadata.Propiedades.Apellidos.TAMAÑO_MAX);
 
             Property(e => e.ApellidosYNombres)
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed);

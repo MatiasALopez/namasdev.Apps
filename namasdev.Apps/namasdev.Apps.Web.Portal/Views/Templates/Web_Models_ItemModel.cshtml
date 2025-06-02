@@ -21,7 +21,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@Html.Raw(Model.N
     {
     @foreach(var p in Model.Propiedades)
     {
-        if (p.EsCalculada || p.EsAuditoria()) { continue; }
+        if (p.EsCalculada || p.EsAuditoria) { continue; }
         <text>[Display(Name = @(Html.Raw(clases.MetadataPropiedades)).@(Html.Raw(p.NombreOId)).ETIQUETA)]
         public @Html.Raw(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @Html.Raw(p.NombreOId) { get; set; }
         </text>

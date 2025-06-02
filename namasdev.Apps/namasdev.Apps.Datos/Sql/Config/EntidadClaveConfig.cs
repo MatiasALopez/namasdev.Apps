@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -8,11 +9,11 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public EntidadClaveConfig()
         {
-            ToTable(Entidades.Metadata.EntidadClaveMetadata.BD.TABLA);
+            ToTable(EntidadClaveMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.EntidadClaveMetadata.BD.ID);
+                .HasColumnName(EntidadClaveMetadata.BD.ID);
 
             HasRequired(p => p.Entidad)
                 .WithMany(p => p.Claves)

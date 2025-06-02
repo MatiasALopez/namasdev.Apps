@@ -1,0 +1,121 @@
+﻿@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Controllers;
+@using namasdev.Apps.Web.Portal.ViewModels.Templates;
+@model GenerarArchivosViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Generar archivos";
+    ViewBag.ExcluirHeaderYFooter = true;
+
+    var controlesIds = new
+    {
+        Form = $"frmGenerarArchivos"
+    };
+    var clases = new
+    {
+        CheckBoxHead = "checkbox-head",
+        CheckBoxBody = "checkbox-body"
+    };
+}
+<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="m-2">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(excludePropertyErrors: true)
+    @Html.Partial("_Errores")
+    @Html.Partial("_ResultadoOk")
+    @Html.HiddenFor(m => m.ModoDebug)
+    @Html.HiddenFor(m => m.ModoAplicacion)
+    @Html.HiddenFor(m => m.Id)
+    @if (Model.ModoAplicacion)
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.AplicacionVersionId)
+            @Html.DropDownListFor(m => m.AplicacionVersionId, Model.VersionesSelectList, "", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.AplicacionVersionId)
+        </div>
+    }
+    @if (!Model.ModoDebug)
+    {
+        <div class="@clases.CheckBoxHead">
+            <div class="form-group">
+                <div class="custom-control custom-switch">
+                    <input id="chkTodos" type="checkbox" class="custom-control-input" />
+                    <label for="chkTodos" class="custom-control-label">Todos</label>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="@clases.CheckBoxBody">
+        <fieldset>
+            <legend>BD</legend>
+            @TemplateFormGroup(m => m.GenerarBDTabla, TemplatesNombres.BD.Tabla)
+        </fieldset>
+        <fieldset>
+            <legend>Entidades</legend>
+            @TemplateFormGroup(m => m.GenerarEntidadesEntidad, TemplatesNombres.Entidades.ENTIDAD)
+            @TemplateFormGroup(m => m.GenerarEntidadesMetadataEntidadMetadata, TemplatesNombres.Entidades.Metadata.ENTIDAD_METADATA)
+        </fieldset>
+        <fieldset>
+            <legend>Datos</legend>
+            @TemplateFormGroup(m => m.GenerarDatosSqlConfig, TemplatesNombres.Datos.Sql.CONFIG)
+            @TemplateFormGroup(m => m.GenerarDatosRepositorio, TemplatesNombres.Datos.REPOSITORIO)
+        </fieldset>
+        <fieldset>
+            <legend>Negocio</legend>
+            @TemplateFormGroup(m => m.GenerarNegocioDTOAgregarParametros, TemplatesNombres.Negocio.DTO.AGREGAR_PARAMETROS)
+            @TemplateFormGroup(m => m.GenerarNegocioDTOActualizarParametros, TemplatesNombres.Negocio.DTO.ACTUALIZAR_PARAMETROS)
+            @TemplateFormGroup(m => m.GenerarNegocioDTOMarcarComoBorradoParametros, TemplatesNombres.Negocio.DTO.MARCAR_COMO_BORRADO_PARAMETROS)
+            @TemplateFormGroup(m => m.GenerarNegocioDTODesmarcarComoBorradoParametros, TemplatesNombres.Negocio.DTO.DESMARCAR_COMO_BORRADO_PARAMETROS)
+            @TemplateFormGroup(m => m.GenerarNegocioDTOEliminarParametros, TemplatesNombres.Negocio.DTO.ELIMINAR_PARAMETROS)
+            @TemplateFormGroup(m => m.GenerarNegocioAutomapperProfile, TemplatesNombres.Negocio.Automapper.PROFILE)
+            @TemplateFormGroup(m => m.GenerarNegocio, TemplatesNombres.Negocio.NEGOCIO)
+        </fieldset>
+        <fieldset>
+            <legend>Web.Portal</legend>
+            @TemplateFormGroup(m => m.GenerarWebModelsItemModel, TemplatesNombres.Web.Models.ITEM_MODEL)
+            @TemplateFormGroup(m => m.GenerarWebViewModelsEntidadViewModel, TemplatesNombres.Web.ViewModels.ENTIDAD_VIEW_MODEL)
+            @TemplateFormGroup(m => m.GenerarWebViewModelsListaViewModel, TemplatesNombres.Web.ViewModels.LISTA_VIEW_MODEL)
+            @TemplateFormGroup(m => m.GenerarWebAutomapperProfile, TemplatesNombres.Web.Automapper.PROFILE)
+            @TemplateFormGroup(m => m.GenerarWebMetadataViews, TemplatesNombres.Web.Metadata.VIEWS)
+            @TemplateFormGroup(m => m.GenerarWebViewsEntidad, TemplatesNombres.Web.Views.ENTIDAD)
+            @TemplateFormGroup(m => m.GenerarWebViewsIndex, TemplatesNombres.Web.Views.INDEX)
+            @TemplateFormGroup(m => m.GenerarWebController, TemplatesNombres.Web.CONTROLLER)
+        </fieldset>
+    </div>
+    @if (!Model.ModoDebug)
+    {
+        <button type="submit" class="btn btn-primary">Generar</button>
+    }
+</form>
+@section bodyScripts {
+    <script type="text/javascript">
+        $(function () {
+            nmd.ui.controls.initCheckBoxSelection(
+                '#@controlesIds.Form',
+                {
+                    checkBoxAllSelector: '.@clases.CheckBoxHead input[type="checkbox"]',
+                    checkBoxOneSelector: '.@clases.CheckBoxBody input[type="checkbox"]',
+                });
+
+            $('#@controlesIds.Form').on('submit', function () {
+                nmd.ui.controls.showLoading();
+            });
+        });
+    </script>
+}
+@helper TemplateFormGroup(System.Linq.Expressions.Expression<Func<GenerarArchivosViewModel, bool>> expression, string templateNombre)
+{
+    <div class="form-group">
+        @if (Model.ModoDebug)
+        {
+            <span>@Html.DisplayNameFor(expression)</span>
+            <a href="@Url.Action(nameof(TemplatesController.Debug), TemplatesController.NAME, new { id = Model.Id, template = templateNombre })" class="btn btn-xs btn-primary" target="_blank"><i class="fa fa-eye"></i></a>
+        }
+        else
+        {
+            <div class="custom-control custom-switch">
+                @Html.CheckBoxFor(expression, new { @class = "custom-control-input" })
+                @Html.LabelFor(expression, new { @class = "custom-control-label" })
+            </div>
+        }
+    </div>
+}

@@ -12,3 +12,6 @@ go
 
 create nonclustered index IX_EntidadesClaves_EntidadId on dbo.EntidadesClaves (EntidadId)
 go
+
+create unique nonclustered index IX_EntidadesClaves_EntidadIdYEntidadPropiedadId on dbo.EntidadesClaves (EntidadId,EntidadPropiedadId)
+go

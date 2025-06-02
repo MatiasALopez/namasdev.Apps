@@ -1,5 +1,7 @@
 ﻿using System.Data.Entity.ModelConfiguration;
+
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -7,15 +9,15 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public CorreoParametrosConfig()
         {
-            ToTable(Entidades.Metadata.CorreoParametrosMetadata.BD.TABLA);
+            ToTable(CorreoParametrosMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.CorreoParametrosMetadata.BD.ID);
+                .HasColumnName(CorreoParametrosMetadata.BD.ID);
 
             Property(e => e.Asunto)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.CorreoParametrosMetadata.Propiedades.Asunto.TAMAÑO_MAX);
+                .HasMaxLength(CorreoParametrosMetadata.Propiedades.Asunto.TAMAÑO_MAX);
         }
     }
 }

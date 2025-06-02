@@ -9,8 +9,8 @@
     var clases = new
     {
         ClaseBase =
-            Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
-            ? FormatoHelper.Generic("ParametrosEntidadBase", Model.PropiedadesDefault.IDTipo.CLRType)
+            Model.Especificaciones.IDPropiedadTipoId.HasValue
+            ? FormatoHelper.Generic("ParametrosEntidadBase", Model.Especificaciones.IDTipo.CLRType)
             : string.Format("ParametrosConUsuarioBase"),
     };
 }

@@ -1,4 +1,5 @@
-﻿@using namasdev.Apps.Web.Portal.Helpers;
+﻿@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
     var namespaces = new
@@ -24,10 +25,14 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.Automapper
         {
             @(Html.Raw(FormatoHelper.Generic("CreateMap", "AgregarParametros", clases.Entidad)))();
             @(Html.Raw(FormatoHelper.Generic("CreateMap", "ActualizarParametros", clases.Entidad)))();
-        @if (Model.PropiedadesDefault.AuditoriaBorrado)
+        @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
         {
             <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "MarcarComoBorradoParametros", clases.Entidad)))();
             @(Html.Raw(FormatoHelper.Generic("CreateMap", "DesmarcarComoBorradoParametros", clases.Entidad)))();</text>
+        }
+        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
+        {
+            <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "EliminarParametros", clases.Entidad)))();</text>
         }
         }
     }

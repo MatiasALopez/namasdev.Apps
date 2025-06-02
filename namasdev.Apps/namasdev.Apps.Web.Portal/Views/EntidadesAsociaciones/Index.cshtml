@@ -48,6 +48,8 @@
                     <thead>
                         <tr>
                             <th>@Html.DisplayNameFor(m => m.Items[0].Nombre)</th>
+                            <th>@Html.DisplayNameFor(m => m.Items[0].OrigenEntidadPropiedadNavegacionNombre)</th>
+                            <th>@Html.DisplayNameFor(m => m.Items[0].DestinoEntidadPropiedadNavegacionNombre)</th>
                             <th>@Html.DisplayNameFor(m => m.Items[0].UpdateReglaNombre)</th>
                             <th>@Html.DisplayNameFor(m => m.Items[0].DeleteReglaNombre)</th>
                             <th></th>
@@ -58,6 +60,8 @@
                         {
                             <tr>
                                 <td>@Html.Raw(item.Nombre)</td>
+                                <td>@Html.Raw(item.OrigenEntidadPropiedadNavegacionNombre)</td>
+                                <td>@Html.Raw(item.DestinoEntidadPropiedadNavegacionNombre)</td>
                                 <td>@Html.Raw(item.UpdateReglaNombre)</td>
                                 <td>@Html.Raw(item.DeleteReglaNombre)</td>
                                 <td class="text-center">

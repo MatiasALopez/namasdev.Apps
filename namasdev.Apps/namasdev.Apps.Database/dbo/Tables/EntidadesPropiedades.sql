@@ -11,13 +11,6 @@
 	CalculadaFormula nvarchar(2000) null,
 	GeneradaAlCrear bit not null,
 	Editable bit not null,
-	CreadoPor nvarchar(128) not null,
-	CreadoFecha datetime not null,
-	UltimaModificacionPor nvarchar(128) not null,
-	UltimaModificacionFecha datetime not null,
-	BorradoPor nvarchar(128) null,
-	BorradoFecha datetime null,
-	Borrado AS (ISNULL(CONVERT(bit,CASE WHEN BorradoFecha IS NULL THEN 0 ELSE 1 END), 0)),
 
 	constraint PK_EntidadesPropiedades primary key clustered (EntidadPropiedadId),
 	constraint FK_EntidadesPropiedades_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId) on delete cascade on update cascade,

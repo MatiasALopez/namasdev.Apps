@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using namasdev.Core.Entity;
 
 namespace namasdev.Apps.Entidades
@@ -13,19 +14,26 @@ namespace namasdev.Apps.Entidades
         public string EtiquetaPlural { get; set; }
 
         public virtual AplicacionVersion AplicacionVersion { get; set; }
-        public virtual EntidadPropiedadesDefault PropiedadesDefault { get; set; }
+        public virtual EntidadEspecificaciones Especificaciones { get; set; }
         public virtual List<EntidadPropiedad> Propiedades { get; set; }
         public virtual List<EntidadAsociacion> AsociacionesOrigen { get; set; }
         public virtual List<EntidadAsociacion> AsociacionesDestino { get; set; }
         public virtual List<EntidadClave> Claves { get; set; }
         public virtual List<EntidadIndice> Indices { get; set; }
 
-        public void EliminarPropiedadesBorradas()
+        public bool TienePropiedad(string nombre)
         {
-            if (Propiedades != null)
-            {
-                Propiedades.RemoveAll(p => p.Borrado);
-            }
+            return Propiedades?.Exists(p => string.Equals(p.Nombre, nombre, StringComparison.OrdinalIgnoreCase)) ?? false;
+        }
+
+        public EntidadPropiedad ObtenerPropiedad(string nombre)
+        {
+            return Propiedades?.Find(p => string.Equals(p.Nombre, nombre, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public bool TieneClave(Guid entidadPropiedadId)
+        {
+            return Claves?.Exists(c => c.EntidadPropiedadId == entidadPropiedadId) ?? false;
         }
 
         public override string ToString()

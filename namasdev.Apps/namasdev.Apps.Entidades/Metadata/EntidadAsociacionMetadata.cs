@@ -1,4 +1,6 @@
-﻿namespace namasdev.Apps.Entidades.Metadata
+﻿using namasdev.Apps.Entidades.Valores;
+
+namespace namasdev.Apps.Entidades.Metadata
 {
     public class EntidadAsociacionMetadata
     {
@@ -37,6 +39,13 @@
                 public const string ETIQUETA = "Propiedad (origen)";
             }
 
+            public class OrigenEntidadPropiedadNavegacionNombre
+            {
+                public const string ETIQUETA = "Propiedad navegación (origen)";
+                public const int TAMAÑO_MAX = 100;
+                public const string REG_EX = RegExs.IDENTIFICADOR;
+            }
+
             public class OrigenAsociacionMultiplicidadId
             {
                 public const string ETIQUETA = "Multiplicidad (origen)";
@@ -52,6 +61,13 @@
                 public const string ETIQUETA = "Propiedad (destino)";
             }
 
+            public class DestinoEntidadPropiedadNavegacionNombre
+            {
+                public const string ETIQUETA = "Propiedad navegación (destino)";
+                public const int TAMAÑO_MAX = 100;
+                public const string REG_EX = RegExs.IDENTIFICADOR;
+            }
+
             public class DestinoAsociacionMultiplicidadId
             {
                 public const string ETIQUETA = "Multiplicidad (destino)";
@@ -61,7 +77,7 @@
             {
                 public const string ETIQUETA = "Tabla auxiliar";
                 public const int TAMAÑO_MAX = 100;
-                public const string REG_EX = @"^[a-zA-ZñÑ0-9_]*$";
+                public const string REG_EX = RegExs.IDENTIFICADOR;
             }
 
             public class DeleteAsociacionReglaId

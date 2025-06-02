@@ -11,7 +11,7 @@
     {
         Config = string.Format("{0}Config", Model.Nombre),
         ConfigBase =
-            Model.PropiedadesDefault.IDPropiedadTipoId.HasValue && Model.PropiedadesDefault.AuditoriaBorrado
+            Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA
             ? "EntidadBorradoConfigBase"
             : "EntityTypeConfiguration",
         Metadata = string.Format("{0}Metadata", Model.Nombre),
@@ -19,15 +19,17 @@
     string propiedadMetadataBase;
     var propiedadesReglas = new Dictionary<string, string>();
     List<string> propiedadReglas;
+    string propiedadNombre;
     foreach (var p in Model.Propiedades)
     {
-        if (p.EsAuditoriaBorrado())
+        if (p.EsAuditoriaBorrado)
         {
             continue;
         }
-        propiedadMetadataBase = string.Format("{0}.Propiedades.{1}.", clases.Metadata, p.Nombre);
+        propiedadNombre = p.NombreOId;
+        propiedadMetadataBase = string.Format("{0}.Propiedades.{1}.", clases.Metadata, propiedadNombre);
         propiedadReglas = new List<string>();
-        if (p.Nombre == namasdev.Apps.Entidades.EntidadPropiedad.IdNombre(Model))
+        if (p.EsId)
         {
             propiedadReglas.Add(string.Format("HasColumnName({0}.BD.ID)", clases.Metadata));
         }
@@ -60,27 +62,23 @@
         }
         if (propiedadReglas.Any())
         {
-            propiedadesReglas.Add(string.Format("p.{0}", p.NombreOId), Formateador.Lista(propiedadReglas, "."));
+            propiedadesReglas.Add(string.Format("p.{0}", propiedadNombre), Formateador.Lista(propiedadReglas, "."));
         }
     }
     var asociaciones = new List<string>();
     string asociacionParte1Regla,
-        asociacionParte2Regla,
-        origenPropiedadNavegacion,
-        destinoPropiedadNavegacion;
+        asociacionParte2Regla;
     bool asociacionTieneReglaForeignKey;
     foreach (var a in Model.AsociacionesOrigen.OrderBy(ao => ao.OrigenPropiedad.Orden))
     {
         asociacionParte1Regla = asociacionParte2Regla = null;
         asociacionTieneReglaForeignKey = false;
-        origenPropiedadNavegacion = namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id");
-        destinoPropiedadNavegacion = a.OrigenEntidad.NombrePlural;
-        switch (a.DestinoAsociacionMultiplicidadId)
+        switch (a.OrigenAsociacionMultiplicidadId)
         {
             case AsociacionMultiplicidades.CERO_UNO:
                 asociacionParte1Regla = "HasOptional";
 
-                switch (a.OrigenAsociacionMultiplicidadId)
+                switch (a.DestinoAsociacionMultiplicidadId)
                 {
                     case AsociacionMultiplicidades.CERO_UNO:
                         asociacionParte2Regla = "WithOptionalDependent";
@@ -100,7 +98,7 @@
             case AsociacionMultiplicidades.UNO:
                 asociacionParte1Regla = "HasRequired";
 
-                switch (a.OrigenAsociacionMultiplicidadId)
+                switch (a.DestinoAsociacionMultiplicidadId)
                 {
                     case AsociacionMultiplicidades.CERO_UNO:
                         asociacionParte2Regla = "WithOptional";
@@ -120,7 +118,7 @@
             case AsociacionMultiplicidades.MUCHOS:
                 asociacionParte1Regla = "HasMany";
 
-                switch (a.OrigenAsociacionMultiplicidadId)
+                switch (a.DestinoAsociacionMultiplicidadId)
                 {
                     case AsociacionMultiplicidades.CERO_UNO:
                         asociacionParte2Regla = "WithOptional";
@@ -137,7 +135,12 @@
 
                 break;
         }
-        asociaciones.Add(string.Format("{0}(p => p.{1}).{2}(p => p.{3}){4}", asociacionParte1Regla, origenPropiedadNavegacion, asociacionParte2Regla, destinoPropiedadNavegacion, (asociacionTieneReglaForeignKey ? string.Format(".HasForeignKey(p => p.{0})", a.DestinoPropiedad.Nombre) : "")));
+        asociaciones.Add(string.Format("{0}({1}).{2}({3}){4}",
+            asociacionParte1Regla,
+            (!string.IsNullOrWhiteSpace(a.OrigenEntidadPropiedadNavegacionNombre) ? string.Format("p => p.{0}", a.OrigenEntidadPropiedadNavegacionNombre) : ""),
+            asociacionParte2Regla,
+            (!string.IsNullOrWhiteSpace(a.DestinoEntidadPropiedadNavegacionNombre) ? string.Format("p => p.{0}", a.DestinoEntidadPropiedadNavegacionNombre) : ""),
+            (asociacionTieneReglaForeignKey ? string.Format(".HasForeignKey(p => p.{0})", a.DestinoPropiedad.Nombre) : "")));
     }
 }
 using System.ComponentModel.DataAnnotations.Schema;
@@ -155,7 +158,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Datos.Sql.Config
         public @(Html.Raw(clases.Config))()
         {
             ToTable(@(Html.Raw(clases.Metadata)).BD.TABLA);
-            @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
+            @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
             {
             <text>HasKey(p => p.Id);</text>
             }

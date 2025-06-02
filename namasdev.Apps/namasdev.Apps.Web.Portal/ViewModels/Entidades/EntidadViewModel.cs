@@ -42,25 +42,6 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Entidades
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string EtiquetaPlural { get; set; }
 
-        #region Propiedades default
-
-        [Display(Name = EntidadPropiedadesDefaultMetadata.Propiedades.IDPropiedadTipoId.ETIQUETA)]
-        public short? PropiedadesDefaultIDPropiedadTipoId { get; set; }
-
-        [Display(Name = EntidadPropiedadesDefaultMetadata.Propiedades.AuditoriaCreado.ETIQUETA),
-        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
-        public bool PropiedadesDefaultAuditoriaCreado { get; set; }
-
-        [Display(Name = EntidadPropiedadesDefaultMetadata.Propiedades.AuditoriaUltimaModificacion.ETIQUETA),
-        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
-        public bool PropiedadesDefaultAuditoriaUltimaModificacion { get; set; }
-
-        [Display(Name = EntidadPropiedadesDefaultMetadata.Propiedades.AuditoriaBorrado.ETIQUETA),
-        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
-        public bool PropiedadesDefaultAuditoriaBorrado { get; set; }
-
-        #endregion
-
         public SelectList PropiedadTiposSelectList { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

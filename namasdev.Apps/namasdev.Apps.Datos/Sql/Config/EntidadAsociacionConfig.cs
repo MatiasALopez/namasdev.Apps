@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -8,17 +9,23 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public EntidadAsociacionConfig()
         {
-            ToTable(Entidades.Metadata.EntidadAsociacionMetadata.BD.TABLA);
+            ToTable(EntidadAsociacionMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.EntidadAsociacionMetadata.BD.ID);
+                .HasColumnName(EntidadAsociacionMetadata.BD.ID);
 
             Property(p => p.Nombre)
-                .HasMaxLength(Entidades.Metadata.EntidadAsociacionMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(EntidadAsociacionMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+
+            Property(p => p.OrigenEntidadPropiedadNavegacionNombre)
+                .HasMaxLength(EntidadAsociacionMetadata.Propiedades.OrigenEntidadPropiedadNavegacionNombre.TAMAÑO_MAX);
+
+            Property(p => p.DestinoEntidadPropiedadNavegacionNombre)
+                .HasMaxLength(EntidadAsociacionMetadata.Propiedades.DestinoEntidadPropiedadNavegacionNombre.TAMAÑO_MAX);
 
             Property(p => p.TablaAuxiliarNombre)
-                .HasMaxLength(Entidades.Metadata.EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.TAMAÑO_MAX);
+                .HasMaxLength(EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.TAMAÑO_MAX);
 
             HasRequired(p => p.OrigenEntidad)
                 .WithMany(p => p.AsociacionesOrigen)

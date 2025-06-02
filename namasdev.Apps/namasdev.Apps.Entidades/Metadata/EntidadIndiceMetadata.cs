@@ -1,3 +1,5 @@
+using namasdev.Apps.Entidades.Valores;
+
 namespace namasdev.Apps.Entidades.Metadata
 {
     public class EntidadIndiceMetadata
@@ -28,7 +30,7 @@ namespace namasdev.Apps.Entidades.Metadata
             {
                 public const string ETIQUETA = "Nombre";
                 public const int TAMAÑO_MAX = 200;
-                public const string REG_EX = @"^[a-zA-Z][a-zA-ZñÑ0-9_]*$";
+                public const string REG_EX = RegExs.IDENTIFICADOR;
             }
             public class EsUnique
             {

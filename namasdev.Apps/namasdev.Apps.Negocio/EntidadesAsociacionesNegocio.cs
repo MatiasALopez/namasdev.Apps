@@ -67,11 +67,9 @@ namespace namasdev.Apps.Negocio
         {
             var errores = new List<string>();
 
-            Validador.ValidarNumeroYAgregarAListaErrores(entidad.OrigenAsociacionMultiplicidadId, EntidadAsociacionMetadata.Propiedades.OrigenAsociacionMultiplicidadId.ETIQUETA, requerido: true, errores);
-            Validador.ValidarNumeroYAgregarAListaErrores(entidad.DestinoAsociacionMultiplicidadId, EntidadAsociacionMetadata.Propiedades.DestinoAsociacionMultiplicidadId.ETIQUETA, requerido: true, errores);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.TablaAuxiliarNombre, EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.ETIQUETA, requerido: false, errores, tamañoExacto: 100);
-            Validador.ValidarNumeroYAgregarAListaErrores(entidad.DeleteAsociacionReglaId, EntidadAsociacionMetadata.Propiedades.DeleteAsociacionReglaId.ETIQUETA, requerido: true, errores);
-            Validador.ValidarNumeroYAgregarAListaErrores(entidad.UpdateAsociacionReglaId, EntidadAsociacionMetadata.Propiedades.UpdateAsociacionReglaId.ETIQUETA, requerido: true, errores);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.OrigenEntidadPropiedadNavegacionNombre, EntidadAsociacionMetadata.Propiedades.OrigenEntidadPropiedadNavegacionNombre.ETIQUETA, requerido: false, errores, tamañoMaximo: EntidadAsociacionMetadata.Propiedades.OrigenEntidadPropiedadNavegacionNombre.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.DestinoEntidadPropiedadNavegacionNombre, EntidadAsociacionMetadata.Propiedades.DestinoEntidadPropiedadNavegacionNombre.ETIQUETA, requerido: false, errores, tamañoMaximo: EntidadAsociacionMetadata.Propiedades.DestinoEntidadPropiedadNavegacionNombre.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.TablaAuxiliarNombre, EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.ETIQUETA, requerido: false, errores, tamañoMaximo: EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.TAMAÑO_MAX);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

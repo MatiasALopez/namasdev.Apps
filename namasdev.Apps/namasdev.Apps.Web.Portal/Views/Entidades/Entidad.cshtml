@@ -1,5 +1,4 @@
-﻿@using namasdev.Web.Models;
-@using namasdev.Apps.Entidades.Metadata; 
+﻿@using namasdev.Apps.Entidades.Metadata; 
 @using namasdev.Apps.Web.Portal.ViewModels.Entidades;
 @model EntidadViewModel
 @{
@@ -52,35 +51,6 @@
             @Html.ValidationMessageFor(m => m.EtiquetaPlural)
         </div>
     </div>
-    @if (Model.PaginaModo == PaginaModo.Agregar)
-    {
-        <fieldset>
-            <legend>Propiedades default</legend>
-            <div class="form-row">
-                <div class="form-group col-lg-3 col-md-6">
-                    @Html.LabelFor(m => m.PropiedadesDefaultIDPropiedadTipoId)
-                    @Html.DropDownListFor(m => m.PropiedadesDefaultIDPropiedadTipoId, Model.PropiedadTiposSelectList, "", new { @class = "form-control" })
-                    @Html.ValidationMessageFor(m => m.PropiedadesDefaultIDPropiedadTipoId)
-                </div>
-            </div>
-            <div class="form-row">
-                <div class="form-group col-lg-5 col-md-6">
-                    <div class="custom-control custom-switch">
-                        @Html.CheckBoxFor(m => m.PropiedadesDefaultAuditoriaCreado, new { @class = "custom-control-input" })
-                        @Html.LabelFor(m => m.PropiedadesDefaultAuditoriaCreado, new { @class = "custom-control-label" })
-                    </div>
-                    <div class="custom-control custom-switch">
-                        @Html.CheckBoxFor(m => m.PropiedadesDefaultAuditoriaUltimaModificacion, new { @class = "custom-control-input" })
-                        @Html.LabelFor(m => m.PropiedadesDefaultAuditoriaUltimaModificacion, new { @class = "custom-control-label" })
-                    </div>
-                    <div class="custom-control custom-switch">
-                        @Html.CheckBoxFor(m => m.PropiedadesDefaultAuditoriaBorrado, new { @class = "custom-control-input" })
-                        @Html.LabelFor(m => m.PropiedadesDefaultAuditoriaBorrado, new { @class = "custom-control-label" })
-                    </div>
-                </div>
-            </div>
-        </fieldset>
-    }
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
 </form>
 @section bodyScripts {

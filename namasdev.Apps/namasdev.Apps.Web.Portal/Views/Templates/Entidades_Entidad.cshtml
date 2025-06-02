@@ -3,49 +3,38 @@
 @model namasdev.Apps.Entidades.Entidad
 @{
     string claseBase =
-        Model.PropiedadesDefault.IDPropiedadTipoId.HasValue
+        Model.Especificaciones.IDPropiedadTipoId.HasValue
         ? string.Format(
             ": Entidad{0}{1}{2}<{3}>",
-            (Model.PropiedadesDefault.AuditoriaCreado ? "Creado" : ""),
-            (Model.PropiedadesDefault.AuditoriaUltimaModificacion ? "Modificado" : ""),
-            (Model.PropiedadesDefault.AuditoriaBorrado ? "Borrado" : ""),
-            Model.PropiedadesDefault.IDTipo.CLRType)
+            (Model.Especificaciones.AuditoriaCreado ? "Creado" : ""),
+            (Model.Especificaciones.AuditoriaUltimaModificacion ? "Modificado" : ""),
+            (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA ? "Borrado" : ""),
+            Model.Especificaciones.IDTipo.CLRType)
         : "";
-
     var propiedadesNavegacion = new List<string>();
-    string propiedadTipo,
-        propiedadNombre;
     foreach (var a in Model.AsociacionesOrigen.OrderBy(ao => ao.OrigenPropiedad.Orden))
     {
-        if (a.DestinoAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS)
+        if (string.IsNullOrWhiteSpace(a.OrigenEntidadPropiedadNavegacionNombre))
         {
-            propiedadTipo = FormatoHelper.Generic("List", a.DestinoEntidad.Nombre);
-            propiedadNombre = a.DestinoEntidad.NombrePlural;
+            continue;
         }
-        else
-        {
-            propiedadTipo = a.DestinoEntidad.Nombre;
-            propiedadNombre =
-                a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
-                ? namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id")
-                : a.DestinoEntidad.Nombre;
-        }
-
-        propiedadesNavegacion.Add(string.Format("{0} {1}", propiedadTipo, propiedadNombre));
+        propiedadesNavegacion.Add(string.Format("{0} {1}",
+            a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
+                ? FormatoHelper.Generic("List", a.DestinoEntidad.Nombre)
+                : a.DestinoEntidad.Nombre, 
+            a.OrigenEntidadPropiedadNavegacionNombre));
     }
     foreach (var a in Model.AsociacionesDestino.OrderBy(ad => ad.DestinoPropiedad.Orden))
     {
-        if (a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS)
+        if (string.IsNullOrWhiteSpace(a.DestinoEntidadPropiedadNavegacionNombre))
         {
-            propiedadTipo = FormatoHelper.Generic("List", a.OrigenEntidad.Nombre);
-            propiedadNombre = a.OrigenEntidad.NombrePlural;
+            continue;
         }
-        else
-        {
-            propiedadTipo = a.OrigenEntidad.Nombre;
-            propiedadNombre = namasdev.Core.Types.StringExtensiones.TrimEnd(a.OrigenPropiedad.Nombre, "Id");
-        }
-        propiedadesNavegacion.Add(string.Format("{0} {1}", propiedadTipo, propiedadNombre));
+        propiedadesNavegacion.Add(string.Format("{0} {1}",
+            a.DestinoAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
+                ? FormatoHelper.Generic("List", a.OrigenEntidad.Nombre)
+                : a.OrigenEntidad.Nombre,
+            a.DestinoEntidadPropiedadNavegacionNombre));
     }
 }
 using System;
@@ -59,7 +48,8 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades
     {
     @foreach (var p in Model.Propiedades)
     {
-        if (p.EsPropiedadDefault())
+        if (p.EsId 
+            || p.EsAuditoria)
         {
             continue;
         }

@@ -1,4 +1,6 @@
-﻿namespace namasdev.Apps.Entidades.Metadata
+﻿using namasdev.Apps.Entidades.Valores;
+
+namespace namasdev.Apps.Entidades.Metadata
 {
     public class EntidadPropiedadMetadata
     {
@@ -25,7 +27,7 @@
             {
                 public const string ETIQUETA = "Nombre";
                 public const int TAMAÑO_MAX = 100;
-                public const string REG_EX = @"^[a-zA-Z][a-zA-ZñÑ0-9_]*$";
+                public const string REG_EX = RegExs.IDENTIFICADOR;
             }
 
             public class Etiqueta

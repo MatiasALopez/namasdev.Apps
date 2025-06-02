@@ -15,15 +15,23 @@
         ListaViewModel = string.Format("{0}ViewModel", Model.NombrePlural),
         Controller = string.Format("{0}Controller", Model.NombrePlural),
     };
+    var javaScript = new
+    {
+        App = Model.AplicacionVersion.Aplicacion.Nombre,
+    };
     string propiedadIdNombre = null;
     var propiedades = new Dictionary<string, string>();
     foreach (var p in Model.Propiedades)
     {
-        if (p.EsCalculada || p.EsAuditoria())
+        if (p.EsCalculada || p.EsAuditoria)
         {
             continue;
         }
-        if (p.EsId()) { propiedadIdNombre = p.NombreOId; }
+        if (p.EsId)
+        {
+            propiedadIdNombre = p.NombreOId;
+            continue;
+        }
         switch (p.PropiedadTipoId)
         {
             case PropiedadTipos.ENTERO:
@@ -53,10 +61,12 @@
                 propiedades.Add(p.NombreOId, string.Format("@Formateador.SiNo(item.{0})", p.NombreOId));
                 break;
             default:
-                propiedades.Add(p.NombreOId, string.Format("@Html.Raw(item.{0})", p.NombreOId));
+                propiedades.Add(p.NombreOId, string.Format("item.{0}", p.NombreOId));
                 break;
         }
     }
+    bool esSoloLectura = Model.Especificaciones.EsSoloLectura,
+        eliminarDisponible = Model.Especificaciones.BajaTipoId != BajaTipos.NINGUNA;
 }
 @@using namasdev.Core.Types;
 @@using namasdev.Web.Helpers;
@@ -75,26 +85,32 @@
     };
     var displayNames = new
     {
-        Busqueda = Html.DisplayNameWithoutEncodingFor(m => m.Busqueda).ToString()
+        //Busqueda = Html.DisplayNameWithoutEncodingFor(m => m.Busqueda).ToString()
     };
-    var clasesCss = new
+    @if (!esSoloLectura) 
+    {
+    <text>var clasesCss = new
     {
         BotonEliminar = "btn-eliminar"
-    };
+    };</text>
+    }
 }
 <h2 class="my-2">@@ViewBag.Title</h2>
 @@Html.Partial("_ResultadoOk")
 @@Html.Partial("_Errores")
 <div class="row my-3">
+    @if (!esSoloLectura)
+    {
     <div class="col-md-3">
         <a href="@Html.Raw(string.Format("@Url.Action(nameof({0}.Agregar))", clases.Controller))" class="btn btn-primary">Agregar</a>
     </div>
-    <div class="col-md-9 text-right filtros">
-        @@using (Html.BeginForm(@Html.Raw(string.Format("nameof({0}.Index)", clases.Controller)), @(Html.Raw(clases.Controller)).NAME, FormMethod.Get, new { @@class = "form-inline pull-right" }))
+    }
+    <div class="col-md-@(!esSoloLectura ? "9" : "12") text-right filtros">
+        @@*@@using (Html.BeginForm(@Html.Raw(string.Format("nameof({0}.Index)", clases.Controller)), @(Html.Raw(clases.Controller)).NAME, FormMethod.Get, new { @@class = "form-inline pull-right" }))
         {
-            @@Html.TextBoxFor(m => m.Busqueda, new { @@class = "form-control ml-1", placeholder = displayNames.Busqueda, title = displayNames.Busqueda, data_toggle = "tooltip" })
-            <button type="submit" class="btn btn-secondary ml-1">Buscar</button>
-        }
+        @@Html.TextBoxFor(m => m.Busqueda, new { @@class = "form-control ml-1", placeholder = displayNames.Busqueda, title = displayNames.Busqueda, data_toggle = "tooltip" })
+        <button type="submit" class="btn btn-secondary ml-1">Buscar</button>
+        }*@@
     </div>
 </div>
 <div class="row">
@@ -110,9 +126,11 @@
                         <tr>
                         @foreach (var p in propiedades)
                         {
-                            <text><th><a href="@Html.Raw(string.Format("@URLHelper.GenerarUrlConOrden(Request.Url, nameof({0}.{1}))", clases.Entidad, p.Key))">@@Html.DisplayNameFor(m => m.Items[0].@(Html.Raw(p.Key))) <i class="fa fa-sort ml-2"></i></a></th></text>
+                            <th><a href="@Html.Raw(string.Format("@URLHelper.GenerarUrlConOrden(Request.Url, nameof({0}.{1}))", clases.Entidad, p.Key))">@@Html.DisplayNameFor(m => m.Items[0].@(Html.Raw(p.Key))) <i class="fa fa-sort ml-2"></i></a></th>
                         }
-                            <th></th>
+                        @if (!esSoloLectura)
+                        {   <th></th> 
+                        }
                         </tr>
                     </thead>
                     <tbody>
@@ -121,12 +139,17 @@
                             <tr>
                             @foreach (var p in propiedades)
                             {
-                                <text><td>@@Html.Raw(p.Value)</td></text>
+                                <td>@@Html.Raw(@Html.Raw(p.Value))</td>
                             }
-                                <td class="text-center">
+                            @if (!esSoloLectura) 
+                            {   <td class="text-center">
                                     <a href="@Html.Raw(string.Format("@Url.Action(nameof({0}.Editar), new {{ id = item.{1} }})", clases.Controller, propiedadIdNombre))" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                    <button class="btn btn-sm btn-outline-danger @("@clasesCss.BotonEliminar")" data-id="@Html.Raw(string.Format("@item.{0}", propiedadIdNombre)))"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    @if (eliminarDisponible)
+                                    {
+                                    <button class="btn btn-sm btn-outline-danger @("@clasesCss.BotonEliminar")" data-id="@Html.Raw(string.Format("@item.{0}", propiedadIdNombre))"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                    }
                                 </td>
+                            }
                             </tr>
                         }
                     </tbody>
@@ -143,8 +166,9 @@
 @@section bodyScripts {
 <script type="text/javascript">
     $(function () {
-        namasdevApps.setActiveMenuOption('@Html.Raw(Model.NombrePlural.ToFirstLetterLowercase())');
-
+        @(javaScript.App).setActiveMenuOption('@Html.Raw(Model.NombrePlural.ToFirstLetterLowercase())');
+        @if (eliminarDisponible) {
+        <text>
         $('#@@controlesIds.Tabla')
             .on('click', '.@@clasesCss.BotonEliminar', function (ev) {
                 ev.preventDefault();
@@ -160,7 +184,7 @@
                     confirmTitle: 'Eliminar @@@(Html.Raw(clases.Metadata)).ETIQUETA',
                     confirmMessage: '@@@(Html.Raw(clases.MetadataMensajes)).ELIMINAR_CONFIRMACION'
                 };
-                namasdevApps.postJson(
+                @(javaScript.App).postJson(
                     '@@Url.Action(nameof(@(Html.Raw(clases.Controller)).Eliminar))/' + id,
                     nmd.ui.forms.createDataWithAntiForgeryToken('#@@controlesIds.Form'),
                     function (response) {
@@ -172,14 +196,15 @@
                                 });
                         }
                         else {
-                            namasdevApps.showErrorModal(response.message);
+                            @(javaScript.App).showErrorModal(response.message);
                         }
                     },
                     options
                 );
 
                 return false;
-            });
+            });</text>
+        }
     });
 </script>
 }

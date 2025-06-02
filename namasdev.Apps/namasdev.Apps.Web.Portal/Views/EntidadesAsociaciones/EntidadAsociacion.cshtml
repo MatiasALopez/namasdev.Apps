@@ -1,6 +1,3 @@
-@using namasdev.Core.Types;
-@using namasdev.Web.Helpers;
-@using namasdev.Apps.Entidades;
 @using namasdev.Apps.Entidades.Metadata;
 @using namasdev.Apps.Entidades.Valores;
 @using namasdev.Apps.Web.Portal.Controllers;
@@ -23,14 +20,19 @@
     @Html.Partial("_ResultadoOk")
     @Html.HiddenFor(m => m.PaginaModo)
     @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.AplicacionVersionId)
     @Html.HiddenFor(m => m.OrigenEntidadTablaNombre)
     @Html.HiddenFor(m => m.OrigenEntidadId)
-    @Html.HiddenFor(m => m.AplicacionVersionId)
     <div class="form-row">
         <div class="form-group col-12">
             @Html.LabelFor(m => m.OrigenEntidadPropiedadId, new { @class = "requerido" })
             @Html.DropDownListFor(m => m.OrigenEntidadPropiedadId, Model.OrigenPropiedadesSelectList, "", new { @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.OrigenEntidadPropiedadId)
+        </div>
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.OrigenEntidadPropiedadNavegacionNombre)
+            @Html.TextBoxFor(m => m.OrigenEntidadPropiedadNavegacionNombre, new { @class = "form-control", @maxlength = EntidadAsociacionMetadata.Propiedades.OrigenEntidadPropiedadNavegacionNombre.TAMAÑO_MAX })
+            @Html.ValidationMessageFor(m => m.OrigenEntidadPropiedadNavegacionNombre)
         </div>
         <div class="form-group col-6">
             @Html.LabelFor(m => m.OrigenAsociacionMultiplicidadId, new { @class = "requerido" })
@@ -49,6 +51,11 @@
             @Html.DropDownListFor(m => m.DestinoEntidadPropiedadId, Model.DestinoPropiedadesSelectList, "", new { @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.DestinoEntidadPropiedadId)
         </div>
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.DestinoEntidadPropiedadNavegacionNombre)
+            @Html.TextBoxFor(m => m.DestinoEntidadPropiedadNavegacionNombre, new { @class = "form-control", @maxlength = EntidadAsociacionMetadata.Propiedades.DestinoEntidadPropiedadNavegacionNombre.TAMAÑO_MAX })
+            @Html.ValidationMessageFor(m => m.DestinoEntidadPropiedadNavegacionNombre)
+        </div>
         <div class="form-group col-6">
             @Html.LabelFor(m => m.DestinoAsociacionMultiplicidadId, new { @class = "requerido" })
             @Html.DropDownListFor(m => m.DestinoAsociacionMultiplicidadId, Model.MultiplicidadesSelectList, "", new { @class = "form-control form-control-required" })
@@ -58,7 +65,7 @@
     <div id="@controlesIds.TablaAuxiliarContainer" class="form-row" style="display: none;">
         <div class="form-group col-12">
             @Html.LabelFor(m => m.TablaAuxiliarNombre, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.TablaAuxiliarNombre, new { @maxlength = "100", @class = "form-control" })
+            @Html.TextBoxFor(m => m.TablaAuxiliarNombre, new { @maxlength = EntidadAsociacionMetadata.Propiedades.TablaAuxiliarNombre.TAMAÑO_MAX, @class = "form-control" })
             @Html.ValidationMessageFor(m => m.TablaAuxiliarNombre)
         </div>
     </div>

@@ -1,5 +1,7 @@
-﻿using namasdev.Apps.Entidades;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
+
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -7,15 +9,15 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public AuditoriaTipoConfig()
         {
-            ToTable(Entidades.Metadata.AuditoriaTipoMetadata.BD.TABLA);
+            ToTable(AuditoriaTipoMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.AuditoriaTipoMetadata.BD.ID);
+                .HasColumnName(AuditoriaTipoMetadata.BD.ID);
 
             Property(p => p.Nombre)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.AuditoriaTipoMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(AuditoriaTipoMetadata.Propiedades.Nombre.TAMAÑO_MAX);
         }
     }
 }

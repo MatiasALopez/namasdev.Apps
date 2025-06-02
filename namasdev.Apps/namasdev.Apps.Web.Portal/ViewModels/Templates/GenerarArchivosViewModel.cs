@@ -1,10 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+
+using namasdev.Apps.Entidades.Metadata;
+using namasdev.Core.Validation;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Templates
 {
-    public class GenerarArchivosViewModelBase
+    public class GenerarArchivosViewModel
     {
+        public Guid Id { get; set; }
+
+        public bool ModoAplicacion { get; set; }
+        public bool ModoDebug { get; set; }
+
         [Display(Name = "Tabla")]
         public bool GenerarBDTabla { get; set; }
 
@@ -35,6 +44,9 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Templates
         [Display(Name = "Parámetros DesmarcarComoBorrado")]
         public bool GenerarNegocioDTODesmarcarComoBorradoParametros { get; set; }
 
+        [Display(Name = "Parámetros Eliminar")]
+        public bool GenerarNegocioDTOEliminarParametros { get; set; }
+
         [Display(Name = "Profile Automapper")]
         public bool GenerarNegocioAutomapperProfile { get; set; }
 
@@ -54,7 +66,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Templates
         public bool GenerarWebAutomapperProfile { get; set; }
 
         [Display(Name = "Metadata de Views")]
-        public bool GenerarWebViewsMetadata { get; set; }
+        public bool GenerarWebMetadataViews { get; set; }
 
         [Display(Name = "Index")]
         public bool GenerarWebViewsIndex { get; set; }
@@ -74,16 +86,23 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Templates
             GenerarNegocioDTOActualizarParametros =
             GenerarNegocioDTOMarcarComoBorradoParametros =
             GenerarNegocioDTODesmarcarComoBorradoParametros =
+            GenerarNegocioDTOEliminarParametros =
             GenerarNegocioAutomapperProfile =
             GenerarWebController =
             GenerarWebModelsItemModel =
             GenerarWebViewModelsEntidadViewModel =
             GenerarWebViewModelsListaViewModel =
             GenerarWebAutomapperProfile =
-            GenerarWebViewsMetadata =
+            GenerarWebMetadataViews =
             GenerarWebViewsIndex =
             GenerarWebViewsEntidad =
                 true;
         }
+
+        [Display(Name = AplicacionVersionMetadata.ETIQUETA),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        public Guid? AplicacionVersionId { get; set; }
+
+        public SelectList VersionesSelectList { get; set; }
     }
 }

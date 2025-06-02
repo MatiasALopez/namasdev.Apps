@@ -26,6 +26,12 @@ namespace namasdev.Apps.Web.Portal.Models.EntidadesPropiedades
         public short? Orden { get; set; }
 
         public bool EsClave { get; set; }
+        public bool EsId { get; set; }
+        public bool EsAuditoriaCreado { get; set; }
+        public bool EsAuditoriaUltimaModificacion { get; set; }
+        public bool EsAuditoriaBorrado { get; set; }
+
+        public bool DefinidoPorEspecificaciones { get; set; }
         public bool Seleccionado { get; set; }
     }
 }

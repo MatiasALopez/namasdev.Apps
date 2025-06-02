@@ -192,6 +192,34 @@ go
 --===
 
 --===
+CREATE TABLE [dbo].[BajaTipos] 
+(
+    [BajaTipoId] SMALLINT NOT NULL,
+    [Nombre] NVARCHAR (50) NOT NULL,
+    
+    CONSTRAINT [PK_BajaTipos] PRIMARY KEY CLUSTERED ([BajaTipoId] ASC)
+)
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_BajaTipos_Nombre] ON [dbo].[BajaTipos]([Nombre] ASC)
+go
+--===
+
+--===
+CREATE TABLE [dbo].[Articulos] 
+(
+    [ArticuloId] SMALLINT NOT NULL,
+    [Nombre] NVARCHAR (50) NOT NULL,
+    
+    CONSTRAINT [PK_Articulos] PRIMARY KEY CLUSTERED ([ArticuloId] ASC)
+)
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Articulos_Nombre] ON [dbo].[Articulos]([Nombre] ASC)
+go
+--===
+
+--===
 create table dbo.Aplicaciones
 (
 	AplicacionId uniqueidentifier not null,
@@ -262,17 +290,22 @@ go
 --===
 
 --===
-create table dbo.EntidadesPropiedadesDefault
+create table dbo.EntidadesEspecificaciones
 (
 	EntidadId uniqueidentifier not null,
+	ArticuloId smallint not null,
 	IDPropiedadTipoId smallint null,
+	EsSoloLectura bit not null,
+	BajaTipoId smallint not null,
 	AuditoriaCreado bit not null,
 	AuditoriaUltimaModificacion bit not null,
-	AuditoriaBorrado bit not null,
 
-	constraint PK_EntidadesPropiedadesDefault primary key clustered (EntidadId),
-	constraint FK_EntidadesPropiedadesDefault_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId),
-	constraint FK_EntidadesPropiedadesDefault_IDPropiedadTipoId foreign key (IDPropiedadTipoId) references dbo.PropiedadTipos (PropiedadTipoId)
+	constraint PK_EntidadesEspecificaciones primary key clustered (EntidadId),
+	constraint FK_EntidadesEspecificaciones_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId),
+	constraint FK_EntidadesEspecificaciones_ArticuloId foreign key (ArticuloId) references dbo.Articulos (ArticuloId),
+	constraint FK_EntidadesEspecificaciones_IDPropiedadTipoId foreign key (IDPropiedadTipoId) references dbo.PropiedadTipos (PropiedadTipoId),
+	constraint FK_EntidadesEspecificaciones_BajaTipoId foreign key (BajaTipoId) references dbo.BajaTipos (BajaTipoId),
+	constraint CK_EntidadesEspecificaciones_EsSoloLecturaYBajaTipoYAuditorias check ((EsSoloLectura = 0) or (EsSoloLectura = 1 and BajaTipoId = 3 and AuditoriaCreado = 0 and AuditoriaUltimaModificacion = 0))
 )
 go
 --===
@@ -291,13 +324,6 @@ create table dbo.EntidadesPropiedades
 	CalculadaFormula nvarchar(2000) null,
 	GeneradaAlCrear bit not null,
 	Editable bit not null,
-	CreadoPor nvarchar(128) not null,
-	CreadoFecha datetime not null,
-	UltimaModificacionPor nvarchar(128) not null,
-	UltimaModificacionFecha datetime not null,
-	BorradoPor nvarchar(128) null,
-	BorradoFecha datetime null,
-	Borrado AS (ISNULL(CONVERT(bit,CASE WHEN BorradoFecha IS NULL THEN 0 ELSE 1 END), 0)),
 
 	constraint PK_EntidadesPropiedades primary key clustered (EntidadPropiedadId),
 	constraint FK_EntidadesPropiedades_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId) on delete cascade on update cascade,
@@ -355,6 +381,9 @@ go
 
 create nonclustered index IX_EntidadesClaves_EntidadId on dbo.EntidadesClaves (EntidadId)
 go
+
+create unique nonclustered index IX_EntidadesClaves_EntidadIdYEntidadPropiedadId on dbo.EntidadesClaves (EntidadId,EntidadPropiedadId)
+go
 --===
 
 --===
@@ -364,9 +393,11 @@ create table dbo.EntidadesAsociaciones
 	Nombre nvarchar(200) not null,
 	OrigenEntidadId uniqueidentifier not null,
 	OrigenEntidadPropiedadId uniqueidentifier not null,
+	OrigenEntidadPropiedadNavegacionNombre nvarchar(100) null,
 	OrigenAsociacionMultiplicidadId smallint not null,
 	DestinoEntidadId uniqueidentifier not null,
 	DestinoEntidadPropiedadId uniqueidentifier not null,
+	DestinoEntidadPropiedadNavegacionNombre nvarchar(100) null,
 	DestinoAsociacionMultiplicidadId smallint not null,
 	TablaAuxiliarNombre nvarchar(100) null,
 	DeleteAsociacionReglaId smallint not null,

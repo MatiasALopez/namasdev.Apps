@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -8,11 +9,11 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public ErrorConfig()
         {
-            ToTable(Entidades.Metadata.ErrorMetadata.BD.TABLA);
+            ToTable(ErrorMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.ErrorMetadata.BD.ID);
+                .HasColumnName(ErrorMetadata.BD.ID);
 
             Property(e => e.Mensaje)
                 .IsRequired();
@@ -22,10 +23,10 @@ namespace namasdev.Apps.Datos.Sql.Config
 
             Property(e => e.Source)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.ErrorMetadata.Propiedades.Source.TAMAÑO_MAX);
+                .HasMaxLength(ErrorMetadata.Propiedades.Source.TAMAÑO_MAX);
 
             Property(e => e.UserId)
-                .HasMaxLength(128);
+                .HasMaxLength(ErrorMetadata.Propiedades.UserId.TAMAÑO_MAX);
         }
     }
 }

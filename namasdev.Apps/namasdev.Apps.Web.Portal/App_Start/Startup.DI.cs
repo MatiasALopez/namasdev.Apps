@@ -51,7 +51,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddScoped<IAplicacionesRepositorio, AplicacionesRepositorio>();
             services.AddScoped<IAplicacionesVersionesRepositorio, AplicacionesVersionesRepositorio>();
             services.AddScoped<IEntidadesRepositorio, EntidadesRepositorio>();
-            services.AddScoped<IEntidadesPropiedadesDefaultRepositorio, EntidadesPropiedadesDefaultRepositorio>();
+            services.AddScoped<IEntidadesEspecificacionesRepositorio, EntidadesEspecificacionesRepositorio>();
             services.AddScoped<IEntidadesPropiedadesRepositorio, EntidadesPropiedadesRepositorio>();
             services.AddScoped<IEntidadesClavesRepositorio, EntidadesClavesRepositorio>();
             services.AddScoped<IEntidadesAsociacionesRepositorio, EntidadesAsociacionesRepositorio>();
@@ -71,6 +71,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddScoped<IAplicacionesNegocio, AplicacionesNegocio>();
             services.AddScoped<IAplicacionesVersionesNegocio, AplicacionesVersionesNegocio>();
             services.AddScoped<IEntidadesNegocio, EntidadesNegocio>();
+            services.AddScoped<IEntidadesEspecificacionesNegocio, EntidadesEspecificacionesNegocio>();
             services.AddScoped<IEntidadesPropiedadesNegocio, EntidadesPropiedadesNegocio>();
             services.AddScoped<IEntidadesAsociacionesNegocio, EntidadesAsociacionesNegocio>();
             services.AddScoped<IEntidadesIndicesNegocio, EntidadesIndicesNegocio>();
@@ -85,6 +86,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddTransient<AplicacionesController>();
             services.AddTransient<VersionesController>();
             services.AddTransient<EntidadesController>();
+            services.AddTransient<EntidadesEspecificacionesController>();
             services.AddTransient<EntidadesPropiedadesController>();
             services.AddTransient<EntidadesAsociacionesController>();
             services.AddTransient<EntidadesIndicesController>();

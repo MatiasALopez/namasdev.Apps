@@ -11,6 +11,11 @@
         Repositorio = string.Format("{0}Repositorio", Model.NombrePlural),
         Metadata = string.Format("{0}Metadata", Model.Nombre),
         MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
+        AgregarParametros = "AgregarParametros",
+        ActualizarParametros = "ActualizarParametros",
+        MarcarComoBorradoParametros = "MarcarComoBorradoParametros",
+        DesmarcarComoBorradoParametros = "DesmarcarComoBorradoParametros",
+        EliminarParametros = "EliminarParametros"
     };
     var interfaces = new
     {
@@ -46,7 +51,7 @@
     {
         validacionMetodo = null;
         propiedadNombre = p.NombreOId;
-        claseMetadataPropiedad = string.Format("{0}.{1}", clases.MetadataPropiedades, p.Nombre);
+        claseMetadataPropiedad = string.Format("{0}.{1}", clases.MetadataPropiedades, propiedadNombre);
         validacionParametros = new Dictionary<string, string>();
         switch (p.PropiedadTipoId)
         {
@@ -162,12 +167,16 @@ namespace @(Html.Raw(namespaceBase)).Negocio
 {
     public interface @Html.Raw(interfaces.Negocio)
     {
-        @Html.Raw(clases.Entidad) Agregar(AgregarParametros parametros);
-        void Actualizar(ActualizarParametros parametros);
-        @if (Model.PropiedadesDefault.AuditoriaBorrado)
+        @Html.Raw(clases.Entidad) Agregar(@clases.AgregarParametros parametros);
+        void Actualizar(@clases.ActualizarParametros parametros);
+        @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
         {
-        <text>void MarcarComoBorrado(MarcarComoBorradoParametros parametros);
-        void DesmarcarComoBorrado(DesmarcarComoBorradoParametros parametros);</text>
+        <text>void MarcarComoBorrado(@clases.MarcarComoBorradoParametros parametros);
+        void DesmarcarComoBorrado(@clases.DesmarcarComoBorradoParametros parametros);</text>
+        }
+        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
+        { 
+        <text>void Eliminar(@clases.EliminarParametros parametros);</text>
         }
     }
 
@@ -178,20 +187,25 @@ namespace @(Html.Raw(namespaceBase)).Negocio
         {
         }
 
-        public @Html.Raw(clases.Entidad) Agregar(AgregarParametros @variables.Parametros)
+        public @Html.Raw(clases.Entidad) Agregar(@clases.AgregarParametros @variables.Parametros)
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
 
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
-            @if (Model.PropiedadesDefault.AuditoriaCreado || Model.PropiedadesDefault.AuditoriaUltimaModificacion)
+            @if (Model.Especificaciones.IDPropiedadTipoId == PropiedadTipos.GUID)
+            {
+            <text>@(Html.Raw(variables.Entidad)).Id = Guid.NewGuid();
+            </text>
+            }
+            @if (Model.Especificaciones.AuditoriaCreado || Model.Especificaciones.AuditoriaUltimaModificacion)
             {
             <text>
             DateTime fechaHora = DateTime.Now;</text>}
-            @if (Model.PropiedadesDefault.AuditoriaCreado)
+            @if (Model.Especificaciones.AuditoriaCreado)
             {
             <text>
             @(Html.Raw(variables.Entidad)).EstablecerDatosCreado(@(variables.Parametros).UsuarioLogueadoId, fechaHora);</text>}
-            @if (Model.PropiedadesDefault.AuditoriaUltimaModificacion)
+            @if (Model.Especificaciones.AuditoriaUltimaModificacion)
             {
             <text>
             @(Html.Raw(variables.Entidad)).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, fechaHora);
@@ -204,13 +218,13 @@ namespace @(Html.Raw(namespaceBase)).Negocio
             return @Html.Raw(variables.Entidad);
         }
 
-        public void Actualizar(ActualizarParametros @variables.Parametros)
+        public void Actualizar(@clases.ActualizarParametros @variables.Parametros)
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
 
             var @Html.Raw(variables.Entidad) = Obtener(@(variables.Parametros).Id);
             Mapper.Map(@variables.Parametros, @Html.Raw(variables.Entidad));
-            @if (Model.PropiedadesDefault.AuditoriaUltimaModificacion)
+            @if (Model.Especificaciones.AuditoriaUltimaModificacion)
             {
             <text>
             @(Html.Raw(variables.Entidad)).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);
@@ -220,30 +234,37 @@ namespace @(Html.Raw(namespaceBase)).Negocio
 
             Repositorio.Actualizar(@Html.Raw(variables.Entidad));
         }
-        @if (Model.PropiedadesDefault.AuditoriaBorrado)
+        @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
         {<text>
-        public void MarcarComoBorrado(MarcarComoBorradoParametros @variables.Parametros)
+        public void MarcarComoBorrado(@clases.MarcarComoBorradoParametros @variables.Parametros)
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
     
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
-            
             @(Html.Raw(variables.Entidad)).EstablecerDatosBorrado(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);
 
             Repositorio.ActualizarDatosBorrado(@Html.Raw(variables.Entidad));
         }
 
-        public void DesmarcarComoBorrado(DesmarcarComoBorradoParametros @variables.Parametros)
+        public void DesmarcarComoBorrado(@clases.DesmarcarComoBorradoParametros @variables.Parametros)
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
 
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
-            
             Repositorio.ActualizarDatosBorrado(@Html.Raw(variables.Entidad));
         }
         </text>}
-
-        private @Html.Raw(clases.Entidad) Obtener(@Model.PropiedadesDefault.IDTipo.CLRType id,
+        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA) 
+        {<text>
+        public void Eliminar(@clases.EliminarParametros @variables.Parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+    
+            Repositorio.EliminarPorId(@(variables.Parametros).Id);
+        }
+        </text>}
+        
+        private @Html.Raw(clases.Entidad) Obtener(@Model.Especificaciones.IDTipo.CLRType id,
             bool validarExistencia = true)
         {
             var entidad = Repositorio.Obtener(id);

@@ -31,35 +31,9 @@
         DigitosEnteros = "int DIGITOS_ENTEROS",
         DigitosDecimales = "int DIGITOS_DECIMALES",
     };
-
-    string textoPudo =
-        Model.Nombre.EndsWith("s")
-        ? "pudieron"
-        : "pudo";
-
-    string textoArticulo,
-        textoOperacionSufijoGenero;
-    if (Model.Nombre.EndsWith("as"))
-    {
-        textoArticulo = "las";
-        textoOperacionSufijoGenero = "as";
-    }
-    else if (Model.Nombre.EndsWith("s"))
-    {
-        textoArticulo = "los";
-        textoOperacionSufijoGenero = "os";
-    }
-    else if (Model.Nombre.EndsWith("a"))
-    {
-        textoArticulo = "la";
-        textoOperacionSufijoGenero = "a";
-    }
-    else
-    {
-        textoArticulo = "el";
-        textoOperacionSufijoGenero = "o";
-    }
-
+    string textoPudo = Model.Especificaciones.Articulo.TextoPudo,
+        textoArticulo = Model.Especificaciones.Articulo.Texto,
+        textoOperacionSufijoGenero = Model.Especificaciones.Articulo.SufijoGenero;
     Dictionary<string, string> propiedadConstantes;
 }
 namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metadata
@@ -75,7 +49,7 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
         public class BD
         {
             public const string TABLA = "@Html.Raw(Model.NombrePlural)";
-        @if (Model.PropiedadesDefault.IDPropiedadTipoId.HasValue)
+        @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
         {
             <text>public const string ID = "@(Html.Raw(Model.Nombre))Id";</text>
         }
@@ -167,7 +141,7 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
                     propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimalFlotante.DigitosDecimales.ToString());
                     break;
             }
-            <text>public class @Html.Raw(p.EsId() ? "Id" : p.Nombre)
+            <text>public class @Html.Raw(p.NombreOId)
             {
                 @foreach (var c in propiedadConstantes)
                 {
@@ -180,14 +154,14 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
         public class Mensajes
         {
             public const string AGREGAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " agregad@(textoOperacionSufijoGenero) correctamente.";
-            public const string AGREGAR_ERROR = "No se @textoPudo agregar @textoArticulo " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+            public const string AGREGAR_ERROR = "No se @(Html.Raw(textoPudo)) agregar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
 
             public const string EDITAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " actualizad@(textoOperacionSufijoGenero) correctamente.";
-            public const string EDITAR_ERROR = "No se @textoPudo actualizar @textoArticulo " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+            public const string EDITAR_ERROR = "No se @(Html.Raw(textoPudo)) actualizar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
 
             public const string ELIMINAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " eliminad@(textoOperacionSufijoGenero) correctamente.";
-            public const string ELIMINAR_ERROR = "No se @textoPudo eliminar @textoArticulo " + @(Html.Raw(clases.Metadata)).ETIQUETA;
-            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar @textoArticulo " + @(Html.Raw(clases.Metadata)).ETIQUETA + " seleccionad@(textoOperacionSufijoGenero)?";
+            public const string ELIMINAR_ERROR = "No se @(Html.Raw(textoPudo)) eliminar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA + " seleccionad@(Html.Raw(textoOperacionSufijoGenero))?";
         }
     }
 }

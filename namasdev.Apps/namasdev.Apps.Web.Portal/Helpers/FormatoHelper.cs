@@ -1,12 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-
+using Microsoft.Ajax.Utilities;
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Valores;
 using namasdev.Core.Types;
 
 namespace namasdev.Apps.Web.Portal.Helpers
 {
     public class FormatoHelper
     {
+        public static string ExpresionCheckNoNull(string nombre, PropiedadTipo tipo)
+        {
+            if (tipo.CLRTypeEsNullable)
+            {
+                return $"!{nombre}.HasValue";
+            }
+            
+            if (tipo.Id == PropiedadTipos.TEXTO)
+            {
+                return $"!string.IsNullOrWhiteSpace({nombre})";
+            }
+
+            return $"{nombre} != null";
+        }
+
         public static string EntreComillas(string texto)
         {
             return $"\"{texto}\"";
@@ -14,7 +31,7 @@ namespace namasdev.Apps.Web.Portal.Helpers
 
         public static string Generic(string nombre, params string[] tiposNombres)
         {
-            return $"{nombre}<{Formateador.Lista(tiposNombres, ",")}>";
+            return $"{nombre}<{Formateador.Lista(tiposNombres, ", ")}>";
         }
 
         public static string ListaParametros(Dictionary<string, string> lista,

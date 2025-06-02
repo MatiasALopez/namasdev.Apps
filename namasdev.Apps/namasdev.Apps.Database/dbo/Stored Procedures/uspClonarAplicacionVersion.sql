@@ -10,9 +10,9 @@ BEGIN
 		from dbo.Entidades 
 		where AplicacionVersionId = @AplicacionVersionIdOrigen
 
-	insert into dbo.EntidadesPropiedades (EntidadPropiedadId,EntidadId,Nombre,Etiqueta,PropiedadTipoId,PropiedadTipoEspecificaciones,PermiteNull,Orden,CalculadaFormula,GeneradaAlCrear,Editable,CreadoPor,CreadoFecha,UltimaModificacionPor,UltimaModificacionFecha)
+	insert into dbo.EntidadesPropiedades (EntidadPropiedadId,EntidadId,Nombre,Etiqueta,PropiedadTipoId,PropiedadTipoEspecificaciones,PermiteNull,Orden,CalculadaFormula,GeneradaAlCrear,Editable)
 		select 
-			newid(),ed.EntidadId,eop.Nombre,eop.Etiqueta,eop.PropiedadTipoId,eop.PropiedadTipoEspecificaciones,eop.PermiteNull,eop.Orden,eop.CalculadaFormula,eop.GeneradaAlCrear,eop.Editable,@UsuarioId,@FechaHora,@UsuarioId,@FechaHora
+			newid(),ed.EntidadId,eop.Nombre,eop.Etiqueta,eop.PropiedadTipoId,eop.PropiedadTipoEspecificaciones,eop.PermiteNull,eop.Orden,eop.CalculadaFormula,eop.GeneradaAlCrear,eop.Editable
 		from 
 			dbo.Entidades eo 
 			join dbo.Entidades ed on eo.Nombre = ed.Nombre

@@ -27,6 +27,10 @@ namespace namasdev.Apps.Web.Portal.Mappers
                     PermiteNull = e.PermiteNull,
                     Orden = e.Orden,
                     EsClave = claves != null && claves.Any(c => c.EntidadPropiedadId == e.Id),
+                    EsId = e.EsId,
+                    EsAuditoriaCreado = e.EsAuditoriaCreado,
+                    EsAuditoriaUltimaModificacion = e.EsAuditoriaUltimaModificacion,
+                    EsAuditoriaBorrado = e.EsAuditoriaBorrado,
                 })
                 .ToList();
         }

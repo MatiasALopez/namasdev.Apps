@@ -56,7 +56,9 @@
     <Compile Include="AplicacionVersion.cs" />
     <Compile Include="AsociacionMultiplicidad.cs" />
     <Compile Include="AsociacionRegla.cs" />
-    <Compile Include="EntidadPropiedadesDefault.cs" />
+    <Compile Include="Articulo.cs" />
+    <Compile Include="BajaTipo.cs" />
+    <Compile Include="EntidadEspecificaciones.cs" />
     <Compile Include="EntidadAsociacion.cs" />
     <Compile Include="EntidadClave.cs" />
     <Compile Include="EntidadIndice.cs" />
@@ -64,14 +66,16 @@
     <Compile Include="EntidadPropiedad.cs" />
     <Compile Include="Metadata\AsociacionMultiplicidadMetadata.cs" />
     <Compile Include="Metadata\AsociacionReglaMetadata.cs" />
+    <Compile Include="Metadata\ArticuloMetadata.cs" />
     <Compile Include="Metadata\EntidadAsociacionMetadata.cs" />
-    <Compile Include="Metadata\EntidadPropiedadesDefaultMetadata.cs" />
+    <Compile Include="Metadata\EntidadEspecificacionesMetadata.cs" />
     <Compile Include="Metadata\EntidadIndiceMetadata.cs" />
     <Compile Include="Metadata\EntidadClaveMetadata.cs" />
     <Compile Include="Metadata\EntidadIndicePropiedadMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesDecimalMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesEnteroMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesTextoMetadata.cs" />
+    <Compile Include="Metadata\BajaTipoMetadata.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEntero.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroLargo.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroCorto.cs" />
@@ -99,6 +103,8 @@
     <Compile Include="Auditoria.cs" />
     <Compile Include="Valores\AsociacionMultiplicidades.cs" />
     <Compile Include="Valores\AsociacionReglas.cs" />
+    <Compile Include="Valores\Articulos.cs" />
+    <Compile Include="Valores\BajaTipos.cs" />
     <Compile Include="Valores\AzureStorage.cs" />
     <Compile Include="CorreoParametros.cs" />
     <Compile Include="Error.cs" />
@@ -108,12 +114,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Usuario.cs" />
     <Compile Include="Valores\AspNetRole.cs" />
-    <Compile Include="Valores\AuditoriaTipo.cs" />
+    <Compile Include="Valores\AuditoriaTipos.cs" />
     <Compile Include="Valores\CorreoParametros.cs" />
     <Compile Include="Valores\EntidadPropiedades.cs" />
     <Compile Include="Valores\Parametros.cs" />
     <Compile Include="Valores\PropiedadTipo.cs" />
     <Compile Include="Valores\PropiedadTiposEspecificaciones.cs" />
+    <Compile Include="Valores\RegExs.cs" />
+    <Compile Include="Valores\TemplatesNombres.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

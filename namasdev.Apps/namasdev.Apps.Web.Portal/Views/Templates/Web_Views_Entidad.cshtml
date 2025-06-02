@@ -14,12 +14,14 @@
         EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
         Controller = string.Format("{0}Controller", Model.NombrePlural),
     };
-
+    var javaScript = new 
+    {
+        App = Model.AplicacionVersion.Aplicacion.Nombre,
+    };
     string propiedadIdNombre = Model.Propiedades
-        .Where(p => p.EsId())
+        .Where(p => p.EsId)
         .Select(p => p.NombreOId)
         .FirstOrDefault();
-
     string controlTipo;
     List<string> controlCssClasses;
     List<string> controlAdditionalParameters;
@@ -54,7 +56,7 @@
     <div class="form-row">
     @foreach (var p in Model.Propiedades)
     {
-        if (p.EsCalculada || p.EsAuditoria() || p.EsId())
+        if (p.EsCalculada || p.EsId || p.EsAuditoria)
         {
             continue;
         }
@@ -179,7 +181,7 @@
 @@section bodyScripts {
 <script type="text/javascript">
     $(function () {
-        namasdevApps.setActiveMenuOption('@Html.Raw(Model.NombrePlural.ToFirstLetterLowercase())');
+        @(javaScript.App).setActiveMenuOption('@Html.Raw(Model.NombrePlural.ToFirstLetterLowercase())');
     });
 </script>
 }

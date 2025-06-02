@@ -87,6 +87,7 @@
     <Compile Include="Automapper\EntidadesAsociacionesProfile.cs" />
     <Compile Include="Automapper\EntidadesIndicesProfile.cs" />
     <Compile Include="Automapper\EntidadesIndicesPropiedadesProfile.cs" />
+    <Compile Include="Automapper\EntidadesEspecificacionesProfile.cs" />
     <Compile Include="Automapper\EntidadesProfile.cs" />
     <Compile Include="Automapper\UsuariosProfile.cs" />
     <Compile Include="DTO\EntidadesAsociaciones\ActualizarParametros.cs" />
@@ -95,6 +96,8 @@
     <Compile Include="DTO\EntidadesIndicesPropiedades\AgregarParametros.cs" />
     <Compile Include="DTO\EntidadesIndices\ActualizarParametros.cs" />
     <Compile Include="DTO\EntidadesIndices\AgregarParametros.cs" />
+    <Compile Include="DTO\EntidadEspecificaciones\ActualizarParametros.cs" />
+    <Compile Include="DTO\EntidadEspecificaciones\AgregarParametros.cs" />
     <Compile Include="DTO\Entidades\DesmarcarComoBorradoParametros.cs" />
     <Compile Include="DTO\Entidades\MarcarComoBorradoParametros.cs" />
     <Compile Include="DTO\Entidades\ActualizarParametros.cs" />
@@ -110,6 +113,7 @@
     <Compile Include="DTO\Usuarios\MarcarComoBorradoParametros.cs" />
     <Compile Include="EntidadesAsociacionesNegocio.cs" />
     <Compile Include="EntidadesIndicesNegocio.cs" />
+    <Compile Include="EntidadesEspecificacionesNegocio.cs" />
     <Compile Include="EntidadesPropiedadesNegocio.cs" />
     <Compile Include="EntidadesNegocio.cs" />
     <Compile Include="AplicacionesVersionesNegocio.cs" />

@@ -110,7 +110,6 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var modelo = new EntidadViewModel 
             {
                 AplicacionVersionId = aplicacionVersionId,
-                PropiedadesDefaultIDPropiedadTipoId = PropiedadTipos.GUID,
             };
             
             CargarEntidadViewModel(modelo, PaginaModo.Agregar);
@@ -126,7 +125,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 if (ModelState.IsValid)
                 {
                     var entidad = _entidadesNegocio.Agregar(Mapear<AgregarParametros>(modelo));
-                    return RedirectToAction(nameof(EntidadesPropiedadesController.Index), EntidadesPropiedadesController.NAME, new { entidad.Id });
+                    return RedirectToAction(nameof(EntidadesEspecificacionesController.Editar), EntidadesEspecificacionesController.NAME, new { entidad.Id });
                 }
             }
             catch (Exception ex)
@@ -231,8 +230,6 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 modelo.AplicacionId = aplicacionVersion.AplicacionId;
                 modelo.AplicacionNombre = aplicacionVersion.Aplicacion.Nombre;
                 modelo.AplicacionVersionNombre = aplicacionVersion.Nombre;
-
-                modelo.PropiedadTiposSelectList = ListasHelper.ObtenerPropiedadTiposSelectList(_entidadesPropiedadesRepositorio.ObtenerTipos());
             }
         }
 

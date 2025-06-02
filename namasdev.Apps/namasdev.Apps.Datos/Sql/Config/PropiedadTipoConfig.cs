@@ -1,5 +1,7 @@
-﻿using namasdev.Apps.Entidades;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
+
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -7,23 +9,23 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public PropiedadTipoConfig()
         {
-            ToTable(Entidades.Metadata.PropiedadTipoMetadata.BD.TABLA);
+            ToTable(PropiedadTipoMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.PropiedadTipoMetadata.BD.ID);
+                .HasColumnName(PropiedadTipoMetadata.BD.ID);
 
             Property(p => p.Nombre)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.PropiedadTipoMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(PropiedadTipoMetadata.Propiedades.Nombre.TAMAÑO_MAX);
 
             Property(p => p.CLRType)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.PropiedadTipoMetadata.Propiedades.CLRType.TAMAÑO_MAX);
+                .HasMaxLength(PropiedadTipoMetadata.Propiedades.CLRType.TAMAÑO_MAX);
 
             Property(p => p.TSQLType)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.PropiedadTipoMetadata.Propiedades.TSQLType.TAMAÑO_MAX);
+                .HasMaxLength(PropiedadTipoMetadata.Propiedades.TSQLType.TAMAÑO_MAX);
         }
     }
 }

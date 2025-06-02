@@ -38,6 +38,23 @@ go
 --====
 
 --====
+insert into dbo.BajaTipos (BajaTipoId,Nombre) values
+(1,'Lógica'),
+(2,'Física'),
+(3,'Ninguna')
+go
+--====
+
+--====
+insert into dbo.Articulos (ArticuloId,Nombre) values
+(1,'El'),
+(2,'La'),
+(3,'Los'),
+(4,'Las')
+go
+--====
+
+--====
 insert into dbo.PropiedadTipos (PropiedadTipoId,Nombre,CLRType,TSQLType) values
 (1,'Texto','string','nvarchar'),
 (2,'GUID','Guid','uniqueidentifier'),

@@ -1,5 +1,7 @@
-﻿using namasdev.Apps.Entidades;
-using System.Data.Entity.ModelConfiguration;
+﻿using System.Data.Entity.ModelConfiguration;
+
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -7,12 +9,12 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public ParametroConfig()
         {
-            ToTable(Entidades.Metadata.ParametroMetadata.BD.TABLA);
+            ToTable(ParametroMetadata.BD.TABLA);
             HasKey(p => p.Nombre);
 
             Property(e => e.Nombre)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.ParametroMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(ParametroMetadata.Propiedades.Nombre.TAMAÑO_MAX);
         }
     }
 }

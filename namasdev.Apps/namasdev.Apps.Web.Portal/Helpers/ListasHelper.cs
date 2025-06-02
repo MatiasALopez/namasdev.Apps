@@ -71,6 +71,28 @@ namespace namasdev.Apps.Web.Portal.Helpers
                 });
         }
 
+        public static SelectList ObtenerArticulosSelectList(IEnumerable<Articulo> articulos)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(
+                articulos,
+                a => new SelectListItem
+                {
+                    Text = a.Nombre,
+                    Value = a.Id.ToString()
+                });
+        }
+
+        public static SelectList ObtenerBajaTiposSelectList(IEnumerable<BajaTipo> tipos)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(
+                tipos,
+                bt => new SelectListItem
+                {
+                    Text = bt.Nombre,
+                    Value = bt.Id.ToString()
+                });
+        }
+
         public static SelectList ObtenerVersionesSelectList(IEnumerable<AplicacionVersion> versiones)
         {
             return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(

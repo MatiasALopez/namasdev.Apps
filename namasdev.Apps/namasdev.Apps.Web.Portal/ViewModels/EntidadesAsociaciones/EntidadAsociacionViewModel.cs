@@ -28,7 +28,10 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones
         [Display(Name = EntidadAsociacionMetadata.Propiedades.OrigenEntidadPropiedadId.ETIQUETA)]
         [Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public Guid? OrigenEntidadPropiedadId { get; set; }
-        
+
+        [Display(Name = EntidadAsociacionMetadata.Propiedades.OrigenEntidadPropiedadNavegacionNombre.ETIQUETA)]
+        public string OrigenEntidadPropiedadNavegacionNombre { get; set; }
+
         [Display(Name = EntidadAsociacionMetadata.Propiedades.OrigenAsociacionMultiplicidadId.ETIQUETA)]
         [Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public short? OrigenAsociacionMultiplicidadId { get; set; }
@@ -40,7 +43,10 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesAsociaciones
         [Display(Name = EntidadAsociacionMetadata.Propiedades.DestinoEntidadPropiedadId.ETIQUETA)]
         [Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public Guid? DestinoEntidadPropiedadId { get; set; }
-        
+
+        [Display(Name = EntidadAsociacionMetadata.Propiedades.DestinoEntidadPropiedadNavegacionNombre.ETIQUETA)]
+        public string DestinoEntidadPropiedadNavegacionNombre { get; set; }
+
         [Display(Name = EntidadAsociacionMetadata.Propiedades.DestinoAsociacionMultiplicidadId.ETIQUETA)]
         [Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public short? DestinoAsociacionMultiplicidadId { get; set; }

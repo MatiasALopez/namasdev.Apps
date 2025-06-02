@@ -123,12 +123,9 @@ namespace namasdev.Apps.Web.Portal.Controllers
         public ActionResult Editar(Guid id)
         {
             var entidadIndice = _entidadesIndicesRepositorio.Obtener(id, cargarDatosAdicionales: true);
-            if (entidadIndice == null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
 
             var model = Mapear<EntidadIndiceViewModel>(entidadIndice);
+
             CargarEntidadIndiceViewModel(model, PaginaModo.Editar,
                 propiedadesIdsSeleccionados: entidadIndice.Propiedades.Select(eip => eip.EntidadPropiedadId).ToArray());
 

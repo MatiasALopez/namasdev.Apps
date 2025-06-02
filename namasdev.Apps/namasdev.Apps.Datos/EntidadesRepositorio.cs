@@ -15,6 +15,8 @@ namespace namasdev.Apps.Datos
     {
         IEnumerable<Entidad> ObtenerPorVersion(Guid aplicacionVersionId, bool cargarDatosAdicionales = false, string busqueda = null, OrdenYPaginacionParametros op = null);
         Entidad Obtener(Guid entidadId, bool cargarDatosAdicionales = false);
+        IEnumerable<BajaTipo> ObtenerBajaTipos();
+        IEnumerable<Articulo> ObtenerArticulos();
     }
 
     public class EntidadesRepositorio : Repositorio<SqlContext, Entidad, Guid>, IEntidadesRepositorio
@@ -41,13 +43,29 @@ namespace namasdev.Apps.Datos
         {
             using (var ctx = new SqlContext())
             {
-                var entidad = ctx.Entidades
+                return ctx.Entidades
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
                     .FirstOrDefault(e => e.Id == entidadId && !e.Borrado);
+            }
+        }
 
-                entidad.EliminarPropiedadesBorradas();
+        public IEnumerable<BajaTipo> ObtenerBajaTipos()
+        {
+            using (var ctx = new SqlContext())
+            {
+                return ctx.BajaTipos
+                    .OrderBy(bt => bt.Id)
+                    .ToList();
+            }
+        }
 
-                return entidad;
+        public IEnumerable<Articulo> ObtenerArticulos()
+        {
+            using (var ctx = new SqlContext())
+            {
+                return ctx.Articulos
+                    .OrderBy(a => a.Id)
+                    .ToList();
             }
         }
 
@@ -56,7 +74,9 @@ namespace namasdev.Apps.Datos
             return new Expression<Func<Entidad, object>>[]
             {
                 e => e.AplicacionVersion.Aplicacion,
-                e => e.PropiedadesDefault.IDTipo,
+                e => e.Especificaciones.IDTipo,
+                e => e.Especificaciones.Articulo,
+                e => e.Especificaciones.BajaTipo,
                 e => e.Propiedades.Select(p => p.Tipo),
                 e => e.Claves.Select(c => c.Propiedad),
                 e => e.AsociacionesOrigen.Select(a => a.OrigenEntidad),

@@ -106,7 +106,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             try
             {
-                _entidadesPropiedadesNegocio.MarcarComoBorrado(id, UsuarioId);
+                _entidadesPropiedadesRepositorio.EliminarPorId(id);
             }
             catch (Exception)
             {
@@ -156,13 +156,9 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
         }
 
-        public ActionResult Editar(Guid id, Guid entidadId)
+        public ActionResult Editar(Guid id)
         {
             var propiedad = _entidadesPropiedadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
-            if (propiedad == null)
-            {
-                return RedirectToAction(nameof(Index), new { id = entidadId });
-            }
 
             var modelo = EntidadesPropiedadesMapper.MapearEntidadAEntidadPropiedadViewModel(propiedad);
 
@@ -213,6 +209,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     busqueda: modelo.Busqueda,
                     cargarDatosAdicionales: true),
                 claves: entidad.Claves);
+
+            modelo.EstablecerPropiedadesSoloLecturaSegunEspecificaciones(entidad.Especificaciones);
 
             modelo.OrdenarItems();
         }

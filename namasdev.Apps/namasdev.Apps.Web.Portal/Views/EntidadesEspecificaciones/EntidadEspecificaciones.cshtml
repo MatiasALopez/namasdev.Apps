@@ -1,0 +1,98 @@
+﻿@using namasdev.Apps.Entidades.Metadata;
+@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.ViewModels.EntidadesEspecificaciones;
+@model EntidadEspecificacionesViewModel
+@{
+    Layout = "~/Views/Shared/_EntidadTabsLayout.cshtml";
+    ViewBag.Title = $"{EntidadEspecificacionesMetadata.ETIQUETA}";
+
+    var controlesIds = new
+    {
+        TabsEntidad = $"tabs{EntidadMetadata.NOMBRE}",
+        TabEspecificaciones = $"tab{EntidadEspecificacionesMetadata.NOMBRE}",
+        Form = $"frm{EntidadEspecificacionesMetadata.NOMBRE}",
+        BajaTipoContainer = "divBajaTipoContainer",
+        AuditoriasContainer = "divAuditoriasContainer",
+    };
+}
+<form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mt-3">
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(excludePropertyErrors: true)
+    @Html.Partial("_Errores")
+    @Html.Partial("_ResultadoOk")
+    @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.AplicacionVersionId)
+    @Html.HiddenFor(m => m.EntidadNombre)
+    <div class="my-3">
+        <strong>@Html.DisplayNameFor(m => m.EntidadNombre):</strong> @Model.EntidadNombre
+    </div>
+    <div class="form-row">
+        <div class="form-group col-lg-2 col-md-6">
+            @Html.LabelFor(m => m.ArticuloId)
+            @Html.DropDownListFor(m => m.ArticuloId, Model.ArticulosSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.ArticuloId)
+        </div>
+
+        <div class="form-group col-lg-3 col-md-6">
+            @Html.LabelFor(m => m.IDPropiedadTipoId)
+            @Html.DropDownListFor(m => m.IDPropiedadTipoId, Model.PropiedadTiposSelectList, "(Sin ID)", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.IDPropiedadTipoId)
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-12">
+            <div class="custom-control custom-switch">
+                @Html.CheckBoxFor(m => m.EsSoloLectura, new { @class = "custom-control-input" })
+                @Html.LabelFor(m => m.EsSoloLectura, new { @class = "custom-control-label" })
+            </div>
+        </div>
+    </div>
+    <div id="@controlesIds.AuditoriasContainer" class="form-row" style="display: none;">
+        <div class="form-group col-12">
+            <div class="custom-control custom-switch">
+                @Html.CheckBoxFor(m => m.AuditoriaCreado, new { @class = "custom-control-input" })
+                @Html.LabelFor(m => m.AuditoriaCreado, new { @class = "custom-control-label" })
+            </div>
+            <div class="custom-control custom-switch">
+                @Html.CheckBoxFor(m => m.AuditoriaUltimaModificacion, new { @class = "custom-control-input" })
+                @Html.LabelFor(m => m.AuditoriaUltimaModificacion, new { @class = "custom-control-label" })
+            </div>
+        </div>
+    </div>
+    <div id="@controlesIds.BajaTipoContainer" class="form-row" style="display: none;">
+        <div class="form-group col-lg-2 col-md-6">
+            @Html.LabelFor(m => m.BajaTipoId)
+            @Html.DropDownListFor(m => m.BajaTipoId, Model.BajaTiposSelectList, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.BajaTipoId)
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
+</form>
+@section bodyScripts {
+    <script type="text/javascript">
+        $(function () {
+            namasdevApps.setActiveMenuOption('entidades');
+            $('#@controlesIds.TabEspecificaciones').addClass('active');
+
+            establecerVisibilidadControlesSegunIDPropiedadTipoYSoloLectura();
+
+            $('#@Html.IdFor(m => m.IDPropiedadTipoId),#@Html.IdFor(m => m.EsSoloLectura)').on('change', function () {
+                establecerVisibilidadControlesSegunIDPropiedadTipoYSoloLectura();
+            });
+
+            function establecerVisibilidadControlesSegunIDPropiedadTipoYSoloLectura() {
+                var $bajaTipoContainer = $('#@controlesIds.BajaTipoContainer'),
+                    $auditoriasContainer = $('#@controlesIds.AuditoriasContainer');
+
+                if ($('#@Html.IdFor(m => m.IDPropiedadTipoId)').val() == ''
+                    || $('#@Html.IdFor(m => m.EsSoloLectura)').is(':checked')) {
+                    $bajaTipoContainer.hide();
+                    $auditoriasContainer.hide();
+                } else {
+                    $bajaTipoContainer.show();
+                    $auditoriasContainer.show();
+                }
+            }
+        });
+    </script>
+}

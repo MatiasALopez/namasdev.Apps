@@ -1,6 +1,7 @@
 ﻿using System.Data.Entity.ModelConfiguration;
 
 using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -8,15 +9,15 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public AsociacionMultiplicidadConfig()
         {
-            ToTable(Entidades.Metadata.AsociacionMultiplicidadMetadata.BD.TABLA);
+            ToTable(AsociacionMultiplicidadMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.AsociacionMultiplicidadMetadata.BD.ID);
+                .HasColumnName(AsociacionMultiplicidadMetadata.BD.ID);
 
             Property(p => p.Nombre)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.AsociacionMultiplicidadMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(AsociacionMultiplicidadMetadata.Propiedades.Nombre.TAMAÑO_MAX);
         }
     }
 }

@@ -12,6 +12,7 @@ using namasdev.Core.Validation;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Negocio.DTO.GeneradorArchivos;
 using namasdev.Core.Exceptions;
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Negocio
 {
@@ -116,7 +117,7 @@ namespace namasdev.Apps.Negocio
                 GenerarNegocioDTOActualizarParametros(entidad, grupoId: grupoId);
             }
 
-            if (entidad.PropiedadesDefault.AuditoriaBorrado)
+            if (entidad.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
             {
                 if (parametros.GenerarNegocioDTOMarcarComoBorradoParametros)
                 {
@@ -126,6 +127,13 @@ namespace namasdev.Apps.Negocio
                 if (parametros.GenerarNegocioDTODesmarcarComoBorradoParametros)
                 {
                     GenerarNegocioDTODesmarcarComoBorradoParametros(entidad, grupoId: grupoId);
+                }
+            }
+            else if (entidad.Especificaciones.BajaTipoId == BajaTipos.FISICA)
+            {
+                if (parametros.GenerarNegocioDTOEliminarParametros)
+                {
+                    GenerarNegocioDTOEliminarParametros(entidad, grupoId: grupoId);
                 }
             }
 
@@ -149,7 +157,7 @@ namespace namasdev.Apps.Negocio
                 GenerarWebAutomapperProfile(entidad, grupoId: grupoId);
             }
 
-            if (parametros.GenerarWebViewsMetadata)
+            if (parametros.GenerarWebMetadataViews)
             {
                 GenerarWebMetadataViews(entidad, grupoId: grupoId);
             }
@@ -184,7 +192,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "BD_Tabla.cshtml",
+                TemplatesNombres.BD.Tabla,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.BD", "dbo", "Tables"),
                 $"{entidad.NombrePlural}.sql",
@@ -195,7 +203,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Entidades_Entidad.cshtml",
+                TemplatesNombres.Entidades.ENTIDAD,
                 entidad,
                 $"{entidad.AplicacionVersion.Aplicacion.Nombre}.Entidades",
                 $"{entidad.Nombre}.cs",
@@ -206,7 +214,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Entidades_Metadata_EntidadMetadata.cshtml",
+                TemplatesNombres.Entidades.Metadata.ENTIDAD_METADATA,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Entidades", "Metadata"),
                 $"{entidad.Nombre}Metadata.cs",
@@ -217,7 +225,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Datos_SqlConfig.cshtml",
+                TemplatesNombres.Datos.Sql.CONFIG,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Datos", "Sql", "Config"),
                 $"{entidad.Nombre}Config.cs",
@@ -228,7 +236,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Datos_Repositorio.cshtml",
+                TemplatesNombres.Datos.REPOSITORIO,
                 entidad,
                 $"{entidad.AplicacionVersion.Aplicacion.Nombre}.Datos",
                 $"{entidad.NombrePlural}Repositorio.cs",
@@ -239,7 +247,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Negocio_Negocio.cshtml",
+                TemplatesNombres.Negocio.NEGOCIO,
                 entidad,
                 $"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio",
                 $"{entidad.NombrePlural}Negocio.cs",
@@ -250,7 +258,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Negocio_Automapper_Profile.cshtml",
+                TemplatesNombres.Negocio.Automapper.PROFILE,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "Automapper"),
                 $"{entidad.NombrePlural}Profile.cs",
@@ -261,7 +269,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Negocio_DTO_AgregarParametros.cshtml",
+                TemplatesNombres.Negocio.DTO.AGREGAR_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
                 "AgregarParametros.cs",
@@ -272,7 +280,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Negocio_DTO_ActualizarParametros.cshtml",
+                TemplatesNombres.Negocio.DTO.ACTUALIZAR_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
                 "ActualizarParametros.cs",
@@ -283,7 +291,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Negocio_DTO_MarcarComoBorradoParametros.cshtml",
+                TemplatesNombres.Negocio.DTO.MARCAR_COMO_BORRADO_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
                 "MarcarComoBorradoParametros.cs",
@@ -294,10 +302,21 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Negocio_DTO_DesmarcarComoBorradoParametros.cshtml",
+                TemplatesNombres.Negocio.DTO.DESMARCAR_COMO_BORRADO_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
                 "DesmarcarComoBorradoParametros.cs",
+                grupoId);
+        }
+
+        private string GenerarNegocioDTOEliminarParametros(Entidad entidad,
+            Guid? grupoId = null)
+        {
+            return GenerarDesdeTemplate(
+                TemplatesNombres.Negocio.DTO.ELIMINAR_PARAMETROS,
+                entidad,
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                "EliminarParametros.cs",
                 grupoId);
         }
 
@@ -305,7 +324,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_Models_ItemModel.cshtml",
+                TemplatesNombres.Web.Models.ITEM_MODEL,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Models", entidad.NombrePlural),
                 $"{entidad.Nombre}ItemModel.cs",
@@ -316,7 +335,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_ViewModels_EntidadViewModel.cshtml",
+                TemplatesNombres.Web.ViewModels.ENTIDAD_VIEW_MODEL,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "ViewModels", entidad.NombrePlural),
                 $"{entidad.Nombre}ViewModel.cs",
@@ -327,7 +346,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_ViewModels_ListaViewModel.cshtml",
+                TemplatesNombres.Web.ViewModels.LISTA_VIEW_MODEL,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "ViewModels", entidad.NombrePlural),
                 $"{entidad.NombrePlural}ViewModel.cs",
@@ -338,7 +357,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_Automapper_Profile.cshtml",
+               TemplatesNombres.Web.Automapper.PROFILE,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Automapper"),
                 $"{entidad.NombrePlural}Profile.cs",
@@ -349,7 +368,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_Metadata_Views.cshtml",
+                TemplatesNombres.Web.Metadata.VIEWS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Metadata", "Views"),
                 $"{entidad.NombrePlural}Views.cs",
@@ -360,7 +379,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_Controller.cshtml",
+                TemplatesNombres.Web.CONTROLLER,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Controllers"),
                 $"{entidad.NombrePlural}Controller.cs",
@@ -371,7 +390,7 @@ namespace namasdev.Apps.Negocio
             Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_Views_Index.cshtml",
+                TemplatesNombres.Web.Views.INDEX,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
                 "Index.cshtml",
@@ -383,7 +402,7 @@ namespace namasdev.Apps.Negocio
            Guid? grupoId = null)
         {
             return GenerarDesdeTemplate(
-                "Web_Views_Entidad.cshtml",
+                TemplatesNombres.Web.Views.ENTIDAD,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
                 $"{entidad.Nombre}.cshtml",
@@ -391,21 +410,21 @@ namespace namasdev.Apps.Negocio
                 esHtmlView: true);
         }
 
-        private string GenerarDesdeTemplate(string template, object modelo, string destinoSubdirectorio, string destinoArchivo,
+        private string GenerarDesdeTemplate(string templateNombre, object modelo, string destinoSubdirectorio, string destinoArchivo,
             Guid? grupoId = null,
             bool esHtmlView = true,
-            IEnumerable<string> partialViews = null)
+            IEnumerable<string> partialViewsNombres = null)
         {
             var razor = Engine.Razor;
 
             var templateNames = new List<string>
             {
-                AgregarTemplateARazorYObtenerNombre(template, razor, esHtmlView)
+                AgregarTemplateARazorYObtenerNombre(templateNombre, razor, esHtmlView)
             };
 
-            if (partialViews != null)
+            if (partialViewsNombres != null)
             {
-                foreach (var pv in partialViews)
+                foreach (var pv in partialViewsNombres)
                 {
                     templateNames.Add(AgregarTemplateARazorYObtenerNombre(pv, razor, esHtmlView));
                 }
@@ -430,12 +449,12 @@ namespace namasdev.Apps.Negocio
             return pathArchivo;
         }
 
-        private string AgregarTemplateARazorYObtenerNombre(string template, IRazorEngineService razor,
+        private string AgregarTemplateARazorYObtenerNombre(string templateNombre, IRazorEngineService razor,
             bool esHtmlView = false)
-        { 
-            string templateName = Path.GetFileNameWithoutExtension(template);
-            razor.AddTemplate(templateName, ObtenerTemplate(template, esHtmlView));
-            return templateName;
+        {
+            string template = $"{templateNombre}.cshtml";
+            razor.AddTemplate(templateNombre, ObtenerTemplate(template, esHtmlView));
+            return templateNombre;
         }
 
         private string GenerarPathDirectorioBase(Guid? grupoId)
@@ -455,7 +474,9 @@ namespace namasdev.Apps.Negocio
             if (esHtmlView)
             {
                 contenido = contenido
+                    .Replace("@@Html.Raw", "[[Raw]]") // NOTA (ML): workaround para que RazorEngine no escape el Html
                     .Replace("Html.Raw", "Raw")
+                    .Replace("[[Raw]]", "@@Html.Raw") // NOTA (ML): workaround para que RazorEngine no escape el Html
                     .Replace("<text>@Html.Partial", "<text>@Include");
             }
             return contenido;

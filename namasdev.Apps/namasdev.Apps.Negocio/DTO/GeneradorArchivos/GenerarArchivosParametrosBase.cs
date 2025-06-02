@@ -12,13 +12,14 @@
         public bool GenerarNegocioDTOActualizarParametros { get; set; }
         public bool GenerarNegocioDTOMarcarComoBorradoParametros { get; set; }
         public bool GenerarNegocioDTODesmarcarComoBorradoParametros { get; set; }
+        public bool GenerarNegocioDTOEliminarParametros { get; set; }
         public bool GenerarNegocioAutomapperProfile { get; set; }
         public bool GenerarWebController { get; set; }
         public bool GenerarWebModelsItemModel { get; set; }
         public bool GenerarWebViewModelsEntidadViewModel { get; set; }
         public bool GenerarWebViewModelsListaViewModel { get; set; }
         public bool GenerarWebAutomapperProfile { get; set; }
-        public bool GenerarWebViewsMetadata { get; set; }
+        public bool GenerarWebMetadataViews { get; set; }
         public bool GenerarWebViewsIndex { get; set; }
         public bool GenerarWebViewsEntidad { get; set; }
 
@@ -36,13 +37,14 @@
                     || GenerarNegocioDTOActualizarParametros
                     || GenerarNegocioDTOMarcarComoBorradoParametros
                     || GenerarNegocioDTODesmarcarComoBorradoParametros
+                    || GenerarNegocioDTOEliminarParametros
                     || GenerarNegocioAutomapperProfile
                     || GenerarWebController
                     || GenerarWebModelsItemModel
                     || GenerarWebViewModelsEntidadViewModel
                     || GenerarWebViewModelsListaViewModel
                     || GenerarWebAutomapperProfile
-                    || GenerarWebViewsMetadata
+                    || GenerarWebMetadataViews
                     || GenerarWebViewsIndex
                     || GenerarWebViewsEntidad;
             }

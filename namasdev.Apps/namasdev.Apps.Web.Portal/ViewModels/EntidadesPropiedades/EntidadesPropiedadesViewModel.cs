@@ -6,6 +6,8 @@ using System.Linq;
 using namasdev.Web.ViewModels;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Web.Portal.Models.EntidadesPropiedades;
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 {
@@ -31,6 +33,23 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
                 return Items?
                     .Where(i => i.Seleccionado)
                     .ToArray();
+            }
+        }
+
+        public void EstablecerPropiedadesSoloLecturaSegunEspecificaciones(EntidadEspecificaciones especificaciones)
+        {
+            if (especificaciones == null)
+            {
+                return;
+            }
+
+            foreach (var i in Items)
+            {
+                i.DefinidoPorEspecificaciones =
+                    (especificaciones.IDPropiedadTipoId.HasValue && i.EsId)
+                    || (especificaciones.AuditoriaCreado && i.EsAuditoriaCreado)
+                    || (especificaciones.AuditoriaUltimaModificacion && i.EsAuditoriaUltimaModificacion)
+                    || (especificaciones.BajaTipoId == BajaTipos.LOGICA && i.EsAuditoriaBorrado);
             }
         }
     }

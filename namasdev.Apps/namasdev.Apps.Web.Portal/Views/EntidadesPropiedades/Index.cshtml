@@ -93,9 +93,12 @@
                                     <td>@Formateador.SiNo(Model.Items[i].PermiteNull)</td>
                                     <td>@Formateador.Numero(Model.Items[i].Orden)</td>
                                     <td class="text-center">
-                                        <a href="@Url.Action("Editar", new { id = Model.Items[i].Id, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"
-                                           data-iframe data-iframe-title="Editar propiedad" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalEntidad_OnHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
-                                        <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@Model.Items[i].Id"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                        @if (!Model.Items[i].DefinidoPorEspecificaciones)
+                                        {
+                                            <a href="@Url.Action("Editar", new { id = Model.Items[i].Id, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"
+                                                data-iframe data-iframe-title="Editar propiedad" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalEntidad_OnHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                            <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@Model.Items[i].Id"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
+                                        }
                                     </td>
                                 </tr>
                             }

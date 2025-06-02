@@ -14,6 +14,7 @@ using namasdev.Apps.Negocio;
 using namasdev.Apps.Negocio.DTO.GeneradorArchivos;
 using namasdev.Apps.Web.Portal.ViewModels.Templates;
 using namasdev.Apps.Web.Portal.Helpers;
+using namasdev.Apps.Web.Portal.Metadata.Views;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -45,16 +46,16 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult _GenerarArchivosAplicacion(Guid id)
         {
-            var model = new GenerarArchivosAplicacionViewModel { Id = id };
+            var model = new GenerarArchivosViewModel { Id = id };
             model.MarcarTodos();
 
-            CargarGenerarArchivosAplicacionViewModel(model);
-            return View(model);
+            CargarGenerarArchivosViewModel(model, modoAplicacion: true);
+            return View(TemplatesViews.GenerarArchivos, model);
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult _GenerarArchivosAplicacion(GenerarArchivosAplicacionViewModel model)
+        public ActionResult _GenerarArchivosAplicacion(GenerarArchivosViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -72,21 +73,23 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 }
             }
 
-            CargarGenerarArchivosAplicacionViewModel(model);
-            return View(model);
+            CargarGenerarArchivosViewModel(model, modoAplicacion: true);
+            return View(TemplatesViews.GenerarArchivos, model);
         }
 
-        public ActionResult _GenerarArchivosEntidad(Guid id)
+        public ActionResult _GenerarArchivosEntidad(Guid id,
+            bool debug = false)
         {
-            var model = new GenerarArchivosEntidadViewModel { Id = id };
+            var model = new GenerarArchivosViewModel { Id = id, ModoDebug = debug };
             model.MarcarTodos();
 
-            return View(model);
+            CargarGenerarArchivosViewModel(model);
+            return View(TemplatesViews.GenerarArchivos, model);
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult _GenerarArchivosEntidad(GenerarArchivosEntidadViewModel model)
+        public ActionResult _GenerarArchivosEntidad(GenerarArchivosViewModel model)
         {
             try
             {
@@ -101,7 +104,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 ControllerHelper.CargarMensajesError(ex.Message);
             }
 
-            return View(model);
+            CargarGenerarArchivosViewModel(model);
+            return View(TemplatesViews.GenerarArchivos, model);
         }
 
         #region Debug
@@ -119,10 +123,16 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Metodos
 
-        private void CargarGenerarArchivosAplicacionViewModel(GenerarArchivosAplicacionViewModel model)
+        private void CargarGenerarArchivosViewModel(GenerarArchivosViewModel model, 
+            bool modoAplicacion = false)
         {
-            model.VersionesSelectList = ListasHelper.ObtenerVersionesSelectList(
-                versiones: _aplicacionesVersionesRepositorio.ObtenerLista(model.Id));
+            model.ModoAplicacion = modoAplicacion;
+            
+            if (model.ModoAplicacion)
+            {
+                model.VersionesSelectList = ListasHelper.ObtenerVersionesSelectList(
+                    versiones: _aplicacionesVersionesRepositorio.ObtenerLista(model.Id));
+            }
         }
 
         private IEnumerable<Entidad> ObtenerEntidadesDeAplicacion(Guid aplicacionVersionId, 

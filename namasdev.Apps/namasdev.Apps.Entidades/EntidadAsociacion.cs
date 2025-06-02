@@ -9,9 +9,11 @@ namespace namasdev.Apps.Entidades
         public Guid OrigenEntidadId { get; set; }
         public string Nombre { get; set; }
         public Guid OrigenEntidadPropiedadId { get; set; }
+        public string OrigenEntidadPropiedadNavegacionNombre { get; set; }
         public short OrigenAsociacionMultiplicidadId { get; set; }
         public Guid DestinoEntidadId { get; set; }
         public Guid DestinoEntidadPropiedadId { get; set; }
+        public string DestinoEntidadPropiedadNavegacionNombre { get; set; }
         public short DestinoAsociacionMultiplicidadId { get; set; }
         public string TablaAuxiliarNombre { get; set; }
         public short DeleteAsociacionReglaId { get; set; }

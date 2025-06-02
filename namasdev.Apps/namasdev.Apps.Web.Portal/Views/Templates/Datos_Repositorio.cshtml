@@ -15,7 +15,7 @@
         Repositorio = string.Format("I{0}", clases.Repositorio)
     };
 
-    string claveTipo = Model.PropiedadesDefault.IDTipo != null ? Model.PropiedadesDefault.IDTipo.CLRType : null,
+    string claveTipo = Model.Especificaciones.IDTipo != null ? Model.Especificaciones.IDTipo.CLRType : null,
         tiposGenericosEntidadYId = string.Format("{0}, {1}", Model.Nombre, claveTipo);
 
     bool usarRepositorioBase = !string.IsNullOrWhiteSpace(claveTipo);

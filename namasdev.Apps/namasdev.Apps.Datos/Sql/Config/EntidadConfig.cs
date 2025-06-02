@@ -1,5 +1,7 @@
-﻿using namasdev.Apps.Entidades;
-using namasdev.Data.Entity.Config;
+﻿using namasdev.Data.Entity.Config;
+
+using namasdev.Apps.Entidades;
+using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Datos.Sql.Config
 {
@@ -7,33 +9,33 @@ namespace namasdev.Apps.Datos.Sql.Config
     {
         public EntidadConfig()
         {
-            ToTable(Entidades.Metadata.EntidadMetadata.BD.TABLA);
+            ToTable(EntidadMetadata.BD.TABLA);
             HasKey(p => p.Id);
 
             Property(p => p.Id)
-                .HasColumnName(Entidades.Metadata.EntidadMetadata.BD.ID);
+                .HasColumnName(EntidadMetadata.BD.ID);
 
             Property(p => p.Nombre)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.EntidadMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+                .HasMaxLength(EntidadMetadata.Propiedades.Nombre.TAMAÑO_MAX);
 
             Property(p => p.NombrePlural)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.EntidadMetadata.Propiedades.NombrePlural.TAMAÑO_MAX);
+                .HasMaxLength(EntidadMetadata.Propiedades.NombrePlural.TAMAÑO_MAX);
 
             Property(p => p.Etiqueta)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.EntidadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX);
+                .HasMaxLength(EntidadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX);
 
             Property(p => p.EtiquetaPlural)
                 .IsRequired()
-                .HasMaxLength(Entidades.Metadata.EntidadMetadata.Propiedades.EtiquetaPlural.TAMAÑO_MAX);
+                .HasMaxLength(EntidadMetadata.Propiedades.EtiquetaPlural.TAMAÑO_MAX);
 
             HasRequired(p => p.AplicacionVersion)
                 .WithMany(p => p.Entidades)
                 .HasForeignKey(p => p.AplicacionVersionId);
 
-            HasRequired(p => p.PropiedadesDefault)
+            HasRequired(p => p.Especificaciones)
                 .WithRequiredDependent(p => p.Entidad);
         }
     }

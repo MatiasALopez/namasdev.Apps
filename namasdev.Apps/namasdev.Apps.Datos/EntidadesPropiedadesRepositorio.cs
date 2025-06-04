@@ -16,7 +16,9 @@ namespace namasdev.Apps.Datos
     {
         IEnumerable<EntidadPropiedad> ObtenerPorEntidad(Guid entidadId, string busqueda = null, OrdenYPaginacionParametros op = null, bool cargarDatosAdicionales = false);
         EntidadPropiedad Obtener(Guid entidadPropiedadId, bool cargarDatosAdicionales = false);
+        short ObtenerProximoOrdenDisponible(Guid entidadId);
         IEnumerable<PropiedadTipo> ObtenerTipos();
+        void ActualizarOrdenes(IEnumerable<EntidadPropiedad> propiedades);
     }
 
     public class EntidadesPropiedadesRepositorio : Repositorio<SqlContext, EntidadPropiedad, Guid>, IEntidadesPropiedadesRepositorio
@@ -50,12 +52,37 @@ namespace namasdev.Apps.Datos
             }
         }
 
+        public short ObtenerProximoOrdenDisponible(Guid entidadId)
+        {
+            using (var ctx = new SqlContext())
+            {
+                var orden = ctx.EntidadesPropiedades
+                    .Where(ep =>
+                        ep.EntidadId == entidadId
+                        && !ep.EsID
+                        && !ep.EsAuditoria)
+                    .Max(ep => (short?)ep.Orden) ?? 0;
+
+                return (short)(orden + 1);
+            }
+        }
+
         public IEnumerable<PropiedadTipo> ObtenerTipos()
         {
             using (var ctx = new SqlContext())
             {
                 return ctx.PropiedadTipos.ToList();
             }
+        }
+
+        public void ActualizarOrdenes(IEnumerable<EntidadPropiedad> propiedades)
+        {
+            ActualizarPropiedades(
+                propiedades,
+                propiedades: new string[]
+                {
+                    nameof(EntidadPropiedad.Orden)
+                });
         }
 
         private IEnumerable<Expression<Func<EntidadPropiedad, object>>> CrearPathsDatosAdicionales()

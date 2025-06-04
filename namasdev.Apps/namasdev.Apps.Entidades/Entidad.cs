@@ -31,6 +31,16 @@ namespace namasdev.Apps.Entidades
             return Propiedades?.Find(p => string.Equals(p.Nombre, nombre, StringComparison.OrdinalIgnoreCase));
         }
 
+        public bool TienePropiedadID()
+        {
+            return Propiedades?.Exists(p => p.EsID) ?? false;
+        }
+
+        public EntidadPropiedad ObtenerPropiedadID()
+        {
+            return Propiedades?.Find(p => p.EsID);
+        }
+
         public bool TieneClave(Guid entidadPropiedadId)
         {
             return Claves?.Exists(c => c.EntidadPropiedadId == entidadPropiedadId) ?? false;

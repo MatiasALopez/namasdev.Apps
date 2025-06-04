@@ -38,11 +38,6 @@
             @Html.DropDownListFor(m => m.PropiedadTipoId, Model.TiposSelectList, "", new { @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.PropiedadTipoId)
         </div>
-        <div class="form-group col-6">
-            @Html.LabelFor(m => m.Orden, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Orden, new { @class = "form-control inputmask-integer form-control-required", maxlength = 5 })
-            @Html.ValidationMessageFor(m => m.Orden)
-        </div>
         <div class="form-group col-12">
             @Html.LabelFor(m => m.CalculadaFormula)
             @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control", maxlength = EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX })

@@ -26,11 +26,10 @@ namespace namasdev.Apps.Web.Portal.Mappers
                     TipoNombre = e.Tipo.Nombre,
                     PermiteNull = e.PermiteNull,
                     Orden = e.Orden,
+                    OrdenInicial = e.Orden,
                     EsClave = claves != null && claves.Any(c => c.EntidadPropiedadId == e.Id),
-                    EsId = e.EsId,
-                    EsAuditoriaCreado = e.EsAuditoriaCreado,
-                    EsAuditoriaUltimaModificacion = e.EsAuditoriaUltimaModificacion,
-                    EsAuditoriaBorrado = e.EsAuditoriaBorrado,
+                    EsID = e.EsID,
+                    EsAuditoria = e.EsAuditoria,
                 })
                 .ToList();
         }
@@ -47,7 +46,6 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 Etiqueta = modelo.Etiqueta,
                 PropiedadTipoId = modelo.PropiedadTipoId.Value,
                 CalculadaFormula = modelo.CalculadaFormula,
-                Orden = modelo.Orden.Value,
                 PermiteNull = modelo.PermiteNull.Value,
                 GeneradaAlCrear = modelo.GeneradaAlCrear.Value,
                 Editable = modelo.Editable.Value,
@@ -153,7 +151,6 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 Etiqueta = entidad.Etiqueta,
                 PropiedadTipoId = entidad.PropiedadTipoId,
                 CalculadaFormula = entidad.CalculadaFormula,
-                Orden = entidad.Orden,
                 PermiteNull = entidad.PermiteNull,
                 GeneradaAlCrear = entidad.GeneradaAlCrear,
                 Editable = entidad.Editable,

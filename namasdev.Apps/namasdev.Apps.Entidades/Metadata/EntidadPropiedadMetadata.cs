@@ -86,6 +86,9 @@ namespace namasdev.Apps.Entidades.Metadata
 
             public const string ESTABLECER_CLAVE_OK = "Clave establecida correctamente.";
             public const string ESTABLECER_CLAVE_ERROR = "No se pudo establecer la clave.";
+
+            public const string ACTUALIZAR_ORDEN_OK = "Orden actualizado correctamente.";
+            public const string ACTUALIZAR_ORDEN_ERROR = "No se pudo actualizar el orden.";
         }
     }
 }

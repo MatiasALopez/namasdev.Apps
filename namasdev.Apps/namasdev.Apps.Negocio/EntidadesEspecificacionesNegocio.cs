@@ -156,11 +156,9 @@ namespace namasdev.Apps.Negocio
             var entidad = entidadEspecificaciones.Entidad;
 
             var nombres = new List<string>();
-            if (entidadEspecificaciones.IDPropiedadTipoId.HasValue
-                && !actualizarParametros.IDPropiedadTipoId.HasValue)
-            {
-                nombres.Add(EntidadPropiedad.IdNombre(entidad));
-            }
+            bool eliminarID = 
+                entidadEspecificaciones.IDPropiedadTipoId.HasValue
+                && !actualizarParametros.IDPropiedadTipoId.HasValue;
 
             if (entidadEspecificaciones.AuditoriaCreado
                 && !actualizarParametros.AuditoriaCreado)
@@ -188,7 +186,8 @@ namespace namasdev.Apps.Negocio
             for (int i = entidad.Propiedades.Count - 1; i >= 0; i--)
             {
                 p = entidad.Propiedades[i];
-                if (nombres.Contains(p.Nombre))
+                if (nombres.Contains(p.Nombre)
+                    || (eliminarID && p.EsID))
                 {
                     entidad.Propiedades.RemoveAt(i);
                     entidadesAEliminar.Add(p);
@@ -204,23 +203,17 @@ namespace namasdev.Apps.Negocio
 
             var entidad = entidadEspecificaciones.Entidad;
 
-            var nombresYTipos = new Dictionary<string,short>();
-            if (entidadEspecificaciones.IDPropiedadTipoId.HasValue
+            bool actualizarID = 
+                entidadEspecificaciones.IDPropiedadTipoId.HasValue
                 && actualizarParametros.IDPropiedadTipoId.HasValue
-                && entidadEspecificaciones.IDPropiedadTipoId != actualizarParametros.IDPropiedadTipoId)
-            {
-                nombresYTipos.Add(EntidadPropiedad.IdNombre(entidad), actualizarParametros.IDPropiedadTipoId.Value);
-            }
+                && entidadEspecificaciones.IDPropiedadTipoId != actualizarParametros.IDPropiedadTipoId;
 
-            EntidadPropiedad p;
-            short nuevoTipoId;
-            for (int i = entidad.Propiedades.Count - 1; i >= 0; i--)
+            foreach (var p in entidad.Propiedades)
             {
-                p = entidad.Propiedades[i];
-                if (nombresYTipos.TryGetValue(p.Nombre, out nuevoTipoId))
+                if (actualizarID && p.EsID)
                 {
-                    p.PropiedadTipoId = nuevoTipoId;
-                    p.PropiedadTipoEspecificaciones = CrearPropiedadEspecificacionesDefault(nuevoTipoId);
+                    p.PropiedadTipoId = actualizarParametros.IDPropiedadTipoId.Value;
+                    p.PropiedadTipoEspecificaciones = CrearPropiedadEspecificacionesDefault(p.PropiedadTipoId);
                     entidadesAActualizar.Add(p);
                 }
             }
@@ -284,22 +277,24 @@ namespace namasdev.Apps.Negocio
             var propiedades = new List<EntidadPropiedad>();
 
             var entidad = especificaciones.Entidad;
+
             if (especificaciones.IDPropiedadTipoId.HasValue
-                && !entidad.TienePropiedad(EntidadPropiedad.IdNombre(entidad)))
+                && !entidad.TienePropiedadID())
             {
                 propiedades.Add(new EntidadPropiedad
                 {
                     Id = Guid.NewGuid(),
                     EntidadId = entidad.Id,
                     Entidad = entidad,
-                    Nombre = EntidadPropiedad.IdNombre(entidad),
+                    Nombre = $"{entidad.Nombre}Id",
                     Etiqueta = EntidadPropiedades.Id.ETIQUETA,
                     PropiedadTipoId = especificaciones.IDPropiedadTipoId.Value,
                     PropiedadTipoEspecificaciones = CrearPropiedadEspecificacionesDefault(especificaciones.IDPropiedadTipoId.Value),
                     PermiteNull = false,
-                    Orden = 1,
+                    Orden = EntidadPropiedades.Id.ORDEN,
                     GeneradaAlCrear = true,
                     Editable = false,
+                    EsID = true,
                 });
             }
 
@@ -463,7 +458,7 @@ namespace namasdev.Apps.Negocio
                 var entidad = especificaciones.Entidad;
                 var propiedadId =
                     entidad.Propiedades != null
-                    ? entidad.Propiedades.FirstOrDefault(p => p.EsId)
+                    ? entidad.Propiedades.FirstOrDefault(p => p.EsID)
                     : null;
 
                 if (propiedadId != null

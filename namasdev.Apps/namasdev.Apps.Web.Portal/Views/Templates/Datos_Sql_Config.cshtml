@@ -29,7 +29,7 @@
         propiedadNombre = p.NombreOId;
         propiedadMetadataBase = string.Format("{0}.Propiedades.{1}.", clases.Metadata, propiedadNombre);
         propiedadReglas = new List<string>();
-        if (p.EsId)
+        if (p.EsID)
         {
             propiedadReglas.Add(string.Format("HasColumnName({0}.BD.ID)", clases.Metadata));
         }

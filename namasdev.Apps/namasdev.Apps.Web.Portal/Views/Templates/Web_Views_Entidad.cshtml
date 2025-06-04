@@ -18,10 +18,7 @@
     {
         App = Model.AplicacionVersion.Aplicacion.Nombre,
     };
-    string propiedadIdNombre = Model.Propiedades
-        .Where(p => p.EsId)
-        .Select(p => p.NombreOId)
-        .FirstOrDefault();
+    bool tieneID = Model.Especificaciones.IDPropiedadTipoId.HasValue;
     string controlTipo;
     List<string> controlCssClasses;
     List<string> controlAdditionalParameters;
@@ -48,15 +45,15 @@
     @@Html.ValidationSummary(excludePropertyErrors: true)
     @@Html.Partial("_Errores")
     @@Html.Partial("_ResultadoOk")
-    @if (propiedadIdNombre != null)
+    @if (tieneID)
     {
-    <text>@@Html.HiddenFor(m => m.@(Html.Raw(propiedadIdNombre)))</text>
+    <text>@@Html.HiddenFor(m => m.Id)</text>
     }
     @@Html.HiddenFor(m => m.PaginaModo)
     <div class="form-row">
     @foreach (var p in Model.Propiedades)
     {
-        if (p.EsCalculada || p.EsId || p.EsAuditoria)
+        if (p.EsCalculada || p.EsID || p.EsAuditoria)
         {
             continue;
         }

@@ -1,8 +1,9 @@
 ﻿using System;
 
 using namasdev.Core.Entity;
-using namasdev.Apps.Entidades.Valores;
 using namasdev.Core.Types;
+
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Entidades
 {
@@ -12,7 +13,7 @@ namespace namasdev.Apps.Entidades
         public string Nombre { get; set; }
         public string NombreOId
         {
-            get { return EsId ? "Id" : Nombre; }
+            get { return EsID ? "Id" : Nombre; }
         }
 
         private string _nombreCamelCase;
@@ -34,6 +35,8 @@ namespace namasdev.Apps.Entidades
 
         public bool GeneradaAlCrear { get; set; }
         public bool Editable { get; set; }
+        public bool EsID { get; set; }
+        public bool EsAuditoria { get; set; }
 
         public Entidad Entidad { get; set; }
         public PropiedadTipo Tipo { get; set; }
@@ -121,41 +124,23 @@ namespace namasdev.Apps.Entidades
             return Nombre;
         }
 
-        public bool EsId
-        {
-            get
-            {
-                return Nombre == IdNombre(this.Entidad);
-            }
-        }
+        //public bool EsAuditoriaCreado
+        //{
+        //    get 
+        //    { 
+        //        return Nombre == EntidadPropiedades.CreadoPor.NOMBRE
+        //            || Nombre == EntidadPropiedades.CreadoFecha.NOMBRE;
+        //    }
+        //}
 
-        public bool EsAuditoria
-        {
-            get
-            {
-                return EsAuditoriaCreado
-                    || EsAuditoriaUltimaModificacion
-                    || EsAuditoriaBorrado;
-            }
-        }
-
-        public bool EsAuditoriaCreado
-        {
-            get 
-            { 
-                return Nombre == EntidadPropiedades.CreadoPor.NOMBRE
-                    || Nombre == EntidadPropiedades.CreadoFecha.NOMBRE;
-            }
-        }
-
-        public bool EsAuditoriaUltimaModificacion
-        {
-            get 
-            { 
-                return Nombre == EntidadPropiedades.UltimaModificacionPor.NOMBRE
-                    || Nombre == EntidadPropiedades.UltimaModificacionFecha.NOMBRE;
-            }
-        }
+        //public bool EsAuditoriaUltimaModificacion
+        //{
+        //    get 
+        //    { 
+        //        return Nombre == EntidadPropiedades.UltimaModificacionPor.NOMBRE
+        //            || Nombre == EntidadPropiedades.UltimaModificacionFecha.NOMBRE;
+        //    }
+        //}
 
         public bool EsAuditoriaBorrado
         {
@@ -165,11 +150,6 @@ namespace namasdev.Apps.Entidades
                     || Nombre == EntidadPropiedades.BorradoFecha.NOMBRE
                     || Nombre == EntidadPropiedades.Borrado.NOMBRE;
             }
-        }
-
-        public static string IdNombre(Entidad entidad)
-        {
-            return $"{entidad?.Nombre}Id";
         }
     }
 }

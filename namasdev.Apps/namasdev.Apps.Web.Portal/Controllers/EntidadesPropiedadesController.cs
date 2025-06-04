@@ -46,16 +46,11 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         #region Acciones
 
-        public ActionResult Index(
-            Guid id,
-            string busqueda = null,
-            string orden = null)
+        public ActionResult Index(Guid id)
         {
             var modelo = new EntidadesPropiedadesViewModel
             {
                 Id = id,
-                Busqueda = busqueda,
-                Orden = orden,
             };
 
             CargarEntidadesPropiedadesViewModel(modelo);
@@ -68,25 +63,41 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             if (ModelState.IsValid)
             {
-                try
+                switch (model.Operacion)
                 {
-                    switch (model.Operacion)
-                    {
-                        case EntidadesPropiedadesViewModel.OPERACION_ESTABLECER_CLAVE:
-                            _entidadesPropiedadesNegocio.EstablecerComoClave(model.Id, model.ItemsSeleccionados.Select(i => i.Id));
+                    case EntidadesPropiedadesViewModel.OPERACION_ESTABLECER_CLAVE:
+                        try
+                        {
+                            _entidadesPropiedadesNegocio.EstablecerComoClave(model.Id, model.ItemsSeleccionadosIds);
 
                             ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.ESTABLECER_CLAVE_OK);
                             ModelState.Clear();
+                        }
+                        catch (Exception ex)
+                        {
+                            ControllerHelper.CargarMensajesError(EntidadPropiedadMetadata.Mensajes.ACTUALIZAR_ORDEN_ERROR + Environment.NewLine + ex.Message);
+                        }
 
-                            break;
+                        break;
 
-                        default:
-                            throw new Exception(Textos.OperacionInvalida(model.Operacion));
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ControllerHelper.CargarMensajesError(ex.Message);
+                    case EntidadesPropiedadesViewModel.OPERACION_ACTUALIZAR_ORDEN:
+                        try
+                        {
+                            _entidadesPropiedadesNegocio.ActualizarOrden(model.Id, model.ItemsConOrdenesModificados);
+
+                            ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.ACTUALIZAR_ORDEN_OK);
+                            ModelState.Clear();
+                        }
+                        catch (Exception ex)
+                        {
+                            ControllerHelper.CargarMensajesError(EntidadPropiedadMetadata.Mensajes.ACTUALIZAR_ORDEN_ERROR + Environment.NewLine + ex.Message);
+                        }
+
+                        break;
+
+                    default:
+                        ControllerHelper.CargarMensajesError(Textos.OperacionInvalida(model.Operacion));
+                        break;
                 }
             }
 
@@ -136,7 +147,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 if (ModelState.IsValid)
                 {
                     var propiedadTipoEspecificaciones = EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(modelo);
-                    _entidadesPropiedadesNegocio.Agregar(modelo.EntidadId, modelo.Nombre, modelo.Etiqueta, modelo.PropiedadTipoId.Value, propiedadTipoEspecificaciones, modelo.Orden.Value, modelo.PermiteNull.Value, modelo.GeneradaAlCrear.Value, modelo.Editable.Value, modelo.CalculadaFormula, UsuarioId);
+                    _entidadesPropiedadesNegocio.Agregar(modelo.EntidadId, modelo.Nombre, modelo.Etiqueta, modelo.PropiedadTipoId.Value, propiedadTipoEspecificaciones, modelo.PermiteNull.Value, modelo.GeneradaAlCrear.Value, modelo.Editable.Value, modelo.CalculadaFormula, UsuarioId);
 
                     ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.AGREGAR_OK);
 
@@ -206,13 +217,8 @@ namespace namasdev.Apps.Web.Portal.Controllers
             modelo.Items = EntidadesPropiedadesMapper.MapearEntidadesAModelos(
                 entidades: _entidadesPropiedadesRepositorio.ObtenerPorEntidad(
                     entidad.Id,
-                    busqueda: modelo.Busqueda,
                     cargarDatosAdicionales: true),
                 claves: entidad.Claves);
-
-            modelo.EstablecerPropiedadesSoloLecturaSegunEspecificaciones(entidad.Especificaciones);
-
-            modelo.OrdenarItems();
         }
 
         private void CargarEntidadPropiedadViewModel(EntidadPropiedadViewModel modelo, PaginaModo paginaModo)

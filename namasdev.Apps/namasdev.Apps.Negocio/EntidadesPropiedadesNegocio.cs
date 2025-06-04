@@ -15,9 +15,10 @@ namespace namasdev.Apps.Negocio
 {
     public interface IEntidadesPropiedadesNegocio
     {
-        EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, short orden, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId);
+        EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId);
         void Actualizar(EntidadPropiedad propiedad, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, string usuarioId);
         void EstablecerComoClave(Guid entidadId, IEnumerable<Guid> propiedadesIds);
+        void ActualizarOrden(Guid entidadId, Dictionary<Guid, short> propiedadesIdsYOrdenes);
     }
 
     public class EntidadesPropiedadesNegocio : IEntidadesPropiedadesNegocio
@@ -36,7 +37,7 @@ namespace namasdev.Apps.Negocio
             _entidadesClavesRepositorio = entidadesClavesRepositorio;
         }
 
-        public EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, short orden, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId)
+        public EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId)
         {
             DateTime fechaHora = DateTime.Now;
 
@@ -48,11 +49,11 @@ namespace namasdev.Apps.Negocio
                 Etiqueta = etiqueta,
                 PropiedadTipoId = propiedadTipoId,
                 PropiedadTipoEspecificaciones = SerializarPropiedadTipoEspecificaciones(propiedadTipoEspecificaciones),
-                Orden = orden,
                 PermiteNull = permiteNull,
                 GeneradaAlCrear = generadaAlCrear,
                 Editable = editable,
                 CalculadaFormula = calculadaFormula,
+                Orden = _entidadesPropiedadesRepositorio.ObtenerProximoOrdenDisponible(entidadId),
             };
             ValidarDatos(propiedad);
 
@@ -91,6 +92,27 @@ namespace namasdev.Apps.Negocio
             {
                 _entidadesClavesRepositorio.EliminarPorEntidad(entidadId);
                 _entidadesClavesRepositorio.Agregar(claves);
+
+                ts.Complete();
+            }
+        }
+
+        public void ActualizarOrden(Guid entidadId, Dictionary<Guid, short> propiedadesIdsYOrdenes)
+        {
+            Validador.ValidarArgumentListaRequeridaYThrow(propiedadesIdsYOrdenes, nameof(propiedadesIdsYOrdenes), validarNoVacia: true);
+
+            var propiedades = propiedadesIdsYOrdenes
+                .Select(item =>
+                    new EntidadPropiedad
+                    {
+                        Id = item.Key,
+                        Orden = item.Value
+                    })
+                .ToArray();
+
+            using (var ts = TransactionScopeFactory.Crear())
+            {
+                _entidadesPropiedadesRepositorio.ActualizarOrdenes(propiedades);
 
                 ts.Complete();
             }

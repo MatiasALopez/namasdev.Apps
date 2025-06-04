@@ -1,5 +1,4 @@
-﻿@using namasdev.Core.Types;
-@using namasdev.Apps.Entidades.Valores;
+﻿@using namasdev.Apps.Entidades.Valores;
 @using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
@@ -167,8 +166,11 @@ namespace @(Html.Raw(namespaceBase)).Negocio
 {
     public interface @Html.Raw(interfaces.Negocio)
     {
-        @Html.Raw(clases.Entidad) Agregar(@clases.AgregarParametros parametros);
-        void Actualizar(@clases.ActualizarParametros parametros);
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {
+        <text>@Html.Raw(clases.Entidad) Agregar(@clases.AgregarParametros parametros);
+        void Actualizar(@clases.ActualizarParametros parametros);</text>
+        }
         @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
         {
         <text>void MarcarComoBorrado(@clases.MarcarComoBorradoParametros parametros);
@@ -187,6 +189,8 @@ namespace @(Html.Raw(namespaceBase)).Negocio
         {
         }
 
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {<text>
         public @Html.Raw(clases.Entidad) Agregar(@clases.AgregarParametros @variables.Parametros)
         {
             Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
@@ -210,7 +214,7 @@ namespace @(Html.Raw(namespaceBase)).Negocio
             <text>
             @(Html.Raw(variables.Entidad)).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, fechaHora);
             </text>}
-            
+    
             ValidarDatos(@Html.Raw(variables.Entidad));
 
             Repositorio.Agregar(@Html.Raw(variables.Entidad));
@@ -234,6 +238,7 @@ namespace @(Html.Raw(namespaceBase)).Negocio
 
             Repositorio.Actualizar(@Html.Raw(variables.Entidad));
         }
+        </text>}
         @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
         {<text>
         public void MarcarComoBorrado(@clases.MarcarComoBorradoParametros @variables.Parametros)
@@ -263,7 +268,8 @@ namespace @(Html.Raw(namespaceBase)).Negocio
             Repositorio.EliminarPorId(@(variables.Parametros).Id);
         }
         </text>}
-        
+        @if (!Model.Especificaciones.EsSoloLectura) 
+        {<text> 
         private @Html.Raw(clases.Entidad) Obtener(@Model.Especificaciones.IDTipo.CLRType id,
             bool validarExistencia = true)
         {
@@ -288,6 +294,7 @@ namespace @(Html.Raw(namespaceBase)).Negocio
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }
+        </text>}
     }
 }
 

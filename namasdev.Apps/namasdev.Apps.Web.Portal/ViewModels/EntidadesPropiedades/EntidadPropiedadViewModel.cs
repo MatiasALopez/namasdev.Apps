@@ -5,6 +5,7 @@ using System.Web.Mvc;
 
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
+
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
 
@@ -37,9 +38,6 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 
         [Display(Name = EntidadPropiedadMetadata.Propiedades.PermiteNull.ETIQUETA)]
         public bool? PermiteNull { get; set; }
-
-        [Display(Name = EntidadPropiedadMetadata.Propiedades.Orden.ETIQUETA)]
-        public short? Orden { get; set; }
 
         [Display(Name = EntidadPropiedadMetadata.Propiedades.GeneradaAlCrear.ETIQUETA)]
         public bool? GeneradaAlCrear { get; set; }

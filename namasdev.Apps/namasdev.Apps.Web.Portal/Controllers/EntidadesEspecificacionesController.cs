@@ -77,15 +77,10 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 if (ModelState.IsValid)
                 {
                     var parametros = Mapear<ActualizarParametros>(modelo);
-                    if (!parametros.IDPropiedadTipoId.HasValue)
+                    if (!parametros.IDPropiedadTipoId.HasValue
+                        || parametros.EsSoloLectura)
                     {
-                        modelo.AuditoriaCreado = modelo.AuditoriaUltimaModificacion =
-                        parametros.AuditoriaCreado = parametros.AuditoriaUltimaModificacion = 
-                            false;
-                    }
-                    if (parametros.EsSoloLectura)
-                    {
-                        modelo.BajaTipoId = parametros.BajaTipoId = 
+                        modelo.BajaTipoId = parametros.BajaTipoId =
                             BajaTipos.NINGUNA;
 
                         modelo.AuditoriaCreado = modelo.AuditoriaUltimaModificacion =

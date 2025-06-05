@@ -14,6 +14,7 @@ namespace namasdev.Apps.Datos
     {
         IEnumerable<EntidadAsociacion> ObtenerPorEntidad(Guid entidadId, bool cargarDatosAdicionales = false);
         EntidadAsociacion Obtener(Guid id, bool cargarDatosAdicionales = false);
+        bool ExistenPorPropiedadOrigen(Guid origenEntidadPropiedadId);
         IEnumerable<AsociacionMultiplicidad> ObtenerMultiplicidades();
         IEnumerable<AsociacionRegla> ObtenerReglas();
     }
@@ -42,6 +43,15 @@ namespace namasdev.Apps.Datos
                 return ctx.EntidadesAsociaciones
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
                     .FirstOrDefault(ea => ea.Id == id);
+            }
+        }
+
+        public bool ExistenPorPropiedadOrigen(Guid origenEntidadPropiedadId)
+        {
+            using (var ctx = new SqlContext())
+            {
+                return ctx.EntidadesAsociaciones
+                    .Any(ea => ea.OrigenEntidadPropiedadId == origenEntidadPropiedadId);
             }
         }
 

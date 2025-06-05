@@ -29,6 +29,7 @@ namespace namasdev.Apps.Datos
                 return ctx.EntidadesAsociaciones
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
                     .Where(ep => ep.OrigenEntidadId == entidadId)
+                    .OrderBy(ao => ao.OrigenPropiedad.Orden)
                     .ToList();
             }
         }

@@ -59,8 +59,8 @@
                                 <th></th>
                                 <th>@Html.DisplayNameFor(m => m.Items[0].Nombre)</th>
                                 <th>@Html.DisplayNameFor(m => m.Items[0].TipoNombre)</th>
-                                <th>@Html.DisplayNameFor(m => m.Items[0].PermiteNull)</th>
-                                <th>@Html.DisplayNameFor(m => m.Items[0].Orden)</th>
+                                <th class="text-center">@Html.DisplayNameFor(m => m.Items[0].PermiteNull)</th>
+                                <th class="text-center">@Html.DisplayNameFor(m => m.Items[0].Orden)</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -83,8 +83,8 @@
                                     </td>
                                     <td>@Model.Items[i].Nombre</td>
                                     <td>@Model.Items[i].TipoNombre</td>
-                                    <td>@Formateador.SiNo(Model.Items[i].PermiteNull)</td>
-                                    <td>
+                                    <td class="text-center">@Formateador.SiNo(Model.Items[i].PermiteNull)</td>
+                                    <td class="text-center">
                                         @Html.HiddenFor(m => m.Items[i].Orden)
                                         @Html.HiddenFor(m => m.Items[i].OrdenInicial)
                                         @if (Model.Items[i].OrdenarDisponible)

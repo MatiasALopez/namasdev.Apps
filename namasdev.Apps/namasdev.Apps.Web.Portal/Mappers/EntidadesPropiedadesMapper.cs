@@ -27,9 +27,9 @@ namespace namasdev.Apps.Web.Portal.Mappers
                     PermiteNull = e.PermiteNull,
                     Orden = e.Orden,
                     OrdenInicial = e.Orden,
-                    EsClave = claves != null && claves.Any(c => c.EntidadPropiedadId == e.Id),
                     EsID = e.EsID,
                     EsAuditoria = e.EsAuditoria,
+                    EsClave = claves != null && claves.Any(c => c.EntidadPropiedadId == e.Id),
                 })
                 .ToList();
         }
@@ -49,6 +49,7 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 PermiteNull = modelo.PermiteNull.Value,
                 GeneradaAlCrear = modelo.GeneradaAlCrear.Value,
                 Editable = modelo.Editable.Value,
+                EsID = modelo.EsID,
             };
         }
 
@@ -154,6 +155,7 @@ namespace namasdev.Apps.Web.Portal.Mappers
                 PermiteNull = entidad.PermiteNull,
                 GeneradaAlCrear = entidad.GeneradaAlCrear,
                 Editable = entidad.Editable,
+                EsID = entidad.EsID,
             };
 
             var especificacionesTexto = entidad.EspecificacionesTexto;

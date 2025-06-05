@@ -140,7 +140,7 @@
             (!string.IsNullOrWhiteSpace(a.OrigenEntidadPropiedadNavegacionNombre) ? string.Format("p => p.{0}", a.OrigenEntidadPropiedadNavegacionNombre) : ""),
             asociacionParte2Regla,
             (!string.IsNullOrWhiteSpace(a.DestinoEntidadPropiedadNavegacionNombre) ? string.Format("p => p.{0}", a.DestinoEntidadPropiedadNavegacionNombre) : ""),
-            (asociacionTieneReglaForeignKey ? string.Format(".HasForeignKey(p => p.{0})", a.DestinoPropiedad.Nombre) : "")));
+            (asociacionTieneReglaForeignKey ? string.Format(".HasForeignKey(p => p.{0})", a.OrigenPropiedad.Nombre) : "")));
     }
 }
 using System.ComponentModel.DataAnnotations.Schema;

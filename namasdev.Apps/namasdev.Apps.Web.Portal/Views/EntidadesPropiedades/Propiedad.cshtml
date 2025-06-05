@@ -13,6 +13,14 @@
         EspecificacionesEnteroRow = $"div{PropiedadTipoEspecificacionesEnteroMetadata.NOMBRE}",
         EspecificacionesDecimalRow = $"div{PropiedadTipoEspecificacionesDecimalMetadata.NOMBRE}",
     };
+    var textBoxHtmlAttributes =
+        Model.EsID
+        ? (object)new { @class = "form-control-plaintext form-control-required", @readonly = "readonly" }
+        : (object)new { @class = "form-control form-control-required" };
+    var dropDownListHtmlAttributes =
+        Model.EsID
+        ? (object)new { @class = "form-control form-control-required", @disabled = "disabled" }
+        : (object)new { @class = "form-control form-control-required" };
 }
 <form id="@controlesIds.Form" action="@Url.Action()" method="post" class="mx-2">
     @Html.AntiForgeryToken()
@@ -22,6 +30,7 @@
     @Html.HiddenFor(m => m.PaginaModo)
     @Html.HiddenFor(m => m.EntidadPropiedadId)
     @Html.HiddenFor(m => m.EntidadId)
+    @Html.HiddenFor(m => m.EsID)
     <div class="form-row">
         <div class="form-group col-12">
             @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
@@ -35,18 +44,21 @@
         </div>
         <div class="form-group col-6">
             @Html.LabelFor(m => m.PropiedadTipoId, new { @class = "requerido" })
-            @Html.DropDownListFor(m => m.PropiedadTipoId, Model.TiposSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.DropDownListFor(m => m.PropiedadTipoId, Model.TiposSelectList, "", dropDownListHtmlAttributes)
             @Html.ValidationMessageFor(m => m.PropiedadTipoId)
-        </div>
-        <div class="form-group col-12">
-            @Html.LabelFor(m => m.CalculadaFormula)
-            @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control", maxlength = EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX })
-            @Html.ValidationMessageFor(m => m.CalculadaFormula)
+            @if (Model.EsID)
+            {
+                @Html.HiddenFor(m => m.PropiedadTipoId)
+            }
         </div>
         <div class="form-group col-6">
             @Html.LabelFor(m => m.PermiteNull, new { @class = "requerido" })
-            @Html.DropDownListFor(m => m.PermiteNull, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.DropDownListFor(m => m.PermiteNull, Model.SiNoSelectList, "", dropDownListHtmlAttributes)
             @Html.ValidationMessageFor(m => m.PermiteNull)
+            @if (Model.EsID)
+            {
+                @Html.HiddenFor(m => m.PermiteNull)
+            }
         </div>
         <div class="form-group col-6">
             @Html.LabelFor(m => m.GeneradaAlCrear, new { @class = "requerido" })
@@ -57,6 +69,11 @@
             @Html.LabelFor(m => m.Editable, new { @class = "requerido" })
             @Html.DropDownListFor(m => m.Editable, Model.SiNoSelectList, "", new { @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.Editable)
+        </div>
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.CalculadaFormula)
+            @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control", maxlength = EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX })
+            @Html.ValidationMessageFor(m => m.CalculadaFormula)
         </div>
     </div>
     <div id="@controlesIds.EspecificacionesTextoRow" style="display: none;">

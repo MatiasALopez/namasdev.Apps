@@ -28,6 +28,8 @@ namespace namasdev.Apps.Datos
                 return ctx.EntidadesIndices
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
                     .Where(ei => ei.EntidadId == entidadId)
+                    .OrderBy(i => i.EsUnique ? 0 : 1)
+                    .ThenBy(i => i.Propiedades.Min(p => p.Propiedad.Orden))
                     .ToList();
             }
         }

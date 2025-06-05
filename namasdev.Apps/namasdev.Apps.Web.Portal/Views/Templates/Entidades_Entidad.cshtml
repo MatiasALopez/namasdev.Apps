@@ -12,24 +12,16 @@
             Model.Especificaciones.IDTipo.CLRType)
         : "";
     var propiedadesNavegacion = new List<string>();
-    foreach (var a in Model.AsociacionesOrigen.OrderBy(ao => ao.OrigenPropiedad.Orden))
+    foreach (var a in Model.AsociacionesOrigen.Where(ao => !string.IsNullOrWhiteSpace(ao.OrigenEntidadPropiedadNavegacionNombre)).OrderBy(ao => ao.OrigenPropiedad.Orden))
     {
-        if (string.IsNullOrWhiteSpace(a.OrigenEntidadPropiedadNavegacionNombre))
-        {
-            continue;
-        }
         propiedadesNavegacion.Add(string.Format("{0} {1}",
             a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
                 ? FormatoHelper.Generic("List", a.DestinoEntidad.Nombre)
                 : a.DestinoEntidad.Nombre, 
             a.OrigenEntidadPropiedadNavegacionNombre));
     }
-    foreach (var a in Model.AsociacionesDestino.OrderBy(ad => ad.DestinoPropiedad.Orden))
+    foreach (var a in Model.AsociacionesDestino.Where(ad => !string.IsNullOrWhiteSpace(ad.DestinoEntidadPropiedadNavegacionNombre)).OrderBy(ad => ad.OrigenEntidad.Nombre).ThenBy(ad => ad.OrigenPropiedad.Orden))
     {
-        if (string.IsNullOrWhiteSpace(a.DestinoEntidadPropiedadNavegacionNombre))
-        {
-            continue;
-        }
         propiedadesNavegacion.Add(string.Format("{0} {1}",
             a.DestinoAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
                 ? FormatoHelper.Generic("List", a.OrigenEntidad.Nombre)

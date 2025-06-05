@@ -44,7 +44,7 @@ namespace namasdev.Apps.Web.Portal.Models.EntidadesPropiedades
         
         public bool EditarDisponible 
         {
-            get { return EsID || !EsIDoAuditoria; }
+            get { return EsID || !EsAuditoria; }
         }
 
         public bool OrdenarDisponible

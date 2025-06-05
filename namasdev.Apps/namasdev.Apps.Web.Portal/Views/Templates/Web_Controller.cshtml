@@ -98,7 +98,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             Cargar@(Html.Raw(clases.ListaViewModel))(@Html.Raw(variables.ViewModel));
             return View(@Html.Raw(variables.ViewModel));
         }
-        @if (!Model.Especificaciones.EsSoloLectura)
+        @if (Model.Especificaciones.BajaTipoId != BajaTipos.NINGUNA)
         {
         <text>
         [HttpPost,
@@ -138,8 +138,11 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             }
 
             return Json(new { success = true });
+        }</text>
         }
-
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {
+        <text>
         public ActionResult Agregar()
         {
             var @Html.Raw(variables.ViewModel) = new @(Html.Raw(clases.EntidadViewModel))();

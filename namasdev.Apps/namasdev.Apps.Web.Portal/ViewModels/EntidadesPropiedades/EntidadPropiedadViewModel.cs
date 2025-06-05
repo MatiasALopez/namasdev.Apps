@@ -52,6 +52,8 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
         public PropiedadTipoEspecificacionesEnteroViewModel PropiedadTipoEspecificacionesEntero { get; set; }
         public PropiedadTipoEspecificacionesDecimalViewModel PropiedadTipoEspecificacionesDecimal { get; set; }
 
+        public bool EsID { get; set; }
+
         public SelectList TiposSelectList { get; set; }
         public SelectList SiNoSelectList { get; set; }
 

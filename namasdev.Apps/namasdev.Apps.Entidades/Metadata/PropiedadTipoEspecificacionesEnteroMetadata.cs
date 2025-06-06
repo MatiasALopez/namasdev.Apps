@@ -10,13 +10,13 @@
             public class ValorMinimo
             {
                 public const string ETIQUETA = "Valor mínimo";
-                public const int TAMAÑO_MAX = 10;
+                public const int TAMAÑO_MAX = 16;
             }
 
             public class ValorMaximo
             {
                 public const string ETIQUETA = "Valor máximo";
-                public const int TAMAÑO_MAX = 10;
+                public const int TAMAÑO_MAX = 15;
             }
         }
     }

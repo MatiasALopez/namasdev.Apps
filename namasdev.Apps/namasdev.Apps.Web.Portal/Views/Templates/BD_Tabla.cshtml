@@ -1,6 +1,7 @@
-﻿@model namasdev.Apps.Entidades.Entidad
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
 @{
-    string nombreTabla = Model.NombrePlural; 
+    string nombreTabla = Model.NombrePlural;
     string fkPropiedad;
 }
 create table dbo.@Html.Raw(nombreTabla)
@@ -19,17 +20,17 @@ create table dbo.@Html.Raw(nombreTabla)
 foreach (var a in Model.AsociacionesOrigen.OrderBy(ao => ao.OrigenPropiedad.Orden))
 {
     fkPropiedad = a.OrigenPropiedad.Nombre;
-    <text>constraint @(Html.Raw(a.Nombre)) foreign key (@Html.Raw(fkPropiedad)) references dbo.@Html.Raw(a.DestinoPropiedad.Entidad.NombrePlural) (@Html.Raw(a.DestinoPropiedad.Nombre)),</text>
+    <text>constraint @(Html.Raw(a.Nombre)) foreign key (@Html.Raw(fkPropiedad)) references dbo.@Html.Raw(a.DestinoPropiedad.Entidad.NombrePlural) (@Html.Raw(a.DestinoPropiedad.Nombre))@(FormatoHelper.DefinicionAsociacionRegla("update", a.UpdateRegla))@(FormatoHelper.DefinicionAsociacionRegla("delete", a.DeleteRegla)),</text>
 }
 }
 )
 go
 @if (Model.Indices != null)
 {
-foreach (var i in Model.Indices.OrderBy(i => i.EsUnique ? 0 : 1).ThenBy(i => i.Propiedades.Min(p => p.Propiedad.Orden)))
-{
+    foreach (var i in Model.Indices.OrderBy(i => i.EsUnique ? 0 : 1).ThenBy(i => i.Propiedades.Min(p => p.Propiedad.Orden)))
+    {
 <text>
-create @(i.EsUnique ? "unique " : "")nonclustered index @(Html.Raw(i.Nombre)) on dbo.@Html.Raw(nombreTabla) (@Html.Raw(string.Join(",",i.Propiedades.OrderBy(p => p.Propiedad.Orden).Select(ip => ip.Propiedad.Nombre))))
+create @(i.EsUnique ? "unique " : "")nonclustered index @(Html.Raw(i.Nombre)) on dbo.@Html.Raw(nombreTabla) (@Html.Raw(string.Join(",", i.Propiedades.OrderBy(p => p.Propiedad.Orden).Select(ip => ip.Propiedad.Nombre))))
 go</text>
-}
+    }
 }

@@ -1,22 +1,21 @@
-﻿using System;
-using System.Linq;
+using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 using AutoMapper;
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 
-using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
+using namasdev.Apps.Datos;
 using namasdev.Apps.Negocio;
+using namasdev.Apps.Negocio.DTO.EntidadesPropiedades;
 using namasdev.Apps.Web.Portal.Helpers;
-using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.Metadata;
 using namasdev.Apps.Web.Portal.Metadata.Views;
 using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
-
-// TODO (ML): mensaje "operacion no valida" a namasdev.core?
+using namasdev.Apps.Web.Portal.Models.EntidadesPropiedades;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -31,8 +30,9 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public EntidadesPropiedadesController(
             IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio, 
-            IEntidadesPropiedadesNegocio entidadesPropiedadesNegocio, 
-            IEntidadesRepositorio entidadesRepositorio, IMapper mapper)
+            IEntidadesPropiedadesNegocio entidadesPropiedadesNegocio,
+            IEntidadesRepositorio entidadesRepositorio,
+            IMapper mapper)
             : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
@@ -48,13 +48,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Index(Guid id)
         {
-            var modelo = new EntidadesPropiedadesViewModel
+            var model = new EntidadesPropiedadesViewModel
             {
                 Id = id,
             };
 
-            CargarEntidadesPropiedadesViewModel(modelo);
-            return View(modelo);
+            CargarEntidadesPropiedadesViewModel(model);
+            return View(model);
         }
 
         [HttpPost,
@@ -68,7 +68,12 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     case EntidadesPropiedadesViewModel.OPERACION_ESTABLECER_CLAVE:
                         try
                         {
-                            _entidadesPropiedadesNegocio.EstablecerComoClave(model.Id, model.ItemsSeleccionadosIds);
+                            _entidadesPropiedadesNegocio.EstablecerComoClave(
+                                new EstablecerComoClaveParametros 
+                                { 
+                                    EntidadId = model.Id, 
+                                    PropiedadesIds = model.ItemsSeleccionadosIds 
+                                });
 
                             ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.ESTABLECER_CLAVE_OK);
                             ModelState.Clear();
@@ -83,7 +88,12 @@ namespace namasdev.Apps.Web.Portal.Controllers
                     case EntidadesPropiedadesViewModel.OPERACION_ACTUALIZAR_ORDEN:
                         try
                         {
-                            _entidadesPropiedadesNegocio.ActualizarOrden(model.Id, model.ItemsConOrdenesModificados);
+                            _entidadesPropiedadesNegocio.ActualizarOrden(
+                                new ActualizarOrdenParametros 
+                                {
+                                    EntidadId = model.Id, 
+                                    PropiedadesIdsYOrdenes = model.ItemsConOrdenesModificados
+                                });
 
                             ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.ACTUALIZAR_ORDEN_OK);
                             ModelState.Clear();
@@ -109,15 +119,20 @@ namespace namasdev.Apps.Web.Portal.Controllers
         ValidateAntiForgeryToken]
         public ActionResult Eliminar(Guid id)
         {
-            var propiedad = _entidadesPropiedadesRepositorio.Obtener(id);
-            if (propiedad == null)
+            var entidadPropiedad = _entidadesPropiedadesRepositorio.Obtener(id);
+            if (entidadPropiedad == null)
             {
                 return Json(new { success = false, message = Validador.MensajeEntidadInexistente(EntidadPropiedadMetadata.ETIQUETA, id) });
             }
 
             try
             {
-                _entidadesPropiedadesRepositorio.EliminarPorId(id);
+                _entidadesPropiedadesNegocio.Eliminar(
+                    new EliminarParametros 
+                    { 
+                        Id = id, 
+                        UsuarioLogueadoId = UsuarioId 
+                    });
             }
             catch (Exception)
             {
@@ -126,34 +141,33 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             return Json(new { success = true });
         }
-
+                
         public ActionResult Agregar(Guid entidadId)
         {
-            var modelo = new EntidadPropiedadViewModel
+            var model = new EntidadPropiedadViewModel
             {
                 EntidadId = entidadId,
             };
-            
-            CargarEntidadPropiedadViewModel(modelo, PaginaModo.Agregar);
-            return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
+
+            CargarEntidadPropiedadViewModel(model, PaginaModo.Agregar);
+            return View(EntidadesPropiedadesViews.EntidadPropiedad, model);
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult Agregar(EntidadPropiedadViewModel modelo)
+        public ActionResult Agregar(EntidadPropiedadViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
-                {
-                    var propiedadTipoEspecificaciones = EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(modelo);
-                    _entidadesPropiedadesNegocio.Agregar(modelo.EntidadId, modelo.Nombre, modelo.Etiqueta, modelo.PropiedadTipoId.Value, propiedadTipoEspecificaciones, modelo.PermiteNull.Value, modelo.GeneradaAlCrear.Value, modelo.Editable.Value, modelo.CalculadaFormula, UsuarioId);
+                {                    
+                    _entidadesPropiedadesNegocio.Agregar(Mapear<AgregarParametros>(model));
 
                     ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.AGREGAR_OK);
 
-                    modelo = new EntidadPropiedadViewModel
+                    model = new EntidadPropiedadViewModel
                     {
-                        EntidadId = modelo.EntidadId,
+                        EntidadId = model.EntidadId,
                     };
                     ModelState.Clear();
                 }
@@ -163,32 +177,29 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 ControllerHelper.CargarMensajesError(ex.Message);
             }
 
-            CargarEntidadPropiedadViewModel(modelo, PaginaModo.Agregar);
-            return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
+            CargarEntidadPropiedadViewModel(model, PaginaModo.Agregar);
+            return View(EntidadesPropiedadesViews.EntidadPropiedad, model);
         }
 
         public ActionResult Editar(Guid id)
         {
-            var propiedad = _entidadesPropiedadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
+            var entidadPropiedad = _entidadesPropiedadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
 
-            var modelo = EntidadesPropiedadesMapper.MapearEntidadAEntidadPropiedadViewModel(propiedad);
-
-            CargarEntidadPropiedadViewModel(modelo, PaginaModo.Editar);
-            return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
+            var model = Mapear<EntidadPropiedadViewModel>(entidadPropiedad);
+            
+            CargarEntidadPropiedadViewModel(model, PaginaModo.Editar);
+            return View(EntidadesPropiedadesViews.EntidadPropiedad, model);
         }
 
         [HttpPost,
         ValidateAntiForgeryToken]
-        public ActionResult Editar(EntidadPropiedadViewModel modelo)
+        public ActionResult Editar(EntidadPropiedadViewModel model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    _entidadesPropiedadesNegocio.Actualizar(
-                        propiedad: EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAEntidad(modelo), 
-                        propiedadTipoEspecificaciones: EntidadesPropiedadesMapper.MapearEntidadPropiedadViewModelAPropiedadTipoEspecificacionesEntidad(modelo), 
-                        usuarioId: UsuarioId);
+                    _entidadesPropiedadesNegocio.Actualizar(Mapear<ActualizarParametros>(model));
 
                     ControllerHelper.CargarMensajeResultadoOk(EntidadPropiedadMetadata.Mensajes.EDITAR_OK);
                 }
@@ -198,40 +209,39 @@ namespace namasdev.Apps.Web.Portal.Controllers
                 ControllerHelper.CargarMensajesError(ex.Message);
             }
 
-            CargarEntidadPropiedadViewModel(modelo, PaginaModo.Editar);
-            return View(EntidadesPropiedadesViews.PROPIEDAD, modelo);
+            CargarEntidadPropiedadViewModel(model, PaginaModo.Editar);
+            return View(EntidadesPropiedadesViews.EntidadPropiedad, model);
         }
 
         #endregion Acciones
 
         #region Metodos
 
-        private void CargarEntidadesPropiedadesViewModel(EntidadesPropiedadesViewModel modelo)
+        private void CargarEntidadesPropiedadesViewModel(EntidadesPropiedadesViewModel model)
         {
-            Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
+            Validador.ValidarArgumentRequeridoYThrow(model, nameof(model));
 
-            var entidad = _entidadesRepositorio.Obtener(modelo.Id, cargarDatosAdicionales: true);
-            modelo.EntidadNombre = entidad.Nombre;
-            modelo.AplicacionVersionId = entidad.AplicacionVersionId;
+            var entidad = _entidadesRepositorio.Obtener(model.Id, cargarDatosAdicionales: true);
+            model.EntidadNombre = entidad.Nombre;
+            model.AplicacionVersionId = entidad.AplicacionVersionId;
 
-            modelo.Items = EntidadesPropiedadesMapper.MapearEntidadesAModelos(
-                entidades: _entidadesPropiedadesRepositorio.ObtenerPorEntidad(
+            model.Items = Mapear<List<EntidadPropiedadItemModel>>(
+                _entidadesPropiedadesRepositorio.ObtenerPorEntidad(
                     entidad.Id,
-                    cargarDatosAdicionales: true),
-                claves: entidad.Claves);
+                    cargarDatosAdicionales: true));
         }
-
-        private void CargarEntidadPropiedadViewModel(EntidadPropiedadViewModel modelo, PaginaModo paginaModo)
+        
+        private void CargarEntidadPropiedadViewModel(EntidadPropiedadViewModel model, PaginaModo paginaModo)
         {
-            Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
+            Validador.ValidarArgumentRequeridoYThrow(model, nameof(model));
 
-            modelo.PaginaModo = paginaModo;
+            model.PaginaModo = paginaModo;
 
-            modelo.GeneradaAlCrear = modelo.GeneradaAlCrear ?? false;
-            modelo.Editable = modelo.Editable ?? true;
+            model.GeneradaAlCrear = model.GeneradaAlCrear ?? false;
+            model.Editable = model.Editable ?? true;
 
-            modelo.TiposSelectList = ListasHelper.ObtenerPropiedadTiposSelectList(_entidadesPropiedadesRepositorio.ObtenerTipos());
-            modelo.SiNoSelectList = namasdev.Web.Helpers.ListasHelper.ObtenerSiNoSelectList();
+            model.TiposSelectList = ListasHelper.ObtenerPropiedadTiposSelectList(_entidadesPropiedadesRepositorio.ObtenerTipos());
+            model.SiNoSelectList = namasdev.Web.Helpers.ListasHelper.ObtenerSiNoSelectList();
         }
 
         #endregion Metodos

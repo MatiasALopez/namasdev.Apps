@@ -1,107 +1,111 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
+using AutoMapper;
 using Newtonsoft.Json;
-
-using namasdev.Core.Entity;
 using namasdev.Core.Transactions;
 using namasdev.Core.Validation;
+
 using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
+using namasdev.Apps.Negocio.DTO.EntidadesPropiedades;
 
 namespace namasdev.Apps.Negocio
 {
     public interface IEntidadesPropiedadesNegocio
     {
-        EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId);
-        void Actualizar(EntidadPropiedad propiedad, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, string usuarioId);
-        void EstablecerComoClave(Guid entidadId, IEnumerable<Guid> propiedadesIds);
-        void ActualizarOrden(Guid entidadId, Dictionary<Guid, short> propiedadesIdsYOrdenes);
+        EntidadPropiedad Agregar(AgregarParametros parametros);
+        void Actualizar(ActualizarParametros parametros);
+        void Eliminar(EliminarParametros parametros);
+        void EstablecerComoClave(EstablecerComoClaveParametros parametros);
+        void ActualizarOrden(ActualizarOrdenParametros parametros);
     }
 
-    public class EntidadesPropiedadesNegocio : IEntidadesPropiedadesNegocio
+    public class EntidadesPropiedadesNegocio : NegocioBase<IEntidadesPropiedadesRepositorio>, IEntidadesPropiedadesNegocio
     {
-        private IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
         private IEntidadesClavesRepositorio _entidadesClavesRepositorio;
 
         public EntidadesPropiedadesNegocio(
-            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
-            IEntidadesClavesRepositorio entidadesClavesRepositorio)
+            IEntidadesClavesRepositorio entidadesClavesRepositorio,
+            IEntidadesPropiedadesRepositorio repositorio, IErroresNegocio erroresNegocio, IMapper mapper)
+            : base(repositorio, erroresNegocio, mapper)
         {
-            Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesClavesRepositorio, nameof(entidadesClavesRepositorio));
 
-            _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
             _entidadesClavesRepositorio = entidadesClavesRepositorio;
         }
 
-        public EntidadPropiedad Agregar(Guid entidadId, string nombre, string etiqueta, short propiedadTipoId, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, bool permiteNull, bool generadaAlCrear, bool editable, string calculadaFormula, string usuarioId)
+
+        public EntidadPropiedad Agregar(AgregarParametros parametros)
         {
-            DateTime fechaHora = DateTime.Now;
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
 
-            var propiedad = new EntidadPropiedad
-            {
-                Id = Guid.NewGuid(),
-                EntidadId = entidadId,
-                Nombre = nombre,
-                Etiqueta = etiqueta,
-                PropiedadTipoId = propiedadTipoId,
-                PropiedadTipoEspecificaciones = SerializarPropiedadTipoEspecificaciones(propiedadTipoEspecificaciones),
-                PermiteNull = permiteNull,
-                GeneradaAlCrear = generadaAlCrear,
-                Editable = editable,
-                CalculadaFormula = calculadaFormula,
-                Orden = _entidadesPropiedadesRepositorio.ObtenerProximoOrdenDisponible(entidadId),
-            };
-            ValidarDatos(propiedad);
+            var entidad = Mapper.Map<EntidadPropiedad>(parametros);
+            
+            entidad.Id = Guid.NewGuid();
+            entidad.PropiedadTipoEspecificaciones = SerializarPropiedadTipoEspecificaciones(parametros.EspecificacionesSegunTipo);
+            entidad.Orden = Repositorio.ObtenerProximoOrdenDisponible(parametros.EntidadId);
+                                        
+            ValidarDatos(entidad);
 
-            _entidadesPropiedadesRepositorio.Agregar(propiedad);
+            Repositorio.Agregar(entidad);
 
-            return propiedad;
+            return entidad;
         }
 
-        public void Actualizar(EntidadPropiedad propiedad, IPropiedadTipoEspecificaciones propiedadTipoEspecificaciones, string usuarioId)
+        public void Actualizar(ActualizarParametros parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(propiedad, nameof(propiedad));
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
 
-            DateTime fechaHora = DateTime.Now;
+            var entidad = Obtener(parametros.Id);
+            Mapper.Map(parametros, entidad);
+            
+            entidad.PropiedadTipoEspecificaciones = SerializarPropiedadTipoEspecificaciones(parametros.EspecificacionesSegunTipo);
 
-            propiedad.PropiedadTipoEspecificaciones = SerializarPropiedadTipoEspecificaciones(propiedadTipoEspecificaciones);
-            ValidarDatos(propiedad);
+            ValidarDatos(entidad);
 
-            _entidadesPropiedadesRepositorio.Actualizar(propiedad);
+            Repositorio.Actualizar(entidad);
+        }
+                
+        public void Eliminar(EliminarParametros parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+    
+            Repositorio.EliminarPorId(parametros.Id);
         }
 
-        public void EstablecerComoClave(Guid entidadId, IEnumerable<Guid> propiedadesIds)
+        public void EstablecerComoClave(EstablecerComoClaveParametros parametros)
         {
-            Validador.ValidarArgumentListaRequeridaYThrow(propiedadesIds, nameof(propiedadesIds), validarNoVacia: false);
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+            Validador.ValidarArgumentListaRequeridaYThrow(parametros.PropiedadesIds, nameof(parametros.PropiedadesIds), validarNoVacia: false);
 
-            var claves = propiedadesIds
+            var claves = parametros.PropiedadesIds
                 .Select(id =>
                     new EntidadClave
                     {
                         Id = Guid.NewGuid(),
-                        EntidadId = entidadId,
+                        EntidadId = parametros.EntidadId,
                         EntidadPropiedadId = id
                     })
                 .ToArray();
 
             using (var ts = TransactionScopeFactory.Crear())
             {
-                _entidadesClavesRepositorio.EliminarPorEntidad(entidadId);
+                _entidadesClavesRepositorio.EliminarPorEntidad(parametros.EntidadId);
                 _entidadesClavesRepositorio.Agregar(claves);
 
                 ts.Complete();
             }
         }
 
-        public void ActualizarOrden(Guid entidadId, Dictionary<Guid, short> propiedadesIdsYOrdenes)
+        public void ActualizarOrden(ActualizarOrdenParametros parametros)
         {
-            Validador.ValidarArgumentListaRequeridaYThrow(propiedadesIdsYOrdenes, nameof(propiedadesIdsYOrdenes), validarNoVacia: true);
+            Validador.ValidarArgumentRequeridoYThrow(parametros, nameof(parametros));
+            Validador.ValidarArgumentListaRequeridaYThrow(parametros.PropiedadesIdsYOrdenes, nameof(parametros.PropiedadesIdsYOrdenes));
 
-            var propiedades = propiedadesIdsYOrdenes
+            var propiedades = parametros.PropiedadesIdsYOrdenes
                 .Select(item =>
                     new EntidadPropiedad
                     {
@@ -112,10 +116,23 @@ namespace namasdev.Apps.Negocio
 
             using (var ts = TransactionScopeFactory.Crear())
             {
-                _entidadesPropiedadesRepositorio.ActualizarOrdenes(propiedades);
+                Repositorio.ActualizarOrdenes(propiedades);
 
                 ts.Complete();
             }
+        }
+
+        private EntidadPropiedad Obtener(Guid id,
+            bool validarExistencia = true)
+        {
+            var entidad = Repositorio.Obtener(id);
+            if (validarExistencia
+                && entidad == null)
+            {
+                throw new Exception(Validador.MensajeEntidadInexistente(EntidadPropiedadMetadata.ETIQUETA, id));
+            }
+
+            return entidad;
         }
 
         private void ValidarDatos(EntidadPropiedad entidad)
@@ -125,7 +142,7 @@ namespace namasdev.Apps.Negocio
             Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, EntidadPropiedadMetadata.Propiedades.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadPropiedadMetadata.Propiedades.Nombre.TAMAÑO_MAX, regEx: EntidadPropiedadMetadata.Propiedades.Nombre.REG_EX);
             Validador.ValidarStringYAgregarAListaErrores(entidad.Etiqueta, EntidadPropiedadMetadata.Propiedades.Etiqueta.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadPropiedadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX);
             Validador.ValidarStringYAgregarAListaErrores(entidad.PropiedadTipoEspecificaciones, EntidadPropiedadMetadata.Propiedades.PropiedadTipoEspecificaciones.ETIQUETA, requerido: false, errores);
-            Validador.ValidarStringYAgregarAListaErrores(entidad.CalculadaFormula, EntidadPropiedadMetadata.Propiedades.CalculadaFormula.ETIQUETA, requerido: false, errores, tamañoMaximo: EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.CalculadaFormula, EntidadPropiedadMetadata.Propiedades.CalculadaFormula.ETIQUETA, requerido: false, errores);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

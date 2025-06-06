@@ -1,7 +1,6 @@
-﻿@using namasdev.Core.Types;
-@using namasdev.Apps.Entidades;
+@using namasdev.Core.Types;
 @using namasdev.Apps.Entidades.Metadata;
-@using namasdev.Web.Helpers;
+@using namasdev.Apps.Web.Portal.Controllers;
 @using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
 @model EntidadesPropiedadesViewModel
 @{
@@ -21,11 +20,11 @@
         BotonOrdenBajar = "btn-orden-bajar",
         BotonEliminar = "btn-eliminar"
     };
-    var controlesTamaños = new
+    var controlesTama�os = new
     {
         ModalEntidadAlto = "600px"
     };
-    var atributosData = new 
+    var atributosData = new
     {
         Ordenable = "ordenable"
     };
@@ -42,7 +41,7 @@
 <div class="row mt-3">
     <div class="col-md-12">
         <a href="@Url.Action("Agregar", "EntidadesPropiedades", new { entidadId = Model.Id })" class="btn btn-primary"
-           data-iframe data-iframe-title="Agregar propiedad" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalEntidad_OnHidden">Agregar</a>
+           data-iframe data-iframe-title="Agregar propiedad" data-iframe-height="@controlesTama�os.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalEntidad_OnHidden">Agregar</a>
     </div>
 </div>
 <div class="row mt-3">
@@ -97,9 +96,9 @@
                                         @if (Model.Items[i].EditarDisponible)
                                         {
                                             <a href="@Url.Action("Editar", new { id = Model.Items[i].Id, Model.Items[i].EntidadId })" class="btn btn-sm btn-outline-secondary"
-                                               data-iframe data-iframe-title="Editar propiedad" data-iframe-height="@controlesTamaños.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalEntidad_OnHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
+                                               data-iframe data-iframe-title="Editar propiedad" data-iframe-height="@controlesTama�os.ModalEntidadAlto" data-iframe-onhidden="@funcionesJS.ModalEntidad_OnHidden"><i class="fa fa-edit" data-toggle="tooltip" title="Editar"></i></a>
                                         }
-                                        
+
                                         @if (Model.Items[i].EliminarDisponible)
                                         {
                                             <button class="btn btn-sm btn-outline-danger @clasesCss.BotonEliminar" data-id="@Model.Items[i].Id"><i data-toggle="tooltip" title="Eliminar" class="fa fa-trash"></i></button>
@@ -118,119 +117,119 @@
         }
         else
         {
-            <div class="alert alert-warning">No hay propiedades para mostrar.</div>
+            <div class="alert alert-warning">No hay @EntidadPropiedadMetadata.ETIQUETA_PLURAL para mostrar.</div>
         }
     </div>
 </div>
 @section bodyScripts {
     <script type="text/javascript">
-        $(function () {
-            namasdevApps.setActiveMenuOption('entidades');
-            $('#@controlesIds.TabPropiedades').addClass('active');
+    $(function () {
+        namasdevApps.setActiveMenuOption('entidades');
+        $('#@controlesIds.TabPropiedades').addClass('active');
 
-            establecerEstadoBotonGuardarOrden();
+        establecerEstadoBotonGuardarOrden();
 
-            $('.@clasesCss.BotonOrdenBajar, .@clasesCss.BotonOrdenSubir')
-                .on('click', function (ev) {
-                    ev.preventDefault();
+        $('.@clasesCss.BotonOrdenBajar, .@clasesCss.BotonOrdenSubir')
+            .on('click', function (ev) {
+                ev.preventDefault();
 
-                    var $boton = $(this);
-                    moverItem($boton.closest('tr'), $boton.hasClass('@clasesCss.BotonOrdenSubir'));
+                var $boton = $(this);
+                moverItem($boton.closest('tr'), $boton.hasClass('@clasesCss.BotonOrdenSubir'));
 
-                    return false;
-                });
+                return false;
+            });
 
-            $('#@controlesIds.Tabla')
-                .on('click', '.@clasesCss.BotonEliminar', function (ev) {
-                    ev.preventDefault();
+        $('#@controlesIds.Tabla')
+            .on('click', '.@clasesCss.BotonEliminar', function (ev) {
+                ev.preventDefault();
 
-                    var id = $(this).data('id');
-                    if (!id) {
-                        return;
-                    }
-
-                    var options = {
-                        showLoadingSelector: '#@controlesIds.TablaContainer',
-                        confirm: true,
-                        confirmTitle: 'Eliminar propiedad',
-                        confirmMessage: '¿Estás seguro que deseas eliminar la propiedad seleccionada?'
-                    };
-                    namasdevApps.postJson(
-                        '@Url.Action("Eliminar")/' + id,
-                        nmd.ui.forms.createDataWithAntiForgeryToken('#@controlesIds.Form'),
-                        function (response) {
-                            if (response.success) {
-                                nmd.ui.controls.showSuccessModal(
-                                    'La propiedad fue eliminada correctamente.',
-                                    function () {
-                                        nmd.page.reloadPage();
-                                    });
-                            }
-                            else {
-                                namasdevApps.showErrorModal(response.message);
-                            }
-                        },
-                        options
-                    );
-
-                    return false;
-                });
-
-            function establecerEstadoBotonGuardarOrden() {
-                var tieneOrdenModificado = false;
-                $('#@controlesIds.Tabla tbody tr').each(function () {
-                    var $fila = $(this),
-                        $orden = $fila.find('input[name$="Orden"]'),
-                        $ordenInicial = $fila.find('input[name$="OrdenInicial"]');
-                    if ($orden.val() != $ordenInicial.val()) {
-                        tieneOrdenModificado = true;
-                    }
-                });
-
-                $('#@controlesIds.BotonActualizarOrden').prop('disabled', !tieneOrdenModificado);
-            }
-
-            function moverItem($fila, subir) {
-                var orden = obtenerOrdenItem($fila);
-
-                var $filaAIntercambiar;
-                if (subir) {
-                    $filaAIntercambiar = $fila.prev();
-                    if (!itemSePuedeOrdenar($filaAIntercambiar)) {
-                        return;
-                    }
-
-                    $fila.insertBefore($filaAIntercambiar);
-                } else {
-                    $filaAIntercambiar = $fila.next();
-                    if (!itemSePuedeOrdenar($filaAIntercambiar)) {
-                        return;
-                    }
-
-                    $fila.insertAfter($filaAIntercambiar);
+                var id = $(this).data('id');
+                if (!id) {
+                    return;
                 }
 
-                actualizarOrdenItem($fila);
-                actualizarOrdenItem($filaAIntercambiar);
+                var options = {
+                    showLoadingSelector: '#@controlesIds.TablaContainer',
+                    confirm: true,
+                    confirmTitle: 'Eliminar @EntidadPropiedadMetadata.ETIQUETA',
+                    confirmMessage: '@EntidadPropiedadMetadata.Mensajes.ELIMINAR_CONFIRMACION'
+                };
+                namasdevApps.postJson(
+                    '@Url.Action(nameof(EntidadesPropiedadesController.Eliminar))/' + id,
+                    nmd.ui.forms.createDataWithAntiForgeryToken('#@controlesIds.Form'),
+                    function (response) {
+                        if (response.success) {
+                            nmd.ui.controls.showSuccessModal(
+                                '@EntidadPropiedadMetadata.Mensajes.ELIMINAR_OK',
+                                function () {
+                                    nmd.page.reloadPage();
+                                });
+                        }
+                        else {
+                            namasdevApps.showErrorModal(response.message);
+                        }
+                    },
+                    options
+                );
 
-                establecerEstadoBotonGuardarOrden();
-            }
+                return false;
+            });
 
-            function actualizarOrdenItem($fila) {
-                $fila.find('input[name$="Orden"]').val(obtenerOrdenItem($fila));
-            }
+        function establecerEstadoBotonGuardarOrden() {
+            var tieneOrdenModificado = false;
+            $('#@controlesIds.Tabla tbody tr').each(function () {
+                var $fila = $(this),
+                    $orden = $fila.find('input[name$="Orden"]'),
+                    $ordenInicial = $fila.find('input[name$="OrdenInicial"]');
+                if ($orden.val() != $ordenInicial.val()) {
+                    tieneOrdenModificado = true;
+                }
+            });
 
-            function obtenerOrdenItem($fila) {
-                return $fila.index() + 1;
-            }
-
-            function itemSePuedeOrdenar($fila) {
-                return $fila.data('@atributosData.Ordenable') == true;
-            }
-        });
-
-        function @(funcionesJS.ModalEntidad_OnHidden)() {
-            nmd.page.reloadPage();
+            $('#@controlesIds.BotonActualizarOrden').prop('disabled', !tieneOrdenModificado);
         }
+
+        function moverItem($fila, subir) {
+            var orden = obtenerOrdenItem($fila);
+
+            var $filaAIntercambiar;
+            if (subir) {
+                $filaAIntercambiar = $fila.prev();
+                if (!itemSePuedeOrdenar($filaAIntercambiar)) {
+                    return;
+                }
+
+                $fila.insertBefore($filaAIntercambiar);
+            } else {
+                $filaAIntercambiar = $fila.next();
+                if (!itemSePuedeOrdenar($filaAIntercambiar)) {
+                    return;
+                }
+
+                $fila.insertAfter($filaAIntercambiar);
+            }
+
+            actualizarOrdenItem($fila);
+            actualizarOrdenItem($filaAIntercambiar);
+
+            establecerEstadoBotonGuardarOrden();
+        }
+
+        function actualizarOrdenItem($fila) {
+            $fila.find('input[name$="Orden"]').val(obtenerOrdenItem($fila));
+        }
+
+        function obtenerOrdenItem($fila) {
+            return $fila.index() + 1;
+        }
+
+        function itemSePuedeOrdenar($fila) {
+            return $fila.data('@atributosData.Ordenable') == true;
+        }
+    });
+
+    function @(funcionesJS.ModalEntidad_OnHidden)() {
+        nmd.page.reloadPage();
+    }
     </script>
 }

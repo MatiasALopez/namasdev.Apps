@@ -43,14 +43,12 @@
     };
     var validaciones = new List<string>();
     string validacionMetodo,
-        propiedadNombre,
-        claseMetadataPropiedad;
+        propiedadNombre;
     Dictionary<string, string> validacionParametros;
     foreach (var p in Model.Propiedades)
     {
         validacionMetodo = null;
         propiedadNombre = p.NombreOId;
-        claseMetadataPropiedad = string.Format("{0}.{1}", clases.MetadataPropiedades, propiedadNombre);
         validacionParametros = new Dictionary<string, string>();
         switch (p.PropiedadTipoId)
         {
@@ -58,95 +56,79 @@
                 validacionMetodo = "ValidarStringYAgregarAListaErrores";
                 if (p.EspecificacionesTexto.TamañoExacto.HasValue)
                 {
-                    validacionParametros.Add(parametros.TamañoExacto, string.Format("{0}.TAMAÑO_EXACTO", claseMetadataPropiedad));
+                    validacionParametros.Add(parametros.TamañoExacto, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
                 }
                 else
                 {
                     if (p.EspecificacionesTexto.TamañoMinimo.HasValue)
                     {
-                        validacionParametros.Add(parametros.TamañoMinimo, string.Format("{0}.TAMAÑO_MIN", claseMetadataPropiedad));
+                        validacionParametros.Add(parametros.TamañoMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MIN));
                     }
                     if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
                     {
-                        validacionParametros.Add(parametros.TamañoMaximo, string.Format("{0}.TAMAÑO_MAX", claseMetadataPropiedad));
+                        validacionParametros.Add(parametros.TamañoMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(p.EspecificacionesTexto.RegEx))
                 {
-                    validacionParametros.Add(parametros.RegEx, string.Format("{0}.REG_EX", claseMetadataPropiedad));
+                    validacionParametros.Add(parametros.RegEx, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.REG_EX));
                 }
                 break;
-
             case PropiedadTipos.ENTERO:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEntero.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
                 }
                 if (p.EspecificacionesEntero.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
                 }
                 break;
-
             case PropiedadTipos.ENTERO_CORTO:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEnteroCorto.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
                 }
                 if (p.EspecificacionesEnteroCorto.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
                 }
                 break;
-
             case PropiedadTipos.ENTERO_LARGO:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
                 }
                 if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
                 }
                 break;
-
             case PropiedadTipos.DECIMAL:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
-                if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
-                {
-                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
-                }
-                if (p.EspecificacionesDecimal.ValorMaximo.HasValue)
-                {
-                    validacionParametros.Add(parametros.ValorMaximo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
-                }
-                validacionParametros.Add(parametros.CantDecimales, string.Format("{0}.DIGITOS_DECIMALES", claseMetadataPropiedad));
+                validacionParametros.Add(parametros.CantDecimales, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
                 break;
-
             case PropiedadTipos.DECIMAL_FLOTANTE:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
-                if (p.EspecificacionesDecimalFlotante.ValorMinimo.HasValue)
-                {
-                    validacionParametros.Add(parametros.ValorMinimo, string.Format("{0}.VALOR_MINIMO", claseMetadataPropiedad));
-                }
-                if (p.EspecificacionesDecimalFlotante.ValorMaximo.HasValue)
-                {
-                    validacionParametros.Add(parametros.ValorMaximo, string.Format("{0}.VALOR_MAXIMO", claseMetadataPropiedad));
-                }
-                validacionParametros.Add(parametros.CantDecimales, string.Format("{0}.DIGITOS_DECIMALES", claseMetadataPropiedad));
+                validacionParametros.Add(parametros.CantDecimales, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
                 break;
         }
         if (!string.IsNullOrWhiteSpace(validacionMetodo))
         {
-            validaciones.Add(string.Format("Validador.{0}(entidad.{1}, {2}.{1}.ETIQUETA, requerido: {3}, errores{4})",
+            validaciones.Add(string.Format("Validador.{0}(entidad.{1}, {2}.{1}.{3}, requerido: {4}, errores{5})",
                 validacionMetodo,
                 propiedadNombre,
                 clases.MetadataPropiedades,
+                EntidadMetadataAtributos.ETIQUETA,
                 (!p.PermiteNull).ToString().ToLower(),
-                validacionParametros.Count > 0 ? ", " + FormatoHelper.ListaParametros(validacionParametros) : ""));
+                validacionParametros.Count > 0 ? ", " + FormatoHelper.ListaParametrosValores(validacionParametros) : ""));
         }
     }
 }

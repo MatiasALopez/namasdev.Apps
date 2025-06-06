@@ -1,5 +1,3 @@
-using System.Linq;
-
 using AutoMapper;
 
 using namasdev.Apps.Entidades;

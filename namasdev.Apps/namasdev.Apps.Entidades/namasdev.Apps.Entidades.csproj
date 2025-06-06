@@ -116,9 +116,10 @@
     <Compile Include="Valores\AspNetRole.cs" />
     <Compile Include="Valores\AuditoriaTipos.cs" />
     <Compile Include="Valores\CorreoParametros.cs" />
+    <Compile Include="Valores\EntidadMetadataAtributos.cs" />
     <Compile Include="Valores\EntidadPropiedades.cs" />
     <Compile Include="Valores\Parametros.cs" />
-    <Compile Include="Valores\PropiedadTipo.cs" />
+    <Compile Include="Valores\PropiedadTipos.cs" />
     <Compile Include="Valores\PropiedadTiposEspecificaciones.cs" />
     <Compile Include="Valores\RegExs.cs" />
     <Compile Include="Valores\TemplatesNombres.cs" />

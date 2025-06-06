@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 using namasdev.Apps.Entidades.Metadata;
@@ -9,19 +9,19 @@ namespace namasdev.Apps.Web.Portal.Models.EntidadesPropiedades
     {
         public Guid Id { get; set; }
         public Guid EntidadId { get; set; }
-
+        
         [Display(Name = EntidadPropiedadMetadata.Propiedades.Nombre.ETIQUETA)]
         public string Nombre { get; set; }
-
+        
         [Display(Name = EntidadPropiedadMetadata.Propiedades.PropiedadTipoId.ETIQUETA)]
         public short PropiedadTipoId { get; set; }
-
+        
         [Display(Name = EntidadPropiedadMetadata.Propiedades.PropiedadTipoId.ETIQUETA)]
         public string TipoNombre { get; set; }
-
+        
         [Display(Name = EntidadPropiedadMetadata.Propiedades.PermiteNull.ETIQUETA)]
         public bool PermiteNull { get; set; }
-
+        
         [Display(Name = EntidadPropiedadMetadata.Propiedades.Orden.ETIQUETA)]
         public short Orden { get; set; }
 
@@ -32,17 +32,17 @@ namespace namasdev.Apps.Web.Portal.Models.EntidadesPropiedades
         public bool EsID { get; set; }
         public bool EsAuditoria { get; set; }
 
-        public bool OrdenModificado 
+        public bool OrdenModificado
         {
             get { return Orden != OrdenInicial; }
         }
 
-        public bool EsIDoAuditoria 
+        public bool EsIDoAuditoria
         {
             get { return EsID || EsAuditoria; }
         }
-        
-        public bool EditarDisponible 
+
+        public bool EditarDisponible
         {
             get { return EsID || !EsAuditoria; }
         }

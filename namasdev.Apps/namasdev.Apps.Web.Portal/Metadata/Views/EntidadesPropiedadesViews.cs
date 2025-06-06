@@ -1,3 +1,4 @@
+
 namespace namasdev.Apps.Web.Portal.Metadata.Views
 {
     public class EntidadesPropiedadesViews
@@ -6,7 +7,7 @@ namespace namasdev.Apps.Web.Portal.Metadata.Views
         public const string PROPIEDAD_TIPO_ESPECIFICACIONES_ENTERO = "_PropiedadTipoEspecificacionesEntero";
         public const string PROPIEDAD_TIPO_ESPECIFICACIONES_TEXTO = "_PropiedadTipoEspecificacionesTexto";
 
-        public const string INDEX = "Index";
-        public const string PROPIEDAD = "Propiedad";
+        public const string Index = "Index";
+        public const string EntidadPropiedad = "EntidadPropiedad";
     }
 }

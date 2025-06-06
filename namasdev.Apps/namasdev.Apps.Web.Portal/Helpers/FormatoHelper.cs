@@ -1,14 +1,52 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Ajax.Utilities;
+
+using namasdev.Core.Types;
+
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Valores;
-using namasdev.Core.Types;
 
 namespace namasdev.Apps.Web.Portal.Helpers
 {
     public class FormatoHelper
     {
+        public static string MetadataPropiedadAtributo(EntidadPropiedad propiedad, string atributo,
+            bool incluirNamespace = false)
+        {
+            return $"{(incluirNamespace ? "namasdev.Apps.Entidades.Metadata." : "")}{propiedad.Entidad.Nombre}Metadata.Propiedades.{propiedad.Nombre}.{atributo}";
+        }
+
+        public static string TipoYNombre(string tipo, string nombre)
+        {
+            return $"{tipo} {nombre}";
+        }
+
+        public static string DefinicionAsociacionRegla(string operacion, AsociacionRegla regla)
+        {
+            if (regla.Id == AsociacionReglas.NO_ACTION)
+            {
+                return string.Empty;
+            }
+
+            string accionExpresion = null;
+            switch (regla.Id)
+            {
+                case AsociacionReglas.CASCADE:
+                    accionExpresion = "cascade";
+                    break;
+
+                case AsociacionReglas.SET_NULL:
+                    accionExpresion = "set null";
+                    break;
+
+                case AsociacionReglas.SET_DEFAULT:
+                    accionExpresion = "set default";
+                    break;
+            }
+
+            return $" on {operacion} {accionExpresion}";
+        }
+
         public static string ExpresionCheckNoNull(string nombre, PropiedadTipo tipo)
         {
             if (tipo.CLRTypeEsNullable)
@@ -34,7 +72,23 @@ namespace namasdev.Apps.Web.Portal.Helpers
             return $"{nombre}<{Formateador.Lista(tiposNombres, ", ")}>";
         }
 
-        public static string ListaParametros(Dictionary<string, string> lista,
+        public static string ListaParametrosDefiniciones(IEnumerable<EntidadPropiedad> propiedades)
+        {
+            return Lista(
+                propiedades.ToDictionary(p => p.Tipo.CLRType, p => p.NombreCamelCase));
+        }
+
+        public static string ListaParametrosValores(Dictionary<string, string> lista,
+            bool excluirVacios = true)
+        {
+            return Lista(lista, 
+                separadorKeyValue: ": ", 
+                excluirVacios: excluirVacios);
+        }
+
+        public static string Lista(Dictionary<string, string> lista, 
+            string separadorKeyValue = " ",
+            string separadorItems = ", ",
             bool excluirVacios = true)
         {
             if (lista == null || lista.Count == 0)
@@ -49,10 +103,10 @@ namespace namasdev.Apps.Web.Portal.Helpers
                 {
                     continue;
                 }
-                res.Add($"{item.Key}: {item.Value}");
+                res.Add($"{item.Key}{separadorKeyValue}{item.Value}");
             }
 
-            return Formateador.Lista(res, separador: ", ");
+            return Formateador.Lista(res, separador: separadorItems);
         }
 
         public static string ValorConSufijo(decimal? valor)

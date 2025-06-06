@@ -32,7 +32,7 @@ using @(Html.Raw(namespaces.Datos)).Sql;
 
 namespace @Html.Raw(namespaces.Datos)
 {
-    public interface @Html.Raw(interfaces.Repositorio) @Html.Raw(usarRepositorioBase ? string.Format(":{0}", FormatoHelper.Generic("IRepositorio", tiposGenericosEntidadYId)) : "")
+    public interface @Html.Raw(interfaces.Repositorio) @Html.Raw(usarRepositorioBase ? string.Format(": {0}", FormatoHelper.Generic("IRepositorio", tiposGenericosEntidadYId)) : "")
     {
     }
 

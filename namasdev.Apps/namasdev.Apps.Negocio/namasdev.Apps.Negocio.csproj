@@ -89,6 +89,7 @@
     <Compile Include="Automapper\EntidadesIndicesPropiedadesProfile.cs" />
     <Compile Include="Automapper\EntidadesEspecificacionesProfile.cs" />
     <Compile Include="Automapper\EntidadesProfile.cs" />
+    <Compile Include="Automapper\EntidadPropiedadProfile.cs" />
     <Compile Include="Automapper\UsuariosProfile.cs" />
     <Compile Include="DTO\EntidadesAsociaciones\ActualizarParametros.cs" />
     <Compile Include="DTO\EntidadesAsociaciones\AgregarParametros.cs" />
@@ -98,6 +99,12 @@
     <Compile Include="DTO\EntidadesIndices\AgregarParametros.cs" />
     <Compile Include="DTO\EntidadEspecificaciones\ActualizarParametros.cs" />
     <Compile Include="DTO\EntidadEspecificaciones\AgregarParametros.cs" />
+    <Compile Include="DTO\EntidadesPropiedades\ActualizarOrdenParametros.cs" />
+    <Compile Include="DTO\EntidadesPropiedades\EntidadParametrosBase.cs" />
+    <Compile Include="DTO\EntidadesPropiedades\EstablecerComoClaveParametros.cs" />
+    <Compile Include="DTO\EntidadesPropiedades\ActualizarParametros.cs" />
+    <Compile Include="DTO\EntidadesPropiedades\AgregarParametros.cs" />
+    <Compile Include="DTO\EntidadesPropiedades\EliminarParametros.cs" />
     <Compile Include="DTO\Entidades\DesmarcarComoBorradoParametros.cs" />
     <Compile Include="DTO\Entidades\MarcarComoBorradoParametros.cs" />
     <Compile Include="DTO\Entidades\ActualizarParametros.cs" />

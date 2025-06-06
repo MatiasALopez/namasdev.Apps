@@ -49,14 +49,14 @@
                     var maxLength = p.EspecificacionesTexto.TamañoMaximo ?? p.EspecificacionesTexto.TamañoExacto;
                     if (maxLength.HasValue)
                     {
-                        propiedadReglas.Add(string.Format("HasMaxLength({0}TAMAÑO_MAX)", propiedadMetadataBase));
+                        propiedadReglas.Add(string.Format("HasMaxLength({0}{1})", propiedadMetadataBase, EntidadMetadataAtributos.TAMAÑO_MAX));
                     }
                 }
                 break;
             case PropiedadTipos.DECIMAL:
                 if (p.EspecificacionesDecimal != null)
                 {
-                    propiedadReglas.Add(string.Format("HasPrecision({0}DIGITOS_ENTEROS + {0}DIGITOS_DECIMALES,{0}DIGITOS_DECIMALES)", propiedadMetadataBase));
+                    propiedadReglas.Add(string.Format("HasPrecision({0}{1} + {0}{2}, {0}{2})", propiedadMetadataBase, EntidadMetadataAtributos.DIGITOS_ENTEROS, EntidadMetadataAtributos.DIGITOS_DECIMALES));
                 }
                 break;
         }

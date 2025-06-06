@@ -1,11 +1,9 @@
-﻿@using namasdev.Apps.Entidades.Valores;
-@using namasdev.Apps.Entidades.Metadata; 
-@using namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades;
-@model EntidadPropiedadViewModel
+@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Entidades.Metadata;
+@model namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades.EntidadPropiedadViewModel
 @{
     ViewBag.Title = $"{Model.PaginaModo} {EntidadPropiedadMetadata.ETIQUETA}";
     ViewBag.ExcluirHeaderYFooter = true;
-
     var controlesIds = new
     {
         Form = $"frm{EntidadPropiedadMetadata.NOMBRE}",
@@ -28,18 +26,18 @@
     @Html.Partial("_Errores")
     @Html.Partial("_ResultadoOk")
     @Html.HiddenFor(m => m.PaginaModo)
-    @Html.HiddenFor(m => m.EntidadPropiedadId)
+    @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.EntidadId)
     @Html.HiddenFor(m => m.EsID)
     <div class="form-row">
         <div class="form-group col-12">
             @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Propiedades.Nombre.TAMAÑO_MAX })
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Propiedades.Nombre.TAMA�O_MAX })
             @Html.ValidationMessageFor(m => m.Nombre)
         </div>
         <div class="form-group col-12">
             @Html.LabelFor(m => m.Etiqueta, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Etiqueta, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Propiedades.Etiqueta.TAMAÑO_MAX })
+            @Html.TextBoxFor(m => m.Etiqueta, new { @class = "form-control form-control-required", maxlength = EntidadPropiedadMetadata.Propiedades.Etiqueta.TAMA�O_MAX })
             @Html.ValidationMessageFor(m => m.Etiqueta)
         </div>
         <div class="form-group col-6">
@@ -72,7 +70,7 @@
         </div>
         <div class="form-group col-12">
             @Html.LabelFor(m => m.CalculadaFormula)
-            @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control", maxlength = EntidadPropiedadMetadata.Propiedades.CalculadaFormula.TAMAÑO_MAX })
+            @Html.TextAreaFor(m => m.CalculadaFormula, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.CalculadaFormula)
         </div>
     </div>

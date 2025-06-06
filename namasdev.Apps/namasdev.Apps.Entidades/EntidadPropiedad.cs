@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 using namasdev.Core.Entity;
 using namasdev.Core.Types;
@@ -28,7 +28,7 @@ namespace namasdev.Apps.Entidades
         public bool PermiteNull { get; set; }
         public short Orden { get; set; }
         public string CalculadaFormula { get; set; }
-        public bool EsCalculada 
+        public bool EsCalculada
         {
             get { return !string.IsNullOrWhiteSpace(CalculadaFormula); }
         }
@@ -37,17 +37,17 @@ namespace namasdev.Apps.Entidades
         public bool Editable { get; set; }
         public bool EsID { get; set; }
         public bool EsAuditoria { get; set; }
-
-        public Entidad Entidad { get; set; }
-        public PropiedadTipo Tipo { get; set; }
+            
+        public virtual Entidad Entidad { get; set; }
+        public virtual PropiedadTipo Tipo { get; set; }
 
         private PropiedadTipoEspecificacionesTexto _especificacionesTexto;
         public PropiedadTipoEspecificacionesTexto EspecificacionesTexto
         {
             get
             {
-                return _especificacionesTexto ?? 
-                    (_especificacionesTexto = 
+                return _especificacionesTexto ??
+                    (_especificacionesTexto =
                         PropiedadTipoId == PropiedadTipos.TEXTO
                         ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesTexto>(PropiedadTipoEspecificaciones)
                         : null);
@@ -60,7 +60,7 @@ namespace namasdev.Apps.Entidades
             get
             {
                 return _especificacionesDecimal ??
-                    (_especificacionesDecimal = 
+                    (_especificacionesDecimal =
                         PropiedadTipoId == PropiedadTipos.DECIMAL
                         ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimal>(PropiedadTipoEspecificaciones)
                         : null);
@@ -73,7 +73,7 @@ namespace namasdev.Apps.Entidades
             get
             {
                 return _especificacionesDecimalFlotante ??
-                    (_especificacionesDecimalFlotante = 
+                    (_especificacionesDecimalFlotante =
                         PropiedadTipoId == PropiedadTipos.DECIMAL_FLOTANTE
                         ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesDecimalFlotante>(PropiedadTipoEspecificaciones)
                         : null);
@@ -112,7 +112,7 @@ namespace namasdev.Apps.Entidades
             get
             {
                 return _especificacionesEnteroLargo ??
-                    (_especificacionesEnteroLargo = 
+                    (_especificacionesEnteroLargo =
                         PropiedadTipoId == PropiedadTipos.ENTERO_LARGO
                         ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesEnteroLargo>(PropiedadTipoEspecificaciones)
                         : null);
@@ -123,25 +123,7 @@ namespace namasdev.Apps.Entidades
         {
             return Nombre;
         }
-
-        //public bool EsAuditoriaCreado
-        //{
-        //    get 
-        //    { 
-        //        return Nombre == EntidadPropiedades.CreadoPor.NOMBRE
-        //            || Nombre == EntidadPropiedades.CreadoFecha.NOMBRE;
-        //    }
-        //}
-
-        //public bool EsAuditoriaUltimaModificacion
-        //{
-        //    get 
-        //    { 
-        //        return Nombre == EntidadPropiedades.UltimaModificacionPor.NOMBRE
-        //            || Nombre == EntidadPropiedades.UltimaModificacionFecha.NOMBRE;
-        //    }
-        //}
-
+        
         public bool EsAuditoriaBorrado
         {
             get

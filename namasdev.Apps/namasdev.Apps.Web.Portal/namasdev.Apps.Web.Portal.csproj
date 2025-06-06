@@ -204,9 +204,10 @@
     <Compile Include="App_Start\Startup.DI.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Automapper\EntidadesAsociacionesProfile.cs" />
+    <Compile Include="Automapper\PropiedadTipoEspecificacionesProfile.cs" />
     <Compile Include="Automapper\EntidadesEspecificacionesProfile.cs" />
-    <Compile Include="Automapper\EntidadesPropiedadesProfile.cs" />
     <Compile Include="Automapper\EntidadesIndicesProfile.cs" />
+    <Compile Include="Automapper\EntidadPropiedadProfile.cs" />
     <Compile Include="Automapper\TemplatesProfile.cs" />
     <Compile Include="Automapper\EntidadesProfile.cs" />
     <Compile Include="Automapper\UsuariosProfile.cs" />
@@ -335,7 +336,6 @@
     <Content Include="Views\Versiones\Index.cshtml" />
     <Content Include="Views\Entidades\Entidad.cshtml" />
     <Content Include="Views\Entidades\Index.cshtml" />
-    <Content Include="Views\EntidadesPropiedades\Propiedad.cshtml" />
     <Content Include="Views\EntidadesPropiedades\Index.cshtml" />
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesTexto.cshtml" />
     <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesDecimal.cshtml" />
@@ -368,6 +368,7 @@
     <Content Include="Views\EntidadesIndices\Index.cshtml" />
     <Content Include="Views\EntidadesEspecificaciones\EntidadEspecificaciones.cshtml" />
     <Content Include="Views\Templates\Negocio_DTO_EliminarParametros.cshtml" />
+    <Content Include="Views\EntidadesPropiedades\EntidadPropiedad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

@@ -13,23 +13,23 @@
     };
     var constantesDefiniciones = new
     {
-        Etiqueta = "string ETIQUETA",
-        TamañoExacto = "int TAMAÑO_EXACTO",
-        TamañoMax = "int TAMAÑO_MAX",
-        TamañoMin = "int TAMAÑO_MIN",
-        RegEx = "string REG_EX",
-        ValorMinimoEntero = "int VALOR_MINIMO",
-        ValorMaximoEntero = "int VALOR_MAXIMO",
-        ValorMinimoEnteroCorto = "short VALOR_MINIMO",
-        ValorMaximoEnteroCorto = "short VALOR_MAXIMO",
-        ValorMinimoEnteroLargo = "long VALOR_MINIMO",
-        ValorMaximoEnteroLargo = "long VALOR_MAXIMO",
-        ValorMinimoDecimal = "decimal VALOR_MINIMO",
-        ValorMaximoDecimal = "decimal VALOR_MAXIMO",
-        ValorMinimoDecimalFlotante = "double VALOR_MINIMO",
-        ValorMaximoDecimalFlotante = "double VALOR_MAXIMO",
-        DigitosEnteros = "int DIGITOS_ENTEROS",
-        DigitosDecimales = "int DIGITOS_DECIMALES",
+        Etiqueta = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.ETIQUETA),
+        TamañoExacto = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_EXACTO),
+        TamañoMax = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_MAX),
+        TamañoMin = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_MIN),
+        RegEx = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.REG_EX),
+        ValorMinimoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.VALOR_MAXIMO),
+        ValorMinimoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos.VALOR_MAXIMO),
+        ValorMinimoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos.VALOR_MAXIMO),
+        ValorMinimoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos.VALOR_MAXIMO),
+        ValorMinimoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos.VALOR_MAXIMO),
+        DigitosEnteros = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.DIGITOS_ENTEROS),
+        DigitosDecimales = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.DIGITOS_DECIMALES),
     };
     string textoPudo = Model.Especificaciones.Articulo.TextoPudo,
         textoArticulo = Model.Especificaciones.Articulo.Texto,
@@ -61,7 +61,7 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
         {
             propiedadConstantes = new Dictionary<string, string>
             {
-                { "string ETIQUETA", FormatoHelper.EntreComillas(p.Etiqueta) }
+                { FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.ETIQUETA), FormatoHelper.EntreComillas(p.Etiqueta) }
             };
             switch (p.PropiedadTipoId)
             {
@@ -87,24 +87,12 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
                     }
                     break;
                 case PropiedadTipos.ENTERO:
-                    if (p.EspecificacionesEntero.ValorMinimo.HasValue)
-                    {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEntero, p.EspecificacionesEntero.ValorMinimo.ToString());
-                    }
-                    if (p.EspecificacionesEntero.ValorMaximo.HasValue)
-                    {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEntero, p.EspecificacionesEntero.ValorMaximo.ToString());
-                    }
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEntero, (p.EspecificacionesEntero.ValorMinimo ?? int.MinValue).ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEntero, (p.EspecificacionesEntero.ValorMaximo ?? int.MaxValue).ToString());
                     break;
                 case PropiedadTipos.ENTERO_CORTO:
-                    if (p.EspecificacionesEnteroCorto.ValorMinimo.HasValue)
-                    {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEnteroCorto, p.EspecificacionesEnteroCorto.ValorMinimo.ToString());
-                    }
-                    if (p.EspecificacionesEnteroCorto.ValorMaximo.HasValue)
-                    {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEnteroCorto, p.EspecificacionesEnteroCorto.ValorMaximo.ToString());
-                    }
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEnteroCorto, (p.EspecificacionesEnteroCorto.ValorMinimo ?? short.MinValue).ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEnteroCorto, (p.EspecificacionesEnteroCorto.ValorMaximo ?? short.MaxValue).ToString());
                     break;
                 case PropiedadTipos.ENTERO_LARGO:
                     if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
@@ -117,28 +105,19 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
                     }
                     break;
                 case PropiedadTipos.DECIMAL:
-                    if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
-                    {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMinimo));
-                    }
-                    if (p.EspecificacionesDecimal.ValorMaximo.HasValue)
-                    {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo));
-                    }
                     propiedadConstantes.Add(constantesDefiniciones.DigitosEnteros, p.EspecificacionesDecimal.DigitosEnteros.ToString());
                     propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimal.DigitosDecimales.ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMinimo ?? p.EspecificacionesDecimal.ValorMinimoDesdeDigitos));
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo ?? p.EspecificacionesDecimal.ValorMaximoDesdeDigitos));
                     break;
                 case PropiedadTipos.DECIMAL_FLOTANTE:
-                    if (p.EspecificacionesDecimalFlotante.ValorMinimo.HasValue)
-                    {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimalFlotante, p.EspecificacionesDecimalFlotante.ValorMinimo.ToString());
-                    }
-                    if (p.EspecificacionesDecimalFlotante.ValorMaximo.HasValue)
-                    {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimalFlotante, p.EspecificacionesDecimalFlotante.ValorMaximo.ToString());
-                    }
                     propiedadConstantes.Add(constantesDefiniciones.DigitosEnteros, p.EspecificacionesDecimalFlotante.DigitosEnteros.ToString());
                     propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimalFlotante.DigitosDecimales.ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, (p.EspecificacionesDecimalFlotante.ValorMinimo ?? p.EspecificacionesDecimalFlotante.ValorMinimoDesdeDigitos).ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, (p.EspecificacionesDecimalFlotante.ValorMaximo ?? p.EspecificacionesDecimalFlotante.ValorMaximoDesdeDigitos).ToString());
+                    break;
+                case PropiedadTipos.IMPORTE:
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, "4");
                     break;
             }
             <text>public class @Html.Raw(p.NombreOId)

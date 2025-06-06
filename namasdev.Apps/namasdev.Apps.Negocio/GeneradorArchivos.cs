@@ -107,14 +107,17 @@ namespace namasdev.Apps.Negocio
                 GenerarNegocioAutomapperProfile(entidad, grupoId: grupoId);
             }
 
-            if (parametros.GenerarNegocioDTOAgregarParametros)
+            if (!entidad.Especificaciones.EsSoloLectura)
             {
-                GenerarNegocioDTOAgregarParametros(entidad, grupoId: grupoId);
-            }
+                if (parametros.GenerarNegocioDTOAgregarParametros)
+                {
+                    GenerarNegocioDTOAgregarParametros(entidad, grupoId: grupoId);
+                }
 
-            if (parametros.GenerarNegocioDTOActualizarParametros)
-            {
-                GenerarNegocioDTOActualizarParametros(entidad, grupoId: grupoId);
+                if (parametros.GenerarNegocioDTOActualizarParametros)
+                {
+                    GenerarNegocioDTOActualizarParametros(entidad, grupoId: grupoId);
+                }
             }
 
             if (entidad.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
@@ -261,7 +264,7 @@ namespace namasdev.Apps.Negocio
                 TemplatesNombres.Negocio.Automapper.PROFILE,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "Automapper"),
-                $"{entidad.NombrePlural}Profile.cs",
+                $"{entidad.Nombre}Profile.cs",
                 grupoId);
         }
 
@@ -360,7 +363,7 @@ namespace namasdev.Apps.Negocio
                TemplatesNombres.Web.Automapper.PROFILE,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Automapper"),
-                $"{entidad.NombrePlural}Profile.cs",
+                $"{entidad.Nombre}Profile.cs",
                 grupoId);
         }
 

@@ -1,5 +1,6 @@
 ﻿using namasdev.Core.Entity;
 using namasdev.Core.Types;
+
 using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Entidades

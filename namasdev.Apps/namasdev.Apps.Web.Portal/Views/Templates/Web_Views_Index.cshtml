@@ -37,28 +37,28 @@
             case PropiedadTipos.ENTERO:
             case PropiedadTipos.ENTERO_CORTO:
             case PropiedadTipos.ENTERO_LARGO:
-                propiedades.Add(p.NombreOId, string.Format("@Formateador.Numero(item.{0})", p.NombreOId));
+                propiedades.Add(p.NombreOId, string.Format("Formateador.Numero(item.{0})", p.NombreOId));
                 break;
             case PropiedadTipos.DECIMAL:
-                propiedades.Add(p.NombreOId, string.Format("@Formateador.Numero(item.{0}, cantDecimales: {1})", p.NombreOId, p.EspecificacionesDecimal.DigitosDecimales));
+                propiedades.Add(p.NombreOId, string.Format("Formateador.Numero(item.{0}, cantDecimales: {1})", p.NombreOId, p.EspecificacionesDecimal.DigitosDecimales));
                 break;
             case PropiedadTipos.DECIMAL_FLOTANTE:
-                propiedades.Add(p.NombreOId, string.Format("@Formateador.Numero(item.{0}, cantDecimales: {1})", p.NombreOId, p.EspecificacionesDecimalFlotante.DigitosDecimales));
+                propiedades.Add(p.NombreOId, string.Format("Formateador.Numero(item.{0}, cantDecimales: {1})", p.NombreOId, p.EspecificacionesDecimalFlotante.DigitosDecimales));
                 break;
             case PropiedadTipos.IMPORTE:
-                propiedades.Add(p.NombreOId, string.Format("@Formateador.Moneda(item.{0}, cantDecimales: 2)", p.NombreOId));
+                propiedades.Add(p.NombreOId, string.Format("Formateador.Moneda(item.{0}, cantDecimales: 2)", p.NombreOId));
                 break;
             case PropiedadTipos.FECHA_HORA:
-                propiedades.Add(p.NombreOId, string.Format("@Formateador.FechaYHora(item.{0})", p.NombreOId));
+                propiedades.Add(p.NombreOId, string.Format("Formateador.FechaYHora(item.{0})", p.NombreOId));
                 break;
             case PropiedadTipos.FECHA:
-                propiedades.Add(p.NombreOId, string.Format("@Formateador.Fecha(item.{0})", p.NombreOId));
+                propiedades.Add(p.NombreOId, string.Format("Formateador.Fecha(item.{0})", p.NombreOId));
                 break;
             case PropiedadTipos.HORA:
-                propiedades.Add(p.NombreOId, string.Format("@Formateador.Hora(item.{0})", p.NombreOId));
+                propiedades.Add(p.NombreOId, string.Format("Formateador.Hora(item.{0})", p.NombreOId));
                 break;
             case PropiedadTipos.BOOLEANO:
-                propiedades.Add(p.NombreOId, string.Format("@Formateador.SiNo(item.{0})", p.NombreOId));
+                propiedades.Add(p.NombreOId, string.Format("Formateador.SiNo(item.{0})", p.NombreOId));
                 break;
             default:
                 propiedades.Add(p.NombreOId, string.Format("item.{0}", p.NombreOId));

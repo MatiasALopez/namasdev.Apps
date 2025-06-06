@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +25,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
 
         public IEnumerable<Guid> ItemsSeleccionadosIds
         {
-            get 
+            get
             {
                 return Items?
                     .Where(i => i.Seleccionado)

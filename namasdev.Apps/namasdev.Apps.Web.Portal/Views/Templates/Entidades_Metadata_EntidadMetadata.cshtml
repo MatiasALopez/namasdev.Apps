@@ -51,7 +51,7 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
             public const string TABLA = "@Html.Raw(Model.NombrePlural)";
         @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
         {
-            <text>public const string ID = "@(Html.Raw(Model.Nombre))Id";</text>
+            <text>public const string ID = "@(Html.Raw(Model.Propiedades.First(p => p.EsID).Nombre))";</text>
         }
         }
 
@@ -129,7 +129,9 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
             }</text>
         }
         }
-
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {
+        <text>
         public class Mensajes
         {
             public const string AGREGAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " agregad@(textoOperacionSufijoGenero) correctamente.";
@@ -137,10 +139,16 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
 
             public const string EDITAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " actualizad@(textoOperacionSufijoGenero) correctamente.";
             public const string EDITAR_ERROR = "No se @(Html.Raw(textoPudo)) actualizar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
-
+        @if (Model.Especificaciones.BajaTipoId != BajaTipos.NINGUNA)
+        {
+            <text>
             public const string ELIMINAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " eliminad@(textoOperacionSufijoGenero) correctamente.";
             public const string ELIMINAR_ERROR = "No se @(Html.Raw(textoPudo)) eliminar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
             public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA + " seleccionad@(Html.Raw(textoOperacionSufijoGenero))?";
+            </text>
+        }
+        }
+        </text>
         }
     }
 }

@@ -23,6 +23,13 @@ foreach (var a in Model.AsociacionesOrigen.OrderBy(ao => ao.OrigenPropiedad.Orde
     <text>constraint @(Html.Raw(a.Nombre)) foreign key (@Html.Raw(fkPropiedad)) references dbo.@Html.Raw(a.DestinoPropiedad.Entidad.NombrePlural) (@Html.Raw(a.DestinoPropiedad.Nombre))@(FormatoHelper.DefinicionAsociacionRegla("update", a.UpdateRegla))@(FormatoHelper.DefinicionAsociacionRegla("delete", a.DeleteRegla)),</text>
 }
 }
+@if (Model.Checks != null)
+{
+foreach (var c in Model.Checks.OrderBy(ec => ec.Nombre))
+{
+    <text>constraint @(Html.Raw(c.Nombre)) check (@Html.Raw(c.Expresion)),</text>
+}
+}
 )
 go
 @if (Model.Indices != null)

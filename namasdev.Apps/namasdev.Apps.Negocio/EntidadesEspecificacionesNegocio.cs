@@ -315,6 +315,7 @@ namespace namasdev.Apps.Negocio
                         Orden = EntidadPropiedades.CreadoPor.ORDEN,
                         GeneradaAlCrear = true,
                         Editable = false,
+                        EsAuditoria = true,
                     });
                 }
 
@@ -332,6 +333,7 @@ namespace namasdev.Apps.Negocio
                         Orden = EntidadPropiedades.CreadoFecha.ORDEN,
                         GeneradaAlCrear = true,
                         Editable = false,
+                        EsAuditoria = true,
                     });
                 }
             }
@@ -353,6 +355,7 @@ namespace namasdev.Apps.Negocio
                         Orden = EntidadPropiedades.UltimaModificacionPor.ORDEN,
                         GeneradaAlCrear = true,
                         Editable = false,
+                        EsAuditoria = true,
                     });
                 }
 
@@ -370,6 +373,7 @@ namespace namasdev.Apps.Negocio
                         Orden = EntidadPropiedades.UltimaModificacionFecha.ORDEN,
                         GeneradaAlCrear = true,
                         Editable = false,
+                        EsAuditoria = true,
                     });
                 }
             }
@@ -390,6 +394,7 @@ namespace namasdev.Apps.Negocio
                         PermiteNull = true,
                         Orden = EntidadPropiedades.BorradoPor.ORDEN,
                         Editable = false,
+                        EsAuditoria = true,
                     });
                 }
 
@@ -406,6 +411,7 @@ namespace namasdev.Apps.Negocio
                         PermiteNull = true,
                         Orden = EntidadPropiedades.BorradoFecha.ORDEN,
                         Editable = false,
+                        EsAuditoria = true,
                     });
                 }
 
@@ -423,6 +429,7 @@ namespace namasdev.Apps.Negocio
                         CalculadaFormula = EntidadPropiedades.Borrado.CALCULADA_FORMULA,
                         Orden = EntidadPropiedades.Borrado.ORDEN,
                         Editable = false,
+                        EsAuditoria = true,
                     });
                 }
             }

@@ -59,7 +59,6 @@ namespace namasdev.Apps.Datos
                 var orden = ctx.EntidadesPropiedades
                     .Where(ep =>
                         ep.EntidadId == entidadId
-                        && !ep.EsID
                         && !ep.EsAuditoria)
                     .Max(ep => (short?)ep.Orden) ?? 0;
 

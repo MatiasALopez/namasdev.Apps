@@ -75,6 +75,7 @@
     <Compile Include="EntidadesClavesRepositorio.cs" />
     <Compile Include="EntidadesAsociacionesRepositorio.cs" />
     <Compile Include="EntidadesIndicesPropiedadesRepositorio.cs" />
+    <Compile Include="EntidadesChecksRepositorio.cs" />
     <Compile Include="EntidadesIndicesRepositorio.cs" />
     <Compile Include="EntidadesPropiedadesRepositorio.cs" />
     <Compile Include="EntidadesEspecificacionesRepositorio.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Sql\Config\AplicacionVersionConfig.cs" />
     <Compile Include="Sql\Config\ArticuloConfig.cs" />
     <Compile Include="Sql\Config\BajaTipoConfig.cs" />
+    <Compile Include="Sql\Config\EntidadCheckConfig.cs" />
     <Compile Include="Sql\Config\EntidadAsociacionConfig.cs" />
     <Compile Include="Sql\Config\EntidadEspecificacionesConfig.cs" />
     <Compile Include="Sql\Config\EntidadIndicePropiedadConfig.cs" />

@@ -204,6 +204,7 @@
     <Compile Include="App_Start\Startup.DI.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Automapper\EntidadesAsociacionesProfile.cs" />
+    <Compile Include="Automapper\EntidadesChecksProfile.cs" />
     <Compile Include="Automapper\PropiedadTipoEspecificacionesProfile.cs" />
     <Compile Include="Automapper\EntidadesEspecificacionesProfile.cs" />
     <Compile Include="Automapper\EntidadesIndicesProfile.cs" />
@@ -214,6 +215,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EntidadesAsociacionesController.cs" />
     <Compile Include="Controllers\EntidadesEspecificacionesController.cs" />
+    <Compile Include="Controllers\EntidadesChecksController.cs" />
     <Compile Include="Controllers\EntidadesIndicesController.cs" />
     <Compile Include="Controllers\EntidadesPropiedadesController.cs" />
     <Compile Include="Controllers\EntidadesController.cs" />
@@ -237,6 +239,7 @@
     <Compile Include="Metadata\Views\AccountViews.cs" />
     <Compile Include="Metadata\Views\AplicacionesViews.cs" />
     <Compile Include="Metadata\Views\EntidadesIndicesPropiedadesViews.cs" />
+    <Compile Include="Metadata\Views\EntidadesChecksViews.cs" />
     <Compile Include="Metadata\Views\EntidadesIndicesViews.cs" />
     <Compile Include="Metadata\Views\EntidadesEspecificacionesViews.cs" />
     <Compile Include="Metadata\Views\EntidadesViews.cs" />
@@ -248,6 +251,7 @@
     <Compile Include="Metadata\Views\UsuariosViews.cs" />
     <Compile Include="Metadata\Views\VersionesViews.cs" />
     <Compile Include="Models\EntidadesAsociaciones\EntidadAsociacionItemModel.cs" />
+    <Compile Include="Models\EntidadesChecks\EntidadCheckItemModel.cs" />
     <Compile Include="Models\EntidadesIndicesPropiedades\EntidadIndicePropiedadItemModel.cs" />
     <Compile Include="Models\EntidadesIndices\EntidadIndiceItemModel.cs" />
     <Compile Include="Models\EntidadesPropiedades\EntidadPropiedadItemModel.cs" />
@@ -263,6 +267,8 @@
     <Compile Include="ViewModels\EntidadesEspecificaciones\EntidadEspecificacionesViewModel.cs" />
     <Compile Include="ViewModels\EntidadesAsociaciones\EntidadesAsociacionesViewModel.cs" />
     <Compile Include="ViewModels\EntidadesAsociaciones\EntidadAsociacionViewModel.cs" />
+    <Compile Include="ViewModels\EntidadesChecks\EntidadesChecksViewModel.cs" />
+    <Compile Include="ViewModels\EntidadesChecks\EntidadCheckViewModel.cs" />
     <Compile Include="ViewModels\EntidadesIndices\EntidadesIndicesViewModel.cs" />
     <Compile Include="ViewModels\EntidadesIndices\EntidadIndiceViewModel.cs" />
     <Compile Include="ViewModels\EntidadesPropiedades\EntidadesPropiedadesViewModel.cs" />
@@ -369,6 +375,8 @@
     <Content Include="Views\EntidadesEspecificaciones\EntidadEspecificaciones.cshtml" />
     <Content Include="Views\Templates\Negocio_DTO_EliminarParametros.cshtml" />
     <Content Include="Views\EntidadesPropiedades\EntidadPropiedad.cshtml" />
+    <Content Include="Views\EntidadesChecks\EntidadCheck.cshtml" />
+    <Content Include="Views\EntidadesChecks\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

@@ -20,6 +20,7 @@ namespace namasdev.Apps.Entidades
         public virtual List<EntidadAsociacion> AsociacionesDestino { get; set; }
         public virtual List<EntidadClave> Claves { get; set; }
         public virtual List<EntidadIndice> Indices { get; set; }
+        public virtual List<EntidadCheck> Checks { get; set; }
 
         public bool TienePropiedad(string nombre)
         {

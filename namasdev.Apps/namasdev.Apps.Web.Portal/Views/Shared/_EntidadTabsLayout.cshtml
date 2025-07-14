@@ -10,6 +10,7 @@
         TabPropiedades = $"tab{EntidadPropiedadMetadata.NOMBRE_PLURAL}",
         TabAsociaciones = $"tab{EntidadAsociacionMetadata.NOMBRE_PLURAL}",
         TabIndices = $"tab{EntidadIndiceMetadata.NOMBRE_PLURAL}",
+        TabChecks = $"tab{EntidadCheckMetadata.NOMBRE_PLURAL}",
     };
 }
 @section headStyles {
@@ -24,6 +25,7 @@
     <li class="nav-item"><a id="@controlesIds.TabPropiedades" class="nav-link" href="@Url.Action(nameof(EntidadesPropiedadesController.Index), EntidadesPropiedadesController.NAME, new { Model.Id })">@EntidadPropiedadMetadata.ETIQUETA_PLURAL</a></li>
     <li class="nav-item"><a id="@controlesIds.TabAsociaciones" class="nav-link" href="@Url.Action(nameof(EntidadesAsociacionesController.Index), EntidadesAsociacionesController.NAME, new { Model.Id })">@EntidadAsociacionMetadata.ETIQUETA_PLURAL</a></li>
     <li class="nav-item"><a id="@controlesIds.TabIndices" class="nav-link" href="@Url.Action(nameof(EntidadesIndicesController.Index), EntidadesIndicesController.NAME, new { Model.Id })">@EntidadIndiceMetadata.ETIQUETA_PLURAL</a></li>
+    <li class="nav-item"><a id="@controlesIds.TabChecks" class="nav-link" href="@Url.Action(nameof(EntidadesChecksController.Index), EntidadesChecksController.NAME, new { Model.Id })">@EntidadCheckMetadata.ETIQUETA_PLURAL</a></li>
 </ul>
 @RenderBody()
 <div class="mt-2">

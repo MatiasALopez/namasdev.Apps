@@ -58,6 +58,7 @@
     <Compile Include="AsociacionRegla.cs" />
     <Compile Include="Articulo.cs" />
     <Compile Include="BajaTipo.cs" />
+    <Compile Include="EntidadCheck.cs" />
     <Compile Include="EntidadEspecificaciones.cs" />
     <Compile Include="EntidadAsociacion.cs" />
     <Compile Include="EntidadClave.cs" />
@@ -67,6 +68,7 @@
     <Compile Include="Metadata\AsociacionMultiplicidadMetadata.cs" />
     <Compile Include="Metadata\AsociacionReglaMetadata.cs" />
     <Compile Include="Metadata\ArticuloMetadata.cs" />
+    <Compile Include="Metadata\EntidadCheckMetadata.cs" />
     <Compile Include="Metadata\EntidadAsociacionMetadata.cs" />
     <Compile Include="Metadata\EntidadEspecificacionesMetadata.cs" />
     <Compile Include="Metadata\EntidadIndiceMetadata.cs" />

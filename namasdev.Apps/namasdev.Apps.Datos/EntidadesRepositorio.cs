@@ -94,6 +94,7 @@ namespace namasdev.Apps.Datos
                 e => e.AsociacionesDestino.Select(a => a.DeleteRegla),
                 e => e.AsociacionesDestino.Select(a => a.UpdateRegla),
                 e => e.Indices.Select(i => i.Propiedades.Select(p => p.Propiedad)),
+                e => e.Checks,
             };
         }
     }

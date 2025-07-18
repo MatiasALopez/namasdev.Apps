@@ -83,6 +83,8 @@
     <Compile Include="AplicacionesVersionesRepositorio.cs" />
     <Compile Include="AplicacionesRepositorio.cs" />
     <Compile Include="CorreosParametrosRepositorio.cs" />
+    <Compile Include="Entity\AplicacionVersionCargaPropiedades.cs" />
+    <Compile Include="Entity\EntidadCargaPropiedades.cs" />
     <Compile Include="ErroresRepositorio.cs" />
     <Compile Include="ParametrosRepositorio.cs" />
     <Compile Include="Sql\Config\AsociacionMultiplicidadConfig.cs" />

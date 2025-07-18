@@ -15,6 +15,7 @@ using namasdev.Apps.Negocio.DTO.GeneradorArchivos;
 using namasdev.Apps.Web.Portal.ViewModels.Templates;
 using namasdev.Apps.Web.Portal.Helpers;
 using namasdev.Apps.Web.Portal.Metadata.Views;
+using namasdev.Apps.Datos.Entity;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -131,14 +132,14 @@ namespace namasdev.Apps.Web.Portal.Controllers
             if (model.ModoAplicacion)
             {
                 model.VersionesSelectList = ListasHelper.ObtenerVersionesSelectList(
-                    versiones: _aplicacionesVersionesRepositorio.ObtenerLista(model.Id));
+                    versiones: _aplicacionesVersionesRepositorio.ObtenerPorAplicacion(model.Id));
             }
         }
 
         private IEnumerable<Entidad> ObtenerEntidadesDeAplicacion(Guid aplicacionVersionId, 
             bool ordenarPropiedades = true)
         {
-            var entidades = _entidadesRepositorio.ObtenerPorVersion(aplicacionVersionId, cargarDatosAdicionales: true);
+            var entidades = _entidadesRepositorio.ObtenerPorVersion(aplicacionVersionId, cargarPropiedades: EntidadCargaPropiedades.CrearTodas());
             if (ordenarPropiedades)
             {
                 foreach (var e in entidades)
@@ -152,7 +153,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         private Entidad ObtenerEntidad(Guid id, 
             bool ordenarPropiedades = true)
         {
-            var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
+            var entidad = _entidadesRepositorio.Obtener(id, cargarPropiedades: EntidadCargaPropiedades.CrearTodas());
             if (ordenarPropiedades)
             {
                 entidad.Propiedades = entidad.Propiedades.OrderBy(p => p.Orden).ToList();

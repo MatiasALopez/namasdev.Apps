@@ -221,7 +221,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             Validador.ValidarArgumentRequeridoYThrow(model, nameof(model));
 
-            var entidad = _entidadesRepositorio.Obtener(model.Id, cargarDatosAdicionales: true);
+            var entidad = _entidadesRepositorio.Obtener(model.Id);
             model.EntidadNombre = entidad.Nombre;
             model.AplicacionVersionId = entidad.AplicacionVersionId;
 

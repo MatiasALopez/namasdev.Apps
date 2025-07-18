@@ -13,6 +13,7 @@ using namasdev.Apps.Web.Portal.Helpers;
 using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.Metadata.Views;
 using namasdev.Apps.Web.Portal.ViewModels.Versiones;
+using namasdev.Apps.Datos.Entity;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -118,7 +119,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Editar(Guid id, Guid aplicacionId)
         {
-            var aplicacionVersion = _aplicacionesVersionesRepositorio.Obtener(id, cargarDatosAdicionales: true);
+            var aplicacionVersion = _aplicacionesVersionesRepositorio.Obtener(id, cargarPropiedades: AplicacionVersionCargaPropiedades.CrearAplicacion());
             if (aplicacionVersion == null)
             {
                 return RedirectToAction(nameof(Index), new { aplicacionId });
@@ -172,7 +173,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var op = modelo.CrearOrdenYPaginacionParametros();
 
             modelo.Items = VersionesMapper.MapearEntidadesAModelos(
-                entidades: _aplicacionesVersionesRepositorio.ObtenerLista(
+                entidades: _aplicacionesVersionesRepositorio.ObtenerPorAplicacion(
                     aplicacionId: aplicacion.Id,
                     busqueda: modelo.Busqueda,
                     op: op));
@@ -197,7 +198,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             if (paginaModo == PaginaModo.Agregar)
             {
-                modelo.VersionesSelectList = ListasHelper.ObtenerVersionesSelectList(_aplicacionesVersionesRepositorio.ObtenerLista(aplicacionId: modelo.AplicacionId));
+                modelo.VersionesSelectList = ListasHelper.ObtenerVersionesSelectList(_aplicacionesVersionesRepositorio.ObtenerPorAplicacion(aplicacionId: modelo.AplicacionId));
             }
         }
 

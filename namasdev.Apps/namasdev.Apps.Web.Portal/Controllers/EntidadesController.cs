@@ -8,6 +8,7 @@ using namasdev.Core.Validation;
 using namasdev.Web.Models;
 
 using namasdev.Apps.Datos;
+using namasdev.Apps.Datos.Entity;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Entidades.Valores;
@@ -139,12 +140,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Editar(Guid id, Guid? aplicacionVersionId = null)
         {
-            var entidad = _entidadesRepositorio.Obtener(id, cargarDatosAdicionales: true);
+            var entidad = _entidadesRepositorio.Obtener(id, cargarPropiedades: new EntidadCargaPropiedades { AplicacionVersion = true });
             if (entidad == null)
             {
                 return RedirectToAction(nameof(Index), new { aplicacionVersionId });
             }
 
+            // TODO (ML): cargar version y probar mapeo, usando hf para valores en lugar de cargar en CargarEntidadViewModel
             var modelo = Mapear<EntidadViewModel>(entidad);
             CargarEntidadViewModel(modelo, PaginaModo.Editar);
 
@@ -181,15 +183,17 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
+            var cargarPropiedades = AplicacionVersionCargaPropiedades.CrearAplicacion();
+
             AplicacionVersion version = null;
             if (modelo.AplicacionVersionId.HasValue)
             {
-                version = _aplicacionesVersionesRepositorio.Obtener(modelo.AplicacionVersionId.Value, cargarDatosAdicionales: true);
+                version = _aplicacionesVersionesRepositorio.Obtener(modelo.AplicacionVersionId.Value, cargarPropiedades: cargarPropiedades);
 
                 modelo.AplicacionId = version.AplicacionId;
             }
 
-            var versiones = _aplicacionesVersionesRepositorio.ObtenerLista(modelo.AplicacionId);
+            var versiones = _aplicacionesVersionesRepositorio.ObtenerPorAplicacion(modelo.AplicacionId);
             if (!versiones.Any())
             {
                 return;
@@ -199,7 +203,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 modelo.AplicacionVersionId = versiones.First().Id;
 
-                version = _aplicacionesVersionesRepositorio.Obtener(modelo.AplicacionVersionId.Value, cargarDatosAdicionales: true);
+                version = _aplicacionesVersionesRepositorio.Obtener(modelo.AplicacionVersionId.Value, cargarPropiedades: cargarPropiedades);
             }
                 
             modelo.AplicacionNombre = version.Aplicacion.Nombre;
@@ -224,7 +228,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
             modelo.PaginaModo = paginaModo;
 
-            var aplicacionVersion = _aplicacionesVersionesRepositorio.Obtener(modelo.AplicacionVersionId, cargarDatosAdicionales: true);
+            var aplicacionVersion = _aplicacionesVersionesRepositorio.Obtener(modelo.AplicacionVersionId, cargarPropiedades: AplicacionVersionCargaPropiedades.CrearAplicacion());
             if (aplicacionVersion != null)
             {
                 modelo.AplicacionId = aplicacionVersion.AplicacionId;

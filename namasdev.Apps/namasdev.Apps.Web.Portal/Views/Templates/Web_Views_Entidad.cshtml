@@ -16,7 +16,7 @@
     };
     var javaScript = new 
     {
-        App = Model.AplicacionVersion.Aplicacion.Nombre,
+        App = Model.AplicacionVersion.Aplicacion.Nombre.Replace(".", ""),
     };
     bool tieneID = Model.Especificaciones.IDPropiedadTipoId.HasValue;
     string controlTipo;

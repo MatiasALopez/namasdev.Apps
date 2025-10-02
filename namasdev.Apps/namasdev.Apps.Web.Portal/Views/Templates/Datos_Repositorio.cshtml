@@ -8,6 +8,7 @@
     };
     var clases = new
     {
+        Entidad = Model.Nombre,
         Repositorio = string.Format("{0}Repositorio", Model.NombrePlural)
     };
     var interfaces = new
@@ -30,6 +31,7 @@ using namasdev.Data.Entity;
 using @(Html.Raw(namespaces.Aplicacion)).Entidades;
 using @(Html.Raw(namespaces.Datos)).Sql;
 
+// TODO (Gen): agregar DbSet en SqlContext
 namespace @Html.Raw(namespaces.Datos)
 {
     public interface @Html.Raw(interfaces.Repositorio) @Html.Raw(usarRepositorioBase ? string.Format(": {0}", FormatoHelper.Generic("IRepositorio", tiposGenericosEntidadYId)) : "")
@@ -40,8 +42,8 @@ namespace @Html.Raw(namespaces.Datos)
     {
         @if (Model.Indices.Any(i => i.EsUnique)
         || Model.AsociacionesOrigen.Any())
-        {<text>
-        public override void Agregar(Producto entidad)
+        {
+        <text>public override void Agregar(@clases.Entidad entidad)
         {
             try
             {
@@ -54,7 +56,7 @@ namespace @Html.Raw(namespaces.Datos)
             }
         }
 
-        public override void Actualizar(Producto entidad)
+        public override void Actualizar(@clases.Entidad entidad)
         {
             try
             {
@@ -67,7 +69,7 @@ namespace @Html.Raw(namespaces.Datos)
             }
         }
 
-        public override void ActualizarPropiedades(Producto entidad, params string[] propiedades)
+        public override void ActualizarPropiedades(@clases.Entidad entidad, params string[] propiedades)
         {
             try
             {

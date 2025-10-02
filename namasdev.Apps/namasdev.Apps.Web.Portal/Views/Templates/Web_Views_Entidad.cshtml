@@ -164,9 +164,13 @@
             controlHtmlAttributes.Add("class", FormatoHelper.EntreComillas(Formateador.Lista(controlCssClasses, separador: " ")));
             <div class="form-group col-md-6">
                 @@Html.LabelFor(m => m.@(Html.Raw(p.NombreOId))@(Html.Raw(FormatoHelper.AtributosHtmlString(labelHtmlAttributes))))
-                @if (propiedadEsImporte) {@Html.Raw("<div class=\"input-group\"><div class=\"input-group-prepend\"><span class=\"input-group-text\">$</span></div>")}
+                @if (propiedadEsImporte) {
+                <text>@Html.Raw("<div class=\"input-group\"><div class=\"input-group-prepend\"><span class=\"input-group-text\">$</span></div>")
+    </text>}
                 @@Html.@(controlTipo)For(m => m.@(Html.Raw(p.NombreOId))@Html.Raw(controlAdditionalParameters.Count > 0 ? ", " + Formateador.Lista(controlAdditionalParameters) : "")@(Html.Raw(FormatoHelper.AtributosHtmlString(controlHtmlAttributes))))
-                @if (propiedadEsImporte) {@Html.Raw("</div>")}
+                @if (propiedadEsImporte) {
+                <text>@Html.Raw("</div>")
+</text>}
                 @@Html.ValidationMessageFor(m => m.@(Html.Raw(p.NombreOId)))
             </div>
         }

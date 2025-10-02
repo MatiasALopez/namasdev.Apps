@@ -14,11 +14,12 @@
         EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
         Controller = string.Format("{0}Controller", Model.NombrePlural),
     };
-    var javaScript = new 
+    var javaScript = new
     {
         App = Model.AplicacionVersion.Aplicacion.Nombre.Replace(".", ""),
     };
-    bool tieneID = Model.Especificaciones.IDPropiedadTipoId.HasValue;
+    bool tieneID = Model.Especificaciones.IDPropiedadTipoId.HasValue,
+        propiedadEsImporte;
     string controlTipo;
     List<string> controlCssClasses;
     List<string> controlAdditionalParameters;
@@ -47,124 +48,128 @@
     @@Html.Partial("_ResultadoOk")
     @if (tieneID)
     {
-    <text>@@Html.HiddenFor(m => m.Id)</text>
+        <text>@@Html.HiddenFor(m => m.Id)</text>
     }
     @@Html.HiddenFor(m => m.PaginaModo)
     <div class="form-row">
-    @foreach (var p in Model.Propiedades)
-    {
-        if (p.EsCalculada || p.EsID || p.EsAuditoria)
+        @foreach (var p in Model.Propiedades)
         {
-            continue;
+            if (p.EsCalculada || p.EsID || p.EsAuditoria)
+            {
+                continue;
+            }
+            labelHtmlAttributes = new Dictionary<string, string>();
+            controlTipo = "TextBox";
+            controlAdditionalParameters = new List<string>();
+            controlCssClasses = new List<string> { "form-control" };
+            controlHtmlAttributes = new Dictionary<string, string>();
+            propiedadEsImporte = false;
+            if (!p.PermiteNull)
+            {
+                labelHtmlAttributes.Add("class", FormatoHelper.EntreComillas("requerido"));
+                controlCssClasses.Add("form-control-required");
+            }
+            switch (p.PropiedadTipoId)
+            {
+                case PropiedadTipos.TEXTO:
+                    if (p.EspecificacionesTexto != null)
+                    {
+                        if (p.EspecificacionesTexto.EsMultilinea)
+                        {
+                            controlTipo = "TextArea";
+                        }
+                        if (p.EspecificacionesTexto.TamañoMaximo.HasValue
+                            || p.EspecificacionesTexto.TamañoExacto.HasValue)
+                        {
+                            controlHtmlAttributes.Add("maxlength", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
+                        }
+                    }
+                    break;
+                case PropiedadTipos.ENTERO:
+                    controlCssClasses.Add("inputmask-integer");
+                    controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                    controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                    break;
+                case PropiedadTipos.ENTERO_CORTO:
+                    controlCssClasses.Add("inputmask-integer");
+                    controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                    controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                    break;
+                case PropiedadTipos.ENTERO_LARGO:
+                    controlCssClasses.Add("inputmask-integer");
+                    if (p.EspecificacionesEnteroLargo != null)
+                    {
+                        if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
+                        {
+                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                        }
+                        if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
+                        {
+                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                        }
+                    }
+                    break;
+                case PropiedadTipos.DECIMAL:
+                    controlCssClasses.Add("inputmask-numeric");
+                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                    if (p.EspecificacionesDecimal != null)
+                    {
+                        if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
+                        {
+                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                        }
+                        if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
+                        {
+                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                        }
+                    }
+                    break;
+                case PropiedadTipos.DECIMAL_FLOTANTE:
+                    controlCssClasses.Add("inputmask-numeric");
+                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                    if (p.EspecificacionesDecimalFlotante != null)
+                    {
+                        if (p.EspecificacionesDecimalFlotante.ValorMinimo.HasValue)
+                        {
+                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                        }
+                        if (p.EspecificacionesDecimalFlotante.ValorMaximo.HasValue)
+                        {
+                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                        }
+                    }
+                    break;
+                case PropiedadTipos.IMPORTE:
+                    propiedadEsImporte = true;
+                    controlCssClasses.Add("inputmask-numeric");
+                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                    break;
+                case PropiedadTipos.FECHA_HORA:
+                    controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };
+                    controlCssClasses.Add("datepicker");
+                    break;
+                case PropiedadTipos.FECHA:
+                    controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };
+                    controlCssClasses.Add("datepicker");
+                    break;
+                case PropiedadTipos.HORA:
+                    controlTipo = "DropDownList";
+                    controlAdditionalParameters = new List<string> { "Model.HoraSelectList", FormatoHelper.EntreComillas("") };
+                    break;
+                case PropiedadTipos.BOOLEANO:
+                    controlTipo = "DropDownList";
+                    controlAdditionalParameters = new List<string> { "Model.SiNoSelectList", FormatoHelper.EntreComillas("") };
+                    break;
+            }
+            controlHtmlAttributes.Add("class", FormatoHelper.EntreComillas(Formateador.Lista(controlCssClasses, separador: " ")));
+            <div class="form-group col-md-6">
+                @@Html.LabelFor(m => m.@(Html.Raw(p.NombreOId))@(Html.Raw(FormatoHelper.AtributosHtmlString(labelHtmlAttributes))))
+                @if (propiedadEsImporte) {@Html.Raw("<div class=\"input-group\"><div class=\"input-group-prepend\"><span class=\"input-group-text\">$</span></div>")}
+                @@Html.@(controlTipo)For(m => m.@(Html.Raw(p.NombreOId))@Html.Raw(controlAdditionalParameters.Count > 0 ? ", " + Formateador.Lista(controlAdditionalParameters) : "")@(Html.Raw(FormatoHelper.AtributosHtmlString(controlHtmlAttributes))))
+                @if (propiedadEsImporte) {@Html.Raw("</div>")}
+                @@Html.ValidationMessageFor(m => m.@(Html.Raw(p.NombreOId)))
+            </div>
         }
-        labelHtmlAttributes = new Dictionary<string, string>();
-        controlTipo = "TextBox";
-        controlAdditionalParameters = new List<string>();
-        controlCssClasses = new List<string> { "form-control" };
-        controlHtmlAttributes = new Dictionary<string, string>();
-        if (!p.PermiteNull)
-        {
-            labelHtmlAttributes.Add("class", "requerido");
-            controlCssClasses.Add("form-control-required");
-        }
-        switch (p.PropiedadTipoId)
-        {
-            case PropiedadTipos.TEXTO:
-                if (p.EspecificacionesTexto != null)
-                {
-                    if (p.EspecificacionesTexto.EsMultilinea)
-                    {
-                        controlTipo = "TextArea";
-                    }
-                    if (p.EspecificacionesTexto.TamañoMaximo.HasValue
-                        || p.EspecificacionesTexto.TamañoExacto.HasValue)
-                    {
-                        controlHtmlAttributes.Add("maxlength", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
-                    }
-                }
-                break;
-            case PropiedadTipos.ENTERO:
-                controlCssClasses.Add("inputmask-integer");
-                controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
-                break;
-            case PropiedadTipos.ENTERO_CORTO:
-                controlCssClasses.Add("inputmask-integer");
-                controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
-                break;
-            case PropiedadTipos.ENTERO_LARGO:
-                controlCssClasses.Add("inputmask-integer");
-                if (p.EspecificacionesEnteroLargo != null)
-                {
-                    if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
-                    {
-                        controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                    }
-                    if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
-                    {
-                        controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
-                    }
-                }
-                break;
-            case PropiedadTipos.DECIMAL:
-                controlCssClasses.Add("inputmask-numeric");
-                controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
-                if (p.EspecificacionesDecimal != null)
-                {
-                    if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
-                    {
-                        controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                    }
-                    if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
-                    {
-                        controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
-                    }
-                }
-                break;
-            case PropiedadTipos.DECIMAL_FLOTANTE:
-                controlCssClasses.Add("inputmask-numeric");
-                controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
-                if (p.EspecificacionesDecimalFlotante != null)
-                {
-                    if (p.EspecificacionesDecimalFlotante.ValorMinimo.HasValue)
-                    {
-                        controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                    }
-                    if (p.EspecificacionesDecimalFlotante.ValorMaximo.HasValue)
-                    {
-                        controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
-                    }
-                }
-                break;
-            case PropiedadTipos.IMPORTE:
-                controlCssClasses.Add("inputmask-numeric");
-                controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
-                break;
-            case PropiedadTipos.FECHA_HORA:
-                controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };
-                controlCssClasses.Add("datepicker");
-                break;
-            case PropiedadTipos.FECHA:
-                controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };
-                controlCssClasses.Add("datepicker");
-                break;
-            case PropiedadTipos.HORA:
-                controlTipo = "DropDownList";
-                controlAdditionalParameters = new List<string> { "Model.HoraSelectList", FormatoHelper.EntreComillas("") };
-                break;
-            case PropiedadTipos.BOOLEANO:
-                controlTipo = "DropDownList";
-                controlAdditionalParameters = new List<string> { "Model.SiNoSelectList", FormatoHelper.EntreComillas("") };
-                break;
-        }
-        controlHtmlAttributes.Add("class", Formateador.Lista(controlCssClasses, separador: " "));
-        <div class="form-group col-md-6">
-            @@Html.LabelFor(m => m.@(Html.Raw(p.NombreOId))@(Html.Raw(FormatoHelper.AtributosHtmlString(labelHtmlAttributes))))
-            @@Html.@(controlTipo)For(m => m.@(Html.Raw(p.NombreOId))@Html.Raw(controlAdditionalParameters.Count > 0 ? ", " + Formateador.Lista(controlAdditionalParameters) : "")@(Html.Raw(FormatoHelper.AtributosHtmlString(controlHtmlAttributes))))
-            @@Html.ValidationMessageFor(m => m.@(Html.Raw(p.NombreOId)))
-        </div>
-    }
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@("@controlesIds.Form")">Guardar</button>
     <a href="@(Html.Raw(string.Format("@Url.Action(nameof({0}.Index))", clases.Controller)))" class="btn btn-secondary">Volver</a>

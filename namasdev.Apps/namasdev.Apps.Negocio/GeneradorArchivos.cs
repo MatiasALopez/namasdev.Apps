@@ -447,7 +447,8 @@ namespace namasdev.Apps.Negocio
                 razor.Run(
                     templateNames[0],
                     null,
-                    modelo));
+                    modelo),
+                encoding: System.Text.Encoding.UTF8);
 
             return pathArchivo;
         }

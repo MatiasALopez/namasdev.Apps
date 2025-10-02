@@ -125,7 +125,7 @@ namespace namasdev.Apps.Web.Portal.Helpers
             string prefijo = ", ")
         {
             return atributos != null && atributos.Count > 0
-                ? $"{prefijo}new {{ {Formateador.Lista(atributos.Select(a => $"@{a.Key} = {EntreComillas(a.Value)}"), separador: ", ")} }}"
+                ? $"{prefijo}new {{ {Formateador.Lista(atributos.Select(a => $"@{a.Key} = {a.Value}"), separador: ", ")} }}"
                 : "";
         }
     }

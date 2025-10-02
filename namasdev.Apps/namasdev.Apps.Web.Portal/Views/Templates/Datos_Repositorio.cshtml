@@ -10,7 +10,7 @@
     {
         Repositorio = string.Format("{0}Repositorio", Model.NombrePlural)
     };
-    var interfaces = new 
+    var interfaces = new
     {
         Repositorio = string.Format("I{0}", clases.Repositorio)
     };
@@ -38,5 +38,47 @@ namespace @Html.Raw(namespaces.Datos)
 
     public class @Html.Raw(clases.Repositorio) : @Html.Raw(usarRepositorioBase ? FormatoHelper.Generic("Repositorio", "SqlContext", tiposGenericosEntidadYId) : ""), @Html.Raw(interfaces.Repositorio)
     {
+        @if (Model.Indices.Any(i => i.EsUnique)
+        || Model.AsociacionesOrigen.Any())
+        {<text>
+        public override void Agregar(Producto entidad)
+        {
+            try
+            {
+                base.Agregar(entidad);
+            }
+            catch (Exception)
+            {
+                // TODO (Gen): Validar FK, indices unicos, checks
+                throw;
+            }
+        }
+
+        public override void Actualizar(Producto entidad)
+        {
+            try
+            {
+                base.Actualizar(entidad);
+            }
+            catch (Exception)
+            {
+                // TODO (Gen): Validar FK, indices unicos, checks
+                throw;
+            }
+        }
+
+        public override void ActualizarPropiedades(Producto entidad, params string[] propiedades)
+        {
+            try
+            {
+                base.ActualizarPropiedades(entidad, propiedades);
+            }
+            catch (Exception)
+            {
+                // TODO (Gen): Validar FK, indices unicos, checks
+                throw;
+            }
+        }
+</text>}
     }
 }

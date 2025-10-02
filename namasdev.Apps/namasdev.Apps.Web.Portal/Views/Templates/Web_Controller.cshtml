@@ -63,6 +63,10 @@ using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Metadata.Views;
 using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@(Html.Raw(Model.NombrePlural));
 using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@(Html.Raw(Model.NombrePlural));
 
+/* TODO (Gen):
+ * - [App_Start/Startup_DI] Registrar repositorio, negocio y controller
+ * - [Views/Shared/_Menu] (opcional) Agregar item(s) de menú
+ */
 namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
 {
     [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]

@@ -8,6 +8,7 @@ namespace namasdev.Apps.Negocio.DTO.EntidadesIndices
         public Guid EntidadId { get; set; }
         public string Nombre { get; set; }
         public bool EsUnique { get; set; }
+        public string Condiciones { get; set; }
         public IEnumerable<Guid> EntidadesPropiedadesIds { get; set; }
     }
 }

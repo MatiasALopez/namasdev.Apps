@@ -38,6 +38,8 @@ go
     {
 <text>
 create @(i.EsUnique ? "unique " : "")nonclustered index @(Html.Raw(i.Nombre)) on dbo.@Html.Raw(nombreTabla) (@Html.Raw(string.Join(",", i.Propiedades.OrderBy(p => p.Propiedad.Orden).Select(ip => ip.Propiedad.Nombre))))
+@if (!string.IsNullOrWhiteSpace(i.Condiciones)) {<text>     where @Html.Raw(i.Condiciones)
+</text>}
 go</text>
     }
 }

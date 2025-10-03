@@ -36,6 +36,11 @@ namespace namasdev.Apps.Entidades.Metadata
             {
                 public const string ETIQUETA = "Es UNIQUE";
             }
+            public class Condiciones
+            {
+                public const string ETIQUETA = "Condiciones";
+                public const int TAMAÑO_MAX = 2000;
+            }
         }
 
         public class Mensajes

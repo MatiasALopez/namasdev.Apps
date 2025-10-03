@@ -4,6 +4,7 @@
 	EntidadId uniqueidentifier not null,
 	Nombre nvarchar(200) not null,
 	EsUnique bit not null,
+	Condiciones nvarchar(2000) null,
 	
 	constraint PK_EntidadesIndices primary key clustered (EntidadIndiceId),
 	constraint FK_EntidadesIndices_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId)

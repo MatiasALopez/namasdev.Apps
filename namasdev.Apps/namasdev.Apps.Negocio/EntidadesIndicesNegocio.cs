@@ -78,6 +78,7 @@ namespace namasdev.Apps.Negocio
             var errores = new List<string>();
 
             Validador.ValidarStringYAgregarAListaErrores(entidad.Nombre, EntidadIndiceMetadata.Propiedades.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: EntidadIndiceMetadata.Propiedades.Nombre.TAMAÑO_MAX, regEx: EntidadIndiceMetadata.Propiedades.Nombre.REG_EX);
+            Validador.ValidarStringYAgregarAListaErrores(entidad.Condiciones, EntidadIndiceMetadata.Propiedades.Condiciones.ETIQUETA, requerido: false, errores, tamañoMaximo: EntidadIndiceMetadata.Propiedades.Condiciones.TAMAÑO_MAX);
 
             if (propiedadesIds == null || !propiedadesIds.Any())
             {

@@ -58,11 +58,16 @@
         </div>
         <div class="form-group col-12">
             @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Nombre, new { @maxlength = "200", @class = "form-control form-control-required" })
+            @Html.TextBoxFor(m => m.Nombre, new { @maxlength = EntidadIndiceMetadata.Propiedades.Nombre.TAMAÑO_MAX, @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.Nombre)
             <div>
                 <button id="@controlesIds.BotonGenerarNombre" class="btn btn-xs btn-outline-info mt-1">Generar nombre</button>
             </div>
+        </div>
+        <div class="form-group col-12">
+            @Html.LabelFor(m => m.Condiciones)
+            @Html.TextAreaFor(m => m.Condiciones, new { @maxlength = EntidadIndiceMetadata.Propiedades.Condiciones.TAMAÑO_MAX, @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Condiciones)
         </div>
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>

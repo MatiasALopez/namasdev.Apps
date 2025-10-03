@@ -31,6 +31,9 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesIndices
         [Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public bool? EsUnique { get; set; }
 
+        [Display(Name = EntidadIndiceMetadata.Propiedades.Condiciones.ETIQUETA)]
+        public string Condiciones { get; set; }
+
         public List<EntidadPropiedadItemModel> Propiedades { get; set; }
 
         public Guid[] PropiedadesIdsSeleccionadas

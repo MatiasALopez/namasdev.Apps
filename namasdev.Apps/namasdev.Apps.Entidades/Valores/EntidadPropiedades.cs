@@ -12,7 +12,7 @@ namespace namasdev.Apps.Entidades.Valores
         public class CreadoPor
         {
             public const string NOMBRE = "CreadoPor";
-            public const string ETIQUETA = "CreadoFecha";
+            public const string ETIQUETA = "Usuario creación";
             public const int ORDEN = 901;
         }
 

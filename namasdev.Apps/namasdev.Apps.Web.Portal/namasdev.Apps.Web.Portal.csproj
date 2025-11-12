@@ -273,6 +273,7 @@
     <Compile Include="ViewModels\EntidadesIndices\EntidadIndiceViewModel.cs" />
     <Compile Include="ViewModels\EntidadesPropiedades\EntidadesPropiedadesViewModel.cs" />
     <Compile Include="ViewModels\EntidadesPropiedades\EntidadPropiedadViewModel.cs" />
+    <Compile Include="ViewModels\EntidadesPropiedades\PropiedadTipoEspecificacionesImporteViewModel.cs" />
     <Compile Include="ViewModels\EntidadesPropiedades\PropiedadTipoEspecificacionesDecimalViewModel.cs" />
     <Compile Include="ViewModels\EntidadesPropiedades\PropiedadTipoEspecificacionesEnteroViewModel.cs" />
     <Compile Include="ViewModels\EntidadesPropiedades\PropiedadTipoEspecificacionesTextoViewModel.cs" />
@@ -377,6 +378,7 @@
     <Content Include="Views\EntidadesPropiedades\EntidadPropiedad.cshtml" />
     <Content Include="Views\EntidadesChecks\EntidadCheck.cshtml" />
     <Content Include="Views\EntidadesChecks\Index.cshtml" />
+    <Content Include="Views\EntidadesPropiedades\_PropiedadTipoEspecificacionesImporte.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\namasdev.Apps.Datos\namasdev.Apps.Datos.csproj">

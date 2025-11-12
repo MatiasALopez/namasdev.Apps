@@ -26,6 +26,9 @@ namespace namasdev.Apps.Web.Portal.Automapper
 
             CreateMap<PropiedadTipoEspecificacionesDecimalViewModel, PropiedadTipoEspecificacionesDecimalFlotante>()
                 .ReverseMap();
+
+            CreateMap<PropiedadTipoEspecificacionesImporteViewModel, PropiedadTipoEspecificacionesImporte>()
+                .ReverseMap();
         }
     }
 }

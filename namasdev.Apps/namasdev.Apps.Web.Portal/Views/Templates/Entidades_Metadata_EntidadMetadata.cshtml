@@ -118,6 +118,14 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
                     break;
                 case PropiedadTipos.IMPORTE:
                     propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, "4");
+                    if (p.EspecificacionesImporte.ValorMinimo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, p.EspecificacionesImporte.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesImporte.ValorMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, p.EspecificacionesImporte.ValorMaximo.ToString());
+                    }
                     break;
             }
             <text>public class @Html.Raw(p.NombreOId)

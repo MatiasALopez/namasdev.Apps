@@ -16,6 +16,7 @@ namespace namasdev.Apps.Web.Portal.Automapper
             CreateMap<EntidadPropiedad, EntidadPropiedadViewModel>()
                 .ForMember(m => m.EspecificacionesEntero, opt => opt.MapFrom(m => (IPropiedadTipoEspecificaciones)m.EspecificacionesEntero ?? (IPropiedadTipoEspecificaciones)m.EspecificacionesEnteroCorto ?? (IPropiedadTipoEspecificaciones)m.EspecificacionesEnteroLargo))
                 .ForMember(m => m.EspecificacionesDecimal, opt => opt.MapFrom(m => (IPropiedadTipoEspecificaciones)m.EspecificacionesDecimal ?? (IPropiedadTipoEspecificaciones)m.EspecificacionesDecimalFlotante))
+                .ForMember(m => m.EspecificacionesImporte, opt => opt.MapFrom(m => (IPropiedadTipoEspecificaciones)m.EspecificacionesImporte ?? (IPropiedadTipoEspecificaciones)m.EspecificacionesImporte))
                 .ReverseMap();
 
             CreateMap<AgregarParametros, EntidadPropiedadViewModel>()

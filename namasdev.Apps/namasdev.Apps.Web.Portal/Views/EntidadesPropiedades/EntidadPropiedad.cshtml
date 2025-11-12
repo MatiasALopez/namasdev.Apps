@@ -10,6 +10,7 @@
         EspecificacionesTextoRow = $"div{PropiedadTipoEspecificacionesTextoMetadata.NOMBRE}",
         EspecificacionesEnteroRow = $"div{PropiedadTipoEspecificacionesEnteroMetadata.NOMBRE}",
         EspecificacionesDecimalRow = $"div{PropiedadTipoEspecificacionesDecimalMetadata.NOMBRE}",
+        EspecificacionesImporteRow = $"div{PropiedadTipoEspecificacionesImporteMetadata.NOMBRE}",
     };
     var textBoxHtmlAttributes =
         Model.EsID
@@ -83,6 +84,9 @@
     <div id="@controlesIds.EspecificacionesDecimalRow" style="display: none;">
         @Html.Partial("_PropiedadTipoEspecificacionesDecimal", Model)
     </div>
+    <div id="@controlesIds.EspecificacionesImporteRow" style="display: none;">
+        @Html.Partial("_PropiedadTipoEspecificacionesImporte", Model)
+    </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
 </form>
 @section bodyScripts {
@@ -96,7 +100,7 @@
                 });
 
             function establecerVisibilidadEspecificacionesSegunTipo() {
-                $('#@controlesIds.EspecificacionesTextoRow,#@controlesIds.EspecificacionesEnteroRow,#@controlesIds.EspecificacionesDecimalRow').hide();
+                $('#@controlesIds.EspecificacionesTextoRow,#@controlesIds.EspecificacionesEnteroRow,#@controlesIds.EspecificacionesDecimalRow,#@controlesIds.EspecificacionesImporteRow').hide();
 
                 switch ($('#@Html.IdFor(m => m.PropiedadTipoId)').val()) {
                     case '@PropiedadTipos.TEXTO':
@@ -112,6 +116,10 @@
                     case '@PropiedadTipos.DECIMAL':
                     case '@PropiedadTipos.DECIMAL_FLOTANTE':
                         $('#@controlesIds.EspecificacionesDecimalRow').show();
+                        break;
+
+                    case '@PropiedadTipos.IMPORTE':
+                        $('#@controlesIds.EspecificacionesImporteRow').show();
                         break;
                 }
             }

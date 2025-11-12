@@ -143,6 +143,17 @@
                     propiedadEsImporte = true;
                     controlCssClasses.Add("inputmask-numeric");
                     controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                    if (p.EspecificacionesImporte != null)
+                    {
+                        if (p.EspecificacionesImporte.ValorMinimo.HasValue)
+                        {
+                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                        }
+                        if (p.EspecificacionesImporte.ValorMaximo.HasValue)
+                        {
+                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                        }
+                    }
                     break;
                 case PropiedadTipos.FECHA_HORA:
                     controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };

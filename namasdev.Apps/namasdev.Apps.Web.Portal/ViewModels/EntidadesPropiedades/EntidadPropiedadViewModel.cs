@@ -55,6 +55,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesPropiedades
         public PropiedadTipoEspecificacionesTextoViewModel EspecificacionesTexto { get; set; }
         public PropiedadTipoEspecificacionesEnteroViewModel EspecificacionesEntero { get; set; }
         public PropiedadTipoEspecificacionesDecimalViewModel EspecificacionesDecimal { get; set; }
+        public PropiedadTipoEspecificacionesImporteViewModel EspecificacionesImporte { get; set; }
 
         public bool EsID { get; set; }
 

@@ -119,6 +119,19 @@ namespace namasdev.Apps.Entidades
             }
         }
 
+        private PropiedadTipoEspecificacionesImporte _especificacionesImporte;
+        public PropiedadTipoEspecificacionesImporte EspecificacionesImporte
+        {
+            get
+            {
+                return _especificacionesImporte ??
+                    (_especificacionesImporte =
+                        PropiedadTipoId == PropiedadTipos.IMPORTE
+                        ? Newtonsoft.Json.JsonConvert.DeserializeObject<PropiedadTipoEspecificacionesImporte>(PropiedadTipoEspecificaciones)
+                        : null);
+            }
+        }
+
         public override string ToString()
         {
             return Nombre;

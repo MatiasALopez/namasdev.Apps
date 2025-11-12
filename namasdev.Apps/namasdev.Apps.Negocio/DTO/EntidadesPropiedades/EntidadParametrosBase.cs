@@ -12,6 +12,7 @@ namespace namasdev.Apps.Negocio.DTO.EntidadesPropiedades
         public PropiedadTipoEspecificacionesTexto EspecificacionesTexto { get; set; }
         public PropiedadTipoEspecificacionesEntero EspecificacionesEntero { get; set; }
         public PropiedadTipoEspecificacionesDecimal EspecificacionesDecimal { get; set; }
+        public PropiedadTipoEspecificacionesImporte EspecificacionesImporte { get; set; }
         public IPropiedadTipoEspecificaciones EspecificacionesSegunTipo 
         {
             get
@@ -29,6 +30,9 @@ namespace namasdev.Apps.Negocio.DTO.EntidadesPropiedades
                     case PropiedadTipos.DECIMAL:
                     case PropiedadTipos.DECIMAL_FLOTANTE:
                         return EspecificacionesDecimal;
+
+                    case PropiedadTipos.IMPORTE:
+                        return EspecificacionesImporte;
 
                     default:
                         return null;

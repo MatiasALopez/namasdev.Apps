@@ -74,10 +74,12 @@
     <Compile Include="Metadata\EntidadIndiceMetadata.cs" />
     <Compile Include="Metadata\EntidadClaveMetadata.cs" />
     <Compile Include="Metadata\EntidadIndicePropiedadMetadata.cs" />
+    <Compile Include="Metadata\PropiedadTipoEspecificacionesImporteMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesDecimalMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesEnteroMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesTextoMetadata.cs" />
     <Compile Include="Metadata\BajaTipoMetadata.cs" />
+    <Compile Include="PropiedadTipoEspecificacionesImporte.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEntero.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroLargo.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroCorto.cs" />

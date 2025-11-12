@@ -230,6 +230,8 @@ namespace @(Html.Raw(namespaceBase)).Negocio
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
             @(Html.Raw(variables.Entidad)).EstablecerDatosBorrado(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);
 
+            ValidarDatos(@Html.Raw(variables.Entidad));
+
             Repositorio.ActualizarDatosBorrado(@Html.Raw(variables.Entidad));
         }
 

@@ -18,11 +18,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
 
         public ActionResult Index()
         {
-            //if (UsuarioHelper.PerteneceAlRol(AspNetRoles.ADMINISTRADOR))
-            //{
-            //    return RedirectToAction("Ventas", "Reportes");
-            //}
-            return View();
+            return RedirectToAction(nameof(AplicacionesController.Index), AplicacionesController.NAME);
         }
 
         #endregion

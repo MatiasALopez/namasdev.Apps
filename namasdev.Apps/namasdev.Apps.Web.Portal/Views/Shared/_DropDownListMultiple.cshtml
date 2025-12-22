@@ -1,4 +1,4 @@
-﻿@model namasdev.Apps.Web.Portal.Models.DropDownListMultipleModel
+﻿@model namasdev.Web.Models.DropDownListMultipleModel
 <select id="@Model.Id" name="@Model.Id" @{if (!String.IsNullOrWhiteSpace(Model.CssClass)) { <text> class="@Model.CssClass" </text> } } @{if (Model.HtmlAttributes != null) { foreach (var attr in Model.HtmlAttributes) { <text> @attr.Key="@attr.Value" </text>  } } } multiple>
     @if (Model.OpcionVaciaTexto != null)
     {

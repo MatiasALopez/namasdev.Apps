@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using namasdev.Core.Validation;
 using namasdev.Web.Models;
 using namasdev.Apps.Entidades.Metadata;
+using System.Web.Mvc;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
 {
@@ -17,6 +18,12 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Aplicaciones
         [Display(Name = AplicacionMetadata.Propiedades.Nombre.ETIQUETA),
         Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Nombre { get; set; }
+
+        [Display(Name = AplicacionMetadata.Propiedades.IdiomaId.ETIQUETA),
+        Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
+        public string IdiomaId { get; set; }
+
+        public SelectList IdiomasSelectList { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

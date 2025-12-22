@@ -32,6 +32,11 @@
             @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control form-control-required", maxlength = AplicacionMetadata.Propiedades.Nombre.TAMAÑO_MAX })
             @Html.ValidationMessageFor(m => m.Nombre)
         </div>
+        <div class="form-group col-lg-5 col-md-6">
+            @Html.LabelFor(m => m.IdiomaId, new { @class = "requerido" })
+            @Html.DropDownListFor(m => m.IdiomaId, Model.IdiomasSelectList, "", new { @class = "form-control form-control-required" })
+            @Html.ValidationMessageFor(m => m.IdiomaId)
+        </div>
     </div>
     <button type="submit" class="btn btn-primary" data-toggle-state-container="#@controlesIds.Form">Guardar</button>
     <a href="@Url.Action("Index")" class="btn btn-secondary">Volver</a>

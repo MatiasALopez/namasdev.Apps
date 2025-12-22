@@ -57,6 +57,7 @@
     <Compile Include="AsociacionMultiplicidad.cs" />
     <Compile Include="AsociacionRegla.cs" />
     <Compile Include="Articulo.cs" />
+    <Compile Include="Idioma.cs" />
     <Compile Include="BajaTipo.cs" />
     <Compile Include="EntidadCheck.cs" />
     <Compile Include="EntidadEspecificaciones.cs" />
@@ -68,6 +69,7 @@
     <Compile Include="Metadata\AsociacionMultiplicidadMetadata.cs" />
     <Compile Include="Metadata\AsociacionReglaMetadata.cs" />
     <Compile Include="Metadata\ArticuloMetadata.cs" />
+    <Compile Include="Metadata\IdiomaMetadata.cs" />
     <Compile Include="Metadata\EntidadCheckMetadata.cs" />
     <Compile Include="Metadata\EntidadAsociacionMetadata.cs" />
     <Compile Include="Metadata\EntidadEspecificacionesMetadata.cs" />

@@ -11,7 +11,7 @@ namespace namasdev.Apps.Negocio
 {
     public interface IAplicacionesNegocio
     {
-        Aplicacion Agregar(string nombre, string usuarioId);
+        Aplicacion Agregar(string nombre, string idiomaId, string usuarioId);
         void Actualizar(Aplicacion aplicacion, string usuarioId);
         void MarcarComoBorrado(Guid aplicacionId, string usuarioLogueadoId);
         void DesmarcarComoBorrado(Guid aplicacionId);
@@ -28,14 +28,15 @@ namespace namasdev.Apps.Negocio
             _aplicacionesRepositorio = aplicacionesRepositorio;
         }
 
-        public Aplicacion Agregar(string nombre, string usuarioId)
+        public Aplicacion Agregar(string nombre, string idiomaId, string usuarioId)
         {
             DateTime fechaHora = DateTime.Now;
 
             var aplicacion = new Aplicacion 
             {
                 Id = Guid.NewGuid(),
-                Nombre = nombre
+                Nombre = nombre,
+                IdiomaId = idiomaId,
             };
             aplicacion.EstablecerDatosCreado(usuarioId, fechaHora);
             aplicacion.EstablecerDatosModificacion(usuarioId, fechaHora);
@@ -78,6 +79,7 @@ namespace namasdev.Apps.Negocio
             var errores = new List<string>();
 
             Validador.ValidarStringYAgregarAListaErrores(aplicacion.Nombre, AplicacionMetadata.Propiedades.Nombre.ETIQUETA, requerido: true, errores, tamañoMaximo: AplicacionMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+            Validador.ValidarStringYAgregarAListaErrores(aplicacion.IdiomaId, AplicacionMetadata.Propiedades.IdiomaId.ETIQUETA, requerido: true, errores, tamañoExacto: AplicacionMetadata.Propiedades.IdiomaId.TAMAÑO_EXACTO);
 
             Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
         }

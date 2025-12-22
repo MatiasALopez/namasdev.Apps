@@ -32,6 +32,7 @@ namespace namasdev.Apps.Web.Portal.Mappers
             {
                 Id = modelo.AplicacionId ?? default,
                 Nombre = modelo.Nombre,
+                IdiomaId = modelo.IdiomaId,
             };
         }
 
@@ -43,6 +44,7 @@ namespace namasdev.Apps.Web.Portal.Mappers
             {
                 AplicacionId = entidad.Id,
                 Nombre = entidad.Nombre,
+                IdiomaId = entidad.IdiomaId,
             };
         }
     }

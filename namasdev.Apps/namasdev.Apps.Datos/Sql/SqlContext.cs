@@ -19,7 +19,7 @@ namespace namasdev.Apps.Datos.Sql
         public DbSet<CorreoParametros> CorreosParametros { get; set; }
         public DbSet<Parametro> Parametros { get; set; }
         public DbSet<Auditoria> Auditorias { get; set; }
-
+        public DbSet<Idioma> Idiomas { get; set; }
         public DbSet<Aplicacion> Aplicaciones { get; set; }
         public DbSet<AplicacionVersion> AplicacionesVersiones { get; set; }
         public DbSet<PropiedadTipo> PropiedadTipos { get; set; }

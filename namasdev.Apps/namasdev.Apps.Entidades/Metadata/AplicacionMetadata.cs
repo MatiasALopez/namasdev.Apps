@@ -1,5 +1,4 @@
-﻿
-namespace namasdev.Apps.Entidades.Metadata
+﻿namespace namasdev.Apps.Entidades.Metadata
 {
     public class AplicacionMetadata
     {
@@ -21,6 +20,12 @@ namespace namasdev.Apps.Entidades.Metadata
             {
                 public const string ETIQUETA = "Nombre";
                 public const int TAMAÑO_MAX = 100;
+            }
+
+            public class IdiomaId
+            {
+                public const string ETIQUETA = "Idioma";
+                public const int TAMAÑO_EXACTO = 2;
             }
         }
 

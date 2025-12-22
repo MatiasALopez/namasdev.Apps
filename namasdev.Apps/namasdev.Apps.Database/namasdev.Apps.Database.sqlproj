@@ -91,6 +91,7 @@
     <Build Include="dbo\Tables\BajaTipos.sql" />
     <Build Include="dbo\Tables\Articulos.sql" />
     <Build Include="dbo\Tables\EntidadesChecks.sql" />
+    <Build Include="dbo\Tables\Idiomas.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\02.Data.sql" />

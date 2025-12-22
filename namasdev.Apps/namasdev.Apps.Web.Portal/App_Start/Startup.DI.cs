@@ -47,6 +47,7 @@ namespace namasdev.Apps.Web.Portal
             services.AddScoped<IParametrosRepositorio, ParametrosRepositorio>();
             services.AddScoped<IErroresRepositorio, ErroresRepositorio>();
             services.AddScoped<ICorreosParametrosRepositorio, CorreosParametrosRepositorio>();
+            services.AddScoped<IIdiomasRepositorio, IdiomasRepositorio>();
             services.AddScoped<IUsuariosRepositorio, UsuariosRepositorio>();
             services.AddScoped<IAplicacionesRepositorio, AplicacionesRepositorio>();
             services.AddScoped<IAplicacionesVersionesRepositorio, AplicacionesVersionesRepositorio>();

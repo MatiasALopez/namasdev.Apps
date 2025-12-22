@@ -3,7 +3,6 @@ using System.Web.Mvc;
 
 using AutoMapper;
 using namasdev.Core.Validation;
-using namasdev.Web.Helpers;
 using namasdev.Web.Models;
 
 using namasdev.Apps.Datos;
@@ -13,6 +12,7 @@ using namasdev.Apps.Negocio;
 using namasdev.Apps.Web.Portal.Mappers;
 using namasdev.Apps.Web.Portal.Metadata.Views;
 using namasdev.Apps.Web.Portal.ViewModels.Aplicaciones;
+using namasdev.Apps.Web.Portal.Helpers;
 
 namespace namasdev.Apps.Web.Portal.Controllers
 {
@@ -21,15 +21,18 @@ namespace namasdev.Apps.Web.Portal.Controllers
     {
         public const string NAME = "Aplicaciones";
 
+        private readonly IIdiomasRepositorio _idiomasRepositorio;
         private readonly IAplicacionesRepositorio _aplicacionesRepositorio;
         private readonly IAplicacionesNegocio _aplicacionesNegocio;
 
-        public AplicacionesController(IAplicacionesRepositorio aplicacionesRepositorio, IAplicacionesNegocio aplicacionesNegocio, IMapper mapper)
+        public AplicacionesController(IIdiomasRepositorio idiomasRepositorio, IAplicacionesRepositorio aplicacionesRepositorio, IAplicacionesNegocio aplicacionesNegocio, IMapper mapper)
             : base(mapper)
         {
+            Validador.ValidarArgumentRequeridoYThrow(idiomasRepositorio, nameof(idiomasRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(aplicacionesRepositorio, nameof(aplicacionesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(aplicacionesNegocio, nameof(aplicacionesNegocio));
 
+            _idiomasRepositorio = idiomasRepositorio;
             _aplicacionesRepositorio = aplicacionesRepositorio;
             _aplicacionesNegocio = aplicacionesNegocio;
         }
@@ -90,7 +93,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _aplicacionesNegocio.Agregar(modelo.Nombre, UsuarioId);
+                    _aplicacionesNegocio.Agregar(modelo.Nombre, modelo.IdiomaId, UsuarioId);
 
                     return RedirectToAction(nameof(Index));
                 }
@@ -164,6 +167,9 @@ namespace namasdev.Apps.Web.Portal.Controllers
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
             modelo.PaginaModo = paginaModo;
+
+            modelo.IdiomasSelectList = ListasHelper.ObtenerIdiomasSelectList(
+                idiomas: _idiomasRepositorio.ObtenerLista());
         }
 
         #endregion Metodos

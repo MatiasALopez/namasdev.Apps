@@ -38,6 +38,13 @@ go
 --====
 
 --====
+insert into dbo.Idiomas (IdiomaId,Nombre) values
+('es','Español'),
+('en','Inglés')
+go
+--====
+
+--====
 insert into dbo.BajaTipos (BajaTipoId,Nombre) values
 (1,'Lógica'),
 (2,'Física'),

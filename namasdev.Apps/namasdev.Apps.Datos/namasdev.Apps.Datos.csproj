@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IdiomasRepositorio.cs" />
     <Compile Include="EntidadesClavesRepositorio.cs" />
     <Compile Include="EntidadesAsociacionesRepositorio.cs" />
     <Compile Include="EntidadesIndicesPropiedadesRepositorio.cs" />
@@ -91,6 +92,7 @@
     <Compile Include="Sql\Config\AsociacionReglaConfig.cs" />
     <Compile Include="Sql\Config\AplicacionVersionConfig.cs" />
     <Compile Include="Sql\Config\ArticuloConfig.cs" />
+    <Compile Include="Sql\Config\IdiomaConfig.cs" />
     <Compile Include="Sql\Config\BajaTipoConfig.cs" />
     <Compile Include="Sql\Config\EntidadCheckConfig.cs" />
     <Compile Include="Sql\Config\EntidadAsociacionConfig.cs" />

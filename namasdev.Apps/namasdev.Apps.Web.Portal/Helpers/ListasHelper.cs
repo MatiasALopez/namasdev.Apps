@@ -8,6 +8,16 @@ namespace namasdev.Apps.Web.Portal.Helpers
 {
     public class ListasHelper
     {
+        public static SelectList ObtenerIdiomasSelectList(IEnumerable<Idioma> idiomas)
+        {
+            return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(idiomas,
+                m => new SelectListItem
+                {
+                    Text = m.Nombre,
+                    Value = m.Id.ToString()
+                });
+        }
+
         public static SelectList ObtenerAsociacionMultiplicidadesSelectList(IEnumerable<AsociacionMultiplicidad> multiplicidades)
         {
             return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(multiplicidades, 

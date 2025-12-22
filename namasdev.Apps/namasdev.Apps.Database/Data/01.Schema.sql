@@ -220,10 +220,25 @@ go
 --===
 
 --===
+CREATE TABLE [dbo].[Idiomas] 
+(
+    [IdiomaId] nchar(2) NOT NULL,
+    [Nombre]   nvarchar(50) NOT NULL,
+    
+    CONSTRAINT [PK_Idiomas] PRIMARY KEY CLUSTERED ([IdiomaId] ASC)
+)
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Idiomas_Nombre] ON [dbo].Idiomas ([Nombre] ASC)
+go
+--===
+
+--===
 create table dbo.Aplicaciones
 (
 	AplicacionId uniqueidentifier not null,
 	Nombre nvarchar(100) not null,
+	IdiomaId nchar(2) not null,
 	CreadoPor nvarchar(128) not null,
 	CreadoFecha datetime not null,
 	UltimaModificacionPor nvarchar(128) not null,
@@ -232,7 +247,8 @@ create table dbo.Aplicaciones
 	BorradoFecha datetime null,
 	Borrado AS (ISNULL(CONVERT(bit,CASE WHEN BorradoFecha IS NULL THEN 0 ELSE 1 END), 0)),
 
-	constraint PK_Aplicaciones primary key clustered (AplicacionId)
+	constraint PK_Aplicaciones primary key clustered (AplicacionId),
+	constraint FK_Aplicaciones_IdiomaId foreign key (IdiomaId) references dbo.Idiomas (IdiomaId)
 )
 go
 --===

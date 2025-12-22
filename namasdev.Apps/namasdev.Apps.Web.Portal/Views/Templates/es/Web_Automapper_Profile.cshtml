@@ -1,0 +1,41 @@
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new 
+    {
+        Profile = string.Format("{0}Profile", Model.Nombre),
+        Entidad = Model.Nombre,
+        EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
+        EntidadItemModel = string.Format("{0}ItemModel", Model.Nombre)
+    };
+}
+using AutoMapper;
+
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@(Html.Raw(Model.NombrePlural));
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Automapper
+{
+    public class @Html.Raw(clases.Profile) : Profile
+    {
+        public @(Html.Raw(clases.Profile))()
+        {
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", clases.Entidad, clases.EntidadViewModel)))()
+                .ReverseMap();
+
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "AgregarParametros", clases.EntidadViewModel)))()
+                .ReverseMap();
+
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "ActualizarParametros", clases.EntidadViewModel)))()
+                .ReverseMap();
+
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", clases.Entidad, clases.EntidadItemModel)))();
+        }
+    }
+}

@@ -1,0 +1,32 @@
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+
+    var clases = new
+    {
+        ClaseBase =
+            Model.Especificaciones.IDPropiedadTipoId.HasValue
+            ? FormatoHelper.Generic("ParametrosEntidadBase", Model.Especificaciones.IDTipo.CLRType)
+            : string.Format("ParametrosConUsuarioBase"),
+    };
+}
+using System;
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural))
+{
+    public class ActualizarParametros : @Html.Raw(clases.ClaseBase)
+    {
+    @foreach (var p in Model.Propiedades)
+    {
+        if (!p.Editable || p.EsCalculada || p.EsAuditoria)
+        {
+            continue;
+        }
+        <text>public @Html.Raw(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @Html.Raw(p.NombreOId) { get; set; }</text>
+    }
+    }
+}

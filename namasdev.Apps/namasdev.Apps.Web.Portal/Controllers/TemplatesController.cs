@@ -161,13 +161,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
             return entidad;
         }
 
-        public string RenderViewToString(string viewName, object model)
+        public string RenderViewToString(string viewName, Entidad entidad)
         {
-            ViewData.Model = model;
+            ViewData.Model = entidad;
 
             using (var sw = new StringWriter())
             {
-                ViewEngineResult viewResult = ViewEngines.Engines.FindView(ControllerContext, viewName, null);
+                ViewEngineResult viewResult = ViewEngines.Engines.FindView(ControllerContext, $"{entidad.AplicacionVersion.Aplicacion.IdiomaId}/{viewName}", null);
                 ViewContext viewContext = new ViewContext(ControllerContext, viewResult.View, ViewData, TempData, sw);
                 viewResult.View.Render(viewContext, sw);
                 return sw.GetStringBuilder().ToString();

@@ -1,0 +1,24 @@
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+
+    var clases = new
+    {
+        ClaseBase =
+            Model.Especificaciones.IDPropiedadTipoId.HasValue
+            ? FormatoHelper.Generic("ParametrosEntidadBase", Model.Especificaciones.IDTipo.CLRType)
+            : string.Format("ParametrosConUsuarioBase"),
+    };
+}
+using System;
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural))
+{
+    public class DesmarcarComoBorradoParametros : @Html.Raw(clases.ClaseBase)
+    {
+    }
+}

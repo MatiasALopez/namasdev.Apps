@@ -413,7 +413,7 @@ namespace namasdev.Apps.Negocio
                 esHtmlView: true);
         }
 
-        private string GenerarDesdeTemplate(string templateNombre, object modelo, string destinoSubdirectorio, string destinoArchivo,
+        private string GenerarDesdeTemplate(string templateNombre, Entidad entidad, string destinoSubdirectorio, string destinoArchivo,
             Guid? grupoId = null,
             bool esHtmlView = true,
             IEnumerable<string> partialViewsNombres = null)
@@ -422,14 +422,14 @@ namespace namasdev.Apps.Negocio
 
             var templateNames = new List<string>
             {
-                AgregarTemplateARazorYObtenerNombre(templateNombre, razor, esHtmlView)
+                AgregarTemplateARazorYObtenerNombre(templateNombre, entidad.AplicacionVersion.Aplicacion.IdiomaId, razor, esHtmlView)
             };
 
             if (partialViewsNombres != null)
             {
                 foreach (var pv in partialViewsNombres)
                 {
-                    templateNames.Add(AgregarTemplateARazorYObtenerNombre(pv, razor, esHtmlView));
+                    templateNames.Add(AgregarTemplateARazorYObtenerNombre(pv, entidad.AplicacionVersion.Aplicacion.IdiomaId, razor, esHtmlView));
                 }
             }
 
@@ -447,17 +447,17 @@ namespace namasdev.Apps.Negocio
                 razor.Run(
                     templateNames[0],
                     null,
-                    modelo),
+                    entidad),
                 encoding: System.Text.Encoding.UTF8);
 
             return pathArchivo;
         }
 
-        private string AgregarTemplateARazorYObtenerNombre(string templateNombre, IRazorEngineService razor,
+        private string AgregarTemplateARazorYObtenerNombre(string templateNombre, string idiomaId, IRazorEngineService razor,
             bool esHtmlView = false)
         {
             string template = $"{templateNombre}.cshtml";
-            razor.AddTemplate(templateNombre, ObtenerTemplate(template, esHtmlView));
+            razor.AddTemplate(templateNombre, ObtenerTemplate(template, idiomaId, esHtmlView));
             return templateNombre;
         }
 
@@ -471,10 +471,10 @@ namespace namasdev.Apps.Negocio
             return Path.Combine(GenerarPathDirectorioBase(grupoId), "Archivos");
         }
 
-        private string ObtenerTemplate(string template,
+        private string ObtenerTemplate(string template, string idiomaId,
             bool esHtmlView = false)
         {
-            var contenido = File.ReadAllText(Path.Combine(_templatesDirectorio, template));
+            var contenido = File.ReadAllText(Path.Combine(_templatesDirectorio, idiomaId, template));
             if (esHtmlView)
             {
                 contenido = contenido

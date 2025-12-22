@@ -1,0 +1,86 @@
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Datos = string.Format("{0}.Datos", Model.AplicacionVersion.Aplicacion.Nombre),
+    };
+    var clases = new
+    {
+        Entidad = Model.Nombre,
+        Repositorio = string.Format("{0}Repositorio", Model.NombrePlural)
+    };
+    var interfaces = new
+    {
+        Repositorio = string.Format("I{0}", clases.Repositorio)
+    };
+
+    string claveTipo = Model.Especificaciones.IDTipo != null ? Model.Especificaciones.IDTipo.CLRType : null,
+        tiposGenericosEntidadYId = string.Format("{0}, {1}", Model.Nombre, claveTipo);
+
+    bool usarRepositorioBase = !string.IsNullOrWhiteSpace(claveTipo);
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+using namasdev.Data;
+using namasdev.Data.Entity;
+
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Datos)).Sql;
+
+// TODO (Gen): agregar DbSet en SqlContext
+namespace @Html.Raw(namespaces.Datos)
+{
+    public interface @Html.Raw(interfaces.Repositorio) @Html.Raw(usarRepositorioBase ? string.Format(": {0}", FormatoHelper.Generic("IRepositorio", tiposGenericosEntidadYId)) : "")
+    {
+    }
+
+    public class @Html.Raw(clases.Repositorio) : @Html.Raw(usarRepositorioBase ? FormatoHelper.Generic("Repositorio", "SqlContext", tiposGenericosEntidadYId) : ""), @Html.Raw(interfaces.Repositorio)
+    {
+        @if (Model.Indices.Any(i => i.EsUnique)
+        || Model.AsociacionesOrigen.Any())
+        {
+        <text>public override void Agregar(@clases.Entidad entidad)
+        {
+            try
+            {
+                base.Agregar(entidad);
+            }
+            catch (Exception)
+            {
+                // TODO (Gen): Validar FK, indices unicos, checks
+                throw;
+            }
+        }
+
+        public override void Actualizar(@clases.Entidad entidad)
+        {
+            try
+            {
+                base.Actualizar(entidad);
+            }
+            catch (Exception)
+            {
+                // TODO (Gen): Validar FK, indices unicos, checks
+                throw;
+            }
+        }
+
+        public override void ActualizarPropiedades(@clases.Entidad entidad, params string[] propiedades)
+        {
+            try
+            {
+                base.ActualizarPropiedades(entidad, propiedades);
+            }
+            catch (Exception)
+            {
+                // TODO (Gen): Validar FK, indices unicos, checks
+                throw;
+            }
+        }
+</text>}
+    }
+}

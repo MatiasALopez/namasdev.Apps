@@ -1,0 +1,15 @@
+﻿@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+}
+namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Metadata.Views
+{
+    public class @(Html.Raw(Model.NombrePlural))Views
+    {
+        public const string Index = "Index";
+        public const string @Html.Raw(Model.Nombre) = "@Model.Nombre";
+    }
+}

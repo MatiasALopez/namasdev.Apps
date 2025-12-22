@@ -1,0 +1,185 @@
+﻿@using namasdev.Core.Types;
+@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        Config = string.Format("{0}Config", Model.Nombre),
+        ConfigBase =
+            Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA
+            ? "EntidadBorradoConfigBase"
+            : "EntityTypeConfiguration",
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
+    };
+    string propiedadMetadataBase;
+    var propiedadesReglas = new Dictionary<string, string>();
+    List<string> propiedadReglas;
+    string propiedadNombre;
+    foreach (var p in Model.Propiedades)
+    {
+        if (p.EsAuditoriaBorrado)
+        {
+            continue;
+        }
+        propiedadNombre = p.NombreOId;
+        propiedadMetadataBase = string.Format("{0}.Propiedades.{1}.", clases.Metadata, propiedadNombre);
+        propiedadReglas = new List<string>();
+        if (p.EsID)
+        {
+            propiedadReglas.Add(string.Format("HasColumnName({0}.BD.ID)", clases.Metadata));
+        }
+        if (p.EsCalculada)
+        {
+            propiedadReglas.Add("HasDatabaseGeneratedOption(DatabaseGeneratedOption.Computed)");
+        }
+        else if (!p.PermiteNull && !p.Tipo.CLRTypeEsNullable)
+        {
+            propiedadReglas.Add("IsRequired()");
+        }
+        switch (p.PropiedadTipoId)
+        {
+            case PropiedadTipos.TEXTO:
+                if (p.EspecificacionesTexto != null)
+                {
+                    var maxLength = p.EspecificacionesTexto.TamañoMaximo ?? p.EspecificacionesTexto.TamañoExacto;
+                    if (maxLength.HasValue)
+                    {
+                        propiedadReglas.Add(string.Format("HasMaxLength({0}{1})", propiedadMetadataBase, EntidadMetadataAtributos.TAMAÑO_MAX));
+                    }
+                }
+                break;
+            case PropiedadTipos.DECIMAL:
+                if (p.EspecificacionesDecimal != null)
+                {
+                    propiedadReglas.Add(string.Format("HasPrecision({0}{1} + {0}{2}, {0}{2})", propiedadMetadataBase, EntidadMetadataAtributos.DIGITOS_ENTEROS, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                }
+                break;
+        }
+        if (propiedadReglas.Any())
+        {
+            propiedadesReglas.Add(string.Format("p.{0}", propiedadNombre), Formateador.Lista(propiedadReglas, "."));
+        }
+    }
+    var asociaciones = new List<string>();
+    string asociacionParte1Regla,
+        asociacionParte2Regla;
+    bool asociacionTieneReglaForeignKey;
+    foreach (var a in Model.AsociacionesOrigen.OrderBy(ao => ao.OrigenPropiedad.Orden))
+    {
+        asociacionParte1Regla = asociacionParte2Regla = null;
+        asociacionTieneReglaForeignKey = false;
+        switch (a.OrigenAsociacionMultiplicidadId)
+        {
+            case AsociacionMultiplicidades.CERO_UNO:
+                asociacionParte1Regla = "HasOptional";
+
+                switch (a.DestinoAsociacionMultiplicidadId)
+                {
+                    case AsociacionMultiplicidades.CERO_UNO:
+                        asociacionParte2Regla = "WithOptionalDependent";
+                        break;
+
+                    case AsociacionMultiplicidades.UNO:
+                        asociacionParte2Regla = "WithRequired";
+                        break;
+
+                    case AsociacionMultiplicidades.MUCHOS:
+                        asociacionParte2Regla = "WithMany";
+                        asociacionTieneReglaForeignKey = true;
+                        break;
+                }
+                break;
+
+            case AsociacionMultiplicidades.UNO:
+                asociacionParte1Regla = "HasRequired";
+
+                switch (a.DestinoAsociacionMultiplicidadId)
+                {
+                    case AsociacionMultiplicidades.CERO_UNO:
+                        asociacionParte2Regla = "WithOptional";
+                        break;
+
+                    case AsociacionMultiplicidades.UNO:
+                        asociacionParte2Regla = "WithRequiredDependent";
+                        break;
+
+                    case AsociacionMultiplicidades.MUCHOS:
+                        asociacionParte2Regla = "WithMany";
+                        asociacionTieneReglaForeignKey = true;
+                        break;
+                }
+                break;
+
+            case AsociacionMultiplicidades.MUCHOS:
+                asociacionParte1Regla = "HasMany";
+
+                switch (a.DestinoAsociacionMultiplicidadId)
+                {
+                    case AsociacionMultiplicidades.CERO_UNO:
+                        asociacionParte2Regla = "WithOptional";
+                        break;
+
+                    case AsociacionMultiplicidades.UNO:
+                        asociacionParte2Regla = "WithRequiredDependent";
+                        break;
+
+                    case AsociacionMultiplicidades.MUCHOS:
+                        asociacionParte2Regla = "WithMany";
+                        break;
+                }
+
+                break;
+        }
+        asociaciones.Add(string.Format("{0}({1}).{2}({3}){4}",
+            asociacionParte1Regla,
+            (!string.IsNullOrWhiteSpace(a.OrigenEntidadPropiedadNavegacionNombre) ? string.Format("p => p.{0}", a.OrigenEntidadPropiedadNavegacionNombre) : ""),
+            asociacionParte2Regla,
+            (!string.IsNullOrWhiteSpace(a.DestinoEntidadPropiedadNavegacionNombre) ? string.Format("p => p.{0}", a.DestinoEntidadPropiedadNavegacionNombre) : ""),
+            (asociacionTieneReglaForeignKey ? string.Format(".HasForeignKey(p => p.{0})", a.OrigenPropiedad.Nombre) : "")));
+    }
+}
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Data.Entity.ModelConfiguration;
+
+using namasdev.Data.Entity.Config;
+
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Datos.Sql.Config
+{
+    public class @Html.Raw(clases.Config) : @Html.Raw(FormatoHelper.Generic(clases.ConfigBase, Model.Nombre))
+    {
+        public @(Html.Raw(clases.Config))()
+        {
+            ToTable(@(Html.Raw(clases.Metadata)).BD.TABLA);
+            @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
+            {
+            <text>HasKey(p => p.Id);</text>
+            }
+            else if (Model.Claves.Count == 1)
+            {
+            <text>HasKey(p => p.@Html.Raw(Model.Claves[0].Propiedad.Nombre));</text>
+            }
+            else if (Model.Claves.Count > 1)
+            {
+            <text>HasKey(p => new { @Html.Raw(string.Join(", ", Model.Claves.Select(c => string.Format("p.{0}", c.Propiedad.Nombre)))) });</text>
+            }
+
+            @foreach (var p in propiedadesReglas)
+            {
+            <text>Property(p => @Html.Raw(p.Key)).@Html.Raw(p.Value);</text>
+            }
+
+            @foreach (var a in asociaciones)
+            {
+            <text>@Html.Raw(a);</text>
+            }
+        }
+    }
+}

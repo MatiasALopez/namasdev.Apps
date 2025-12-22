@@ -1,0 +1,71 @@
+﻿@using namasdev.Apps.Entidades;
+@using namasdev.Apps.Entidades.Valores; 
+@using namasdev.Apps.Web.Portal.Helpers;
+@model Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
+        MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
+    };
+    EntidadPropiedad propiedadId = null;
+    bool tienePropiedadesBoolean = false,
+        tienePropiedadesHora = false;
+}
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+
+using namasdev.Core.Validation;
+using namasdev.Web.Models;
+
+using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@Html.Raw(Model.NombrePlural)
+{
+    public class @Html.Raw(clases.EntidadViewModel) : IValidatableObject
+    {
+        public PaginaModo PaginaModo { get; set; }
+
+    @foreach(var p in Model.Propiedades)
+    {
+        if (p.EsCalculada || p.EsAuditoria) { continue; }
+        if (p.EsID) { propiedadId = p; }
+        if (p.PropiedadTipoId == PropiedadTipos.BOOLEANO) { tienePropiedadesBoolean = true; }
+        else if (p.PropiedadTipoId == PropiedadTipos.FECHA_HORA || p.PropiedadTipoId == PropiedadTipos.HORA) { tienePropiedadesHora = true; }
+        <text>[Display(Name = @(Html.Raw(clases.MetadataPropiedades)).@(Html.Raw(p.NombreOId)).ETIQUETA)]
+        @if (!p.PermiteNull && !p.EsID)
+        {
+        <text>[Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]</text>
+        }
+        public @p.Tipo.CLRTypeNullable @Html.Raw(p.NombreOId) { get; set; }
+        </text>
+    }
+    @if (tienePropiedadesBoolean) 
+    { 
+    <text>public SelectList SiNoSelectList { get; set; }</text>
+    }
+    @if (tienePropiedadesHora) 
+    { 
+    <text>public SelectList HoraSelectList { get; set; }</text>
+    }
+
+        public @Html.Raw(FormatoHelper.Generic("IEnumerable", "ValidationResult")) Validate(ValidationContext validationContext)
+        {
+        @if (propiedadId != null)
+        {
+            <text>if (PaginaModo == PaginaModo.Editar
+                && @FormatoHelper.ExpresionCheckNoNull(propiedadId.NombreOId, propiedadId.Tipo))
+            {
+                yield return new ValidationResult(Validador.MensajeRequerido(@(Html.Raw(clases.Metadata)).ETIQUETA));
+            }</text>
+        }
+        }
+    }
+}

@@ -1,0 +1,32 @@
+﻿@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        ItemModel = string.Format("{0}ItemModel", Model.Nombre),
+        ListaViewModel = string.Format("{0}ViewModel", Model.NombrePlural),
+    };
+}
+using System.ComponentModel.DataAnnotations;
+
+using namasdev.Web.ViewModels;
+
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@Html.Raw(Model.NombrePlural);
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@Html.Raw(Model.NombrePlural)
+{
+    public class @Html.Raw(clases.ListaViewModel) : @Html.Raw(FormatoHelper.Generic("ListadoConPaginacionViewModel", clases.ItemModel))
+    {
+        public @(Html.Raw(clases.ListaViewModel))()
+        {
+            ItemsPorPagina = 20;    
+        }
+
+        //[Display(Name = "Búsqueda")]
+        //public string Busqueda { get; set; }
+    }
+}

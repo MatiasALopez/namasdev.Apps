@@ -1,0 +1,284 @@
+﻿@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    string namespaceBase = Model.AplicacionVersion.Aplicacion.Nombre;
+    var clases = new
+    {
+        Entidad = Model.Nombre,
+        Negocio = string.Format("{0}Negocio", Model.NombrePlural),
+        Repositorio = string.Format("{0}Repositorio", Model.NombrePlural),
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
+        MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
+        AgregarParametros = "AgregarParametros",
+        ActualizarParametros = "ActualizarParametros",
+        MarcarComoBorradoParametros = "MarcarComoBorradoParametros",
+        DesmarcarComoBorradoParametros = "DesmarcarComoBorradoParametros",
+        EliminarParametros = "EliminarParametros"
+    };
+    var interfaces = new
+    {
+        Negocio = string.Format("I{0}", clases.Negocio),
+        Repositorio = string.Format("I{0}", clases.Repositorio)
+    };
+    var variables = new
+    {
+        Repositorio = "repositorio",
+        ErroresNegocio = "erroresNegocio",
+        Mapper = "mapper",
+        Parametros = "parametros",
+        Entidad = "entidad",
+        UsuarioId = "usuarioId",
+    };
+    var parametros = new
+    {
+        Requerido = "requerido",
+        TamañoMinimo = "tamañoMinimo",
+        TamañoMaximo = "tamañoMaximo",
+        TamañoExacto = "tamañoExacto",
+        ValorMaximo = "valorMaximo",
+        ValorMinimo = "valorMinimo",
+        CantDecimales = "cantDecimales",
+        RegEx = "regEx"
+    };
+    var validaciones = new List<string>();
+    string validacionMetodo,
+        propiedadNombre;
+    Dictionary<string, string> validacionParametros;
+    foreach (var p in Model.Propiedades)
+    {
+        validacionMetodo = null;
+        propiedadNombre = p.NombreOId;
+        validacionParametros = new Dictionary<string, string>();
+        switch (p.PropiedadTipoId)
+        {
+            case PropiedadTipos.TEXTO:
+                validacionMetodo = "ValidarStringYAgregarAListaErrores";
+                if (p.EspecificacionesTexto.TamañoExacto.HasValue)
+                {
+                    validacionParametros.Add(parametros.TamañoExacto, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
+                }
+                else
+                {
+                    if (p.EspecificacionesTexto.TamañoMinimo.HasValue)
+                    {
+                        validacionParametros.Add(parametros.TamañoMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MIN));
+                    }
+                    if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
+                    {
+                        validacionParametros.Add(parametros.TamañoMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(p.EspecificacionesTexto.RegEx))
+                {
+                    validacionParametros.Add(parametros.RegEx, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.REG_EX));
+                }
+                break;
+            case PropiedadTipos.ENTERO:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                if (p.EspecificacionesEntero.ValorMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                }
+                if (p.EspecificacionesEntero.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                }
+                break;
+            case PropiedadTipos.ENTERO_CORTO:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                if (p.EspecificacionesEnteroCorto.ValorMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                }
+                if (p.EspecificacionesEnteroCorto.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                }
+                break;
+            case PropiedadTipos.ENTERO_LARGO:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                }
+                if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
+                {
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                }
+                break;
+            case PropiedadTipos.DECIMAL:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                validacionParametros.Add(parametros.CantDecimales, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                break;
+            case PropiedadTipos.DECIMAL_FLOTANTE:
+                validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
+                validacionParametros.Add(parametros.CantDecimales, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                break;
+        }
+        if (!string.IsNullOrWhiteSpace(validacionMetodo))
+        {
+            validaciones.Add(string.Format("Validador.{0}(entidad.{1}, {2}.{1}.{3}, requerido: {4}, errores{5})",
+                validacionMetodo,
+                propiedadNombre,
+                clases.MetadataPropiedades,
+                EntidadMetadataAtributos.ETIQUETA,
+                (!p.PermiteNull).ToString().ToLower(),
+                validacionParametros.Count > 0 ? ", " + FormatoHelper.ListaParametrosValores(validacionParametros) : ""));
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+
+using AutoMapper;
+using namasdev.Core.Entity;
+using namasdev.Core.Validation;
+
+using @(Html.Raw(namespaceBase)).Datos;
+using @(Html.Raw(namespaceBase)).Entidades;
+using @(Html.Raw(namespaceBase)).Entidades.Metadata;
+using @(Html.Raw(namespaceBase)).Negocio.DTO.@(Html.Raw(Model.NombrePlural));
+
+namespace @(Html.Raw(namespaceBase)).Negocio
+{
+    public interface @Html.Raw(interfaces.Negocio)
+    {
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {
+        <text>@Html.Raw(clases.Entidad) Agregar(@clases.AgregarParametros parametros);
+        void Actualizar(@clases.ActualizarParametros parametros);</text>
+        }
+        @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
+        {
+        <text>void MarcarComoBorrado(@clases.MarcarComoBorradoParametros parametros);
+        void DesmarcarComoBorrado(@clases.DesmarcarComoBorradoParametros parametros);</text>
+        }
+        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
+        { 
+        <text>void Eliminar(@clases.EliminarParametros parametros);</text>
+        }
+    }
+
+    public class @Html.Raw(clases.Negocio) : @Html.Raw(FormatoHelper.Generic("NegocioBase", interfaces.Repositorio)), @Html.Raw(interfaces.Negocio)
+    {
+        public @(Html.Raw(clases.Negocio))(@Html.Raw(interfaces.Repositorio) @Html.Raw(variables.Repositorio), IErroresNegocio @variables.ErroresNegocio, IMapper @variables.Mapper)
+            : base(@Html.Raw(variables.Repositorio), @variables.ErroresNegocio, @variables.Mapper)
+        {
+        }
+
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {<text>
+        public @Html.Raw(clases.Entidad) Agregar(@clases.AgregarParametros @variables.Parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+
+            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            @if (Model.Especificaciones.IDPropiedadTipoId == PropiedadTipos.GUID)
+            {
+            <text>@(Html.Raw(variables.Entidad)).Id = Guid.NewGuid();
+            </text>
+            }
+            @if (Model.Especificaciones.AuditoriaCreado || Model.Especificaciones.AuditoriaUltimaModificacion)
+            {
+            <text>
+            DateTime fechaHora = DateTime.Now;</text>}
+            @if (Model.Especificaciones.AuditoriaCreado)
+            {
+            <text>
+            @(Html.Raw(variables.Entidad)).EstablecerDatosCreado(@(variables.Parametros).UsuarioLogueadoId, fechaHora);</text>}
+            @if (Model.Especificaciones.AuditoriaUltimaModificacion)
+            {
+            <text>
+            @(Html.Raw(variables.Entidad)).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, fechaHora);
+            </text>}
+    
+            ValidarDatos(@Html.Raw(variables.Entidad));
+
+            Repositorio.Agregar(@Html.Raw(variables.Entidad));
+
+            return @Html.Raw(variables.Entidad);
+        }
+
+        public void Actualizar(@clases.ActualizarParametros @variables.Parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+
+            var @Html.Raw(variables.Entidad) = Obtener(@(variables.Parametros).Id);
+            Mapper.Map(@variables.Parametros, @Html.Raw(variables.Entidad));
+            @if (Model.Especificaciones.AuditoriaUltimaModificacion)
+            {
+            <text>
+            @(Html.Raw(variables.Entidad)).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);
+            </text>}
+
+            ValidarDatos(@Html.Raw(variables.Entidad));
+
+            Repositorio.Actualizar(@Html.Raw(variables.Entidad));
+        }
+        </text>}
+        @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
+        {<text>
+        public void MarcarComoBorrado(@clases.MarcarComoBorradoParametros @variables.Parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+    
+            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            @(Html.Raw(variables.Entidad)).EstablecerDatosBorrado(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);
+
+            ValidarDatos(@Html.Raw(variables.Entidad));
+
+            Repositorio.ActualizarDatosBorrado(@Html.Raw(variables.Entidad));
+        }
+
+        public void DesmarcarComoBorrado(@clases.DesmarcarComoBorradoParametros @variables.Parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+
+            var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
+            Repositorio.ActualizarDatosBorrado(@Html.Raw(variables.Entidad));
+        }
+        </text>}
+        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA) 
+        {<text>
+        public void Eliminar(@clases.EliminarParametros @variables.Parametros)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+    
+            Repositorio.EliminarPorId(@(variables.Parametros).Id);
+        }
+        </text>}
+        @if (!Model.Especificaciones.EsSoloLectura) 
+        {<text> 
+        private @Html.Raw(clases.Entidad) Obtener(@Model.Especificaciones.IDTipo.CLRType id,
+            bool validarExistencia = true)
+        {
+            var entidad = Repositorio.Obtener(id);
+            if (validarExistencia
+                && entidad == null)
+            {
+                throw new Exception(Validador.MensajeEntidadInexistente(@(Html.Raw(clases.Metadata)).ETIQUETA, id));
+            }
+
+            return entidad;
+        }
+
+        private void ValidarDatos(@Html.Raw(clases.Entidad) entidad)
+        {
+            var errores = new @(Html.Raw(FormatoHelper.Generic("List", "string")))();
+
+        @foreach (var v in validaciones)
+        {
+            <text>@Html.Raw(v);</text>
+        }
+
+            Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
+        }
+        </text>}
+    }
+}
+

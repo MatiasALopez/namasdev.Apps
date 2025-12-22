@@ -47,6 +47,7 @@ namespace namasdev.Apps.Negocio
             _entidadesAsociacionesRepositorio = entidadesAsociacionesRepositorio;
         }
 
+        // TODO (ML): crear props default segun idioma
         // TODO (ML): mover eliminacion de propiedades a EntidadesPropiedadesNegocio
         public void Actualizar(ActualizarParametros parametros)
         {

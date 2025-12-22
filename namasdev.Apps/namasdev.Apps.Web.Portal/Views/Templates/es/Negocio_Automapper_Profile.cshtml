@@ -1,0 +1,39 @@
+﻿@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        Profile = string.Format("{0}Profile", Model.Nombre),
+        Entidad = Model.Nombre,
+    };
+}
+using AutoMapper;
+
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural));
+
+namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.Automapper
+{
+    public class @Html.Raw(clases.Profile) : Profile
+    {
+        public @(Html.Raw(clases.Profile))()
+        {
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "AgregarParametros", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "ActualizarParametros", clases.Entidad)))();
+        @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
+        {
+            <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "MarcarComoBorradoParametros", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "DesmarcarComoBorradoParametros", clases.Entidad)))();</text>
+        }
+        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
+        {
+            <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "EliminarParametros", clases.Entidad)))();</text>
+        }
+        }
+    }
+}

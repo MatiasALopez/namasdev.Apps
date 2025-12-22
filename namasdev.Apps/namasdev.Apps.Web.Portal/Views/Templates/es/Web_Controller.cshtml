@@ -1,0 +1,255 @@
+﻿@using namasdev.Core.Types;
+@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+    };
+    var clases = new
+    {
+        Metadata = string.Format("{0}Metadata", Model.Nombre),
+        MetadataMensajes = string.Format("{0}Metadata.Mensajes", Model.Nombre),
+        Negocio = string.Format("{0}Negocio", Model.NombrePlural),
+        Repositorio = string.Format("{0}Repositorio", Model.NombrePlural),
+        Controller = string.Format("{0}Controller", Model.NombrePlural),
+        EntidadItemModel = string.Format("{0}ItemModel", Model.Nombre),
+        ListaViewModel = string.Format("{0}ViewModel", Model.NombrePlural),
+        EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
+        Views = string.Format("{0}Views", Model.NombrePlural),
+    };
+    var interfaces = new
+    {
+        Negocio = string.Format("I{0}", clases.Negocio),
+        Repositorio = string.Format("I{0}", clases.Repositorio)
+    };
+    var variables = new
+    {
+        Repositorio = clases.Repositorio.ToFirstLetterLowercase(),
+        Negocio = clases.Negocio.ToFirstLetterLowercase(),
+        Entidad = Model.Nombre.ToFirstLetterLowercase(),
+        ViewModel = "model",
+    };
+    var constantes = new
+    {
+        ViewsEntidad = string.Format("{0}.{1}", clases.Views, Model.Nombre),
+    };
+    bool tienePropiedadesBoolean = false,
+        tienePropiedadesHora = false;
+    foreach (var p in Model.Propiedades)
+    {
+        if (p.EsCalculada || p.EsAuditoria) { continue; }
+        if (p.PropiedadTipoId == PropiedadTipos.BOOLEANO) { tienePropiedadesBoolean = true; }
+        else if (p.PropiedadTipoId == PropiedadTipos.FECHA_HORA || p.PropiedadTipoId == PropiedadTipos.HORA) { tienePropiedadesHora = true; }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
+
+using AutoMapper;
+using namasdev.Core.Validation;
+using namasdev.Web.Helpers;
+using namasdev.Web.Models;
+
+using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+using @(Html.Raw(namespaces.Aplicacion)).Entidades.Valores;
+using @(Html.Raw(namespaces.Aplicacion)).Datos;
+using @(Html.Raw(namespaces.Aplicacion)).Negocio;
+using @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Metadata.Views;
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@(Html.Raw(Model.NombrePlural));
+
+/* TODO (Gen):
+ * - [App_Start/Startup_DI] Registrar repositorio, negocio y controller
+ * - [Views/Shared/_Menu] (opcional) Agregar item(s) de menú
+ */
+namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
+{
+    [Authorize(Roles = AspNetRoles.ADMINISTRADOR)]
+    public class @Html.Raw(clases.Controller) : ControllerBase
+    {
+        public const string NAME = "@Model.NombrePlural";
+
+        private readonly @Html.Raw(interfaces.Repositorio) _@Html.Raw(variables.Repositorio);
+        private readonly @Html.Raw(interfaces.Negocio) _@Html.Raw(variables.Negocio);
+
+        public @(Html.Raw(clases.Controller))(@Html.Raw(interfaces.Repositorio) @Html.Raw(variables.Repositorio), @Html.Raw(interfaces.Negocio) @Html.Raw(variables.Negocio), IMapper mapper)
+            : base(mapper)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.Repositorio), nameof(@Html.Raw(variables.Repositorio)));
+            Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.Negocio), nameof(@Html.Raw(variables.Negocio)));
+
+            _@Html.Raw(variables.Repositorio) = @Html.Raw(variables.Repositorio);
+            _@Html.Raw(variables.Negocio) = @Html.Raw(variables.Negocio);
+        }
+
+        #region Acciones
+
+        public ActionResult Index(
+            int pagina = 1,
+            string orden = null)
+        {
+            var @Html.Raw(variables.ViewModel) = new @Html.Raw(clases.ListaViewModel)
+            {
+                Pagina = pagina,
+                Orden = orden,
+            };
+
+            Cargar@(Html.Raw(clases.ListaViewModel))(@Html.Raw(variables.ViewModel));
+            return View(@Html.Raw(variables.ViewModel));
+        }
+        @if (Model.Especificaciones.BajaTipoId != BajaTipos.NINGUNA)
+        {
+        <text>
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Eliminar(@Model.Especificaciones.IDTipo.CLRType id)
+        {
+            var @Html.Raw(variables.Entidad) = _@(Html.Raw(variables.Repositorio)).Obtener(id);
+            if (@Html.Raw(variables.Entidad) == null)
+            {
+                return Json(new { success = false, message = Validador.MensajeEntidadInexistente(@(Html.Raw(clases.Metadata)).ETIQUETA, id) });
+            }
+
+            try
+            {
+                @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
+                {
+                <text>_@(Html.Raw(variables.Negocio)).MarcarComoBorrado(
+                    new MarcarComoBorradoParametros 
+                    { 
+                        Id = id, 
+                        UsuarioLogueadoId = UsuarioId 
+                    });</text>
+                }
+                else
+                {
+                <text>_@(Html.Raw(variables.Negocio)).Eliminar(
+                    new EliminarParametros 
+                    { 
+                        Id = id, 
+                        UsuarioLogueadoId = UsuarioId 
+                    });</text>
+                }
+            }
+            catch (Exception)
+            {
+                return Json(new { success = false, message = @(Html.Raw(clases.MetadataMensajes)).ELIMINAR_ERROR });
+            }
+
+            return Json(new { success = true });
+        }</text>
+        }
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {
+        <text>
+        public ActionResult Agregar()
+        {
+            var @Html.Raw(variables.ViewModel) = new @(Html.Raw(clases.EntidadViewModel))();
+            Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Agregar);
+
+            return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
+        }
+
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Agregar(@Html.Raw(clases.EntidadViewModel) @Html.Raw(variables.ViewModel))
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _@(Html.Raw(variables.Negocio)).Agregar(@(Html.Raw(FormatoHelper.Generic("Mapear", "AgregarParametros")))(@Html.Raw(variables.ViewModel)));
+
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (Exception ex)
+            {
+                ControllerHelper.CargarMensajesError(ex.Message);
+            }
+
+            Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Agregar);
+            return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
+        }
+
+        public ActionResult Editar(@Model.Especificaciones.IDTipo.CLRType id)
+        {
+            var @Html.Raw(variables.Entidad) = _@(Html.Raw(variables.Repositorio)).Obtener(id);
+            if (@Html.Raw(variables.Entidad) == null)
+            {
+                return RedirectToAction(nameof(Index));
+            }
+
+            var @Html.Raw(variables.ViewModel) = @(Html.Raw(FormatoHelper.Generic("Mapear", clases.EntidadViewModel)))(@Html.Raw(variables.Entidad));
+            Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Editar);
+
+            return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
+        }
+
+        [HttpPost,
+        ValidateAntiForgeryToken]
+        public ActionResult Editar(@Html.Raw(clases.EntidadViewModel) @Html.Raw(variables.ViewModel))
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _@(Html.Raw(variables.Negocio)).Actualizar(@(Html.Raw(FormatoHelper.Generic("Mapear", "ActualizarParametros")))(@Html.Raw(variables.ViewModel)));
+
+                    ControllerHelper.CargarMensajeResultadoOk(@(Html.Raw(clases.MetadataMensajes)).EDITAR_OK);
+                }
+            }
+            catch (Exception ex)
+            {
+                ControllerHelper.CargarMensajesError(ex.Message);
+            }
+
+            Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), PaginaModo.Editar);
+
+            return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
+        }</text>
+        }
+
+        #endregion Acciones
+
+        #region Metodos
+
+        private void Cargar@(Html.Raw(clases.ListaViewModel))(@Html.Raw(clases.ListaViewModel) @Html.Raw(variables.ViewModel))
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.ViewModel), nameof(@Html.Raw(variables.ViewModel)));
+
+            var op = @(Html.Raw(variables.ViewModel)).CrearOrdenYPaginacionParametros();
+
+            @(Html.Raw(variables.ViewModel)).Items = @(Html.Raw(FormatoHelper.Generic("Mapear", FormatoHelper.Generic("List", clases.EntidadItemModel))))(
+                _@(Html.Raw(variables.Repositorio)).ObtenerLista(
+                    //busqueda: @(Html.Raw(variables.ViewModel)).Busqueda,
+                    op: op));
+
+            @(Html.Raw(variables.ViewModel)).CargarPaginacion(op);
+        }
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {
+        <text>
+        private void Cargar@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(clases.EntidadViewModel) @Html.Raw(variables.ViewModel), PaginaModo paginaModo)
+        {
+            Validador.ValidarArgumentRequeridoYThrow(@Html.Raw(variables.ViewModel), nameof(@Html.Raw(variables.ViewModel)));
+
+            @(Html.Raw(variables.ViewModel)).PaginaModo = paginaModo;
+
+@if (tienePropiedadesBoolean) {
+            <text>@(Html.Raw(variables.ViewModel)).SiNoSelectList = ListasHelper.ObtenerSiNoSelectList();</text>
+}
+@if (tienePropiedadesHora) {
+            <text>@(Html.Raw(variables.ViewModel)).HoraSelectList = ListasHelper.ObtenerHoraMinSelectList();</text>
+}
+        }</text>
+        }
+
+        #endregion Metodos
+    }
+}

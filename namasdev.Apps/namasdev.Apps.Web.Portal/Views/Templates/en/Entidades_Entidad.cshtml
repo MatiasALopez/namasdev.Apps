@@ -1,0 +1,59 @@
+﻿@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    string claseBase =
+        Model.Especificaciones.IDPropiedadTipoId.HasValue
+        ? string.Format(
+            ": Entity{0}{1}{2}<{3}>",
+            (Model.Especificaciones.AuditoriaCreado ? "Created" : ""),
+            (Model.Especificaciones.AuditoriaUltimaModificacion ? "Modified" : ""),
+            (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA ? "Deleted" : ""),
+            Model.Especificaciones.IDTipo.CLRType)
+        : "";
+    var propiedadesNavegacion = new List<string>();
+    foreach (var a in Model.AsociacionesOrigen.Where(ao => !string.IsNullOrWhiteSpace(ao.OrigenEntidadPropiedadNavegacionNombre)).OrderBy(ao => ao.OrigenPropiedad.Orden))
+    {
+        propiedadesNavegacion.Add(string.Format("{0} {1}",
+            a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
+                ? FormatoHelper.Generic("List", a.DestinoEntidad.Nombre)
+                : a.DestinoEntidad.Nombre, 
+            a.OrigenEntidadPropiedadNavegacionNombre));
+    }
+    foreach (var a in Model.AsociacionesDestino.Where(ad => !string.IsNullOrWhiteSpace(ad.DestinoEntidadPropiedadNavegacionNombre)).OrderBy(ad => ad.OrigenEntidad.Nombre).ThenBy(ad => ad.OrigenPropiedad.Orden))
+    {
+        propiedadesNavegacion.Add(string.Format("{0} {1}",
+            a.DestinoAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
+                ? FormatoHelper.Generic("List", a.OrigenEntidad.Nombre)
+                : a.OrigenEntidad.Nombre,
+            a.DestinoEntidadPropiedadNavegacionNombre));
+    }
+}
+using System;
+using System.Collections.Generic;
+
+using namasdev.Core.Entity;
+
+namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entities
+{
+    public partial class @Html.Raw(Model.Nombre) @Html.Raw(claseBase)
+    {
+    @foreach (var p in Model.Propiedades)
+    {
+        if (p.EsID 
+            || p.EsAuditoria)
+        {
+            continue;
+        }
+        <text>public @(Html.Raw(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType)) @Html.Raw(p.Nombre) { get; set; }</text>
+    }
+    @if (propiedadesNavegacion.Count > 0)
+    {
+        <text></text>
+    foreach (var p in propiedadesNavegacion)
+    {
+        <text>public virtual @Html.Raw(p) { get; set; }</text>
+    }
+    }
+    }
+}

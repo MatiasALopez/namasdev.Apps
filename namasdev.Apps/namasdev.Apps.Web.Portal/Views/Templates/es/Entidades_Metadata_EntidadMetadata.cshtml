@@ -1,0 +1,162 @@
+﻿@using namasdev.Apps.Entidades.Valores;
+@using namasdev.Apps.Web.Portal.Helpers;
+@model namasdev.Apps.Entidades.Entidad
+@{
+    var clases = new
+    {
+        Metadata = string.Format("{0}Metadata", Model.Nombre)
+    };
+    var variables = new
+    {
+        Repositorio = "repositorio",
+        UsuarioId = "usuarioId",
+    };
+    var constantesDefiniciones = new
+    {
+        Etiqueta = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.ETIQUETA),
+        TamañoExacto = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_EXACTO),
+        TamañoMax = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_MAX),
+        TamañoMin = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_MIN),
+        RegEx = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.REG_EX),
+        ValorMinimoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.VALOR_MAXIMO),
+        ValorMinimoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos.VALOR_MAXIMO),
+        ValorMinimoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos.VALOR_MAXIMO),
+        ValorMinimoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos.VALOR_MAXIMO),
+        ValorMinimoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos.VALOR_MINIMO),
+        ValorMaximoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos.VALOR_MAXIMO),
+        DigitosEnteros = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.DIGITOS_ENTEROS),
+        DigitosDecimales = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.DIGITOS_DECIMALES),
+    };
+    string textoPudo = Model.Especificaciones.Articulo.TextoPudo,
+        textoArticulo = Model.Especificaciones.Articulo.Texto,
+        textoOperacionSufijoGenero = Model.Especificaciones.Articulo.SufijoGenero;
+    Dictionary<string, string> propiedadConstantes;
+}
+namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metadata
+{
+    public class @Html.Raw(clases.Metadata)
+    {
+        public const string NOMBRE = "@Html.Raw(Model.Nombre)";
+        public const string NOMBRE_PLURAL = "@Html.Raw(Model.NombrePlural)";
+
+        public const string ETIQUETA = "@Html.Raw(Model.Etiqueta)";
+        public const string ETIQUETA_PLURAL = "@Html.Raw(Model.EtiquetaPlural)";
+
+        public class BD
+        {
+            public const string TABLA = "@Html.Raw(Model.NombrePlural)";
+        @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
+        {
+            <text>public const string ID = "@(Html.Raw(Model.Propiedades.First(p => p.EsID).Nombre))";</text>
+        }
+        }
+
+        public class Propiedades
+        {
+        @foreach(var p in Model.Propiedades)
+        {
+            propiedadConstantes = new Dictionary<string, string>
+            {
+                { FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.ETIQUETA), FormatoHelper.EntreComillas(p.Etiqueta) }
+            };
+            switch (p.PropiedadTipoId)
+            {
+                case PropiedadTipos.TEXTO:
+                    if (p.EspecificacionesTexto.TamañoExacto.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.TamañoExacto, p.EspecificacionesTexto.TamañoExacto.ToString());
+                    }
+                    else
+                    {
+                        if (p.EspecificacionesTexto.TamañoMinimo.HasValue)
+                        {
+                            propiedadConstantes.Add(constantesDefiniciones.TamañoMin, p.EspecificacionesTexto.TamañoMinimo.ToString());
+                        }
+                        if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
+                        {
+                            propiedadConstantes.Add(constantesDefiniciones.TamañoMax, p.EspecificacionesTexto.TamañoMaximo.ToString());
+                        }
+                    }
+                    if (!string.IsNullOrWhiteSpace(p.EspecificacionesTexto.RegEx))
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.RegEx, "@" + FormatoHelper.EntreComillas(p.EspecificacionesTexto.RegEx));
+                    }
+                    break;
+                case PropiedadTipos.ENTERO:
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEntero, (p.EspecificacionesEntero.ValorMinimo ?? int.MinValue).ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEntero, (p.EspecificacionesEntero.ValorMaximo ?? int.MaxValue).ToString());
+                    break;
+                case PropiedadTipos.ENTERO_CORTO:
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEnteroCorto, (p.EspecificacionesEnteroCorto.ValorMinimo ?? short.MinValue).ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEnteroCorto, (p.EspecificacionesEnteroCorto.ValorMaximo ?? short.MaxValue).ToString());
+                    break;
+                case PropiedadTipos.ENTERO_LARGO:
+                    if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoEnteroLargo, p.EspecificacionesEnteroLargo.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoEnteroLargo, p.EspecificacionesEnteroLargo.ValorMaximo.ToString());
+                    }
+                    break;
+                case PropiedadTipos.DECIMAL:
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosEnteros, p.EspecificacionesDecimal.DigitosEnteros.ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimal.DigitosDecimales.ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMinimo ?? p.EspecificacionesDecimal.ValorMinimoDesdeDigitos));
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesDecimal.ValorMaximo ?? p.EspecificacionesDecimal.ValorMaximoDesdeDigitos));
+                    break;
+                case PropiedadTipos.DECIMAL_FLOTANTE:
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosEnteros, p.EspecificacionesDecimalFlotante.DigitosEnteros.ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, p.EspecificacionesDecimalFlotante.DigitosDecimales.ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, (p.EspecificacionesDecimalFlotante.ValorMinimo ?? p.EspecificacionesDecimalFlotante.ValorMinimoDesdeDigitos).ToString());
+                    propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, (p.EspecificacionesDecimalFlotante.ValorMaximo ?? p.EspecificacionesDecimalFlotante.ValorMaximoDesdeDigitos).ToString());
+                    break;
+                case PropiedadTipos.IMPORTE:
+                    propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, "4");
+                    if (p.EspecificacionesImporte.ValorMinimo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, p.EspecificacionesImporte.ValorMinimo.ToString());
+                    }
+                    if (p.EspecificacionesImporte.ValorMaximo.HasValue)
+                    {
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, p.EspecificacionesImporte.ValorMaximo.ToString());
+                    }
+                    break;
+            }
+            <text>public class @Html.Raw(p.NombreOId)
+            {
+                @foreach (var c in propiedadConstantes)
+                {
+                <text>public const @Html.Raw(c.Key) = @Html.Raw(c.Value);</text>
+                }
+            }</text>
+        }
+        }
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {
+        <text>
+        public class Mensajes
+        {
+            public const string AGREGAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " agregad@(textoOperacionSufijoGenero) correctamente.";
+            public const string AGREGAR_ERROR = "No se @(Html.Raw(textoPudo)) agregar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+
+            public const string EDITAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " actualizad@(textoOperacionSufijoGenero) correctamente.";
+            public const string EDITAR_ERROR = "No se @(Html.Raw(textoPudo)) actualizar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+        @if (Model.Especificaciones.BajaTipoId != BajaTipos.NINGUNA)
+        {
+            <text>
+            public const string ELIMINAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " eliminad@(textoOperacionSufijoGenero) correctamente.";
+            public const string ELIMINAR_ERROR = "No se @(Html.Raw(textoPudo)) eliminar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA + " seleccionad@(Html.Raw(textoOperacionSufijoGenero))?";
+            </text>
+        }
+        }
+        </text>
+        }
+    }
+}

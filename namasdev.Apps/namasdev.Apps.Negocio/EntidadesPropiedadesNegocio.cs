@@ -11,6 +11,7 @@ using namasdev.Apps.Datos;
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Entidades.Metadata;
 using namasdev.Apps.Negocio.DTO.EntidadesPropiedades;
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Negocio
 {
@@ -47,6 +48,7 @@ namespace namasdev.Apps.Negocio
             entidad.Id = Guid.NewGuid();
             entidad.PropiedadTipoEspecificaciones = SerializarPropiedadTipoEspecificaciones(parametros.EspecificacionesSegunTipo);
             entidad.Orden = Repositorio.ObtenerProximoOrdenDisponible(parametros.EntidadId);
+            entidad.PropiedadCategoriaId = PropiedadCategorias.GENERAL;
                                         
             ValidarDatos(entidad);
 

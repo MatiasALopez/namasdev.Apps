@@ -5,20 +5,19 @@
     {
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
     };
-
     var clases = new
     {
         ClaseBase =
             Model.Especificaciones.IDPropiedadTipoId.HasValue
-            ? FormatoHelper.Generic("ParametrosEntidadBase", Model.Especificaciones.IDTipo.CLRType)
-            : string.Format("ParametrosConUsuarioBase"),
+            ? FormatoHelper.Generic("ParametersEntityBase", Model.Especificaciones.IDTipo.CLRType)
+            : string.Format("ParametersWithUserBase"),
     };
 }
 using System;
 
-namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural))
+namespace @(Html.Raw(namespaces.Aplicacion)).Business.DTO.@(Html.Raw(Model.NombrePlural))
 {
-    public class EliminarParametros : @Html.Raw(clases.ClaseBase)
+    public class DeleteParameters : @Html.Raw(clases.ClaseBase)
     {
     }
 }

@@ -56,7 +56,8 @@
     <Compile Include="AplicacionVersion.cs" />
     <Compile Include="AsociacionMultiplicidad.cs" />
     <Compile Include="AsociacionRegla.cs" />
-    <Compile Include="Articulo.cs" />
+    <Compile Include="IdiomaArticulo.cs" />
+    <Compile Include="IdiomaEntidadPropiedadesMetadata.cs" />
     <Compile Include="Idioma.cs" />
     <Compile Include="BajaTipo.cs" />
     <Compile Include="EntidadCheck.cs" />
@@ -68,7 +69,8 @@
     <Compile Include="EntidadPropiedad.cs" />
     <Compile Include="Metadata\AsociacionMultiplicidadMetadata.cs" />
     <Compile Include="Metadata\AsociacionReglaMetadata.cs" />
-    <Compile Include="Metadata\ArticuloMetadata.cs" />
+    <Compile Include="Metadata\IdiomaArticuloMetadata.cs" />
+    <Compile Include="Metadata\IdiomaEntidadPropiedadesMetadataMetadata.cs" />
     <Compile Include="Metadata\IdiomaMetadata.cs" />
     <Compile Include="Metadata\EntidadCheckMetadata.cs" />
     <Compile Include="Metadata\EntidadAsociacionMetadata.cs" />
@@ -81,6 +83,8 @@
     <Compile Include="Metadata\PropiedadTipoEspecificacionesEnteroMetadata.cs" />
     <Compile Include="Metadata\PropiedadTipoEspecificacionesTextoMetadata.cs" />
     <Compile Include="Metadata\BajaTipoMetadata.cs" />
+    <Compile Include="Metadata\PropiedadCategoriaMetadata.cs" />
+    <Compile Include="PropiedadCategoria.cs" />
     <Compile Include="PropiedadTipoEspecificacionesImporte.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEntero.cs" />
     <Compile Include="PropiedadTipoEspecificacionesEnteroLargo.cs" />
@@ -109,7 +113,8 @@
     <Compile Include="Auditoria.cs" />
     <Compile Include="Valores\AsociacionMultiplicidades.cs" />
     <Compile Include="Valores\AsociacionReglas.cs" />
-    <Compile Include="Valores\Articulos.cs" />
+    <Compile Include="Valores\EntidadMetadataAtributos_en.cs" />
+    <Compile Include="Valores\IdiomaArticulos_es.cs" />
     <Compile Include="Valores\BajaTipos.cs" />
     <Compile Include="Valores\AzureStorage.cs" />
     <Compile Include="CorreoParametros.cs" />
@@ -122,9 +127,10 @@
     <Compile Include="Valores\AspNetRole.cs" />
     <Compile Include="Valores\AuditoriaTipos.cs" />
     <Compile Include="Valores\CorreoParametros.cs" />
-    <Compile Include="Valores\EntidadMetadataAtributos.cs" />
+    <Compile Include="Valores\EntidadMetadataAtributos_es.cs" />
     <Compile Include="Valores\EntidadPropiedades.cs" />
     <Compile Include="Valores\Parametros.cs" />
+    <Compile Include="Valores\PropiedadCategorias.cs" />
     <Compile Include="Valores\PropiedadTipos.cs" />
     <Compile Include="Valores\PropiedadTiposEspecificaciones.cs" />
     <Compile Include="Valores\RegExs.cs" />

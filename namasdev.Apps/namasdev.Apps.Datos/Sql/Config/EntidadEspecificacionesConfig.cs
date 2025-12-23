@@ -15,9 +15,9 @@ namespace namasdev.Apps.Datos.Sql.Config
             Property(p => p.Id)
                 .HasColumnName(EntidadEspecificacionesMetadata.BD.ID);
 
-            HasRequired(p => p.Articulo)
+            HasOptional(p => p.IdiomaArticulo)
                 .WithMany()
-                .HasForeignKey(p => p.ArticuloId);
+                .HasForeignKey(p => p.IdiomaArticuloId);
 
             HasOptional(p => p.IDTipo)
                 .WithMany()

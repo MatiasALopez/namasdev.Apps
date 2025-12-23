@@ -56,68 +56,68 @@
                 validacionMetodo = "ValidarStringYAgregarAListaErrores";
                 if (p.EspecificacionesTexto.TamañoExacto.HasValue)
                 {
-                    validacionParametros.Add(parametros.TamañoExacto, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
+                    validacionParametros.Add(parametros.TamañoExacto, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.TAMAÑO_MAX));
                 }
                 else
                 {
                     if (p.EspecificacionesTexto.TamañoMinimo.HasValue)
                     {
-                        validacionParametros.Add(parametros.TamañoMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MIN));
+                        validacionParametros.Add(parametros.TamañoMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.TAMAÑO_MIN));
                     }
                     if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
                     {
-                        validacionParametros.Add(parametros.TamañoMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
+                        validacionParametros.Add(parametros.TamañoMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.TAMAÑO_MAX));
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(p.EspecificacionesTexto.RegEx))
                 {
-                    validacionParametros.Add(parametros.RegEx, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.REG_EX));
+                    validacionParametros.Add(parametros.RegEx, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.REG_EX));
                 }
                 break;
             case PropiedadTipos.ENTERO:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEntero.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MINIMO));
                 }
                 if (p.EspecificacionesEntero.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MAXIMO));
                 }
                 break;
             case PropiedadTipos.ENTERO_CORTO:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEnteroCorto.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MINIMO));
                 }
                 if (p.EspecificacionesEnteroCorto.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MAXIMO));
                 }
                 break;
             case PropiedadTipos.ENTERO_LARGO:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
                 if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                    validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MINIMO));
                 }
                 if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
                 {
-                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                    validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MAXIMO));
                 }
                 break;
             case PropiedadTipos.DECIMAL:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
-                validacionParametros.Add(parametros.CantDecimales, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
-                validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                validacionParametros.Add(parametros.CantDecimales, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.DIGITOS_DECIMALES));
+                validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MINIMO));
+                validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MAXIMO));
                 break;
             case PropiedadTipos.DECIMAL_FLOTANTE:
                 validacionMetodo = "ValidarNumeroYAgregarAListaErrores";
-                validacionParametros.Add(parametros.CantDecimales, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
-                validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                validacionParametros.Add(parametros.CantDecimales, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.DIGITOS_DECIMALES));
+                validacionParametros.Add(parametros.ValorMinimo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MINIMO));
+                validacionParametros.Add(parametros.ValorMaximo, FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_es.VALOR_MAXIMO));
                 break;
         }
         if (!string.IsNullOrWhiteSpace(validacionMetodo))
@@ -126,7 +126,7 @@
                 validacionMetodo,
                 propiedadNombre,
                 clases.MetadataPropiedades,
-                EntidadMetadataAtributos.ETIQUETA,
+                EntidadMetadataAtributos_es.ETIQUETA,
                 (!p.PermiteNull).ToString().ToLower(),
                 validacionParametros.Count > 0 ? ", " + FormatoHelper.ListaParametrosValores(validacionParametros) : ""));
         }

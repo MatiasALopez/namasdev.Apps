@@ -1,6 +1,6 @@
 ﻿namespace namasdev.Apps.Entidades.Valores
 {
-    public class EntidadMetadataAtributos
+    public class EntidadMetadataAtributos_es
     {
         public const string ETIQUETA = "ETIQUETA";
         public const string TAMAÑO_EXACTO = "TAMAÑO_EXACTO";

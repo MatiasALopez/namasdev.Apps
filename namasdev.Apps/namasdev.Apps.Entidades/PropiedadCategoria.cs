@@ -2,11 +2,9 @@
 
 namespace namasdev.Apps.Entidades
 {
-    public partial class Idioma : Entidad<string>
+    public partial class PropiedadCategoria : Entidad<short>
     {
         public string Nombre { get; set; }
-
-        public virtual IdiomaEntidadPropiedadesMetadata EntidadPropiedadesMetadata { get; set; }
 
         public override string ToString()
         {

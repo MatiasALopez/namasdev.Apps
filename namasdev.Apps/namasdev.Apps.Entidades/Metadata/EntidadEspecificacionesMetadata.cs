@@ -23,7 +23,7 @@
 
             public class ArticuloId
             {
-                public const string ETIQUETA = ArticuloMetadata.ETIQUETA;
+                public const string ETIQUETA = IdiomaArticuloMetadata.ETIQUETA;
             }
 
             public class IDPropiedadTipoId

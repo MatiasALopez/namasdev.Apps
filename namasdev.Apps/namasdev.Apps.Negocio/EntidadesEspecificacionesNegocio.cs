@@ -155,6 +155,7 @@ namespace namasdev.Apps.Negocio
             var entidadesAEliminar = new List<EntidadPropiedad>();
 
             var entidad = entidadEspecificaciones.Entidad;
+            var idiomaPropiedadesMetadata = entidad.AplicacionVersion.Aplicacion.Idioma.EntidadPropiedadesMetadata;
 
             var nombres = new List<string>();
             bool eliminarID = 
@@ -164,23 +165,23 @@ namespace namasdev.Apps.Negocio
             if (entidadEspecificaciones.AuditoriaCreado
                 && !actualizarParametros.AuditoriaCreado)
             {
-                nombres.Add(EntidadPropiedades.CreadoPor.NOMBRE);
-                nombres.Add(EntidadPropiedades.CreadoFecha.NOMBRE);
+                nombres.Add(idiomaPropiedadesMetadata.CreadoPorNombre);
+                nombres.Add(idiomaPropiedadesMetadata.CreadoFechaNombre);
             }
 
             if (entidadEspecificaciones.AuditoriaUltimaModificacion
                 && !actualizarParametros.AuditoriaUltimaModificacion)
             {
-                nombres.Add(EntidadPropiedades.UltimaModificacionPor.NOMBRE);
-                nombres.Add(EntidadPropiedades.UltimaModificacionFecha.NOMBRE);
+                nombres.Add(idiomaPropiedadesMetadata.UltimaModificacionPorNombre);
+                nombres.Add(idiomaPropiedadesMetadata.UltimaModificacionFechaNombre);
             }
 
             if (entidadEspecificaciones.BajaTipoId != actualizarParametros.BajaTipoId
                 && actualizarParametros.BajaTipoId != BajaTipos.LOGICA)
             {
-                nombres.Add(EntidadPropiedades.BorradoPor.NOMBRE);
-                nombres.Add(EntidadPropiedades.BorradoFecha.NOMBRE);
-                nombres.Add(EntidadPropiedades.Borrado.NOMBRE);
+                nombres.Add(idiomaPropiedadesMetadata.BorradoPorNombre);
+                nombres.Add(idiomaPropiedadesMetadata.BorradoFechaNombre);
+                nombres.Add(idiomaPropiedadesMetadata.BorradoNombre);
             }
 
             EntidadPropiedad p;
@@ -278,6 +279,7 @@ namespace namasdev.Apps.Negocio
             var propiedades = new List<EntidadPropiedad>();
 
             var entidad = especificaciones.Entidad;
+            var idiomaPropiedadesMetadata = entidad.AplicacionVersion.Aplicacion.Idioma.EntidadPropiedadesMetadata;
 
             if (especificaciones.IDPropiedadTipoId.HasValue
                 && !entidad.TienePropiedadID())
@@ -295,142 +297,142 @@ namespace namasdev.Apps.Negocio
                     Orden = EntidadPropiedades.Id.ORDEN,
                     GeneradaAlCrear = true,
                     Editable = false,
-                    EsID = true,
+                    PropiedadCategoriaId = PropiedadCategorias.ID,
                 });
             }
 
             if (especificaciones.AuditoriaCreado)
             {
-                if (!entidad.TienePropiedad(EntidadPropiedades.CreadoPor.NOMBRE))
+                if (!entidad.TienePropiedad(idiomaPropiedadesMetadata.CreadoPorNombre))
                 {
                     propiedades.Add(new EntidadPropiedad
                     {
                         Id = Guid.NewGuid(),
                         EntidadId = entidad.Id,
                         Entidad = entidad,
-                        Nombre = EntidadPropiedades.CreadoPor.NOMBRE,
-                        Etiqueta = EntidadPropiedades.CreadoPor.ETIQUETA,
+                        Nombre = idiomaPropiedadesMetadata.CreadoPorNombre,
+                        Etiqueta = idiomaPropiedadesMetadata.CreadoPorEtiqueta,
                         PropiedadTipoId = PropiedadTipos.TEXTO,
                         PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
                         PermiteNull = false,
                         Orden = EntidadPropiedades.CreadoPor.ORDEN,
                         GeneradaAlCrear = true,
                         Editable = false,
-                        EsAuditoria = true,
+                        PropiedadCategoriaId = PropiedadCategorias.AUDITORIA_CREADO,
                     });
                 }
 
-                if (!entidad.TienePropiedad(EntidadPropiedades.CreadoFecha.NOMBRE))
+                if (!entidad.TienePropiedad(idiomaPropiedadesMetadata.CreadoFechaNombre))
                 {
                     propiedades.Add(new EntidadPropiedad
                     {
                         Id = Guid.NewGuid(),
                         EntidadId = entidad.Id,
                         Entidad = entidad,
-                        Nombre = EntidadPropiedades.CreadoFecha.NOMBRE,
-                        Etiqueta = EntidadPropiedades.CreadoFecha.ETIQUETA,
+                        Nombre = idiomaPropiedadesMetadata.CreadoFechaNombre,
+                        Etiqueta = idiomaPropiedadesMetadata.CreadoFechaEtiqueta,
                         PropiedadTipoId = PropiedadTipos.FECHA_HORA,
                         PermiteNull = false,
                         Orden = EntidadPropiedades.CreadoFecha.ORDEN,
                         GeneradaAlCrear = true,
                         Editable = false,
-                        EsAuditoria = true,
+                        PropiedadCategoriaId = PropiedadCategorias.AUDITORIA_CREADO,
                     });
                 }
             }
 
             if (especificaciones.AuditoriaUltimaModificacion)
             {
-                if (!entidad.TienePropiedad(EntidadPropiedades.UltimaModificacionPor.NOMBRE))
+                if (!entidad.TienePropiedad(idiomaPropiedadesMetadata.UltimaModificacionPorNombre))
                 {
                     propiedades.Add(new EntidadPropiedad
                     {
                         Id = Guid.NewGuid(),
                         EntidadId = entidad.Id,
                         Entidad = entidad,
-                        Nombre = EntidadPropiedades.UltimaModificacionPor.NOMBRE,
-                        Etiqueta = EntidadPropiedades.UltimaModificacionPor.ETIQUETA,
+                        Nombre = idiomaPropiedadesMetadata.UltimaModificacionPorNombre,
+                        Etiqueta = idiomaPropiedadesMetadata.UltimaModificacionPorEtiqueta,
                         PropiedadTipoId = PropiedadTipos.TEXTO,
                         PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
                         PermiteNull = false,
                         Orden = EntidadPropiedades.UltimaModificacionPor.ORDEN,
                         GeneradaAlCrear = true,
                         Editable = false,
-                        EsAuditoria = true,
+                        PropiedadCategoriaId = PropiedadCategorias.AUDITORIA_MODIFICADO,
                     });
                 }
 
-                if (!entidad.TienePropiedad(EntidadPropiedades.UltimaModificacionFecha.NOMBRE))
+                if (!entidad.TienePropiedad(idiomaPropiedadesMetadata.UltimaModificacionFechaNombre))
                 {
                     propiedades.Add(new EntidadPropiedad
                     {
                         Id = Guid.NewGuid(),
                         EntidadId = entidad.Id,
                         Entidad = entidad,
-                        Nombre = EntidadPropiedades.UltimaModificacionFecha.NOMBRE,
-                        Etiqueta = EntidadPropiedades.UltimaModificacionFecha.ETIQUETA,
+                        Nombre = idiomaPropiedadesMetadata.UltimaModificacionFechaNombre,
+                        Etiqueta = idiomaPropiedadesMetadata.UltimaModificacionFechaEtiqueta,
                         PropiedadTipoId = PropiedadTipos.FECHA_HORA,
                         PermiteNull = false,
                         Orden = EntidadPropiedades.UltimaModificacionFecha.ORDEN,
                         GeneradaAlCrear = true,
                         Editable = false,
-                        EsAuditoria = true,
+                        PropiedadCategoriaId = PropiedadCategorias.AUDITORIA_MODIFICADO,
                     });
                 }
             }
 
             if (especificaciones.BajaTipoId == BajaTipos.LOGICA)
             {
-                if (!entidad.TienePropiedad(EntidadPropiedades.BorradoPor.NOMBRE))
+                if (!entidad.TienePropiedad(idiomaPropiedadesMetadata.BorradoPorNombre))
                 {
                     propiedades.Add(new EntidadPropiedad
                     {
                         Id = Guid.NewGuid(),
                         EntidadId = entidad.Id,
                         Entidad = entidad,
-                        Nombre = EntidadPropiedades.BorradoPor.NOMBRE,
-                        Etiqueta = EntidadPropiedades.BorradoPor.ETIQUETA,
+                        Nombre = idiomaPropiedadesMetadata.BorradoPorNombre,
+                        Etiqueta = idiomaPropiedadesMetadata.BorradoPorEtiqueta,
                         PropiedadTipoId = PropiedadTipos.TEXTO,
                         PropiedadTipoEspecificaciones = PropiedadTiposEspecificaciones.AUDITORIA_USUARIO,
                         PermiteNull = true,
                         Orden = EntidadPropiedades.BorradoPor.ORDEN,
                         Editable = false,
-                        EsAuditoria = true,
+                        PropiedadCategoriaId = PropiedadCategorias.AUDITORIA_BORRADO,
                     });
                 }
 
-                if (!entidad.TienePropiedad(EntidadPropiedades.BorradoFecha.NOMBRE))
+                if (!entidad.TienePropiedad(idiomaPropiedadesMetadata.BorradoFechaNombre))
                 {
                     propiedades.Add(new EntidadPropiedad
                     {
                         Id = Guid.NewGuid(),
                         EntidadId = entidad.Id,
                         Entidad = entidad,
-                        Nombre = EntidadPropiedades.BorradoFecha.NOMBRE,
-                        Etiqueta = EntidadPropiedades.BorradoFecha.ETIQUETA,
+                        Nombre = idiomaPropiedadesMetadata.BorradoFechaNombre,
+                        Etiqueta = idiomaPropiedadesMetadata.BorradoFechaEtiqueta,
                         PropiedadTipoId = PropiedadTipos.FECHA_HORA,
                         PermiteNull = true,
                         Orden = EntidadPropiedades.BorradoFecha.ORDEN,
                         Editable = false,
-                        EsAuditoria = true,
+                        PropiedadCategoriaId = PropiedadCategorias.AUDITORIA_BORRADO,
                     });
                 }
 
-                if (!entidad.TienePropiedad(EntidadPropiedades.Borrado.NOMBRE))
+                if (!entidad.TienePropiedad(idiomaPropiedadesMetadata.BorradoNombre))
                 {
                     propiedades.Add(new EntidadPropiedad
                     {
                         Id = Guid.NewGuid(),
                         EntidadId = entidad.Id,
                         Entidad = entidad,
-                        Nombre = EntidadPropiedades.Borrado.NOMBRE,
-                        Etiqueta = EntidadPropiedades.Borrado.ETIQUETA,
+                        Nombre = idiomaPropiedadesMetadata.BorradoNombre,
+                        Etiqueta = idiomaPropiedadesMetadata.BorradoEtiqueta,
                         PropiedadTipoId = PropiedadTipos.BOOLEANO,
                         PermiteNull = false,
-                        CalculadaFormula = EntidadPropiedades.Borrado.CALCULADA_FORMULA,
+                        CalculadaFormula = String.Format(EntidadPropiedades.Borrado.CALCULADA_FORMULA_FORMATO, idiomaPropiedadesMetadata.BorradoFechaNombre),
                         Orden = EntidadPropiedades.Borrado.ORDEN,
                         Editable = false,
-                        EsAuditoria = true,
+                        PropiedadCategoriaId = PropiedadCategorias.AUDITORIA_BORRADO,
                     });
                 }
             }

@@ -4,18 +4,26 @@
     var namespaces = new
     {
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
-        Datos = string.Format("{0}.Datos", Model.AplicacionVersion.Aplicacion.Nombre),
+        Datos = string.Format("{0}.Data", Model.AplicacionVersion.Aplicacion.Nombre),
     };
     var clases = new
     {
         Entidad = Model.Nombre,
-        Repositorio = string.Format("{0}Repositorio", Model.NombrePlural)
+        Repositorio = string.Format("{0}Repository", Model.NombrePlural)
     };
     var interfaces = new
     {
         Repositorio = string.Format("I{0}", clases.Repositorio)
     };
-
+    var variablesNombres = new
+    {
+        Entidad = "entity",
+        Propiedades = "properties",
+    };
+    var textos = new 
+    {
+        TODOChecks = "// TODO (Gen): check FKs, unique indexes, check constraints",
+    };
     string claveTipo = Model.Especificaciones.IDTipo != null ? Model.Especificaciones.IDTipo.CLRType : null,
         tiposGenericosEntidadYId = string.Format("{0}, {1}", Model.Nombre, claveTipo);
 
@@ -28,56 +36,56 @@ using System.Linq;
 using namasdev.Data;
 using namasdev.Data.Entity;
 
-using @(Html.Raw(namespaces.Aplicacion)).Entidades;
+using @(Html.Raw(namespaces.Aplicacion)).Entities;
 using @(Html.Raw(namespaces.Datos)).Sql;
 
-// TODO (Gen): agregar DbSet en SqlContext
+// TODO (Gen): add DbSet to SqlContext
 namespace @Html.Raw(namespaces.Datos)
 {
-    public interface @Html.Raw(interfaces.Repositorio) @Html.Raw(usarRepositorioBase ? string.Format(": {0}", FormatoHelper.Generic("IRepositorio", tiposGenericosEntidadYId)) : "")
+    public interface @Html.Raw(interfaces.Repositorio) @Html.Raw(usarRepositorioBase ? string.Format(": {0}", FormatoHelper.Generic("IRepository", tiposGenericosEntidadYId)) : "")
     {
     }
 
-    public class @Html.Raw(clases.Repositorio) : @Html.Raw(usarRepositorioBase ? FormatoHelper.Generic("Repositorio", "SqlContext", tiposGenericosEntidadYId) : ""), @Html.Raw(interfaces.Repositorio)
+    public class @Html.Raw(clases.Repositorio) : @Html.Raw(usarRepositorioBase ? FormatoHelper.Generic("Repository", "SqlContext", tiposGenericosEntidadYId) : ""), @Html.Raw(interfaces.Repositorio)
     {
         @if (Model.Indices.Any(i => i.EsUnique)
         || Model.AsociacionesOrigen.Any())
         {
-        <text>public override void Agregar(@clases.Entidad entidad)
+        <text>public override void Add(@clases.Entidad @variablesNombres.Entidad)
         {
             try
             {
-                base.Agregar(entidad);
+                base.Add(@variablesNombres.Entidad);
             }
             catch (Exception)
             {
-                // TODO (Gen): Validar FK, indices unicos, checks
+                @textos.TODOChecks
                 throw;
             }
         }
 
-        public override void Actualizar(@clases.Entidad entidad)
+        public override void Update(@clases.Entidad @variablesNombres.Entidad)
         {
             try
             {
-                base.Actualizar(entidad);
+                base.Update(@variablesNombres.Entidad);
             }
             catch (Exception)
             {
-                // TODO (Gen): Validar FK, indices unicos, checks
+                @textos.TODOChecks
                 throw;
             }
         }
 
-        public override void ActualizarPropiedades(@clases.Entidad entidad, params string[] propiedades)
+        public override void UpdateProperties(@clases.Entidad @variablesNombres.Entidad, params string[] @variablesNombres.Propiedades)
         {
             try
             {
-                base.ActualizarPropiedades(entidad, propiedades);
+                base.ActualizarPropiedades(@variablesNombres.Entidad, @variablesNombres.Propiedades);
             }
             catch (Exception)
             {
-                // TODO (Gen): Validar FK, indices unicos, checks
+                @textos.TODOChecks
                 throw;
             }
         }

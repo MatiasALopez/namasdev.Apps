@@ -13,27 +13,27 @@
     };
     var constantesDefiniciones = new
     {
-        Etiqueta = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.ETIQUETA),
-        TamañoExacto = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_EXACTO),
-        TamañoMax = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_MAX),
-        TamañoMin = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_MIN),
-        RegEx = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.REG_EX),
-        ValorMinimoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.VALOR_MAXIMO),
-        ValorMinimoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos.VALOR_MAXIMO),
-        ValorMinimoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos.VALOR_MAXIMO),
-        ValorMinimoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos.VALOR_MAXIMO),
-        ValorMinimoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos.VALOR_MAXIMO),
-        DigitosEnteros = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.DIGITOS_ENTEROS),
-        DigitosDecimales = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.DIGITOS_DECIMALES),
+        Etiqueta = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos_es.ETIQUETA),
+        TamañoExacto = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_es.TAMAÑO_EXACTO),
+        TamañoMax = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_es.TAMAÑO_MAX),
+        TamañoMin = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_es.TAMAÑO_MIN),
+        RegEx = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos_es.REG_EX),
+        ValorMinimoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_es.VALOR_MINIMO),
+        ValorMaximoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_es.VALOR_MAXIMO),
+        ValorMinimoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos_es.VALOR_MINIMO),
+        ValorMaximoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos_es.VALOR_MAXIMO),
+        ValorMinimoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos_es.VALOR_MINIMO),
+        ValorMaximoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos_es.VALOR_MAXIMO),
+        ValorMinimoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos_es.VALOR_MINIMO),
+        ValorMaximoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos_es.VALOR_MAXIMO),
+        ValorMinimoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos_es.VALOR_MINIMO),
+        ValorMaximoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos_es.VALOR_MAXIMO),
+        DigitosEnteros = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_es.DIGITOS_ENTEROS),
+        DigitosDecimales = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_es.DIGITOS_DECIMALES),
     };
-    string textoPudo = Model.Especificaciones.Articulo.TextoPudo,
-        textoArticulo = Model.Especificaciones.Articulo.Texto,
-        textoOperacionSufijoGenero = Model.Especificaciones.Articulo.SufijoGenero;
+    string textoPudo = IdiomaArticulos_es.TextoPudo(Model.Especificaciones.IdiomaArticuloId),
+        textoArticulo = Model.Especificaciones.IdiomaArticulo.Texto,
+        textoOperacionSufijoGenero = IdiomaArticulos_es.SufijoGenero(Model.Especificaciones.IdiomaArticuloId);
     Dictionary<string, string> propiedadConstantes;
 }
 namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metadata
@@ -61,7 +61,7 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
         {
             propiedadConstantes = new Dictionary<string, string>
             {
-                { FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.ETIQUETA), FormatoHelper.EntreComillas(p.Etiqueta) }
+                { FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos_es.ETIQUETA), FormatoHelper.EntreComillas(p.Etiqueta) }
             };
             switch (p.PropiedadTipoId)
             {

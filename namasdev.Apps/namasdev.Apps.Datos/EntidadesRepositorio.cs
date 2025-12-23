@@ -14,7 +14,7 @@ namespace namasdev.Apps.Datos
     {
         IEnumerable<Entidad> ObtenerPorVersion(Guid aplicacionVersionId, ICargaPropiedades<Entidad> cargarPropiedades = null, string busqueda = null, OrdenYPaginacionParametros op = null);
         IEnumerable<BajaTipo> ObtenerBajaTipos();
-        IEnumerable<Articulo> ObtenerArticulos();
+        IEnumerable<IdiomaArticulo> ObtenerArticulos();
     }
 
     public class EntidadesRepositorio : Repositorio<SqlContext, Entidad, Guid>, IEntidadesRepositorio
@@ -46,7 +46,7 @@ namespace namasdev.Apps.Datos
             }
         }
 
-        public IEnumerable<Articulo> ObtenerArticulos()
+        public IEnumerable<IdiomaArticulo> ObtenerArticulos()
         {
             using (var ctx = new SqlContext())
             {

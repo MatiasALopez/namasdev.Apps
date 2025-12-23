@@ -7,9 +7,9 @@
 }
 using System;
 
-namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural))
+namespace @(Html.Raw(namespaces.Aplicacion)).Business.DTO.@(Html.Raw(Model.NombrePlural))
 {
-    public class AgregarParametros : ParametrosConUsuarioBase
+    public class AddParameters : ParametersWithUserBase
     {
     @foreach (var p in Model.Propiedades)
     {

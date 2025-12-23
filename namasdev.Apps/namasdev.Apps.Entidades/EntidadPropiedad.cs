@@ -35,9 +35,29 @@ namespace namasdev.Apps.Entidades
 
         public bool GeneradaAlCrear { get; set; }
         public bool Editable { get; set; }
-        public bool EsID { get; set; }
-        public bool EsAuditoria { get; set; }
-            
+        public short PropiedadCategoriaId { get; set; }
+        
+        public bool EsID 
+        {
+            get { return PropiedadCategoriaId == PropiedadCategorias.ID; }
+        }
+
+        public bool EsAuditoria 
+        {
+            get 
+            { 
+                return
+                    PropiedadCategoriaId == PropiedadCategorias.AUDITORIA_CREADO
+                    || PropiedadCategoriaId == PropiedadCategorias.AUDITORIA_MODIFICADO
+                    || PropiedadCategoriaId == PropiedadCategorias.AUDITORIA_BORRADO; 
+            }
+        }
+
+        public bool EsAuditoriaBorrado
+        {
+            get { return PropiedadCategoriaId == PropiedadCategorias.AUDITORIA_BORRADO; }
+        }
+
         public virtual Entidad Entidad { get; set; }
         public virtual PropiedadTipo Tipo { get; set; }
 
@@ -135,16 +155,6 @@ namespace namasdev.Apps.Entidades
         public override string ToString()
         {
             return Nombre;
-        }
-        
-        public bool EsAuditoriaBorrado
-        {
-            get
-            {
-                return Nombre == EntidadPropiedades.BorradoPor.NOMBRE
-                    || Nombre == EntidadPropiedades.BorradoFecha.NOMBRE
-                    || Nombre == EntidadPropiedades.Borrado.NOMBRE;
-            }
         }
     }
 }

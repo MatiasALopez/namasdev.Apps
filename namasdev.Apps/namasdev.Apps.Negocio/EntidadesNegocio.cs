@@ -53,7 +53,6 @@ namespace namasdev.Apps.Negocio
             entidad.Especificaciones = new EntidadEspecificaciones 
             {
                 Id = entidad.Id,
-                ArticuloId = Articulos.ObtenerIdParaPalabra(entidad.Nombre),
                 BajaTipoId = BajaTipos.LOGICA
             };
 

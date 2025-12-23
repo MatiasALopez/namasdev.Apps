@@ -81,19 +81,19 @@
                         if (p.EspecificacionesTexto.TamañoMaximo.HasValue
                             || p.EspecificacionesTexto.TamañoExacto.HasValue)
                         {
-                            controlHtmlAttributes.Add("maxlength", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.TAMAÑO_MAX));
+                            controlHtmlAttributes.Add("maxlength", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.TAMAÑO_MAX));
                         }
                     }
                     break;
                 case PropiedadTipos.ENTERO:
                     controlCssClasses.Add("inputmask-integer");
-                    controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                    controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                    controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MINIMO));
+                    controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MAXIMO));
                     break;
                 case PropiedadTipos.ENTERO_CORTO:
                     controlCssClasses.Add("inputmask-integer");
-                    controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
-                    controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                    controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MINIMO));
+                    controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MAXIMO));
                     break;
                 case PropiedadTipos.ENTERO_LARGO:
                     controlCssClasses.Add("inputmask-integer");
@@ -101,57 +101,57 @@
                     {
                         if (p.EspecificacionesEnteroLargo.ValorMinimo.HasValue)
                         {
-                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MINIMO));
                         }
                         if (p.EspecificacionesEnteroLargo.ValorMaximo.HasValue)
                         {
-                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MAXIMO));
                         }
                     }
                     break;
                 case PropiedadTipos.DECIMAL:
                     controlCssClasses.Add("inputmask-numeric");
-                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.DIGITOS_DECIMALES));
                     if (p.EspecificacionesDecimal != null)
                     {
                         if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
                         {
-                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MINIMO));
                         }
                         if (p.EspecificacionesDecimal.ValorMinimo.HasValue)
                         {
-                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MAXIMO));
                         }
                     }
                     break;
                 case PropiedadTipos.DECIMAL_FLOTANTE:
                     controlCssClasses.Add("inputmask-numeric");
-                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.DIGITOS_DECIMALES));
                     if (p.EspecificacionesDecimalFlotante != null)
                     {
                         if (p.EspecificacionesDecimalFlotante.ValorMinimo.HasValue)
                         {
-                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MINIMO));
                         }
                         if (p.EspecificacionesDecimalFlotante.ValorMaximo.HasValue)
                         {
-                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MAXIMO));
                         }
                     }
                     break;
                 case PropiedadTipos.IMPORTE:
                     propiedadEsImporte = true;
                     controlCssClasses.Add("inputmask-numeric");
-                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                    controlHtmlAttributes.Add("data_inputmask_digits", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.DIGITOS_DECIMALES));
                     if (p.EspecificacionesImporte != null)
                     {
                         if (p.EspecificacionesImporte.ValorMinimo.HasValue)
                         {
-                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MINIMO));
+                            controlHtmlAttributes.Add("data_inputmask_min", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MINIMO));
                         }
                         if (p.EspecificacionesImporte.ValorMaximo.HasValue)
                         {
-                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos.VALOR_MAXIMO));
+                            controlHtmlAttributes.Add("data_inputmask_max", FormatoHelper.MetadataPropiedadAtributo(p, EntidadMetadataAtributos_en.VALOR_MAXIMO));
                         }
                     }
                     break;

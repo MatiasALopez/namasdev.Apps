@@ -81,7 +81,7 @@ namespace namasdev.Apps.Web.Portal.Helpers
                 });
         }
 
-        public static SelectList ObtenerArticulosSelectList(IEnumerable<Articulo> articulos)
+        public static SelectList ObtenerArticulosSelectList(IEnumerable<IdiomaArticulo> articulos)
         {
             return namasdev.Web.Helpers.ListasHelper.CrearSelectListDesdeLista(
                 articulos,

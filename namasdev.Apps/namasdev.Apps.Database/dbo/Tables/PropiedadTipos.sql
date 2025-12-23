@@ -8,3 +8,6 @@
 	constraint PK_PropiedadTipos primary key clustered (PropiedadTipoId)
 )
 go
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_PropiedadTipos_Nombre] ON [dbo].PropiedadTipos ([Nombre] ASC)
+go

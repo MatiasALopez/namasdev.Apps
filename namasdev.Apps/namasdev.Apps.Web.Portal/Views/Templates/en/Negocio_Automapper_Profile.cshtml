@@ -14,25 +14,25 @@
 }
 using AutoMapper;
 
-using @(Html.Raw(namespaces.Aplicacion)).Entidades;
-using @(Html.Raw(namespaces.Aplicacion)).Negocio.DTO.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).Entities;
+using @(Html.Raw(namespaces.Aplicacion)).Business.DTO.@(Html.Raw(Model.NombrePlural));
 
-namespace @(Html.Raw(namespaces.Aplicacion)).Negocio.Automapper
+namespace @(Html.Raw(namespaces.Aplicacion)).Business.Automapper
 {
     public class @Html.Raw(clases.Profile) : Profile
     {
         public @(Html.Raw(clases.Profile))()
         {
-            @(Html.Raw(FormatoHelper.Generic("CreateMap", "AgregarParametros", clases.Entidad)))();
-            @(Html.Raw(FormatoHelper.Generic("CreateMap", "ActualizarParametros", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "AddParameters", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "UpdateParameters", clases.Entidad)))();
         @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
         {
-            <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "MarcarComoBorradoParametros", clases.Entidad)))();
-            @(Html.Raw(FormatoHelper.Generic("CreateMap", "DesmarcarComoBorradoParametros", clases.Entidad)))();</text>
+            <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "SetAsDeletedParameters", clases.Entidad)))();
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", "UnsetAsDeletedParameters", clases.Entidad)))();</text>
         }
         else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
         {
-            <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "EliminarParametros", clases.Entidad)))();</text>
+            <text>@(Html.Raw(FormatoHelper.Generic("CreateMap", "DeleteParameters", clases.Entidad)))();</text>
         }
         }
     }

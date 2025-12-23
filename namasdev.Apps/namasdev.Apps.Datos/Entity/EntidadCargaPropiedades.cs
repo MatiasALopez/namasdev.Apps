@@ -48,8 +48,7 @@ namespace namasdev.Apps.Datos.Entity
                 paths.AddRange(new Expression<Func<Entidad, object>>[]
                 {
                     e => e.Especificaciones.IDTipo,
-                    e => e.Especificaciones.Articulo,
-                    e => e.Especificaciones.BajaTipo 
+                    e => e.Especificaciones.IdiomaArticulo,
                 });
             }
             if (Propiedades)

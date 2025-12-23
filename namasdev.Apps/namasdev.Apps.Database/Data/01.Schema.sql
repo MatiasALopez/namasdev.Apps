@@ -192,6 +192,20 @@ go
 --===
 
 --===
+create table dbo.PropiedadCategorias
+(
+	PropiedadCategoriaId smallint not null,
+	Nombre nvarchar(50) not null,
+	
+	constraint PK_PropiedadCategorias primary key clustered (PropiedadCategoriaId)
+)
+go
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_PropiedadCategorias_Nombre] ON [dbo].PropiedadCategorias ([Nombre] ASC)
+go
+--===
+
+--===
 CREATE TABLE [dbo].[BajaTipos] 
 (
     [BajaTipoId] SMALLINT NOT NULL,
@@ -206,30 +220,61 @@ go
 --===
 
 --===
-CREATE TABLE [dbo].[Articulos] 
-(
-    [ArticuloId] SMALLINT NOT NULL,
-    [Nombre] NVARCHAR (50) NOT NULL,
-    
-    CONSTRAINT [PK_Articulos] PRIMARY KEY CLUSTERED ([ArticuloId] ASC)
-)
-GO
-
-CREATE UNIQUE NONCLUSTERED INDEX [IX_Articulos_Nombre] ON [dbo].[Articulos]([Nombre] ASC)
-go
---===
-
---===
 CREATE TABLE [dbo].[Idiomas] 
 (
     [IdiomaId] nchar(2) NOT NULL,
-    [Nombre]   nvarchar(50) NOT NULL,
+    [Nombre] nvarchar(50) NOT NULL,
+    [UsaArticulos] bit NOT NULL,
     
     CONSTRAINT [PK_Idiomas] PRIMARY KEY CLUSTERED ([IdiomaId] ASC)
 )
 GO
 
 CREATE UNIQUE NONCLUSTERED INDEX [IX_Idiomas_Nombre] ON [dbo].Idiomas ([Nombre] ASC)
+go
+--===
+
+--===
+CREATE TABLE [dbo].[IdiomasArticulos] 
+(
+    [IdiomaArticuloId] nchar(3) NOT NULL,
+    [IdiomaId] nchar(2) NOT NULL,
+    [Nombre] NVARCHAR (50) NOT NULL,
+    
+    CONSTRAINT [PK_IdiomasArticulos] PRIMARY KEY CLUSTERED ([IdiomaArticuloId] ASC),
+    constraint [FK_IdiomasArticulos_IdiomaId] foreign key (IdiomaId) references dbo.Idiomas (IdiomaId) on update cascade on delete cascade
+)
+GO
+
+CREATE UNIQUE NONCLUSTERED INDEX [IX_IdiomasArticulos_Nombre] ON [dbo].IdiomasArticulos ([Nombre] ASC)
+go
+
+CREATE NONCLUSTERED INDEX [IX_IdiomasArticulos_IdiomaId] ON [dbo].IdiomasArticulos (IdiomaId ASC)
+go
+--===
+
+--===
+create table dbo.IdiomasEntidadPropiedadesMetadata
+(
+    IdiomaId nchar(2) not null,
+    CreadoPorNombre nvarchar(100) not null,
+    CreadoPorEtiqueta nvarchar(100) not null,
+    CreadoFechaNombre nvarchar(100) not null,
+    CreadoFechaEtiqueta nvarchar(100) not null,
+    UltimaModificacionPorNombre nvarchar(100) not null,
+    UltimaModificacionPorEtiqueta nvarchar(100) not null,
+    UltimaModificacionFechaNombre nvarchar(100) not null,
+    UltimaModificacionFechaEtiqueta nvarchar(100) not null,
+    BorradoPorNombre nvarchar(100) not null,
+    BorradoPorEtiqueta nvarchar(100) not null,
+    BorradoFechaNombre nvarchar(100) not null,
+    BorradoFechaEtiqueta nvarchar(100) not null,
+    BorradoNombre nvarchar(100) not null,
+    BorradoEtiqueta nvarchar(100) not null,
+    
+    constraint PK_IdiomasEntidadPropiedadesMetadata primary key clustered (IdiomaId),
+    constraint FK_IdiomasEntidadPropiedadesMetadata_IdiomaId foreign key (IdiomaId) references dbo.Idiomas (IdiomaId) on update cascade on delete cascade
+)
 go
 --===
 
@@ -309,7 +354,7 @@ go
 create table dbo.EntidadesEspecificaciones
 (
 	EntidadId uniqueidentifier not null,
-	ArticuloId smallint not null,
+	IdiomaArticuloId nchar(3) null,
 	IDPropiedadTipoId smallint null,
 	EsSoloLectura bit not null,
 	BajaTipoId smallint not null,
@@ -318,7 +363,7 @@ create table dbo.EntidadesEspecificaciones
 
 	constraint PK_EntidadesEspecificaciones primary key clustered (EntidadId),
 	constraint FK_EntidadesEspecificaciones_EntidadId foreign key (EntidadId) references dbo.Entidades (EntidadId),
-	constraint FK_EntidadesEspecificaciones_ArticuloId foreign key (ArticuloId) references dbo.Articulos (ArticuloId),
+	constraint FK_EntidadesEspecificaciones_IdiomaArticuloId foreign key (IdiomaArticuloId) references dbo.IdiomasArticulos (IdiomaArticuloId),
 	constraint FK_EntidadesEspecificaciones_IDPropiedadTipoId foreign key (IDPropiedadTipoId) references dbo.PropiedadTipos (PropiedadTipoId),
 	constraint FK_EntidadesEspecificaciones_BajaTipoId foreign key (BajaTipoId) references dbo.BajaTipos (BajaTipoId),
 	constraint CK_EntidadesEspecificaciones_EsSoloLecturaYBajaTipoYAuditorias check ((EsSoloLectura = 0) or (EsSoloLectura = 1 and BajaTipoId = 3 and AuditoriaCreado = 0 and AuditoriaUltimaModificacion = 0))

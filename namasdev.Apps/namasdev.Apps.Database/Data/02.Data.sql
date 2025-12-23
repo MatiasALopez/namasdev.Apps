@@ -38,9 +38,25 @@ go
 --====
 
 --====
-insert into dbo.Idiomas (IdiomaId,Nombre) values
-('es','Español'),
-('en','Inglés')
+insert into dbo.Idiomas (IdiomaId,Nombre,UsaArticulos) values
+('es','Español',1),
+('en','Inglés',0)
+go
+--====
+
+--====
+insert into dbo.IdiomasArticulos (IdiomaArticuloId,IdiomaId,Nombre) values
+('es1','es','El'),
+('es2','es','La'),
+('es3','es','Los'),
+('es4','es','Las')
+go
+--====
+
+--====
+insert into dbo.IdiomasEntidadPropiedadesMetadata (IdiomaId,CreadoPorNombre,CreadoPorEtiqueta,CreadoFechaNombre,CreadoFechaEtiqueta,UltimaModificacionPorNombre,UltimaModificacionPorEtiqueta,UltimaModificacionFechaNombre,UltimaModificacionFechaEtiqueta,BorradoPorNombre,BorradoPorEtiqueta,BorradoFechaNombre,BorradoFechaEtiqueta,BorradoNombre,BorradoEtiqueta) values
+('es','CreadoPorNombre','CreadoPorEtiqueta','CreadoFechaNombre','CreadoFechaEtiqueta','UltimaModificacionPorNombre','UltimaModificacionPorEtiqueta','UltimaModificacionFechaNombre','UltimaModificacionFechaEtiqueta','BorradoPorNombre','BorradoPorEtiqueta','BorradoFechaNombre','BorradoFechaEtiqueta','BorradoNombre','BorradoEtiqueta'),
+('en','CreatedByNombre','CreatedByEtiqueta','CreatedAtNombre','CreatedAtEtiqueta','LastModifiedByNombre','LastModifiedByEtiqueta','LastModifiedAtNombre','LastModifiedAtEtiqueta','DeletedByNombre','DeletedByEtiqueta','DeletedAtNombre','DeletedAtEtiqueta','DeletedNombre','DeletedEtiqueta')
 go
 --====
 
@@ -49,15 +65,6 @@ insert into dbo.BajaTipos (BajaTipoId,Nombre) values
 (1,'Lógica'),
 (2,'Física'),
 (3,'Ninguna')
-go
---====
-
---====
-insert into dbo.Articulos (ArticuloId,Nombre) values
-(1,'El'),
-(2,'La'),
-(3,'Los'),
-(4,'Las')
 go
 --====
 
@@ -75,6 +82,16 @@ insert into dbo.PropiedadTipos (PropiedadTipoId,Nombre,CLRType,TSQLType) values
 (10,'Fecha','DateTime','date'),
 (11,'Hora','TimeSpan','time'),
 (12,'Booleano','bool','bit')
+go
+--====
+
+--====
+insert into dbo.PropiedadCategorias (PropiedadCategoriaId,Nombre) values
+(1,'General'),
+(2,'ID'),
+(3,'Auditoría creado'),
+(4,'Auditoría modificado'),
+(5,'Auditoría borrado')
 go
 --====
 

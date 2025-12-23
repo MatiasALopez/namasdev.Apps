@@ -8,60 +8,57 @@
     };
     var variables = new
     {
-        Repositorio = "repositorio",
-        UsuarioId = "usuarioId",
+        Repositorio = "repository",
+        UsuarioId = "userId",
     };
     var constantesDefiniciones = new
     {
-        Etiqueta = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.ETIQUETA),
-        TamañoExacto = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_EXACTO),
-        TamañoMax = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_MAX),
-        TamañoMin = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.TAMAÑO_MIN),
-        RegEx = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.REG_EX),
-        ValorMinimoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.VALOR_MAXIMO),
-        ValorMinimoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos.VALOR_MAXIMO),
-        ValorMinimoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos.VALOR_MAXIMO),
-        ValorMinimoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos.VALOR_MAXIMO),
-        ValorMinimoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos.VALOR_MINIMO),
-        ValorMaximoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos.VALOR_MAXIMO),
-        DigitosEnteros = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.DIGITOS_ENTEROS),
-        DigitosDecimales = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos.DIGITOS_DECIMALES),
+        Etiqueta = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos_en.ETIQUETA),
+        TamañoExacto = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_en.TAMAÑO_EXACTO),
+        TamañoMax = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_en.TAMAÑO_MAX),
+        TamañoMin = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_en.TAMAÑO_MIN),
+        RegEx = FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos_en.REG_EX),
+        ValorMinimoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_en.VALOR_MINIMO),
+        ValorMaximoEntero = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_en.VALOR_MAXIMO),
+        ValorMinimoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos_en.VALOR_MINIMO),
+        ValorMaximoEnteroCorto = FormatoHelper.TipoYNombre("short", EntidadMetadataAtributos_en.VALOR_MAXIMO),
+        ValorMinimoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos_en.VALOR_MINIMO),
+        ValorMaximoEnteroLargo = FormatoHelper.TipoYNombre("long", EntidadMetadataAtributos_en.VALOR_MAXIMO),
+        ValorMinimoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos_en.VALOR_MINIMO),
+        ValorMaximoDecimal = FormatoHelper.TipoYNombre("decimal", EntidadMetadataAtributos_en.VALOR_MAXIMO),
+        ValorMinimoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos_en.VALOR_MINIMO),
+        ValorMaximoDecimalFlotante = FormatoHelper.TipoYNombre("double", EntidadMetadataAtributos_en.VALOR_MAXIMO),
+        DigitosEnteros = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_en.DIGITOS_ENTEROS),
+        DigitosDecimales = FormatoHelper.TipoYNombre("int", EntidadMetadataAtributos_en.DIGITOS_DECIMALES),
     };
-    string textoPudo = Model.Especificaciones.Articulo.TextoPudo,
-        textoArticulo = Model.Especificaciones.Articulo.Texto,
-        textoOperacionSufijoGenero = Model.Especificaciones.Articulo.SufijoGenero;
     Dictionary<string, string> propiedadConstantes;
 }
-namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metadata
+namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entities.Metadata
 {
     public class @Html.Raw(clases.Metadata)
     {
-        public const string NOMBRE = "@Html.Raw(Model.Nombre)";
-        public const string NOMBRE_PLURAL = "@Html.Raw(Model.NombrePlural)";
+        public const string NAME = "@Html.Raw(Model.Nombre)";
+        public const string NAME_PLURAL = "@Html.Raw(Model.NombrePlural)";
 
-        public const string ETIQUETA = "@Html.Raw(Model.Etiqueta)";
-        public const string ETIQUETA_PLURAL = "@Html.Raw(Model.EtiquetaPlural)";
+        public const string LABEL = "@Html.Raw(Model.Etiqueta)";
+        public const string LABEL_PLURAL = "@Html.Raw(Model.EtiquetaPlural)";
 
         public class BD
         {
-            public const string TABLA = "@Html.Raw(Model.NombrePlural)";
+            public const string TABLE = "@Html.Raw(Model.NombrePlural)";
         @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
         {
             <text>public const string ID = "@(Html.Raw(Model.Propiedades.First(p => p.EsID).Nombre))";</text>
         }
         }
 
-        public class Propiedades
+        public class Properties
         {
         @foreach(var p in Model.Propiedades)
         {
             propiedadConstantes = new Dictionary<string, string>
             {
-                { FormatoHelper.TipoYNombre("string", EntidadMetadataAtributos.ETIQUETA), FormatoHelper.EntreComillas(p.Etiqueta) }
+                { FormatoHelper.TipoYNombre("string", constantesDefiniciones.Etiqueta), FormatoHelper.EntreComillas(p.Etiqueta) }
             };
             switch (p.PropiedadTipoId)
             {
@@ -142,17 +139,17 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entidades.Metad
         <text>
         public class Mensajes
         {
-            public const string AGREGAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " agregad@(textoOperacionSufijoGenero) correctamente.";
-            public const string AGREGAR_ERROR = "No se @(Html.Raw(textoPudo)) agregar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+            public const string ADD_OK = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " added successfully.";
+            public const string ADD_ERROR = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " add failed.";
 
-            public const string EDITAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " actualizad@(textoOperacionSufijoGenero) correctamente.";
-            public const string EDITAR_ERROR = "No se @(Html.Raw(textoPudo)) actualizar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
+            public const string UPDATE_OK = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " updated successfully.";
+            public const string UPDATE_ERROR = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " update failed.";
         @if (Model.Especificaciones.BajaTipoId != BajaTipos.NINGUNA)
         {
             <text>
-            public const string ELIMINAR_OK = @(Html.Raw(clases.Metadata)).ETIQUETA + " eliminad@(textoOperacionSufijoGenero) correctamente.";
-            public const string ELIMINAR_ERROR = "No se @(Html.Raw(textoPudo)) eliminar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA;
-            public const string ELIMINAR_CONFIRMACION = "¿Estás seguro que deseas eliminar @(Html.Raw(textoArticulo)) " + @(Html.Raw(clases.Metadata)).ETIQUETA + " seleccionad@(Html.Raw(textoOperacionSufijoGenero))?";
+            public const string DELETE_OK = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " deleted successfully.";
+            public const string DELETE_ERROR = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " delete failed.";
+            public const string DELETE_CONFIRMATION = "Are you sure you want to delete the selected " + @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + "?";
             </text>
         }
         }

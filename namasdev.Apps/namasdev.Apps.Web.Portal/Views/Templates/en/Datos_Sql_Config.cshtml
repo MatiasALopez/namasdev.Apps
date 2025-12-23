@@ -12,7 +12,7 @@
         Config = string.Format("{0}Config", Model.Nombre),
         ConfigBase =
             Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA
-            ? "EntidadBorradoConfigBase"
+            ? "EntityDeletedConfigBase"
             : "EntityTypeConfiguration",
         Metadata = string.Format("{0}Metadata", Model.Nombre),
     };
@@ -27,7 +27,7 @@
             continue;
         }
         propiedadNombre = p.NombreOId;
-        propiedadMetadataBase = string.Format("{0}.Propiedades.{1}.", clases.Metadata, propiedadNombre);
+        propiedadMetadataBase = string.Format("{0}.Properties.{1}.", clases.Metadata, propiedadNombre);
         propiedadReglas = new List<string>();
         if (p.EsID)
         {
@@ -49,14 +49,14 @@
                     var maxLength = p.EspecificacionesTexto.TamañoMaximo ?? p.EspecificacionesTexto.TamañoExacto;
                     if (maxLength.HasValue)
                     {
-                        propiedadReglas.Add(string.Format("HasMaxLength({0}{1})", propiedadMetadataBase, EntidadMetadataAtributos.TAMAÑO_MAX));
+                        propiedadReglas.Add(string.Format("HasMaxLength({0}{1})", propiedadMetadataBase, EntidadMetadataAtributos_en.TAMAÑO_MAX));
                     }
                 }
                 break;
             case PropiedadTipos.DECIMAL:
                 if (p.EspecificacionesDecimal != null)
                 {
-                    propiedadReglas.Add(string.Format("HasPrecision({0}{1} + {0}{2}, {0}{2})", propiedadMetadataBase, EntidadMetadataAtributos.DIGITOS_ENTEROS, EntidadMetadataAtributos.DIGITOS_DECIMALES));
+                    propiedadReglas.Add(string.Format("HasPrecision({0}{1} + {0}{2}, {0}{2})", propiedadMetadataBase, EntidadMetadataAtributos_en.DIGITOS_ENTEROS, EntidadMetadataAtributos_en.DIGITOS_DECIMALES));
                 }
                 break;
         }
@@ -148,16 +148,16 @@ using System.Data.Entity.ModelConfiguration;
 
 using namasdev.Data.Entity.Config;
 
-using @(Html.Raw(namespaces.Aplicacion)).Entidades;
-using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+using @(Html.Raw(namespaces.Aplicacion)).Entities;
+using @(Html.Raw(namespaces.Aplicacion)).Entities.Metadata;
 
-namespace @(Html.Raw(namespaces.Aplicacion)).Datos.Sql.Config
+namespace @(Html.Raw(namespaces.Aplicacion)).Data.Sql.Config
 {
     public class @Html.Raw(clases.Config) : @Html.Raw(FormatoHelper.Generic(clases.ConfigBase, Model.Nombre))
     {
         public @(Html.Raw(clases.Config))()
         {
-            ToTable(@(Html.Raw(clases.Metadata)).BD.TABLA);
+            ToTable(@(Html.Raw(clases.Metadata)).BD.TABLE);
             @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
             {
             <text>HasKey(p => p.Id);</text>

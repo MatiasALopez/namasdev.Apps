@@ -15,7 +15,15 @@
     {
         Repositorio = string.Format("I{0}", clases.Repositorio)
     };
-
+    var variablesNombres = new
+    {
+        Entidad = "entidad",
+        Propiedades = "propiedades",
+    };
+    var textos = new
+    {
+        TODOChecks = "// TODO (Gen): validar FK, indices unicos, check constraints",
+    };
     string claveTipo = Model.Especificaciones.IDTipo != null ? Model.Especificaciones.IDTipo.CLRType : null,
         tiposGenericosEntidadYId = string.Format("{0}, {1}", Model.Nombre, claveTipo);
 
@@ -43,41 +51,41 @@ namespace @Html.Raw(namespaces.Datos)
         @if (Model.Indices.Any(i => i.EsUnique)
         || Model.AsociacionesOrigen.Any())
         {
-        <text>public override void Agregar(@clases.Entidad entidad)
+        <text>public override void Agregar(@clases.Entidad @variablesNombres.Entidad)
         {
             try
             {
-                base.Agregar(entidad);
+                base.Agregar(@variablesNombres.Entidad);
             }
             catch (Exception)
             {
-                // TODO (Gen): Validar FK, indices unicos, checks
+                @textos.TODOChecks
                 throw;
             }
         }
 
-        public override void Actualizar(@clases.Entidad entidad)
+        public override void Actualizar(@clases.Entidad @variablesNombres.Entidad)
         {
             try
             {
-                base.Actualizar(entidad);
+                base.Actualizar(@variablesNombres.Entidad);
             }
             catch (Exception)
             {
-                // TODO (Gen): Validar FK, indices unicos, checks
+                @textos.TODOChecks
                 throw;
             }
         }
 
-        public override void ActualizarPropiedades(@clases.Entidad entidad, params string[] propiedades)
+        public override void ActualizarPropiedades(@clases.Entidad @variablesNombres.Entidad, params string[] @variablesNombres.Propiedades)
         {
             try
             {
-                base.ActualizarPropiedades(entidad, propiedades);
+                base.ActualizarPropiedades(@variablesNombres.Entidad, @variablesNombres.Propiedades);
             }
             catch (Exception)
             {
-                // TODO (Gen): Validar FK, indices unicos, checks
+                @textos.TODOChecks
                 throw;
             }
         }

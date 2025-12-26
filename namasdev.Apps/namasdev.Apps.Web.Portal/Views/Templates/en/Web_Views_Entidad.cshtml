@@ -5,7 +5,9 @@
 @{
     var namespaces = new
     {
-        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Entidades = "Entities",
+        WebPortal = "Web.Portal",
     };
     var clases = new
     {
@@ -13,6 +15,14 @@
         Metadata = string.Format("{0}Metadata", Model.Nombre),
         EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
         Controller = string.Format("{0}Controller", Model.NombrePlural),
+    };
+    var variables = new
+    {
+        ControlesIds = "controlsIds",
+    };
+    var formatos = new 
+    {
+        Fecha = "{0:dd/MM/yyyy}",
     };
     var javaScript = new
     {
@@ -28,29 +38,29 @@
 }
 @@using namasdev.Core.Types;
 @@using namasdev.Web.Helpers;
-@@using @(Html.Raw(namespaces.Aplicacion)).Entidades;
-@@using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
-@@using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers;
-@@model @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@(Html.Raw(Model.NombrePlural)).@(Html.Raw(clases.EntidadViewModel))
+@@using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades);
+@@using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades).Metadata;
+@@using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.WebPortal).Controllers;
+@@model @(Html.Raw(namespaces.Aplicacion)).@(namespaces.WebPortal).ViewModels.@(Html.Raw(Model.NombrePlural)).@(Html.Raw(clases.EntidadViewModel))
 @@{
-    ViewBag.Title = $"{Model.PaginaModo} {@(Html.Raw(clases.Metadata)).ETIQUETA}";
+    ViewBag.Title = $"{Model.PageMode} {@(Html.Raw(clases.Metadata)).LABEL}";
 
-    var controlesIds = new
+    var @variables.ControlesIds = new
     {
-        Form = $"frm{@(Html.Raw(clases.Metadata)).NOMBRE}"
+        Form = $"frm{@(Html.Raw(clases.Metadata)).NAME}"
     };
 }
 <h2 class="my-3">@ViewBag.Title</h2>
-<form id="@("@controlesIds.Form")" action="@("@Url.Action()")" method="post" class="mt-3">
+<form id="@string.Format("@{0}.Form", variables.ControlesIds)" action="@("@Url.Action()")" method="post" class="mt-3">
     @@Html.AntiForgeryToken()
     @@Html.ValidationSummary(excludePropertyErrors: true)
-    @@Html.Partial("_Errores")
-    @@Html.Partial("_ResultadoOk")
+    @@Html.Partial("_Errors")
+    @@Html.Partial("_ResultOk")
     @if (tieneID)
     {
         <text>@@Html.HiddenFor(m => m.Id)</text>
     }
-    @@Html.HiddenFor(m => m.PaginaModo)
+    @@Html.HiddenFor(m => m.PageMode)
     <div class="form-row">
         @foreach (var p in Model.Propiedades)
         {
@@ -66,7 +76,7 @@
             propiedadEsImporte = false;
             if (!p.PermiteNull)
             {
-                labelHtmlAttributes.Add("class", FormatoHelper.EntreComillas("requerido"));
+                labelHtmlAttributes.Add("class", FormatoHelper.EntreComillas("required"));
                 controlCssClasses.Add("form-control-required");
             }
             switch (p.PropiedadTipoId)
@@ -156,20 +166,20 @@
                     }
                     break;
                 case PropiedadTipos.FECHA_HORA:
-                    controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };
+                    controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas(formatos.Fecha) };
                     controlCssClasses.Add("datepicker");
                     break;
                 case PropiedadTipos.FECHA:
-                    controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas("{0:dd/MM/yyyy}") };
+                    controlAdditionalParameters = new List<string> { FormatoHelper.EntreComillas(formatos.Fecha) };
                     controlCssClasses.Add("datepicker");
                     break;
                 case PropiedadTipos.HORA:
                     controlTipo = "DropDownList";
-                    controlAdditionalParameters = new List<string> { "Model.HoraSelectList", FormatoHelper.EntreComillas("") };
+                    controlAdditionalParameters = new List<string> { "Model.TimeSelectList", FormatoHelper.EntreComillas("") };
                     break;
                 case PropiedadTipos.BOOLEANO:
                     controlTipo = "DropDownList";
-                    controlAdditionalParameters = new List<string> { "Model.SiNoSelectList", FormatoHelper.EntreComillas("") };
+                    controlAdditionalParameters = new List<string> { "Model.YesNoSelectList", FormatoHelper.EntreComillas("") };
                     break;
             }
             controlHtmlAttributes.Add("class", FormatoHelper.EntreComillas(Formateador.Lista(controlCssClasses, separador: " ")));
@@ -186,8 +196,8 @@
             </div>
         }
     </div>
-    <button type="submit" class="btn btn-primary" data-toggle-state-container="#@("@controlesIds.Form")">Guardar</button>
-    <a href="@(Html.Raw(string.Format("@Url.Action(nameof({0}.Index))", clases.Controller)))" class="btn btn-secondary">Volver</a>
+    <button type="submit" class="btn btn-primary" data-toggle-state-container="#@string.Format("@{0}.Form", variables.ControlesIds)">Save</button>
+    <a href="@(Html.Raw(string.Format("@Url.Action(nameof({0}.Index))", clases.Controller)))" class="btn btn-secondary">Back</a>
 </form>
 @@section bodyScripts {
 <script type="text/javascript">

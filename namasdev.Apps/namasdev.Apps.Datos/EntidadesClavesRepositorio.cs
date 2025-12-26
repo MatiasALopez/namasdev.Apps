@@ -17,7 +17,7 @@ namespace namasdev.Apps.Datos
     {
         public void EliminarPorEntidad(Guid entidadId)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 var claves = ctx.EntidadesClaves
                     .Where(x => x.EntidadId == entidadId);

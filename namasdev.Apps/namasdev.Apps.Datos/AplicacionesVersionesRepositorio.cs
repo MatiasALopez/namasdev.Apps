@@ -24,7 +24,7 @@ namespace namasdev.Apps.Datos
             string busqueda = null,
             OrdenYPaginacionParametros op = null)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.AplicacionesVersiones
                     .Where(av => av.AplicacionId == aplicacionId && !av.Borrado)
@@ -36,7 +36,7 @@ namespace namasdev.Apps.Datos
 
         public void Clonar(Guid aplicacionVersionIdOrigen, Guid aplicacionVersionIdDestino, string usuarioId, DateTime fechaHora)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 ctx.uspClonarAplicacionVersion(aplicacionVersionIdOrigen, aplicacionVersionIdDestino, usuarioId, fechaHora);
             }

@@ -21,9 +21,10 @@
                 public const string ETIQUETA = "ID";
             }
 
-            public class ArticuloId
+            public class IdiomaArticuloId
             {
                 public const string ETIQUETA = IdiomaArticuloMetadata.ETIQUETA;
+                public const int TAMAÑO_EXACTO = 3;
             }
 
             public class IDPropiedadTipoId

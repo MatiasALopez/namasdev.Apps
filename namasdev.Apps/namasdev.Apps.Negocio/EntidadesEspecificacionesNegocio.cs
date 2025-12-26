@@ -155,41 +155,32 @@ namespace namasdev.Apps.Negocio
             var entidadesAEliminar = new List<EntidadPropiedad>();
 
             var entidad = entidadEspecificaciones.Entidad;
-            var idiomaPropiedadesMetadata = entidad.AplicacionVersion.Aplicacion.Idioma.EntidadPropiedadesMetadata;
 
-            var nombres = new List<string>();
             bool eliminarID = 
                 entidadEspecificaciones.IDPropiedadTipoId.HasValue
                 && !actualizarParametros.IDPropiedadTipoId.HasValue;
 
-            if (entidadEspecificaciones.AuditoriaCreado
-                && !actualizarParametros.AuditoriaCreado)
-            {
-                nombres.Add(idiomaPropiedadesMetadata.CreadoPorNombre);
-                nombres.Add(idiomaPropiedadesMetadata.CreadoFechaNombre);
-            }
+            bool eliminarAuditoriaCreado =
+                entidadEspecificaciones.AuditoriaCreado
+                && !actualizarParametros.AuditoriaCreado;
 
-            if (entidadEspecificaciones.AuditoriaUltimaModificacion
-                && !actualizarParametros.AuditoriaUltimaModificacion)
-            {
-                nombres.Add(idiomaPropiedadesMetadata.UltimaModificacionPorNombre);
-                nombres.Add(idiomaPropiedadesMetadata.UltimaModificacionFechaNombre);
-            }
+            bool eliminarAuditoriaUltimaModificacion =
+                entidadEspecificaciones.AuditoriaUltimaModificacion
+                && !actualizarParametros.AuditoriaUltimaModificacion;
 
-            if (entidadEspecificaciones.BajaTipoId != actualizarParametros.BajaTipoId
-                && actualizarParametros.BajaTipoId != BajaTipos.LOGICA)
-            {
-                nombres.Add(idiomaPropiedadesMetadata.BorradoPorNombre);
-                nombres.Add(idiomaPropiedadesMetadata.BorradoFechaNombre);
-                nombres.Add(idiomaPropiedadesMetadata.BorradoNombre);
-            }
+            bool eliminarAuditoriaBorrado =
+                entidadEspecificaciones.BajaTipoId == BajaTipos.LOGICA
+                && actualizarParametros.BajaTipoId != BajaTipos.LOGICA;
 
             EntidadPropiedad p;
             for (int i = entidad.Propiedades.Count - 1; i >= 0; i--)
             {
                 p = entidad.Propiedades[i];
-                if (nombres.Contains(p.Nombre)
-                    || (eliminarID && p.EsID))
+
+                if ((p.PropiedadCategoriaId == PropiedadCategorias.ID && eliminarID)
+                    || (p.PropiedadCategoriaId == PropiedadCategorias.AUDITORIA_CREADO && eliminarAuditoriaCreado)
+                    || (p.PropiedadCategoriaId == PropiedadCategorias.AUDITORIA_MODIFICADO && eliminarAuditoriaUltimaModificacion)
+                    || (p.PropiedadCategoriaId == PropiedadCategorias.AUDITORIA_BORRADO && eliminarAuditoriaBorrado))
                 {
                     entidad.Propiedades.RemoveAt(i);
                     entidadesAEliminar.Add(p);
@@ -279,7 +270,7 @@ namespace namasdev.Apps.Negocio
             var propiedades = new List<EntidadPropiedad>();
 
             var entidad = especificaciones.Entidad;
-            var idiomaPropiedadesMetadata = entidad.AplicacionVersion.Aplicacion.Idioma.EntidadPropiedadesMetadata;
+            var idiomaPropiedadesMetadata = entidad.AplicacionVersion.Aplicacion.Idioma.Textos;
 
             if (especificaciones.IDPropiedadTipoId.HasValue
                 && !entidad.TienePropiedadID())

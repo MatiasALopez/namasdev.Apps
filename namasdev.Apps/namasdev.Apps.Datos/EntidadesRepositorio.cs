@@ -14,7 +14,6 @@ namespace namasdev.Apps.Datos
     {
         IEnumerable<Entidad> ObtenerPorVersion(Guid aplicacionVersionId, ICargaPropiedades<Entidad> cargarPropiedades = null, string busqueda = null, OrdenYPaginacionParametros op = null);
         IEnumerable<BajaTipo> ObtenerBajaTipos();
-        IEnumerable<IdiomaArticulo> ObtenerArticulos();
     }
 
     public class EntidadesRepositorio : Repositorio<SqlContext, Entidad, Guid>, IEntidadesRepositorio
@@ -25,7 +24,7 @@ namespace namasdev.Apps.Datos
             string busqueda = null,
             OrdenYPaginacionParametros op = null)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.Entidades
                     .IncludeMultiple(cargarPropiedades)
@@ -38,20 +37,10 @@ namespace namasdev.Apps.Datos
 
         public IEnumerable<BajaTipo> ObtenerBajaTipos()
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.BajaTipos
                     .OrderBy(bt => bt.Id)
-                    .ToList();
-            }
-        }
-
-        public IEnumerable<IdiomaArticulo> ObtenerArticulos()
-        {
-            using (var ctx = new SqlContext())
-            {
-                return ctx.Articulos
-                    .OrderBy(a => a.Id)
                     .ToList();
             }
         }

@@ -3,14 +3,14 @@
     public class IdiomaArticuloMetadata
     {
         public const string NOMBRE = "IdiomaArticulo";
-        public const string NOMBRE_PLURAL = "IdiomaArticulos";
+        public const string NOMBRE_PLURAL = "IdiomasArticulos";
 
         public const string ETIQUETA = "Artículo";
         public const string ETIQUETA_PLURAL = "Artículos";
 
         public class BD
         {
-            public const string TABLA = "IdiomaArticulos";
+            public const string TABLA = "IdiomasArticulos";
             public const string ID = "IdiomaArticuloId";
         }
 

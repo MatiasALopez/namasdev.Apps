@@ -254,7 +254,7 @@ go
 --===
 
 --===
-create table dbo.IdiomasEntidadPropiedadesMetadata
+create table dbo.IdiomasTextos
 (
     IdiomaId nchar(2) not null,
     CreadoPorNombre nvarchar(100) not null,
@@ -271,9 +271,14 @@ create table dbo.IdiomasEntidadPropiedadesMetadata
     BorradoFechaEtiqueta nvarchar(100) not null,
     BorradoNombre nvarchar(100) not null,
     BorradoEtiqueta nvarchar(100) not null,
-    
-    constraint PK_IdiomasEntidadPropiedadesMetadata primary key clustered (IdiomaId),
-    constraint FK_IdiomasEntidadPropiedadesMetadata_IdiomaId foreign key (IdiomaId) references dbo.Idiomas (IdiomaId) on update cascade on delete cascade
+    BDNombre nvarchar(50) not null,
+    EntidadesNombre nvarchar(50) not null,
+    DatosNombre nvarchar(50) not null,
+    NegocioNombre nvarchar(50) not null,
+    WebPortalNombre nvarchar(50) not null,
+
+    constraint PK_IdiomasTextos primary key clustered (IdiomaId),
+    constraint FK_IdiomasTextos_IdiomaId foreign key (IdiomaId) references dbo.Idiomas (IdiomaId) on update cascade on delete cascade
 )
 go
 --===

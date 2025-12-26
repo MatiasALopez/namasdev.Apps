@@ -88,7 +88,7 @@ namespace namasdev.Apps.Web.Portal.Helpers
                 a => new SelectListItem
                 {
                     Text = a.Nombre,
-                    Value = a.Id.ToString()
+                    Value = a.Id
                 });
         }
 

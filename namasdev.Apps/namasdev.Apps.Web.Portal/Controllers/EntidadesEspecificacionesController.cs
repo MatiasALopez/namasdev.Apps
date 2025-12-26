@@ -27,6 +27,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         private readonly IEntidadesRepositorio _entidadesRepositorio;
         private readonly IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
         private readonly IAplicacionesVersionesRepositorio _aplicacionesVersionesRepositorio;
+        private readonly IIdiomasRepositorio _idiomasRepositorio;
 
         public EntidadesEspecificacionesController(
             IEntidadesEspecificacionesRepositorio entidadesEspecificacionesRepositorio,
@@ -34,6 +35,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
             IEntidadesRepositorio entidadesRepositorio,
             IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
             IAplicacionesVersionesRepositorio aplicacionesVersionesRepositorio,
+            IIdiomasRepositorio idiomasRepositorio,
             IMapper mapper)
             : base(mapper)
         {
@@ -42,12 +44,14 @@ namespace namasdev.Apps.Web.Portal.Controllers
             Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(aplicacionesVersionesRepositorio, nameof(aplicacionesVersionesRepositorio));
+            Validador.ValidarArgumentRequeridoYThrow(idiomasRepositorio, nameof(idiomasRepositorio));
 
             _entidadesEspecificacionesRepositorio = entidadesEspecificacionesRepositorio;
             _entidadesEspecificacionesNegocio = entidadesEspecificacionesNegocio;
             _entidadesRepositorio = entidadesRepositorio;
             _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
             _aplicacionesVersionesRepositorio = aplicacionesVersionesRepositorio;
+            _idiomasRepositorio = idiomasRepositorio;
         }
 
         #region Acciones
@@ -61,8 +65,10 @@ namespace namasdev.Apps.Web.Portal.Controllers
             }
 
             var modelo = Mapear<EntidadEspecificacionesViewModel>(entidad);
+            modelo.AplicacionId = entidad.Entidad.AplicacionVersion.AplicacionId;
             modelo.AplicacionVersionId = entidad.Entidad.AplicacionVersionId;
             modelo.EntidadNombre = entidad.Entidad.Nombre;
+            modelo.ArticuloRequerido = entidad.Entidad.AplicacionVersion.Aplicacion.Idioma.UsaArticulos;
             CargarEntidadEspecificacionesViewModel(modelo);
 
             return View(EntidadesEspecificacionesViews.EntidadEspecificaciones, modelo);
@@ -112,7 +118,11 @@ namespace namasdev.Apps.Web.Portal.Controllers
         {
             Validador.ValidarArgumentRequeridoYThrow(modelo, nameof(modelo));
 
-            modelo.ArticulosSelectList = ListasHelper.ObtenerArticulosSelectList(_entidadesRepositorio.ObtenerArticulos());
+            modelo.ArticulosSelectList =
+                modelo.ArticuloRequerido
+                ? ListasHelper.ObtenerArticulosSelectList(_idiomasRepositorio.ObtenerArticulos(modelo.AplicacionId))
+                : namasdev.Web.Helpers.ListasHelper.ObtenerSelectListVacio();
+
             modelo.BajaTiposSelectList = ListasHelper.ObtenerBajaTiposSelectList(_entidadesRepositorio.ObtenerBajaTipos());
             modelo.PropiedadTiposSelectList = ListasHelper.ObtenerPropiedadTiposSelectList(_entidadesPropiedadesRepositorio.ObtenerTipos());
         }

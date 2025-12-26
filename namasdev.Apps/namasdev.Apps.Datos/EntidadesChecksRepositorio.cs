@@ -23,7 +23,7 @@ namespace namasdev.Apps.Datos
             Guid entidadId,
             bool cargarDatosAdicionales = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesChecks
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
@@ -36,7 +36,7 @@ namespace namasdev.Apps.Datos
         public EntidadCheck Obtener(Guid id,
             bool cargarDatosAdicionales = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesChecks
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)

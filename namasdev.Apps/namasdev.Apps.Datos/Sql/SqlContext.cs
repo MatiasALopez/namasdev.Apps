@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data.Entity;
 using System.Data.SqlClient;
+
 using namasdev.Apps.Entidades;
 using namasdev.Data.Entity;
 
@@ -23,7 +24,7 @@ namespace namasdev.Apps.Datos.Sql
         public DbSet<Aplicacion> Aplicaciones { get; set; }
         public DbSet<AplicacionVersion> AplicacionesVersiones { get; set; }
         public DbSet<PropiedadTipo> PropiedadTipos { get; set; }
-        public DbSet<IdiomaArticulo> Articulos { get; set; }
+        public DbSet<IdiomaArticulo> IdiomasArticulos { get; set; }
         public DbSet<BajaTipo> BajaTipos { get; set; }
         public DbSet<Entidad> Entidades { get; set; }
         public DbSet<EntidadEspecificaciones> EntidadesEspecificaciones { get; set; }

@@ -21,7 +21,7 @@ namespace namasdev.Apps.Datos
         public EntidadEspecificaciones Obtener(Guid id,
             bool cargarEntidadConPropiedadesYClavesYIndices = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesEspecificaciones
                     .IncludeMultipleIf(CrearPathsEntidadYPropiedadesYClaves(), cargarEntidadConPropiedadesYClavesYIndices)
@@ -36,6 +36,7 @@ namespace namasdev.Apps.Datos
                 ee => ee.Entidad.Propiedades,
                 ee => ee.Entidad.Claves,
                 ee => ee.Entidad.Indices.Select(ei => ei.Propiedades),
+                ee => ee.Entidad.AplicacionVersion.Aplicacion.Idioma.Textos,
             };
         }
     }

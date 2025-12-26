@@ -1,11 +1,10 @@
+using namasdev.Apps.Entidades.Metadata;
+using namasdev.Apps.Web.Portal.Models.EntidadesPropiedades;
+using namasdev.Core.Validation;
+using namasdev.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
-using namasdev.Core.Validation;
-using namasdev.Web.Models;
-
-using namasdev.Apps.Entidades.Metadata;
 
 namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesChecks
 {
@@ -27,6 +26,8 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesChecks
         [Display(Name = EntidadCheckMetadata.Propiedades.ExpresionNombre.ETIQUETA)]
         [Required(ErrorMessage = Validador.REQUERIDO_TEXTO_FORMATO)]
         public string Expresion { get; set; }
+
+        public List<EntidadPropiedadItemModel> Propiedades { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

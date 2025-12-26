@@ -20,18 +20,22 @@
     @Html.Partial("_Errores")
     @Html.Partial("_ResultadoOk")
     @Html.HiddenFor(m => m.Id)
+    @Html.HiddenFor(m => m.AplicacionId)
     @Html.HiddenFor(m => m.AplicacionVersionId)
     @Html.HiddenFor(m => m.EntidadNombre)
+    @Html.HiddenFor(m => m.ArticuloRequerido)
     <div class="my-3">
         <strong>@Html.DisplayNameFor(m => m.EntidadNombre):</strong> @Model.EntidadNombre
     </div>
     <div class="form-row">
-        <div class="form-group col-lg-2 col-md-6">
-            @Html.LabelFor(m => m.ArticuloId)
-            @Html.DropDownListFor(m => m.ArticuloId, Model.ArticulosSelectList, "", new { @class = "form-control form-control-required" })
-            @Html.ValidationMessageFor(m => m.ArticuloId)
-        </div>
-
+        @if (Model.ArticuloRequerido)
+        {
+            <div class="form-group col-lg-2 col-md-6">
+                @Html.LabelFor(m => m.IdiomaArticuloId)
+                @Html.DropDownListFor(m => m.IdiomaArticuloId, Model.ArticulosSelectList, "", new { @class = "form-control form-control-required" })
+                @Html.ValidationMessageFor(m => m.IdiomaArticuloId)
+            </div>
+        }
         <div class="form-group col-lg-3 col-md-6">
             @Html.LabelFor(m => m.IDPropiedadTipoId)
             @Html.DropDownListFor(m => m.IDPropiedadTipoId, Model.PropiedadTiposSelectList, "(Sin ID)", new { @class = "form-control" })

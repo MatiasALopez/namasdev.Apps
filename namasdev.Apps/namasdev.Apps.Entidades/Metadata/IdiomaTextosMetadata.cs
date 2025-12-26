@@ -1,16 +1,16 @@
 ﻿namespace namasdev.Apps.Entidades.Metadata
 {
-    public class IdiomaEntidadPropiedadesMetadataMetadata
+    public class IdiomaTextosMetadata
     {
-        public const string NOMBRE = "IdiomaEntidadPropiedadesMetadata";
-        public const string NOMBRE_PLURAL = "IdiomasEntidadPropiedadesMetadata";
+        public const string NOMBRE = "IdiomaTextos";
+        public const string NOMBRE_PLURAL = "IdiomasTextos";
 
-        public const string ETIQUETA = "Metadata de propiedades de Idioma";
-        public const string ETIQUETA_PLURAL = "Metadata de propiedades de Idioma";
+        public const string ETIQUETA = "Textos de Idioma";
+        public const string ETIQUETA_PLURAL = "Textos de Idiomas";
 
         public class BD
         {
-            public const string TABLA = "IdiomasEntidadPropiedadesMetadata";
+            public const string TABLA = "IdiomasTextos";
             public const string ID = "IdiomaId";
         }
 
@@ -104,6 +104,36 @@
             {
                 public const string ETIQUETA = "Borrado - Etiqueta";
                 public const int TAMAÑO_MAX = 100;
+            }
+
+            public class BDNombre
+            {
+                public const string ETIQUETA = "BD - Nombre";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class EntidadesNombre
+            {
+                public const string ETIQUETA = "Entidades - Etiqueta";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class DatosNombre
+            {
+                public const string ETIQUETA = "Datos - Etiqueta";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class NegocioNombre
+            {
+                public const string ETIQUETA = "Negocio - Etiqueta";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class WebPortalNombre
+            {
+                public const string ETIQUETA = "Web Portal - Etiqueta";
+                public const int TAMAÑO_MAX = 50;
             }
         }
     }

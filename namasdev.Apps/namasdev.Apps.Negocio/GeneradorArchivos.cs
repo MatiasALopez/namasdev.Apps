@@ -197,7 +197,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.BD.Tabla,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.BD", "dbo", "Tables"),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.BDNombre}", "dbo", GeneradorArchivosNombres.Carpetas.Tables),
                 $"{entidad.NombrePlural}.sql",
                 grupoId);
         }
@@ -208,7 +208,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Entidades.ENTIDAD,
                 entidad,
-                $"{entidad.AplicacionVersion.Aplicacion.Nombre}.Entidades",
+                $"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.EntidadesNombre}",
                 $"{entidad.Nombre}.cs",
                 grupoId);
         }
@@ -219,7 +219,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Entidades.Metadata.ENTIDAD_METADATA,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Entidades", "Metadata"),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.EntidadesNombre}", GeneradorArchivosNombres.Carpetas.Metadata),
                 $"{entidad.Nombre}Metadata.cs",
                 grupoId);
         }
@@ -230,7 +230,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Datos.Sql.CONFIG,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Datos", "Sql", "Config"),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.DatosNombre}", GeneradorArchivosNombres.Carpetas.Sql, GeneradorArchivosNombres.Carpetas.Config),
                 $"{entidad.Nombre}Config.cs",
                 grupoId);
         }
@@ -241,7 +241,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Datos.REPOSITORIO,
                 entidad,
-                $"{entidad.AplicacionVersion.Aplicacion.Nombre}.Datos",
+                $"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.DatosNombre}",
                 $"{entidad.NombrePlural}Repositorio.cs",
                 grupoId);
         }
@@ -252,7 +252,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Negocio.NEGOCIO,
                 entidad,
-                $"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio",
+                $"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}",
                 $"{entidad.NombrePlural}Negocio.cs",
                 grupoId);
         }
@@ -263,7 +263,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Negocio.Automapper.PROFILE,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "Automapper"),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.Automapper),
                 $"{entidad.Nombre}Profile.cs",
                 grupoId);
         }
@@ -274,7 +274,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Negocio.DTO.AGREGAR_PARAMETROS,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
                 "AgregarParametros.cs",
                 grupoId);
         }
@@ -285,7 +285,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Negocio.DTO.ACTUALIZAR_PARAMETROS,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
                 "ActualizarParametros.cs",
                 grupoId);
         }
@@ -296,7 +296,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Negocio.DTO.MARCAR_COMO_BORRADO_PARAMETROS,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
                 "MarcarComoBorradoParametros.cs",
                 grupoId);
         }
@@ -307,7 +307,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Negocio.DTO.DESMARCAR_COMO_BORRADO_PARAMETROS,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
                 "DesmarcarComoBorradoParametros.cs",
                 grupoId);
         }
@@ -318,7 +318,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Negocio.DTO.ELIMINAR_PARAMETROS,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Negocio", "DTO", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
                 "EliminarParametros.cs",
                 grupoId);
         }
@@ -329,7 +329,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Web.Models.ITEM_MODEL,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Models", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.WebPortalNombre}", GeneradorArchivosNombres.Carpetas.Models, entidad.NombrePlural),
                 $"{entidad.Nombre}ItemModel.cs",
                 grupoId);
         }
@@ -340,7 +340,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Web.ViewModels.ENTIDAD_VIEW_MODEL,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "ViewModels", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.WebPortalNombre}", GeneradorArchivosNombres.Carpetas.ViewModels, entidad.NombrePlural),
                 $"{entidad.Nombre}ViewModel.cs",
                 grupoId);
         }
@@ -351,7 +351,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Web.ViewModels.LISTA_VIEW_MODEL,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "ViewModels", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.WebPortalNombre}", GeneradorArchivosNombres.Carpetas.ViewModels, entidad.NombrePlural),
                 $"{entidad.NombrePlural}ViewModel.cs",
                 grupoId);
         }
@@ -362,7 +362,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                TemplatesNombres.Web.Automapper.PROFILE,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Automapper"),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.WebPortalNombre}", GeneradorArchivosNombres.Carpetas.Automapper),
                 $"{entidad.Nombre}Profile.cs",
                 grupoId);
         }
@@ -373,7 +373,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Web.Metadata.VIEWS,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Metadata", "Views"),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.WebPortalNombre}", GeneradorArchivosNombres.Carpetas.Metadata, GeneradorArchivosNombres.Carpetas.Views),
                 $"{entidad.NombrePlural}Views.cs",
                 grupoId);
         }
@@ -384,7 +384,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Web.CONTROLLER,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Controllers"),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.WebPortalNombre}", GeneradorArchivosNombres.Carpetas.Controllers),
                 $"{entidad.NombrePlural}Controller.cs",
                 grupoId);
         }
@@ -395,7 +395,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Web.Views.INDEX,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.WebPortalNombre}", GeneradorArchivosNombres.Carpetas.Views, entidad.NombrePlural),
                 "Index.cshtml",
                 grupoId,
                 esHtmlView: true);
@@ -407,7 +407,7 @@ namespace namasdev.Apps.Negocio
             return GenerarDesdeTemplate(
                 TemplatesNombres.Web.Views.ENTIDAD,
                 entidad,
-                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.Web.Portal", "Views", entidad.NombrePlural),
+                Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.WebPortalNombre}", GeneradorArchivosNombres.Carpetas.Views, entidad.NombrePlural),
                 $"{entidad.Nombre}.cshtml",
                 grupoId,
                 esHtmlView: true);
@@ -457,6 +457,7 @@ namespace namasdev.Apps.Negocio
             bool esHtmlView = false)
         {
             string template = $"{templateNombre}.cshtml";
+            templateNombre = $"{templateNombre}_{idiomaId}";
             razor.AddTemplate(templateNombre, ObtenerTemplate(template, idiomaId, esHtmlView));
             return templateNombre;
         }

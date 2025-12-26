@@ -7,13 +7,13 @@
     var clases = new
     {
         ItemModel = string.Format("{0}ItemModel", Model.Nombre),
-        MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
+        MetadataPropiedades = string.Format("{0}Metadata.Properties", Model.Nombre),
     };
 }
 using System;
 using System.ComponentModel.DataAnnotations;
 
-using @(Html.Raw(namespaces.Aplicacion)).Entidades.Metadata;
+using @(Html.Raw(namespaces.Aplicacion)).Entities.Metadata;
 
 namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@Html.Raw(Model.NombrePlural)
 {
@@ -22,7 +22,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@Html.Raw(Model.N
     @foreach(var p in Model.Propiedades)
     {
         if (p.EsCalculada || p.EsAuditoria) { continue; }
-        <text>[Display(Name = @(Html.Raw(clases.MetadataPropiedades)).@(Html.Raw(p.NombreOId)).ETIQUETA)]
+        <text>[Display(Name = @(Html.Raw(clases.MetadataPropiedades)).@(Html.Raw(p.NombreOId)).LABEL)]
         public @Html.Raw(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType) @Html.Raw(p.NombreOId) { get; set; }
         </text>
     }

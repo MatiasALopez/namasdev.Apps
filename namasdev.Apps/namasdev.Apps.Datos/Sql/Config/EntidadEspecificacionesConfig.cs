@@ -15,6 +15,9 @@ namespace namasdev.Apps.Datos.Sql.Config
             Property(p => p.Id)
                 .HasColumnName(EntidadEspecificacionesMetadata.BD.ID);
 
+            Property(p => p.IdiomaArticuloId)
+                .HasMaxLength(EntidadEspecificacionesMetadata.Propiedades.IdiomaArticuloId.TAMAÑO_EXACTO);
+
             HasOptional(p => p.IdiomaArticulo)
                 .WithMany()
                 .HasForeignKey(p => p.IdiomaArticuloId);

@@ -1,8 +1,4 @@
-﻿using System;
-
-using namasdev.Core.Entity;
-
-using namasdev.Apps.Entidades.Valores;
+﻿using namasdev.Core.Entity;
 
 namespace namasdev.Apps.Entidades
 {
@@ -10,6 +6,8 @@ namespace namasdev.Apps.Entidades
     {
         public string IdiomaId { get; set; }
         public string Nombre { get; set; }
+
+        public virtual Idioma Idioma { get; set; }
 
         public string Texto
         {

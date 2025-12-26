@@ -2,7 +2,7 @@
 
 namespace namasdev.Apps.Entidades
 {
-    public partial class IdiomaEntidadPropiedadesMetadata : Entidad<string>
+    public partial class IdiomaTextos : Entidad<string>
     {
         public string CreadoPorNombre { get; set; }
         public string CreadoPorEtiqueta { get; set; }
@@ -18,6 +18,11 @@ namespace namasdev.Apps.Entidades
         public string BorradoFechaEtiqueta { get; set; }
         public string BorradoNombre { get; set; }
         public string BorradoEtiqueta { get; set; }
+        public string BDNombre { get; set; }
+        public string EntidadesNombre { get; set; }
+        public string DatosNombre { get; set; }
+        public string NegocioNombre { get; set; }
+        public string WebPortalNombre { get; set; }
 
         public virtual Idioma Idioma { get; set; }
 

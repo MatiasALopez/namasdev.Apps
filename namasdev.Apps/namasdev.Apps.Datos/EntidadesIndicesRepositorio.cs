@@ -23,7 +23,7 @@ namespace namasdev.Apps.Datos
             Guid entidadId,
             bool cargarDatosAdicionales = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesIndices
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
@@ -37,7 +37,7 @@ namespace namasdev.Apps.Datos
         public EntidadIndice Obtener(Guid id,
             bool cargarDatosAdicionales = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesIndices
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)

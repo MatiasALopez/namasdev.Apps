@@ -6,11 +6,13 @@ using System.Linq.Expressions;
 using namasdev.Data;
 
 using namasdev.Apps.Entidades;
+using System.Runtime.InteropServices;
 
 namespace namasdev.Apps.Datos.Entity
 {
     public class EntidadCargaPropiedades : ICargaPropiedades<Entidad>
     {
+        public bool Idioma { get; set; }
         public bool AplicacionVersion { get; set; }
         public bool Especificaciones { get; set; }
         public bool Propiedades { get; set; }
@@ -24,6 +26,7 @@ namespace namasdev.Apps.Datos.Entity
         {
             return new EntidadCargaPropiedades
             {
+                Idioma = true,
                 AplicacionVersion = true,
                 Especificaciones = true,
                 Propiedades = true,
@@ -39,6 +42,10 @@ namespace namasdev.Apps.Datos.Entity
         {
             var paths = new List<Expression<Func<Entidad, object>>>();
 
+            if (Idioma)
+            {
+                paths.Add(e => e.AplicacionVersion.Aplicacion.Idioma.Textos);
+            }
             if (AplicacionVersion)
             {
                 paths.Add(e => e.AplicacionVersion.Aplicacion);

@@ -57,7 +57,7 @@
     <Compile Include="AsociacionMultiplicidad.cs" />
     <Compile Include="AsociacionRegla.cs" />
     <Compile Include="IdiomaArticulo.cs" />
-    <Compile Include="IdiomaEntidadPropiedadesMetadata.cs" />
+    <Compile Include="IdiomaTextos.cs" />
     <Compile Include="Idioma.cs" />
     <Compile Include="BajaTipo.cs" />
     <Compile Include="EntidadCheck.cs" />
@@ -70,7 +70,7 @@
     <Compile Include="Metadata\AsociacionMultiplicidadMetadata.cs" />
     <Compile Include="Metadata\AsociacionReglaMetadata.cs" />
     <Compile Include="Metadata\IdiomaArticuloMetadata.cs" />
-    <Compile Include="Metadata\IdiomaEntidadPropiedadesMetadataMetadata.cs" />
+    <Compile Include="Metadata\IdiomaTextosMetadata.cs" />
     <Compile Include="Metadata\IdiomaMetadata.cs" />
     <Compile Include="Metadata\EntidadCheckMetadata.cs" />
     <Compile Include="Metadata\EntidadAsociacionMetadata.cs" />
@@ -114,6 +114,7 @@
     <Compile Include="Valores\AsociacionMultiplicidades.cs" />
     <Compile Include="Valores\AsociacionReglas.cs" />
     <Compile Include="Valores\EntidadMetadataAtributos_en.cs" />
+    <Compile Include="Valores\GeneradorArchivosNombres.cs" />
     <Compile Include="Valores\IdiomaArticulos_es.cs" />
     <Compile Include="Valores\BajaTipos.cs" />
     <Compile Include="Valores\AzureStorage.cs" />

@@ -27,7 +27,7 @@ namespace namasdev.Apps.Datos
     {
         public List<string> ObtenerEmailsPorRol(string rolNombre)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.Usuarios
                     .Where(u =>
@@ -41,7 +41,7 @@ namespace namasdev.Apps.Datos
 
         public string ObtenerNombresYApellidosPorId(string usuarioId)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.Usuarios
                     .Where(u => u.Id == usuarioId && !u.Borrado)
@@ -53,7 +53,7 @@ namespace namasdev.Apps.Datos
         public Usuario Obtener(string usuarioId,
             bool cargarRoles = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 var query = ctx.Usuarios.AsQueryable();
 
@@ -70,7 +70,7 @@ namespace namasdev.Apps.Datos
         public bool ExisteBorradoPorEmail(string email, 
             out string usuarioId)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 usuarioId = ctx.Usuarios
                     .Where(u => u.Email == email && u.Borrado)
@@ -83,7 +83,7 @@ namespace namasdev.Apps.Datos
 
         public List<AspNetRole> ObtenerRoles()
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.AspNetRoles
                     .OrderBy(r => r.Name)
@@ -96,7 +96,7 @@ namespace namasdev.Apps.Datos
             bool cargarRoles = false,
             OrdenYPaginacionParametros op = null)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 var query = ctx.Usuarios.AsQueryable();
 
@@ -126,7 +126,7 @@ namespace namasdev.Apps.Datos
 
         public string ObtenerRolDeUsuario(string usuarioId)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.Usuarios
                     .Where(u => u.Id == usuarioId)

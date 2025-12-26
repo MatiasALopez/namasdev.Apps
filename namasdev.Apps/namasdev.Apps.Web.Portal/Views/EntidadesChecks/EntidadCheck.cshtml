@@ -1,3 +1,4 @@
+@using namasdev.Core.Types; 
 @using namasdev.Apps.Entidades.Metadata;
 @model namasdev.Apps.Web.Portal.ViewModels.EntidadesChecks.EntidadCheckViewModel
 @{
@@ -19,6 +20,27 @@
     @Html.HiddenFor(m => m.AplicacionVersionId)
     @Html.HiddenFor(m => m.EntidadId)
     @Html.HiddenFor(m => m.EntidadTablaNombre)
+    <div class="table-responsive">
+        <table class="table table-sm table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(m => m.Propiedades[0].Nombre)</th>
+                    <th>@Html.DisplayNameFor(m => m.Propiedades[0].TipoNombre)</th>
+                    <th>@Html.DisplayNameFor(m => m.Propiedades[0].PermiteNull)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.Propiedades)
+                {
+                    <tr>
+                        <td>@p.Nombre</td>
+                        <td>@p.TipoNombre</td>
+                        <td>@Formateador.SiNo(p.PermiteNull)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
     <div class="form-row">
         <div class="form-group col-12">
             @Html.LabelFor(m => m.Nombre, new { @class = "requerido" })
@@ -27,7 +49,7 @@
         </div>
         <div class="form-group col-12">
             @Html.LabelFor(m => m.Expresion, new { @class = "requerido" })
-            @Html.TextBoxFor(m => m.Expresion, new { @maxlength = EntidadCheckMetadata.Propiedades.ExpresionNombre.TAMAÑO_MAX, @class = "form-control form-control-required" })
+            @Html.TextAreaFor(m => m.Expresion, new { @maxlength = EntidadCheckMetadata.Propiedades.ExpresionNombre.TAMAÑO_MAX, @class = "form-control form-control-required" })
             @Html.ValidationMessageFor(m => m.Expresion)
         </div>
     </div>

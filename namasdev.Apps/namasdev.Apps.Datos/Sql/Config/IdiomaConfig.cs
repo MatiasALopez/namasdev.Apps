@@ -19,7 +19,7 @@ namespace namasdev.Apps.Datos.Sql.Config
                 .IsRequired()
                 .HasMaxLength(IdiomaMetadata.Propiedades.Nombre.TAMAÑO_MAX);
 
-            HasRequired(p => p.EntidadPropiedadesMetadata)
+            HasRequired(p => p.Textos)
                 .WithRequiredDependent(p => p.Idioma);
         }
     }

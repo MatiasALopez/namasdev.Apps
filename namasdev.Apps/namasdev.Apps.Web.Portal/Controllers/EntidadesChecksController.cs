@@ -15,6 +15,7 @@ using namasdev.Apps.Negocio;
 using namasdev.Apps.Negocio.DTO.EntidadesChecks;
 using namasdev.Apps.Web.Portal.Metadata.Views;
 using namasdev.Apps.Web.Portal.Models.EntidadesChecks;
+using namasdev.Apps.Web.Portal.Models.EntidadesPropiedades;
 using namasdev.Apps.Web.Portal.ViewModels.EntidadesChecks;
 
 namespace namasdev.Apps.Web.Portal.Controllers
@@ -27,21 +28,25 @@ namespace namasdev.Apps.Web.Portal.Controllers
         private readonly IEntidadesChecksRepositorio _entidadesChecksRepositorio;
         private readonly IEntidadesChecksNegocio _entidadesChecksNegocio;
         private readonly IEntidadesRepositorio _entidadesRepositorio;
+        private readonly IEntidadesPropiedadesRepositorio _entidadesPropiedadesRepositorio;
 
         public EntidadesChecksController(
             IEntidadesChecksRepositorio entidadesChecksRepositorio, 
             IEntidadesChecksNegocio entidadesChecksNegocio,
             IEntidadesRepositorio entidadesRepositorio,
+            IEntidadesPropiedadesRepositorio entidadesPropiedadesRepositorio,
             IMapper mapper)
             : base(mapper)
         {
             Validador.ValidarArgumentRequeridoYThrow(entidadesChecksRepositorio, nameof(entidadesChecksRepositorio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesChecksNegocio, nameof(entidadesChecksNegocio));
             Validador.ValidarArgumentRequeridoYThrow(entidadesRepositorio, nameof(entidadesRepositorio));
+            Validador.ValidarArgumentRequeridoYThrow(entidadesPropiedadesRepositorio, nameof(entidadesPropiedadesRepositorio));
 
             _entidadesChecksRepositorio = entidadesChecksRepositorio;
             _entidadesChecksNegocio = entidadesChecksNegocio;
             _entidadesRepositorio = entidadesRepositorio;
+            _entidadesPropiedadesRepositorio = entidadesPropiedadesRepositorio;
         }
 
         #region Acciones
@@ -174,6 +179,13 @@ namespace namasdev.Apps.Web.Portal.Controllers
             var entidad = _entidadesRepositorio.Obtener(model.EntidadId);
             model.EntidadTablaNombre = entidad.NombrePlural;
             model.AplicacionVersionId = entidad.AplicacionVersionId;
+            
+            if (string.IsNullOrWhiteSpace(model.Nombre))
+            {
+                model.Nombre = $"CK_{entidad.NombrePlural}_";
+            }
+
+            model.Propiedades = Mapear<List<EntidadPropiedadItemModel>>(_entidadesPropiedadesRepositorio.ObtenerPorEntidad(model.EntidadId, cargarDatosAdicionales: true));
         }
 
         #endregion Metodos

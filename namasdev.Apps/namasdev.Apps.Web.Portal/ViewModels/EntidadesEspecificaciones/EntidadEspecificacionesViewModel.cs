@@ -13,13 +13,14 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesEspecificaciones
     {
         public Guid? Id { get; set; }
 
+        public Guid AplicacionId { get; set; }
         public Guid AplicacionVersionId { get; set; }
 
         [Display(Name = EntidadMetadata.ETIQUETA)]
         public string EntidadNombre { get; set; }
 
-        [Display(Name = EntidadEspecificacionesMetadata.Propiedades.ArticuloId.ETIQUETA)]
-        public short? ArticuloId { get; set; }
+        [Display(Name = EntidadEspecificacionesMetadata.Propiedades.IdiomaArticuloId.ETIQUETA)]
+        public string IdiomaArticuloId { get; set; }
 
         [Display(Name = EntidadEspecificacionesMetadata.Propiedades.IDPropiedadTipoId.ETIQUETA)]
         public short? IDPropiedadTipoId { get; set; }
@@ -41,6 +42,8 @@ namespace namasdev.Apps.Web.Portal.ViewModels.EntidadesEspecificaciones
         public SelectList ArticulosSelectList { get; set; }
         public SelectList PropiedadTiposSelectList { get; set; }
         public SelectList BajaTiposSelectList { get; set; }
+
+        public bool ArticuloRequerido { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

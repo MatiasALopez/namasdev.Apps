@@ -19,6 +19,10 @@ namespace namasdev.Apps.Datos.Sql.Config
             Property(p => p.Nombre)
                 .IsRequired()
                 .HasMaxLength(IdiomaArticuloMetadata.Propiedades.Nombre.TAMAÑO_MAX);
+
+            HasRequired(p => p.Idioma)
+                .WithMany(p => p.Articulos)
+                .HasForeignKey(p => p.IdiomaId);
         }
     }
 }

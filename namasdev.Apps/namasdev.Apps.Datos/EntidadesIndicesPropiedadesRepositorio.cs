@@ -19,7 +19,7 @@ namespace namasdev.Apps.Datos
     {
         public IEnumerable<EntidadIndicePropiedad> ObtenerPorIndice(Guid entidadIndiceId)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesIndicesPropiedades
                     .Where(e => e.EntidadIndiceId == entidadIndiceId)

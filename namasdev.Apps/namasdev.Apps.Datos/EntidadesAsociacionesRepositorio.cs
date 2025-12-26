@@ -25,7 +25,7 @@ namespace namasdev.Apps.Datos
             Guid entidadId,
             bool cargarDatosAdicionales = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesAsociaciones
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
@@ -38,7 +38,7 @@ namespace namasdev.Apps.Datos
         public EntidadAsociacion Obtener(Guid id, 
             bool cargarDatosAdicionales = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesAsociaciones
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
@@ -48,7 +48,7 @@ namespace namasdev.Apps.Datos
 
         public bool ExistenPorPropiedadOrigen(Guid origenEntidadPropiedadId)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesAsociaciones
                     .Any(ea => ea.OrigenEntidadPropiedadId == origenEntidadPropiedadId);
@@ -57,7 +57,7 @@ namespace namasdev.Apps.Datos
 
         public IEnumerable<AsociacionMultiplicidad> ObtenerMultiplicidades()
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.AsociacionMultiplicidades.ToArray();
             }
@@ -65,7 +65,7 @@ namespace namasdev.Apps.Datos
 
         public IEnumerable<AsociacionRegla> ObtenerReglas()
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.AsociacionReglas.ToArray();
             }

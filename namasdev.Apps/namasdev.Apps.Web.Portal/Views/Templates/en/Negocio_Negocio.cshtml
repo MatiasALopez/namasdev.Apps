@@ -2,7 +2,6 @@
 @using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
-    // TODO (ML): continuar aca
     string namespaceBase = Model.AplicacionVersion.Aplicacion.Nombre;
     var clases = new
     {
@@ -15,7 +14,8 @@
         ActualizarParametros = "UpdateParameter",
         MarcarComoBorradoParametros = "SetAsDeletedParameter",
         DesmarcarComoBorradoParametros = "UnsetAsDeletedParameter",
-        EliminarParametros = "DeleteParameter"
+        EliminarParametros = "DeleteParameter",
+        Validador = "Validator",
     };
     var interfaces = new
     {
@@ -30,6 +30,13 @@
         Parametros = "parameters",
         Entidad = "entity",
         UsuarioId = "userId",
+        Errores = "errors",
+        FechaHoraActual = "now",
+    };
+    var propiedes = new
+    {
+        Repositorio = "Repository",
+        UsuarioLogueadoId = "LoggedUserId",
     };
     var parametros = new
     {
@@ -43,7 +50,24 @@
         ValorMaximo = "maxValue",
         ValorMinimo = "minValue",
         CantDecimales = "decimalCount",
-        RegEx = "regEx"
+        RegEx = "regEx",
+        ValidarExistencia = "ValidateExists",
+    };
+    var metodos = new
+    {
+        Agregar = "Add",
+        Actualizar = "Update",
+        MarcarComoBorrado = "SetAsDeleted",
+        DesmarcarComoBorrado = "UnsetAsDeleted",
+        Eliminar = "Delete",
+        EliminarPorId = "DeleteById",
+        Obtener = "Get",
+        ValidarArgumentoRequerido = "ValidateRequiredArgumentAndThrow",
+        ValidarEntidad = "ValidateEntity",
+        EstablecerDatosCreado = "SetCreatedFields",
+        EstablecerDatosModificado = "SetUpdatedFields",
+        EstablecerDatosBorrado = "SetDeletedFields",
+        ActualizarDatosBorrado = "UpdateDeletedFields",
     };
     var validaciones = new List<string>();
     string validacionMetodo,
@@ -126,7 +150,8 @@
         }
         if (!string.IsNullOrWhiteSpace(validacionMetodo))
         {
-            validaciones.Add(string.Format("Validator.{0}({1}.{2}, {3}.{2}.{4}, {5}: {6}, {7}{8})",
+            validaciones.Add(string.Format("{0}.{1}({2}.{3}, {4}.{3}.{5}, {6}: {7}, {8}{9})",
+                clases.Validador,
                 validacionMetodo,
                 parametros.Entidad,
                 propiedadNombre,
@@ -155,137 +180,137 @@ namespace @(Html.Raw(namespaceBase)).Business
 {
     public interface @Html.Raw(interfaces.Negocio)
     {
-        @if (!Model.Especificaciones.EsSoloLectura)
-        {
-        <text>@Html.Raw(clases.Entidad) Add(@clases.AgregarParametros @parametros.Parametros);
-        void Update(@clases.ActualizarParametros @parametros.Parametros);</text>
-        }
-        @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
-        {
-        <text>void SetAsDeleted(@clases.MarcarComoBorradoParametros @parametros.Parametros);
-        void UnsetAsDeleted(@clases.DesmarcarComoBorradoParametros @parametros.Parametros);</text>
-        }
-        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
-        { 
-        <text>void Eliminar(@clases.EliminarParametros @parametros.Parametros);</text>
-        }
+    @if (!Model.Especificaciones.EsSoloLectura)
+    {
+        <text>@Html.Raw(clases.Entidad) @(metodos.Agregar)(@clases.AgregarParametros @parametros.Parametros);
+        void @(metodos.Actualizar)(@clases.ActualizarParametros @parametros.Parametros);</text>
+    }
+    @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
+    {
+        <text>void @(metodos.MarcarComoBorrado)(@clases.MarcarComoBorradoParametros @parametros.Parametros);
+        void @(metodos.DesmarcarComoBorrado)(@clases.DesmarcarComoBorradoParametros @parametros.Parametros);</text>
+    }
+    else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
+    {
+        <text>void @(metodos.Eliminar)(@clases.EliminarParametros @parametros.Parametros);</text>
+    }
     }
 
-    public class @Html.Raw(clases.Negocio) : @Html.Raw(FormatoHelper.Generic("NegocioBase", interfaces.Repositorio)), @Html.Raw(interfaces.Negocio)
+    public class @Html.Raw(clases.Negocio) : @Html.Raw(FormatoHelper.Generic("BusinessBase", interfaces.Repositorio)), @Html.Raw(interfaces.Negocio)
     {
-        public @(Html.Raw(clases.Negocio))(@Html.Raw(interfaces.Repositorio) @Html.Raw(variables.Repositorio), IErroresNegocio @variables.ErroresNegocio, IMapper @variables.Mapper)
+        public @(Html.Raw(clases.Negocio))(@Html.Raw(interfaces.Repositorio) @Html.Raw(variables.Repositorio), IErrorsBusiness @variables.ErroresNegocio, IMapper @variables.Mapper)
             : base(@Html.Raw(variables.Repositorio), @variables.ErroresNegocio, @variables.Mapper)
         {
         }
 
         @if (!Model.Especificaciones.EsSoloLectura)
         {<text>
-        public @Html.Raw(clases.Entidad) Agregar(@clases.AgregarParametros @variables.Parametros)
+        public @Html.Raw(clases.Entidad) @(metodos.Agregar)(@clases.AgregarParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+            @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@variables.Parametros, nameof(@variables.Parametros));
 
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
             @if (Model.Especificaciones.IDPropiedadTipoId == PropiedadTipos.GUID)
             {
-            <text>@(Html.Raw(variables.Entidad)).Id = Guid.NewGuid();
-            </text>
+                <text>@(Html.Raw(variables.Entidad)).Id = Guid.NewGuid();
+                </text>
             }
             @if (Model.Especificaciones.AuditoriaCreado || Model.Especificaciones.AuditoriaUltimaModificacion)
             {
             <text>
-            DateTime fechaHora = DateTime.Now;</text>}
+            DateTime @variables.FechaHoraActual = DateTime.Now;</text>}
             @if (Model.Especificaciones.AuditoriaCreado)
             {
             <text>
-            @(Html.Raw(variables.Entidad)).EstablecerDatosCreado(@(variables.Parametros).UsuarioLogueadoId, fechaHora);</text>}
+            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosCreado)(@(variables.Parametros).@(propiedes.UsuarioLogueadoId)), @variables.FechaHoraActual);</text>}
             @if (Model.Especificaciones.AuditoriaUltimaModificacion)
             {
             <text>
-            @(Html.Raw(variables.Entidad)).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, fechaHora);
+            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosModificado)(@(variables.Parametros).@(propiedes.UsuarioLogueadoId), @variables.FechaHoraActual);
             </text>}
-    
-            ValidarDatos(@Html.Raw(variables.Entidad));
 
-            Repositorio.Agregar(@Html.Raw(variables.Entidad));
+            @(metodos.ValidarEntidad)(@Html.Raw(variables.Entidad));
+
+            @(variables.Repositorio).@(metodos.Agregar)(@Html.Raw(variables.Entidad));
 
             return @Html.Raw(variables.Entidad);
         }
 
-        public void Actualizar(@clases.ActualizarParametros @variables.Parametros)
+        public void @(metodos.Actualizar)(@clases.ActualizarParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+            @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@variables.Parametros, nameof(@variables.Parametros));
 
-            var @Html.Raw(variables.Entidad) = Obtener(@(variables.Parametros).Id);
+            var @Html.Raw(variables.Entidad) = @(metodos.Obtener)(@(variables.Parametros).Id);
             Mapper.Map(@variables.Parametros, @Html.Raw(variables.Entidad));
             @if (Model.Especificaciones.AuditoriaUltimaModificacion)
             {
             <text>
-            @(Html.Raw(variables.Entidad)).EstablecerDatosModificacion(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);
+            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosModificado)(@(variables.Parametros).@(propiedes.UsuarioLogueadoId), DateTime.Now);
             </text>}
 
-            ValidarDatos(@Html.Raw(variables.Entidad));
+            @(metodos.ValidarEntidad)(@Html.Raw(variables.Entidad));
 
-            Repositorio.Actualizar(@Html.Raw(variables.Entidad));
+            @(variables.Repositorio).@(metodos.Actualizar)(@Html.Raw(variables.Entidad));
         }
         </text>}
         @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
         {<text>
-        public void MarcarComoBorrado(@clases.MarcarComoBorradoParametros @variables.Parametros)
+        public void @(metodos.MarcarComoBorrado)(@clases.MarcarComoBorradoParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
-    
+            @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@variables.Parametros, nameof(@variables.Parametros));
+
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
-            @(Html.Raw(variables.Entidad)).EstablecerDatosBorrado(@(variables.Parametros).UsuarioLogueadoId, DateTime.Now);
+            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosBorrado)(@(variables.Parametros).@(propiedes.UsuarioLogueadoId), DateTime.Now);
 
-            ValidarDatos(@Html.Raw(variables.Entidad));
+            @(metodos.ValidarEntidad)(@Html.Raw(variables.Entidad));
 
-            Repositorio.ActualizarDatosBorrado(@Html.Raw(variables.Entidad));
+            @(variables.Repositorio).@(metodos.ActualizarDatosBorrado)(@Html.Raw(variables.Entidad));
         }
 
-        public void DesmarcarComoBorrado(@clases.DesmarcarComoBorradoParametros @variables.Parametros)
+        public void @(metodos.DesmarcarComoBorrado)(@clases.DesmarcarComoBorradoParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
+            @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@variables.Parametros, nameof(@variables.Parametros));
 
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
-            Repositorio.ActualizarDatosBorrado(@Html.Raw(variables.Entidad));
+            @(variables.Repositorio).@(metodos.ActualizarDatosBorrado)(@Html.Raw(variables.Entidad));
         }
         </text>}
-        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA) 
+        else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
         {<text>
-        public void Eliminar(@clases.EliminarParametros @variables.Parametros)
+        public void @(metodos.Eliminar)(@clases.EliminarParametros @variables.Parametros)
         {
-            Validador.ValidarArgumentRequeridoYThrow(@variables.Parametros, nameof(@variables.Parametros));
-    
-            Repositorio.EliminarPorId(@(variables.Parametros).Id);
+            @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@variables.Parametros, nameof(@variables.Parametros));
+
+            @(variables.Repositorio).@(metodos.EliminarPorId)(@(variables.Parametros).Id);
         }
         </text>}
-        @if (!Model.Especificaciones.EsSoloLectura) 
-        {<text> 
-        private @Html.Raw(clases.Entidad) Obtener(@Model.Especificaciones.IDTipo.CLRType id,
-            bool validarExistencia = true)
+        @if (!Model.Especificaciones.EsSoloLectura)
+        {<text>
+        private @Html.Raw(clases.Entidad) @(metodos.Obtener)(@Model.Especificaciones.IDTipo.CLRType id,
+            bool @parametros.ValidarExistencia = true)
         {
-            var entidad = Repositorio.Obtener(id);
-            if (validarExistencia
-                && entidad == null)
+            var @variables.Entidad = @(variables.Repositorio).@(metodos.Obtener)(id);
+            if (@parametros.ValidarExistencia
+                && @variables.Entidad == null)
             {
-                throw new Exception(Validador.MensajeEntidadInexistente(@(Html.Raw(clases.Metadata)).ETIQUETA, id));
+                throw new Exception(@(clases.Validador).EntityNotFound(@(Html.Raw(clases.Metadata)).LABEL, id));
             }
 
-            return entidad;
+            return @variables.Entidad;
         }
 
-        private void ValidarDatos(@Html.Raw(clases.Entidad) entidad)
+        private void @(metodos.ValidarEntidad)(@Html.Raw(clases.Entidad) @variables.Entidad)
         {
-            var errores = new @(Html.Raw(FormatoHelper.Generic("List", "string")))();
+            var @variables.Errores = new @(Html.Raw(FormatoHelper.Generic("List", "string")))();
 
-        @foreach (var v in validaciones)
-        {
-            <text>@Html.Raw(v);</text>
-        }
+            @foreach (var v in validaciones)
+            {
+                <text>@Html.Raw(v);</text>
+            }
 
-            Validador.LanzarExcepcionMensajeAlUsuarioSiExistenErrores(errores);
+            @(clases.Validador).ThrowExceptionFriendlyMessageIfAnyErrors(@variables.Errores);
         }
         </text>}
     }
-}
+    }
 

@@ -9,6 +9,7 @@ using namasdev.Data.Entity;
 
 using namasdev.Apps.Entidades;
 using namasdev.Apps.Datos.Sql;
+using namasdev.Apps.Entidades.Valores;
 
 namespace namasdev.Apps.Datos
 {
@@ -29,7 +30,7 @@ namespace namasdev.Apps.Datos
             OrdenYPaginacionParametros op = null,
             bool cargarDatosAdicionales = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesPropiedades
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
@@ -44,7 +45,7 @@ namespace namasdev.Apps.Datos
             Guid entidadPropiedadId,
             bool cargarDatosAdicionales = false)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.EntidadesPropiedades
                     .IncludeMultipleIf(CrearPathsDatosAdicionales(), cargarDatosAdicionales)
@@ -54,12 +55,12 @@ namespace namasdev.Apps.Datos
 
         public short ObtenerProximoOrdenDisponible(Guid entidadId)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 var orden = ctx.EntidadesPropiedades
                     .Where(ep =>
                         ep.EntidadId == entidadId
-                        && !ep.EsAuditoria)
+                        && ep.PropiedadCategoriaId == PropiedadCategorias.GENERAL)
                     .Max(ep => (short?)ep.Orden) ?? 0;
 
                 return (short)(orden + 1);
@@ -68,7 +69,7 @@ namespace namasdev.Apps.Datos
 
         public IEnumerable<PropiedadTipo> ObtenerTipos()
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.PropiedadTipos.ToList();
             }

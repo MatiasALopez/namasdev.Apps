@@ -22,7 +22,7 @@ namespace namasdev.Apps.Datos
             string busqueda = null,
             OrdenYPaginacionParametros op = null)
         {
-            using (var ctx = new SqlContext())
+            using (var ctx = CrearContext())
             {
                 return ctx.Aplicaciones
                     .Where(a => !a.Borrado)

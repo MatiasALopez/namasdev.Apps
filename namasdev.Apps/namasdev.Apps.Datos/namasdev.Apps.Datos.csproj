@@ -92,7 +92,7 @@
     <Compile Include="Sql\Config\AsociacionReglaConfig.cs" />
     <Compile Include="Sql\Config\AplicacionVersionConfig.cs" />
     <Compile Include="Sql\Config\IdiomaArticuloConfig.cs" />
-    <Compile Include="Sql\Config\IdiomaEntidadPropiedadesMetadataConfig.cs" />
+    <Compile Include="Sql\Config\IdiomaTextosConfig.cs" />
     <Compile Include="Sql\Config\IdiomaConfig.cs" />
     <Compile Include="Sql\Config\BajaTipoConfig.cs" />
     <Compile Include="Sql\Config\EntidadCheckConfig.cs" />

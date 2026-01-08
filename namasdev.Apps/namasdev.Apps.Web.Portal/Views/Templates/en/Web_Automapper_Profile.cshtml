@@ -1,11 +1,14 @@
 ﻿@using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
     var namespaces = new
     {
-        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Entidades = idiomaTextos.EntidadesNombre,
+        Negocio = idiomaTextos.NegocioNombre,
     };
-    var clases = new 
+    var clases = new
     {
         Profile = string.Format("{0}Profile", Model.Nombre),
         Entidad = Model.Nombre,
@@ -15,8 +18,8 @@
 }
 using AutoMapper;
 
-using @(Html.Raw(namespaces.Aplicacion)).Entities;
-using @(Html.Raw(namespaces.Aplicacion)).Business.DTO.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades);
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Negocio).DTO.@(Html.Raw(Model.NombrePlural));
 using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Models.@(Html.Raw(Model.NombrePlural));
 using @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@(Html.Raw(Model.NombrePlural));
 
@@ -29,10 +32,10 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Automapper
             @(Html.Raw(FormatoHelper.Generic("CreateMap", clases.Entidad, clases.EntidadViewModel)))()
                 .ReverseMap();
 
-            @(Html.Raw(FormatoHelper.Generic("CreateMap", "AgregarParametros", clases.EntidadViewModel)))()
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", string.Format("{0}{1}", idiomaTextos.Agregar, idiomaTextos.Parametros), clases.EntidadViewModel)))()
                 .ReverseMap();
 
-            @(Html.Raw(FormatoHelper.Generic("CreateMap", "ActualizarParametros", clases.EntidadViewModel)))()
+            @(Html.Raw(FormatoHelper.Generic("CreateMap", string.Format("{0}{1}", idiomaTextos.Actualizar, idiomaTextos.Parametros), clases.EntidadViewModel)))()
                 .ReverseMap();
 
             @(Html.Raw(FormatoHelper.Generic("CreateMap", clases.Entidad, clases.EntidadItemModel)))();

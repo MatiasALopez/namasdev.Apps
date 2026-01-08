@@ -2,6 +2,12 @@
 @using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Entidades = idiomaTextos.EntidadesNombre,
+    };
     var clases = new
     {
         Metadata = string.Format("{0}Metadata", Model.Nombre)
@@ -10,6 +16,10 @@
     {
         Repositorio = "repository",
         UsuarioId = "userId",
+    };
+    var constantes = new
+    {
+        Etiqueta = EntidadMetadataAtributos_en.ETIQUETA,
     };
     var constantesDefiniciones = new
     {
@@ -33,7 +43,7 @@
     };
     Dictionary<string, string> propiedadConstantes;
 }
-namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entities.Metadata
+namespace @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Entidades)).Metadata
 {
     public class @Html.Raw(clases.Metadata)
     {
@@ -43,7 +53,7 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entities.Metada
         public const string LABEL = "@Html.Raw(Model.Etiqueta)";
         public const string LABEL_PLURAL = "@Html.Raw(Model.EtiquetaPlural)";
 
-        public class BD
+        public class DB
         {
             public const string TABLE = "@Html.Raw(Model.NombrePlural)";
         @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
@@ -52,13 +62,13 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entities.Metada
         }
         }
 
-        public class Properties
+        public class @idiomaTextos.Propiedades
         {
         @foreach(var p in Model.Propiedades)
         {
             propiedadConstantes = new Dictionary<string, string>
             {
-                { FormatoHelper.TipoYNombre("string", constantesDefiniciones.Etiqueta), FormatoHelper.EntreComillas(p.Etiqueta) }
+                { constantesDefiniciones.Etiqueta, FormatoHelper.EntreComillas(p.Etiqueta) }
             };
             switch (p.PropiedadTipoId)
             {
@@ -137,19 +147,19 @@ namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entities.Metada
         @if (!Model.Especificaciones.EsSoloLectura)
         {
         <text>
-        public class Mensajes
+        public class Messages
         {
-            public const string ADD_OK = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " added successfully.";
-            public const string ADD_ERROR = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " add failed.";
+            public const string ADD_OK = @(Html.Raw(clases.Metadata)).@(constantes.Etiqueta) + " added successfully.";
+            public const string ADD_ERROR = @(Html.Raw(clases.Metadata)).@(constantes.Etiqueta) + " add failed.";
 
-            public const string UPDATE_OK = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " updated successfully.";
-            public const string UPDATE_ERROR = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " update failed.";
+            public const string UPDATE_OK = @(Html.Raw(clases.Metadata)).@(constantes.Etiqueta) + " updated successfully.";
+            public const string UPDATE_ERROR = @(Html.Raw(clases.Metadata)).@(constantes.Etiqueta) + " update failed.";
         @if (Model.Especificaciones.BajaTipoId != BajaTipos.NINGUNA)
         {
             <text>
-            public const string DELETE_OK = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " deleted successfully.";
-            public const string DELETE_ERROR = @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + " delete failed.";
-            public const string DELETE_CONFIRMATION = "Are you sure you want to delete the selected " + @(Html.Raw(clases.Metadata)).@(constantesDefiniciones.Etiqueta) + "?";
+            public const string DELETE_OK = @(Html.Raw(clases.Metadata)).@(constantes.Etiqueta) + " deleted successfully.";
+            public const string DELETE_ERROR = @(Html.Raw(clases.Metadata)).@(constantes.Etiqueta) + " delete failed.";
+            public const string DELETE_CONFIRMATION = "Are you sure you want to delete the selected " + @(Html.Raw(clases.Metadata)).@(constantes.Etiqueta) + "?";
             </text>
         }
         }

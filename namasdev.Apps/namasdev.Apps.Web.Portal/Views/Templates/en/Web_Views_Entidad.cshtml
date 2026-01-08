@@ -3,10 +3,11 @@
 @using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
     var namespaces = new
     {
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
-        Entidades = "Entities",
+        Entidades = idiomaTextos.EntidadesNombre,
         WebPortal = "Web.Portal",
     };
     var clases = new
@@ -20,7 +21,7 @@
     {
         ControlesIds = "controlsIds",
     };
-    var formatos = new 
+    var formatos = new
     {
         Fecha = "{0:dd/MM/yyyy}",
     };
@@ -54,8 +55,8 @@
 <form id="@string.Format("@{0}.Form", variables.ControlesIds)" action="@("@Url.Action()")" method="post" class="mt-3">
     @@Html.AntiForgeryToken()
     @@Html.ValidationSummary(excludePropertyErrors: true)
-    @@Html.Partial("_Errors")
-    @@Html.Partial("_ResultOk")
+    @@Html.MessageSuccess()
+    @@Html.MessageError()
     @if (tieneID)
     {
         <text>@@Html.HiddenFor(m => m.Id)</text>

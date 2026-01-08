@@ -2,6 +2,12 @@
 @using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
+    var namespaces = new
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Entidades = idiomaTextos.EntidadesNombre,
+    };
     string claseBase =
         Model.Especificaciones.IDPropiedadTipoId.HasValue
         ? string.Format(
@@ -17,7 +23,7 @@
         propiedadesNavegacion.Add(string.Format("{0} {1}",
             a.OrigenAsociacionMultiplicidadId == AsociacionMultiplicidades.MUCHOS
                 ? FormatoHelper.Generic("List", a.DestinoEntidad.Nombre)
-                : a.DestinoEntidad.Nombre, 
+                : a.DestinoEntidad.Nombre,
             a.OrigenEntidadPropiedadNavegacionNombre));
     }
     foreach (var a in Model.AsociacionesDestino.Where(ad => !string.IsNullOrWhiteSpace(ad.DestinoEntidadPropiedadNavegacionNombre)).OrderBy(ad => ad.OrigenEntidad.Nombre).ThenBy(ad => ad.OrigenPropiedad.Orden))
@@ -34,26 +40,29 @@ using System.Collections.Generic;
 
 using namasdev.Core.Entity;
 
-namespace @(Html.Raw(Model.AplicacionVersion.Aplicacion.Nombre)).Entities
+namespace @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Entidades))
 {
     public partial class @Html.Raw(Model.Nombre) @Html.Raw(claseBase)
     {
     @foreach (var p in Model.Propiedades)
     {
-        if (p.EsID 
-            || p.EsAuditoria)
-        {
-            continue;
-        }
+        if (p.EsID || p.EsAuditoria) { continue; }
         <text>public @(Html.Raw(p.PermiteNull ? p.Tipo.CLRTypeNullable : p.Tipo.CLRType)) @Html.Raw(p.Nombre) { get; set; }</text>
     }
     @if (propiedadesNavegacion.Count > 0)
     {
         <text></text>
-    foreach (var p in propiedadesNavegacion)
-    {
+        foreach (var p in propiedadesNavegacion)
+        {
         <text>public virtual @Html.Raw(p) { get; set; }</text>
+        }
     }
-    }
+    @if (Model.Especificaciones.IDTipo != null)
+    {<text>
+        public override string ToString()
+        {
+            return Id@(Model.Especificaciones.IDPropiedadTipoId != PropiedadTipos.TEXTO ? ".ToString()" : "");
+        }</text>}
+
     }
 }

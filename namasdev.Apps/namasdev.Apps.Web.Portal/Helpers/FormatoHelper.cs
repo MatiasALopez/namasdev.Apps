@@ -13,7 +13,8 @@ namespace namasdev.Apps.Web.Portal.Helpers
         public static string MetadataPropiedadAtributo(EntidadPropiedad propiedad, string atributo,
             bool incluirNamespace = false)
         {
-            return $"{(incluirNamespace ? "namasdev.Apps.Entidades.Metadata." : "")}{propiedad.Entidad.Nombre}Metadata.Propiedades.{propiedad.Nombre}.{atributo}";
+            var idiomaTextos = propiedad.Entidad.AplicacionVersion.Aplicacion.Idioma.Textos;
+            return $"{(incluirNamespace ? $"namasdev.Apps.{idiomaTextos.EntidadesNombre}.Metadata." : "")}{propiedad.Entidad.Nombre}Metadata.{idiomaTextos.Propiedades}.{propiedad.NombreOId}.{atributo}";
         }
 
         public static string TipoYNombre(string tipo, string nombre)

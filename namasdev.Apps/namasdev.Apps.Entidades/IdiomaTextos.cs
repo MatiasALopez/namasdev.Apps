@@ -23,6 +23,14 @@ namespace namasdev.Apps.Entidades
         public string DatosNombre { get; set; }
         public string NegocioNombre { get; set; }
         public string WebPortalNombre { get; set; }
+        public string Repositorio { get; set; }
+        public string Agregar { get; set; }
+        public string Actualizar { get; set; }
+        public string Eliminar { get; set; }
+        public string MarcarComoBorrado { get; set; }
+        public string DesmarcarComoBorrado { get; set; }
+        public string Parametros { get; set; }
+        public string Propiedades { get; set; }
 
         public virtual Idioma Idioma { get; set; }
 

@@ -2,10 +2,11 @@
 @using namasdev.Apps.Entidades.Valores;
 @model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
     var namespaces = new
     {
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
-        Entidades = "Entities",
+        Entidades = idiomaTextos.EntidadesNombre,
         WebPortal = "Web.Portal",
     };
     var clases = new
@@ -103,13 +104,13 @@
     }
 }
 <h2 class="my-2">@@ViewBag.Title</h2>
-@@Html.Partial("_ResultOk")
-@@Html.Partial("_Errors")
+@@Html.MessageSuccess()
+@@Html.MessageError()
 <div class="row my-3">
     @if (!esSoloLectura)
     {
     <div class="col-md-3">
-        <a href="@Html.Raw(string.Format("@Url.Action(nameof({0}.Add))", clases.Controller))" class="btn btn-primary">Add</a>
+        <a href="@Html.Raw(string.Format("@Url.Action(nameof({0}.{1}))", clases.Controller, idiomaTextos.Agregar))" class="btn btn-primary">@idiomaTextos.Agregar</a>
     </div>
     }
     <div class="col-md-@(!esSoloLectura ? "9" : "12") text-right filters">
@@ -153,7 +154,7 @@
                                     <a href="@Html.Raw(string.Format("@Url.Action(nameof({0}.Edit), new {{ id = item.{1} }})", clases.Controller, propiedadIdNombre))" class="btn btn-sm btn-outline-secondary"><i class="fa fa-edit" data-toggle="tooltip" title="Edit"></i></a>
                                     @if (eliminarDisponible)
                                     {
-                                    <button class="btn btn-sm btn-outline-danger @("@clasesCss.DeleteButton")" data-id="@Html.Raw(string.Format("@item.{0}", propiedadIdNombre))"><i data-toggle="tooltip" title="Delete" class="fa fa-trash"></i></button>
+                                    <button class="btn btn-sm btn-outline-danger @("@clasesCss.DeleteButton")" data-id="@Html.Raw(string.Format("@item.{0}", propiedadIdNombre))"><i data-toggle="tooltip" title="@idiomaTextos.Eliminar" class="fa fa-trash"></i></button>
                                     }
                                 </td>
                             }
@@ -162,7 +163,7 @@
                     </tbody>
                 </table>
             </div>
-            @@Html.Partial("_Pager", Model.Pager)
+            @@Html.Partial("_Pager", Model.Pagination)
         }
         else
         {
@@ -188,11 +189,11 @@
                 var options = {
                     showLoadingSelector: '#@@@(variables.ControlesIds).TableContainer',
                     confirm: true,
-                    confirmTitle: 'Delete @@@(Html.Raw(clases.Metadata)).LABEL',
+                    confirmTitle: '@idiomaTextos.Eliminar @@@(Html.Raw(clases.Metadata)).LABEL',
                     confirmMessage: '@@@(Html.Raw(clases.MetadataMensajes)).DELETE_CONFIRMATION'
                 };
                 @(javaScript.App).postJson(
-                    '@@Url.Action(nameof(@(Html.Raw(clases.Controller)).Delete))/' + id,
+                    '@@Url.Action(nameof(@(Html.Raw(clases.Controller)).@(idiomaTextos.Eliminar)))/' + id,
                     nmd.ui.forms.createDataWithAntiForgeryToken('#@@@(variables.ControlesIds).Form'),
                     function (response) {
                         if (response.success) {

@@ -20,6 +20,14 @@ create table dbo.IdiomasTextos
     DatosNombre nvarchar(50) not null,
     NegocioNombre nvarchar(50) not null,
     WebPortalNombre nvarchar(50) not null,
+    Repositorio nvarchar(50) not null,
+    Agregar nvarchar(50) not null,
+    Actualizar nvarchar(50) not null,
+    Eliminar nvarchar(50) not null,
+    MarcarComoBorrado nvarchar(50) not null,
+    DesmarcarComoBorrado nvarchar(50) not null,
+    Parametros nvarchar(50) not null,
+    Propiedades nvarchar(50) not null,
 
     constraint PK_IdiomasTextos primary key clustered (IdiomaId),
     constraint FK_IdiomasTextos_IdiomaId foreign key (IdiomaId) references dbo.Idiomas (IdiomaId) on update cascade on delete cascade

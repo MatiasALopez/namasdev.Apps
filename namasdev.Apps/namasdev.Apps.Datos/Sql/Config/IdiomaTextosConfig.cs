@@ -34,6 +34,14 @@ namespace namasdev.Apps.Datos.Sql.Config
             Property(p => p.DatosNombre).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.DatosNombre.TAMAÑO_MAX);
             Property(p => p.NegocioNombre).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.NegocioNombre.TAMAÑO_MAX);
             Property(p => p.WebPortalNombre).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.WebPortalNombre.TAMAÑO_MAX);
+            Property(p => p.Repositorio).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.Repositorio.TAMAÑO_MAX);
+            Property(p => p.Agregar).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.Agregar.TAMAÑO_MAX);
+            Property(p => p.Actualizar).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.Actualizar.TAMAÑO_MAX);
+            Property(p => p.Eliminar).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.Eliminar.TAMAÑO_MAX);
+            Property(p => p.MarcarComoBorrado).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.MarcarComoBorrado.TAMAÑO_MAX);
+            Property(p => p.DesmarcarComoBorrado).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.DesmarcarComoBorrado.TAMAÑO_MAX);
+            Property(p => p.Parametros).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades.Parametros.TAMAÑO_MAX);
+            Property(p => p.Propiedades).IsRequired().HasMaxLength(IdiomaTextosMetadata.Propiedades._Propiedades.TAMAÑO_MAX);
         }
     }
 }

@@ -135,6 +135,54 @@
                 public const string ETIQUETA = "Web Portal - Etiqueta";
                 public const int TAMAÑO_MAX = 50;
             }
+
+            public class Repositorio
+            {
+                public const string ETIQUETA = "Repositorio";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class Agregar
+            {
+                public const string ETIQUETA = "Agregar";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class Actualizar
+            {
+                public const string ETIQUETA = "Actualizar";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class Eliminar
+            {
+                public const string ETIQUETA = "Eliminar";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class MarcarComoBorrado
+            {
+                public const string ETIQUETA = "Marcar como borrado";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class DesmarcarComoBorrado
+            {
+                public const string ETIQUETA = "Desmarcar como borrado";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class Parametros
+            {
+                public const string ETIQUETA = "Parametros";
+                public const int TAMAÑO_MAX = 50;
+            }
+
+            public class _Propiedades
+            {
+                public const string ETIQUETA = "Propiedades";
+                public const int TAMAÑO_MAX = 50;
+            }
         }
     }
 }

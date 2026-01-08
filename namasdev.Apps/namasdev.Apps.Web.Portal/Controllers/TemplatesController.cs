@@ -114,7 +114,7 @@ namespace namasdev.Apps.Web.Portal.Controllers
         public ActionResult Debug(Guid id, string template)
         {
             var entidad = ObtenerEntidad(id);
-            var contenido = RenderViewToString(template, entidad);
+            var contenido = RenderViewToString(template, entidad).TrimStart();
             return Content(contenido, ArchivoContentTypes.Text.TXT);
         }
 

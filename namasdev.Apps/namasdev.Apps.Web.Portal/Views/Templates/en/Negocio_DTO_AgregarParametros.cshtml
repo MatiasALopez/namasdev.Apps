@@ -1,15 +1,17 @@
 ﻿@model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
     var namespaces = new
     {
-        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Negocio = idiomaTextos.NegocioNombre,
     };
 }
 using System;
 
-namespace @(Html.Raw(namespaces.Aplicacion)).Business.DTO.@(Html.Raw(Model.NombrePlural))
+namespace @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Negocio).DTO.@(Html.Raw(Model.NombrePlural))
 {
-    public class AddParameters : ParametersWithUserBase
+    public class @string.Format("{0}{1}", idiomaTextos.Agregar, idiomaTextos.Parametros) : ParametersWithUserBase
     {
     @foreach (var p in Model.Propiedades)
     {

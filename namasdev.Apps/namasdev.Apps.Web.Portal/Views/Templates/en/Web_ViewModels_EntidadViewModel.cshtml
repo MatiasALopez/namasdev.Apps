@@ -3,18 +3,21 @@
 @using namasdev.Apps.Web.Portal.Helpers;
 @model Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
     var namespaces = new
     {
-        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Entidades = idiomaTextos.EntidadesNombre,
     };
     var clases = new
     {
         EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
         Metadata = string.Format("{0}Metadata", Model.Nombre),
-        MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
+        MetadataPropiedades = string.Format("{0}Metadata.{1}", Model.Nombre, idiomaTextos.Propiedades),
         PaginaModo = "PageMode",
+        Validador = "namasdev.Core.Validation.Validator",
     };
-    var propiedades = new 
+    var propiedades = new
     {
         PaginaModo = "PageMode",
     };
@@ -27,10 +30,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-using namasdev.Core.Validation;
 using namasdev.Web.Models;
 
-using @(Html.Raw(namespaces.Aplicacion)).Entities.Metadata;
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades).Metadata;
 
 namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@Html.Raw(Model.NombrePlural)
 {
@@ -47,7 +49,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@Html.Raw(Mod
         <text>[Display(Name = @(Html.Raw(clases.MetadataPropiedades)).@(Html.Raw(p.NombreOId)).LABEL)]
         @if (!p.PermiteNull && !p.EsID)
         {
-        <text>[Required(ErrorMessage = Validator.Messages.Formats.REQUIRED)]</text>
+        <text>[Required(ErrorMessage = @(clases.Validador).Messages.Formats.REQUIRED)]</text>
         }
         public @p.Tipo.CLRTypeNullable @Html.Raw(p.NombreOId) { get; set; }
         </text>
@@ -68,7 +70,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.ViewModels.@Html.Raw(Mod
             <text>if (@propiedades.PaginaModo == @(clases.PaginaModo).Edit
                 && @FormatoHelper.ExpresionCheckNoNull(propiedadId.NombreOId, propiedadId.Tipo))
             {
-                yield return new ValidationResult(Validator.Messages.Required(@(Html.Raw(clases.Metadata)).LABEL));
+                yield return new ValidationResult(@(clases.Validador).Messages.Required(@(Html.Raw(clases.Metadata)).LABEL));
             }</text>
         }
         }

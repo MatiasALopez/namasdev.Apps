@@ -3,31 +3,33 @@
 @using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
     var namespaces = new
     {
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
-        Entidades = "Entities",
-        Datos = "Data",
-        Negocio = "Business",
+        Entidades = idiomaTextos.EntidadesNombre,
+        Datos = idiomaTextos.DatosNombre,
+        Negocio = idiomaTextos.NegocioNombre,
         WebPortal = "Web.Portal",
     };
     var clases = new
     {
         Metadata = string.Format("{0}Metadata", Model.Nombre),
-        MetadataMensajes = string.Format("{0}Metadata.Mensajes", Model.Nombre),
-        Negocio = string.Format("{0}Negocio", Model.NombrePlural),
-        Repositorio = string.Format("{0}Repositorio", Model.NombrePlural),
+        MetadataMensajes = string.Format("{0}Metadata.Messages", Model.Nombre),
+        Negocio = string.Format("{0}{1}", Model.NombrePlural, idiomaTextos.NegocioNombre),
+        Repositorio = string.Format("{0}{1}", Model.NombrePlural, idiomaTextos.Repositorio),
         Controller = string.Format("{0}Controller", Model.NombrePlural),
         EntidadItemModel = string.Format("{0}ItemModel", Model.Nombre),
         ListaViewModel = string.Format("{0}ViewModel", Model.NombrePlural),
         EntidadViewModel = string.Format("{0}ViewModel", Model.Nombre),
         Views = string.Format("{0}Views", Model.NombrePlural),
         Validador = "Validator",
-        AgregarParametros = "AddParameters",
-        ActualizarParametros = "UpdateParameters",
-        MarcarComoBorradoParametros = "SetAsDeletedParameters",
-        EliminarParametros = "DeleteParameters",
+        AgregarParametros = string.Format("{0}{1}",idiomaTextos.Agregar, idiomaTextos.Parametros),
+        ActualizarParametros = string.Format("{0}{1}",idiomaTextos.Actualizar, idiomaTextos.Parametros),
+        MarcarComoBorradoParametros = string.Format("{0}{1}", idiomaTextos.MarcarComoBorrado, idiomaTextos.Parametros),
+        EliminarParametros = string.Format("{0}{1}", idiomaTextos.Eliminar, idiomaTextos.Parametros),
         PaginaModo = "PageMode",
+        ListasHelper = "ListHelper",
     };
     var interfaces = new
     {
@@ -41,7 +43,7 @@
         Entidad = Model.Nombre.ToFirstLetterLowercase(),
         ViewModel = "model",
     };
-    var propiedades = new 
+    var propiedades = new
     {
         Pagina = "Page",
         Orden = "Order",
@@ -55,11 +57,11 @@
     };
     var metodos = new
     {
-        Agregar = "Add",
-        Actualizar = "Update",
-        MarcarComoBorrado = "SetAsDeleted",
-        DesmarcarComoBorrado = "UnsetAsDeleted",
-        Eliminar = "Delete",
+        Agregar = idiomaTextos.Agregar,
+        Actualizar = idiomaTextos.Actualizar,
+        MarcarComoBorrado = idiomaTextos.MarcarComoBorrado,
+        DesmarcarComoBorrado = idiomaTextos.DesmarcarComoBorrado,
+        Eliminar = idiomaTextos.Eliminar,
         Obtener = "Get",
         Cargar = "Cargar",
         Mapear = "Map",
@@ -76,9 +78,9 @@
     var actionNombres = new
     {
         Index = "Index",
-        Agregar = "Add",
+        Agregar = idiomaTextos.Agregar,
         Editar = "Edit",
-        Eliminar = "Delete",
+        Eliminar = idiomaTextos.Eliminar,
         Cargar = "Load",
     };
     bool tienePropiedadesBoolean = false,
@@ -101,8 +103,8 @@ using namasdev.Web.Models;
 
 using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades);
 using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades).Metadata;
-using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades).Valores;
-using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Datos));
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades).Values;
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Datos);
 using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Negocio);
 using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Negocio).DTO.@(Html.Raw(Model.NombrePlural));
 using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.WebPortal).Metadata.Views;
@@ -276,7 +278,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
                     //search: @(Html.Raw(variables.ViewModel)).Search,
                     op: op));
 
-            @(Html.Raw(variables.ViewModel)).LoadPagination(op);
+            @(Html.Raw(variables.ViewModel)).SetPagination(op);
         }
         @if (!Model.Especificaciones.EsSoloLectura)
         {
@@ -288,10 +290,10 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             @(Html.Raw(variables.ViewModel)).@(propiedades.PaginaModo) = @parametros.PaginaModo;
 
 @if (tienePropiedadesBoolean) {
-            <text>@(Html.Raw(variables.ViewModel)).YesNoSelectList = ListasHelper.GetYesNoSelectList();</text>
+            <text>@(Html.Raw(variables.ViewModel)).YesNoSelectList = @(clases.ListasHelper).GetYesNoSelectList();</text>
 }
 @if (tienePropiedadesHora) {
-            <text>@(Html.Raw(variables.ViewModel)).TimeSelectList = ListasHelper.GetTimeSelectList();</text>
+            <text>@(Html.Raw(variables.ViewModel)).TimeSelectList = @(clases.ListasHelper).GetTimeSelectList();</text>
 }
         }</text>
         }

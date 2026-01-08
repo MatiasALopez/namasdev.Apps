@@ -2,19 +2,26 @@
 @using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
-    string namespaceBase = Model.AplicacionVersion.Aplicacion.Nombre;
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
+    var namespaces = new 
+    {
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Entidades = idiomaTextos.EntidadesNombre,
+        Datos = idiomaTextos.DatosNombre,
+        Negocio = idiomaTextos.NegocioNombre,
+    };
     var clases = new
     {
         Entidad = Model.Nombre,
-        Negocio = string.Format("{0}Business", Model.NombrePlural),
-        Repositorio = string.Format("{0}Repository", Model.NombrePlural),
+        Negocio = string.Format("{0}{1}", Model.NombrePlural, idiomaTextos.NegocioNombre),
+        Repositorio = string.Format("{0}{1}", Model.NombrePlural, idiomaTextos.Repositorio),
         Metadata = string.Format("{0}Metadata", Model.Nombre),
-        MetadataPropiedades = string.Format("{0}Metadata.Propiedades", Model.Nombre),
-        AgregarParametros = "AddParameters",
-        ActualizarParametros = "UpdateParameter",
-        MarcarComoBorradoParametros = "SetAsDeletedParameter",
-        DesmarcarComoBorradoParametros = "UnsetAsDeletedParameter",
-        EliminarParametros = "DeleteParameter",
+        MetadataPropiedades = string.Format("{0}Metadata.{1}", Model.Nombre, idiomaTextos.Propiedades),
+        AgregarParametros = string.Format("{0}{1}", idiomaTextos.Agregar, idiomaTextos.Parametros),
+        ActualizarParametros = string.Format("{0}{1}", idiomaTextos.Actualizar, idiomaTextos.Parametros),
+        MarcarComoBorradoParametros = string.Format("{0}{1}", idiomaTextos.MarcarComoBorrado, idiomaTextos.Parametros),
+        DesmarcarComoBorradoParametros = string.Format("{0}{1}", idiomaTextos.DesmarcarComoBorrado, idiomaTextos.Parametros),
+        EliminarParametros = string.Format("{0}{1}", idiomaTextos.Eliminar, idiomaTextos.Parametros),
         Validador = "Validator",
     };
     var interfaces = new
@@ -24,22 +31,22 @@
     };
     var variables = new
     {
-        Repositorio = "repository",
-        ErroresNegocio = "errorsBusiness",
-        Mapper = "mapper",
         Parametros = "parameters",
         Entidad = "entity",
         UsuarioId = "userId",
         Errores = "errors",
         FechaHoraActual = "now",
     };
-    var propiedes = new
+    var propiedades = new
     {
-        Repositorio = "Repository",
+        Repositorio = idiomaTextos.Repositorio,
         UsuarioLogueadoId = "LoggedUserId",
     };
     var parametros = new
     {
+        Repositorio = "repository",
+        ErroresNegocio = "errorsBusiness",
+        Mapper = "mapper",
         Entidad = "entity",
         Parametros = "parameters",
         Errores = "errors",
@@ -55,19 +62,19 @@
     };
     var metodos = new
     {
-        Agregar = "Add",
-        Actualizar = "Update",
-        MarcarComoBorrado = "SetAsDeleted",
-        DesmarcarComoBorrado = "UnsetAsDeleted",
-        Eliminar = "Delete",
-        EliminarPorId = "DeleteById",
+        Agregar = idiomaTextos.Agregar,
+        Actualizar = idiomaTextos.Actualizar,
+        MarcarComoBorrado = idiomaTextos.MarcarComoBorrado,
+        DesmarcarComoBorrado = idiomaTextos.DesmarcarComoBorrado,
+        Eliminar = idiomaTextos.Eliminar,
+        EliminarPorId = string.Format("{0}ById", idiomaTextos.Eliminar),
         Obtener = "Get",
         ValidarArgumentoRequerido = "ValidateRequiredArgumentAndThrow",
         ValidarEntidad = "ValidateEntity",
-        EstablecerDatosCreado = "SetCreatedFields",
-        EstablecerDatosModificado = "SetUpdatedFields",
-        EstablecerDatosBorrado = "SetDeletedFields",
-        ActualizarDatosBorrado = "UpdateDeletedFields",
+        EstablecerDatosCreado = "SetCreated",
+        EstablecerDatosModificado = "SetModified",
+        EstablecerDatosBorrado = "SetDeleted",
+        ActualizarPropiedadesBorrado = "UpdateDeletedProperties",
     };
     var validaciones = new List<string>();
     string validacionMetodo,
@@ -171,12 +178,12 @@ using AutoMapper;
 using namasdev.Core.Entity;
 using namasdev.Core.Validation;
 
-using @(Html.Raw(namespaceBase)).Data;
-using @(Html.Raw(namespaceBase)).Entities;
-using @(Html.Raw(namespaceBase)).Entities.Metadata;
-using @(Html.Raw(namespaceBase)).Business.DTO.@(Html.Raw(Model.NombrePlural));
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades);
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Entidades).Metadata;
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Datos);
+using @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Negocio).DTO.@(Html.Raw(Model.NombrePlural));
 
-namespace @(Html.Raw(namespaceBase)).Business
+namespace @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Negocio)
 {
     public interface @Html.Raw(interfaces.Negocio)
     {
@@ -187,19 +194,19 @@ namespace @(Html.Raw(namespaceBase)).Business
     }
     @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
     {
-        <text>void @(metodos.MarcarComoBorrado)(@clases.MarcarComoBorradoParametros @parametros.Parametros);
+    <text>void @(metodos.MarcarComoBorrado)(@clases.MarcarComoBorradoParametros @parametros.Parametros);
         void @(metodos.DesmarcarComoBorrado)(@clases.DesmarcarComoBorradoParametros @parametros.Parametros);</text>
     }
     else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
     {
-        <text>void @(metodos.Eliminar)(@clases.EliminarParametros @parametros.Parametros);</text>
+    <text>void @(metodos.Eliminar)(@clases.EliminarParametros @parametros.Parametros);</text>
     }
     }
 
     public class @Html.Raw(clases.Negocio) : @Html.Raw(FormatoHelper.Generic("BusinessBase", interfaces.Repositorio)), @Html.Raw(interfaces.Negocio)
     {
-        public @(Html.Raw(clases.Negocio))(@Html.Raw(interfaces.Repositorio) @Html.Raw(variables.Repositorio), IErrorsBusiness @variables.ErroresNegocio, IMapper @variables.Mapper)
-            : base(@Html.Raw(variables.Repositorio), @variables.ErroresNegocio, @variables.Mapper)
+        public @(Html.Raw(clases.Negocio))(@Html.Raw(interfaces.Repositorio) @Html.Raw(parametros.Repositorio), IErrorsBusiness @parametros.ErroresNegocio, IMapper @parametros.Mapper)
+            : base(@Html.Raw(parametros.Repositorio), @parametros.ErroresNegocio, @parametros.Mapper)
         {
         }
 
@@ -212,7 +219,7 @@ namespace @(Html.Raw(namespaceBase)).Business
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
             @if (Model.Especificaciones.IDPropiedadTipoId == PropiedadTipos.GUID)
             {
-                <text>@(Html.Raw(variables.Entidad)).Id = Guid.NewGuid();
+            <text>@(Html.Raw(variables.Entidad)).Id = Guid.NewGuid();
                 </text>
             }
             @if (Model.Especificaciones.AuditoriaCreado || Model.Especificaciones.AuditoriaUltimaModificacion)
@@ -222,16 +229,16 @@ namespace @(Html.Raw(namespaceBase)).Business
             @if (Model.Especificaciones.AuditoriaCreado)
             {
             <text>
-            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosCreado)(@(variables.Parametros).@(propiedes.UsuarioLogueadoId)), @variables.FechaHoraActual);</text>}
+            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosCreado)(@(variables.Parametros).@(propiedades.UsuarioLogueadoId), @variables.FechaHoraActual);</text>}
             @if (Model.Especificaciones.AuditoriaUltimaModificacion)
             {
             <text>
-            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosModificado)(@(variables.Parametros).@(propiedes.UsuarioLogueadoId), @variables.FechaHoraActual);
+            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosModificado)(@(variables.Parametros).@(propiedades.UsuarioLogueadoId), @variables.FechaHoraActual);
             </text>}
 
             @(metodos.ValidarEntidad)(@Html.Raw(variables.Entidad));
 
-            @(variables.Repositorio).@(metodos.Agregar)(@Html.Raw(variables.Entidad));
+            @(propiedades.Repositorio).@(metodos.Agregar)(@Html.Raw(variables.Entidad));
 
             return @Html.Raw(variables.Entidad);
         }
@@ -245,12 +252,12 @@ namespace @(Html.Raw(namespaceBase)).Business
             @if (Model.Especificaciones.AuditoriaUltimaModificacion)
             {
             <text>
-            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosModificado)(@(variables.Parametros).@(propiedes.UsuarioLogueadoId), DateTime.Now);
+            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosModificado)(@(variables.Parametros).@(propiedades.UsuarioLogueadoId), DateTime.Now);
             </text>}
 
             @(metodos.ValidarEntidad)(@Html.Raw(variables.Entidad));
 
-            @(variables.Repositorio).@(metodos.Actualizar)(@Html.Raw(variables.Entidad));
+            @(propiedades.Repositorio).@(metodos.Actualizar)(@Html.Raw(variables.Entidad));
         }
         </text>}
         @if (Model.Especificaciones.BajaTipoId == BajaTipos.LOGICA)
@@ -260,11 +267,11 @@ namespace @(Html.Raw(namespaceBase)).Business
             @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@variables.Parametros, nameof(@variables.Parametros));
 
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
-            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosBorrado)(@(variables.Parametros).@(propiedes.UsuarioLogueadoId), DateTime.Now);
+            @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosBorrado)(@(variables.Parametros).@(propiedades.UsuarioLogueadoId), DateTime.Now);
 
             @(metodos.ValidarEntidad)(@Html.Raw(variables.Entidad));
 
-            @(variables.Repositorio).@(metodos.ActualizarDatosBorrado)(@Html.Raw(variables.Entidad));
+            @(propiedades.Repositorio).@(metodos.ActualizarPropiedadesBorrado)(@Html.Raw(variables.Entidad));
         }
 
         public void @(metodos.DesmarcarComoBorrado)(@clases.DesmarcarComoBorradoParametros @variables.Parametros)
@@ -272,7 +279,7 @@ namespace @(Html.Raw(namespaceBase)).Business
             @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@variables.Parametros, nameof(@variables.Parametros));
 
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
-            @(variables.Repositorio).@(metodos.ActualizarDatosBorrado)(@Html.Raw(variables.Entidad));
+            @(propiedades.Repositorio).@(metodos.ActualizarPropiedadesBorrado)(@Html.Raw(variables.Entidad));
         }
         </text>}
         else if (Model.Especificaciones.BajaTipoId == BajaTipos.FISICA)
@@ -281,7 +288,7 @@ namespace @(Html.Raw(namespaceBase)).Business
         {
             @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@variables.Parametros, nameof(@variables.Parametros));
 
-            @(variables.Repositorio).@(metodos.EliminarPorId)(@(variables.Parametros).Id);
+            @(propiedades.Repositorio).@(metodos.EliminarPorId)(@(variables.Parametros).Id);
         }
         </text>}
         @if (!Model.Especificaciones.EsSoloLectura)
@@ -289,11 +296,11 @@ namespace @(Html.Raw(namespaceBase)).Business
         private @Html.Raw(clases.Entidad) @(metodos.Obtener)(@Model.Especificaciones.IDTipo.CLRType id,
             bool @parametros.ValidarExistencia = true)
         {
-            var @variables.Entidad = @(variables.Repositorio).@(metodos.Obtener)(id);
+            var @variables.Entidad = @(propiedades.Repositorio).@(metodos.Obtener)(id);
             if (@parametros.ValidarExistencia
                 && @variables.Entidad == null)
             {
-                throw new Exception(@(clases.Validador).EntityNotFound(@(Html.Raw(clases.Metadata)).LABEL, id));
+                throw new Exception(@(clases.Validador).Messages.EntityNotFound(@(Html.Raw(clases.Metadata)).LABEL, id));
             }
 
             return @variables.Entidad;
@@ -305,12 +312,12 @@ namespace @(Html.Raw(namespaceBase)).Business
 
             @foreach (var v in validaciones)
             {
-                <text>@Html.Raw(v);</text>
+            <text>@Html.Raw(v);</text>
             }
 
             @(clases.Validador).ThrowExceptionFriendlyMessageIfAnyErrors(@variables.Errores);
         }
-        </text>}
+</text>}
     }
-    }
+}
 

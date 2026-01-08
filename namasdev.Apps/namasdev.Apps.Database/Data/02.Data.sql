@@ -54,9 +54,9 @@ go
 --====
 
 --====
-insert into dbo.IdiomasTextos (IdiomaId,CreadoPorNombre,CreadoPorEtiqueta,CreadoFechaNombre,CreadoFechaEtiqueta,UltimaModificacionPorNombre,UltimaModificacionPorEtiqueta,UltimaModificacionFechaNombre,UltimaModificacionFechaEtiqueta,BorradoPorNombre,BorradoPorEtiqueta,BorradoFechaNombre,BorradoFechaEtiqueta,BorradoNombre,BorradoEtiqueta,BDNombre,EntidadesNombre,DatosNombre,NegocioNombre,WebPortalNombre) values
-('es','CreadoPor','Usuario creación','CreadoFecha','Fecha/hora creación','UltimaModificacionPor','Usuario última modificación','UltimaModificacionFecha','Fecha/hora última modificación','BorradoPor','Usuario borrado','BorradoFecha','Fecha/hora borrado','Borrado','Borrado','BD','Entidades','Datos','Negocio','Web.Portal'),
-('en','CreatedBy','Created by','CreatedAt','Created at','LastModifiedBy','Last modified by','LastModifiedAt','Last modified at','DeletedBy','Deleted by','DeletedAt','Deleted at','Deleted','Deleted','DB','Entities','Data','Business','Web.Portal')
+insert into dbo.IdiomasTextos (IdiomaId,CreadoPorNombre,CreadoPorEtiqueta,CreadoFechaNombre,CreadoFechaEtiqueta,UltimaModificacionPorNombre,UltimaModificacionPorEtiqueta,UltimaModificacionFechaNombre,UltimaModificacionFechaEtiqueta,BorradoPorNombre,BorradoPorEtiqueta,BorradoFechaNombre,BorradoFechaEtiqueta,BorradoNombre,BorradoEtiqueta,BDNombre,EntidadesNombre,DatosNombre,NegocioNombre,WebPortalNombre,RepositorioNombre,Agregar,Actualizar,Eliminar,MarcarComoBorrado,DesmarcarComoBorrado,Parametros,Propiedades) values
+('es','CreadoPor','Usuario creación','CreadoFecha','Fecha/hora creación','UltimaModificacionPor','Usuario última modificación','UltimaModificacionFecha','Fecha/hora última modificación','BorradoPor','Usuario borrado','BorradoFecha','Fecha/hora borrado','Borrado','Borrado','BD','Entidades','Datos','Negocio','Web.Portal','Repositorio','Agregar','Actualizar','Eliminar','MarcarComoBorrado','DesmarcarComoBorrado','Parametros','Propiedades'),
+('en','CreatedBy','Created by','CreatedAt','Created at','ModifiedBy','Modified by','ModifiedAt','Modified at','DeletedBy','Deleted by','DeletedAt','Deleted at','Deleted','Deleted','DB','Entities','Data','Business','Web.Portal','Repository','Add','Update','Delete','SetAsDeleted','UnsetAsDeleted','Parameters','Properties')
 go
 --====
 

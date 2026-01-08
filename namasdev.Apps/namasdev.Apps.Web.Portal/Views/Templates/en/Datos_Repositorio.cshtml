@@ -1,32 +1,41 @@
 ﻿@using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
     var namespaces = new
     {
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
-        Datos = string.Format("{0}.Data", Model.AplicacionVersion.Aplicacion.Nombre),
+        Datos = idiomaTextos.DatosNombre,
+        Entidades = idiomaTextos.EntidadesNombre,
     };
     var clases = new
     {
         Entidad = Model.Nombre,
-        Repositorio = string.Format("{0}Repository", Model.NombrePlural)
+        Repositorio = idiomaTextos.Repositorio,
+        RepositorioEntidad = string.Format("{0}{1}", Model.NombrePlural, idiomaTextos.Repositorio)
     };
     var interfaces = new
     {
-        Repositorio = string.Format("I{0}", clases.Repositorio)
+        Repositorio = string.Format("I{0}", clases.Repositorio),
+        RepositorioEntidad = string.Format("I{0}", clases.RepositorioEntidad),
     };
-    var variablesNombres = new
+    var variables = new
     {
         Entidad = "entity",
         Propiedades = "properties",
     };
-    var textos = new 
+    var metodos = new
+    {
+        Agregar = idiomaTextos.Agregar,
+        Actualizar = idiomaTextos.Actualizar,
+        ActualizarPropiedades = string.Format("{0}{1}", idiomaTextos.Actualizar, idiomaTextos.Propiedades),
+    };
+    var textos = new
     {
         TODOChecks = "// TODO (Gen): check FKs, unique indexes, check constraints",
     };
     string claveTipo = Model.Especificaciones.IDTipo != null ? Model.Especificaciones.IDTipo.CLRType : null,
         tiposGenericosEntidadYId = string.Format("{0}, {1}", Model.Nombre, claveTipo);
-
     bool usarRepositorioBase = !string.IsNullOrWhiteSpace(claveTipo);
 }
 using System;
@@ -36,26 +45,26 @@ using System.Linq;
 using namasdev.Data;
 using namasdev.Data.Entity;
 
-using @(Html.Raw(namespaces.Aplicacion)).Entities;
-using @(Html.Raw(namespaces.Datos)).Sql;
+using @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Entidades));
+using @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Datos)).Sql;
 
 // TODO (Gen): add DbSet to SqlContext
-namespace @Html.Raw(namespaces.Datos)
+namespace @Html.Raw(namespaces.Aplicacion).@(namespaces.Datos)
 {
-    public interface @Html.Raw(interfaces.Repositorio) @Html.Raw(usarRepositorioBase ? string.Format(": {0}", FormatoHelper.Generic("IRepository", tiposGenericosEntidadYId)) : "")
+    public interface @Html.Raw(interfaces.RepositorioEntidad) @Html.Raw(usarRepositorioBase ? string.Format(": {0}", FormatoHelper.Generic(interfaces.Repositorio, tiposGenericosEntidadYId)) : "")
     {
     }
 
-    public class @Html.Raw(clases.Repositorio) : @Html.Raw(usarRepositorioBase ? FormatoHelper.Generic("Repository", "SqlContext", tiposGenericosEntidadYId) : ""), @Html.Raw(interfaces.Repositorio)
+    public class @Html.Raw(clases.RepositorioEntidad) : @Html.Raw(usarRepositorioBase ? FormatoHelper.Generic(clases.Repositorio, "SqlContext", tiposGenericosEntidadYId) : ""), @Html.Raw(interfaces.RepositorioEntidad)
     {
         @if (Model.Indices.Any(i => i.EsUnique)
-        || Model.AsociacionesOrigen.Any())
+            || Model.AsociacionesOrigen.Any())
         {
-        <text>public override void Add(@clases.Entidad @variablesNombres.Entidad)
+        <text>public override void @(metodos.Agregar)(@clases.Entidad @variables.Entidad)
         {
             try
             {
-                base.Add(@variablesNombres.Entidad);
+                base.@(metodos.Agregar)(@variables.Entidad);
             }
             catch (Exception)
             {
@@ -64,11 +73,11 @@ namespace @Html.Raw(namespaces.Datos)
             }
         }
 
-        public override void Update(@clases.Entidad @variablesNombres.Entidad)
+        public override void @(metodos.Actualizar)(@clases.Entidad @variables.Entidad)
         {
             try
             {
-                base.Update(@variablesNombres.Entidad);
+                base.@(metodos.Actualizar)(@variables.Entidad);
             }
             catch (Exception)
             {
@@ -77,11 +86,11 @@ namespace @Html.Raw(namespaces.Datos)
             }
         }
 
-        public override void UpdateProperties(@clases.Entidad @variablesNombres.Entidad, params string[] @variablesNombres.Propiedades)
+        public override void @(metodos.ActualizarPropiedades)(@clases.Entidad @variables.Entidad, params string[] @variables.Propiedades)
         {
             try
             {
-                base.ActualizarPropiedades(@variablesNombres.Entidad, @variablesNombres.Propiedades);
+                base.@(metodos.ActualizarPropiedades)(@variables.Entidad, @variables.Propiedades);
             }
             catch (Exception)
             {

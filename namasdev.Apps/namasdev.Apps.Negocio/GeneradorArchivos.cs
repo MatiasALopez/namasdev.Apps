@@ -242,7 +242,7 @@ namespace namasdev.Apps.Negocio
                 TemplatesNombres.Datos.REPOSITORIO,
                 entidad,
                 $"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.DatosNombre}",
-                $"{entidad.NombrePlural}Repositorio.cs",
+                $"{entidad.NombrePlural}{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Repositorio}.cs",
                 grupoId);
         }
 
@@ -253,7 +253,7 @@ namespace namasdev.Apps.Negocio
                 TemplatesNombres.Negocio.NEGOCIO,
                 entidad,
                 $"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}",
-                $"{entidad.NombrePlural}Negocio.cs",
+                $"{entidad.NombrePlural}{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}.cs",
                 grupoId);
         }
 
@@ -275,7 +275,7 @@ namespace namasdev.Apps.Negocio
                 TemplatesNombres.Negocio.DTO.AGREGAR_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
-                "AgregarParametros.cs",
+                $"{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Agregar}{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Parametros}.cs",
                 grupoId);
         }
 
@@ -286,7 +286,7 @@ namespace namasdev.Apps.Negocio
                 TemplatesNombres.Negocio.DTO.ACTUALIZAR_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
-                "ActualizarParametros.cs",
+                $"{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Actualizar}{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Parametros}.cs",
                 grupoId);
         }
 
@@ -297,7 +297,7 @@ namespace namasdev.Apps.Negocio
                 TemplatesNombres.Negocio.DTO.MARCAR_COMO_BORRADO_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
-                "MarcarComoBorradoParametros.cs",
+                $"{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.MarcarComoBorrado}{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Parametros}.cs",
                 grupoId);
         }
 
@@ -308,7 +308,7 @@ namespace namasdev.Apps.Negocio
                 TemplatesNombres.Negocio.DTO.DESMARCAR_COMO_BORRADO_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
-                "DesmarcarComoBorradoParametros.cs",
+                $"{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.DesmarcarComoBorrado}{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Parametros}.cs",
                 grupoId);
         }
 
@@ -319,7 +319,7 @@ namespace namasdev.Apps.Negocio
                 TemplatesNombres.Negocio.DTO.ELIMINAR_PARAMETROS,
                 entidad,
                 Path.Combine($"{entidad.AplicacionVersion.Aplicacion.Nombre}.{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.NegocioNombre}", GeneradorArchivosNombres.Carpetas.DTO, entidad.NombrePlural),
-                "EliminarParametros.cs",
+                $"{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Eliminar}{entidad.AplicacionVersion.Aplicacion.Idioma.Textos.Parametros}.cs",
                 grupoId);
         }
 
@@ -447,7 +447,7 @@ namespace namasdev.Apps.Negocio
                 razor.Run(
                     templateNames[0],
                     null,
-                    entidad),
+                    entidad).TrimStart(),
                 encoding: System.Text.Encoding.UTF8);
 
             return pathArchivo;

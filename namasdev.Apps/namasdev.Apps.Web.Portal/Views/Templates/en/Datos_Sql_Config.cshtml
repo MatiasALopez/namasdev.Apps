@@ -3,9 +3,12 @@
 @using namasdev.Apps.Web.Portal.Helpers;
 @model namasdev.Apps.Entidades.Entidad
 @{
+    var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
     var namespaces = new
     {
-        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre
+        Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
+        Entidades = idiomaTextos.EntidadesNombre,
+        Datos = idiomaTextos.DatosNombre,
     };
     var clases = new
     {
@@ -15,6 +18,7 @@
             ? "EntityDeletedConfigBase"
             : "EntityTypeConfiguration",
         Metadata = string.Format("{0}Metadata", Model.Nombre),
+        BD = "DB",
     };
     string propiedadMetadataBase;
     var propiedadesReglas = new Dictionary<string, string>();
@@ -31,7 +35,7 @@
         propiedadReglas = new List<string>();
         if (p.EsID)
         {
-            propiedadReglas.Add(string.Format("HasColumnName({0}.BD.ID)", clases.Metadata));
+            propiedadReglas.Add(string.Format("HasColumnName({0}.{1}.ID)", clases.Metadata, clases.BD));
         }
         if (p.EsCalculada)
         {
@@ -148,16 +152,16 @@ using System.Data.Entity.ModelConfiguration;
 
 using namasdev.Data.Entity.Config;
 
-using @(Html.Raw(namespaces.Aplicacion)).Entities;
-using @(Html.Raw(namespaces.Aplicacion)).Entities.Metadata;
+using @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Entidades));
+using @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Entidades)).Metadata;
 
-namespace @(Html.Raw(namespaces.Aplicacion)).Data.Sql.Config
+namespace @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Datos)).Sql.Config
 {
     public class @Html.Raw(clases.Config) : @Html.Raw(FormatoHelper.Generic(clases.ConfigBase, Model.Nombre))
     {
         public @(Html.Raw(clases.Config))()
         {
-            ToTable(@(Html.Raw(clases.Metadata)).BD.TABLE);
+            ToTable(@(Html.Raw(clases.Metadata)).@(clases.BD).TABLE);
             @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
             {
             <text>HasKey(p => p.Id);</text>

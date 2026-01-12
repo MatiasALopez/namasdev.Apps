@@ -66,8 +66,8 @@
         Cargar = "Cargar",
         Mapear = "Map",
         ValidarArgumentoRequerido = "ValidateRequiredArgumentAndThrow",
-        CargarMensajesError = "SetErrorMessages",
-        CargarMensajeOk = "SetOkMessage",
+        CargarMensajeError = "SetMessageError",
+        CargarMensajeOk = "SetMessageSuccess",
     };
     var parametros = new
     {
@@ -218,7 +218,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             }
             catch (Exception ex)
             {
-                ControllerHelper.@(metodos.CargarMensajesError)(ex.Message);
+                ControllerHelper.@(metodos.CargarMensajeError)(ex.Message);
             }
 
             @(metodos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Agregar));
@@ -254,7 +254,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             }
             catch (Exception ex)
             {
-                ControllerHelper.@(metodos.CargarMensajesError)(ex.Message);
+                ControllerHelper.@(metodos.CargarMensajeError)(ex.Message);
             }
 
             @(metodos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Editar));

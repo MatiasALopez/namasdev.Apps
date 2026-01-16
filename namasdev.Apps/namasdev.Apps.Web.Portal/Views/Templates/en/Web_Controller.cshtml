@@ -62,12 +62,15 @@
         MarcarComoBorrado = idiomaTextos.MarcarComoBorrado,
         DesmarcarComoBorrado = idiomaTextos.DesmarcarComoBorrado,
         Eliminar = idiomaTextos.Eliminar,
-        Obtener = "Get",
-        Cargar = "Cargar",
-        Mapear = "Map",
         ValidarArgumentoRequerido = "ValidateRequiredArgumentAndThrow",
         CargarMensajeError = "SetMessageError",
         CargarMensajeOk = "SetMessageSuccess",
+    };
+    var textos = new
+    {
+        Obtener = "Get",
+        Cargar = "Load",
+        Mapear = "Map",
     };
     var parametros = new
     {
@@ -81,7 +84,6 @@
         Agregar = idiomaTextos.Agregar,
         Editar = "Edit",
         Eliminar = idiomaTextos.Eliminar,
-        Cargar = "Load",
     };
     bool tienePropiedadesBoolean = false,
 tienePropiedadesHora = false;
@@ -147,7 +149,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
                 @propiedades.Orden = @(parametros.Orden),
             };
 
-            @(metodos.Cargar)@(Html.Raw(clases.ListaViewModel))(@Html.Raw(variables.ViewModel));
+            @(textos.Cargar)@(Html.Raw(clases.ListaViewModel))(@Html.Raw(variables.ViewModel));
             return View(@Html.Raw(variables.ViewModel));
         }
         @if (Model.Especificaciones.BajaTipoId != BajaTipos.NINGUNA)
@@ -157,7 +159,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
         ValidateAntiForgeryToken]
         public ActionResult @(metodos.Eliminar)(@Model.Especificaciones.IDTipo.CLRType id)
         {
-            var @Html.Raw(variables.Entidad) = _@(Html.Raw(variables.Repositorio)).@(metodos.Obtener)(id);
+            var @Html.Raw(variables.Entidad) = _@(Html.Raw(variables.Repositorio)).@(textos.Obtener)(id);
             if (@Html.Raw(variables.Entidad) == null)
             {
                 return Json(new { success = false, message = @(clases.Validador).Messages.EntityNotFound(@(Html.Raw(clases.Metadata)).LABEL, id) });
@@ -198,7 +200,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
         public ActionResult @(actionNombres.Agregar)()
         {
             var @Html.Raw(variables.ViewModel) = new @(Html.Raw(clases.EntidadViewModel))();
-            @(metodos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Agregar));
+            @(textos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Agregar));
 
             return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
         }
@@ -211,7 +213,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _@(Html.Raw(variables.Negocio)).@(metodos.Agregar)(@(Html.Raw(FormatoHelper.Generic(metodos.Mapear, clases.AgregarParametros)))(@Html.Raw(variables.ViewModel)));
+                    _@(Html.Raw(variables.Negocio)).@(metodos.Agregar)(@(Html.Raw(FormatoHelper.Generic(textos.Mapear, clases.AgregarParametros)))(@Html.Raw(variables.ViewModel)));
 
                     return RedirectToAction(nameof(@(actionNombres.Index)));
                 }
@@ -221,20 +223,20 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
                 ControllerHelper.@(metodos.CargarMensajeError)(ex.Message);
             }
 
-            @(metodos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Agregar));
+            @(textos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Agregar));
             return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
         }
 
         public ActionResult @(actionNombres.Editar)(@Model.Especificaciones.IDTipo.CLRType id)
         {
-            var @Html.Raw(variables.Entidad) = _@(Html.Raw(variables.Repositorio)).@(metodos.Obtener)(id);
+            var @Html.Raw(variables.Entidad) = _@(Html.Raw(variables.Repositorio)).@(textos.Obtener)(id);
             if (@Html.Raw(variables.Entidad) == null)
             {
                 return RedirectToAction(nameof(@actionNombres.Index));
             }
 
-            var @Html.Raw(variables.ViewModel) = @(Html.Raw(FormatoHelper.Generic(metodos.Mapear, clases.EntidadViewModel)))(@Html.Raw(variables.Entidad));
-            @(metodos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Editar));
+            var @Html.Raw(variables.ViewModel) = @(Html.Raw(FormatoHelper.Generic(textos.Mapear, clases.EntidadViewModel)))(@Html.Raw(variables.Entidad));
+            @(textos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Editar));
 
             return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
         }
@@ -247,7 +249,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _@(Html.Raw(variables.Negocio)).@(metodos.Actualizar)(@(Html.Raw(FormatoHelper.Generic(metodos.Mapear, clases.ActualizarParametros)))(@Html.Raw(variables.ViewModel)));
+                    _@(Html.Raw(variables.Negocio)).@(metodos.Actualizar)(@(Html.Raw(FormatoHelper.Generic(textos.Mapear, clases.ActualizarParametros)))(@Html.Raw(variables.ViewModel)));
 
                     ControllerHelper.@(metodos.CargarMensajeOk)(@(Html.Raw(clases.MetadataMensajes)).UPDATE_OK);
                 }
@@ -257,7 +259,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
                 ControllerHelper.@(metodos.CargarMensajeError)(ex.Message);
             }
 
-            @(metodos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Editar));
+            @(textos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(variables.ViewModel), @(clases.PaginaModo).@(actionNombres.Editar));
 
             return View(@Html.Raw(constantes.ViewsEntidad), @Html.Raw(variables.ViewModel));
         }</text>
@@ -267,13 +269,13 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
 
         #region Methods
 
-        private void @(metodos.Cargar)@(Html.Raw(clases.ListaViewModel))(@Html.Raw(clases.ListaViewModel) @Html.Raw(variables.ViewModel))
+        private void @(textos.Cargar)@(Html.Raw(clases.ListaViewModel))(@Html.Raw(clases.ListaViewModel) @Html.Raw(variables.ViewModel))
         {
             @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@Html.Raw(variables.ViewModel), nameof(@Html.Raw(variables.ViewModel)));
 
             var op = @(Html.Raw(variables.ViewModel)).CreateOrderAndPagingParameters();
 
-            @(Html.Raw(variables.ViewModel)).Items = @(Html.Raw(FormatoHelper.Generic(metodos.Mapear, FormatoHelper.Generic("List", clases.EntidadItemModel))))(
+            @(Html.Raw(variables.ViewModel)).Items = @(Html.Raw(FormatoHelper.Generic(textos.Mapear, FormatoHelper.Generic("List", clases.EntidadItemModel))))(
                 _@(Html.Raw(variables.Repositorio)).GetList(
                     //search: @(Html.Raw(variables.ViewModel)).Search,
                     op: op));
@@ -283,7 +285,7 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Web.Portal.Controllers
         @if (!Model.Especificaciones.EsSoloLectura)
         {
         <text>
-        private void @(metodos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(clases.EntidadViewModel) @Html.Raw(variables.ViewModel), @(clases.PaginaModo) @parametros.PaginaModo)
+        private void @(textos.Cargar)@(Html.Raw(clases.EntidadViewModel))(@Html.Raw(clases.EntidadViewModel) @Html.Raw(variables.ViewModel), @(clases.PaginaModo) @parametros.PaginaModo)
         {
             @(clases.Validador).@(metodos.ValidarArgumentoRequerido)(@Html.Raw(variables.ViewModel), nameof(@Html.Raw(variables.ViewModel)));
 

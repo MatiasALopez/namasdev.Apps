@@ -3,7 +3,7 @@
 @model namasdev.Apps.Entidades.Entidad
 @{
     var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
-    var namespaces = new 
+    var namespaces = new
     {
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
         Entidades = idiomaTextos.EntidadesNombre,
@@ -82,6 +82,10 @@
     Dictionary<string, string> validacionParametros;
     foreach (var p in Model.Propiedades)
     {
+        if (p.EsCalculada)
+        {
+            continue;
+        }
         validacionMetodo = null;
         propiedadNombre = p.NombreOId;
         validacionParametros = new Dictionary<string, string>();
@@ -268,8 +272,6 @@ namespace @(Html.Raw(namespaces.Aplicacion)).@(namespaces.Negocio)
 
             var @Html.Raw(variables.Entidad) = @(Html.Raw(FormatoHelper.Generic("Mapper.Map", clases.Entidad)))(@variables.Parametros);
             @(Html.Raw(variables.Entidad)).@(metodos.EstablecerDatosBorrado)(@(variables.Parametros).@(propiedades.UsuarioLogueadoId), DateTime.Now);
-
-            @(metodos.ValidarEntidad)(@Html.Raw(variables.Entidad));
 
             @(propiedades.Repositorio).@(metodos.ActualizarPropiedadesBorrado)(@Html.Raw(variables.Entidad));
         }

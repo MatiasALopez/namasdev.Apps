@@ -57,10 +57,11 @@ namespace namasdev.Apps.Datos
         {
             using (var ctx = CrearContext())
             {
+                var categoriasIds = new[] { PropiedadCategorias.ID, PropiedadCategorias.GENERAL };
                 var orden = ctx.EntidadesPropiedades
                     .Where(ep =>
                         ep.EntidadId == entidadId
-                        && ep.PropiedadCategoriaId == PropiedadCategorias.GENERAL)
+                        && categoriasIds.Contains(ep.PropiedadCategoriaId))
                     .Max(ep => (short?)ep.Orden) ?? 0;
 
                 return (short)(orden + 1);

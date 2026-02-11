@@ -4,7 +4,7 @@ namespace namasdev.Apps.Negocio.DTO.EntidadesEspecificaciones
 {
     public class ActualizarParametros : ParametrosEntidadBase<Guid>
     {
-        public short? ArticuloId { get; set; }
+        public string IdiomaArticuloId { get; set; }
         public short? IDPropiedadTipoId { get; set; }
         public bool EsSoloLectura { get; set; }
         public short BajaTipoId { get; set; }

@@ -2,6 +2,7 @@
 @model namasdev.Apps.Entidades.Entidad
 @{
     var idiomaTextos = Model.AplicacionVersion.Aplicacion.Idioma.Textos.Idioma.Textos;
+    bool esSoloLectura = Model.Especificaciones.EsSoloLectura;
     var namespaces = new
     {
         Aplicacion = Model.AplicacionVersion.Aplicacion.Nombre,
@@ -11,7 +12,7 @@
     var clases = new
     {
         Entidad = Model.Nombre,
-        Repositorio = idiomaTextos.Repositorio,
+        Repositorio = string.Format("{0}{1}", idiomaTextos.Repositorio, esSoloLectura ? "ReadOnly" : ""),
         RepositorioEntidad = string.Format("{0}{1}", Model.NombrePlural, idiomaTextos.Repositorio)
     };
     var interfaces = new
@@ -57,8 +58,9 @@ namespace @Html.Raw(namespaces.Aplicacion).@(namespaces.Datos)
 
     public class @Html.Raw(clases.RepositorioEntidad) : @Html.Raw(usarRepositorioBase ? FormatoHelper.Generic(clases.Repositorio, "SqlContext", tiposGenericosEntidadYId) : ""), @Html.Raw(interfaces.RepositorioEntidad)
     {
-        @if (Model.Indices.Any(i => i.EsUnique)
-            || Model.AsociacionesOrigen.Any())
+        @if (!esSoloLectura
+            && (Model.Indices.Any(i => i.EsUnique)
+                || Model.AsociacionesOrigen.Any()))
         {
         <text>public override void @(metodos.Agregar)(@clases.Entidad @variables.Entidad)
         {

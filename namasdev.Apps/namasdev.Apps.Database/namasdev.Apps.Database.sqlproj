@@ -94,6 +94,7 @@
     <Build Include="dbo\Tables\Idiomas.sql" />
     <Build Include="dbo\Tables\IdiomasTextos.sql" />
     <Build Include="dbo\Tables\PropiedadCategoria.sql" />
+    <Build Include="dbo\Stored Procedures\uspClonarEntidad.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Data\02.Data.sql" />

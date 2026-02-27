@@ -53,7 +53,7 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Templates
         [Display(Name = "Controller")]
         public bool GenerarWebController { get; set; }
 
-        [Display(Name = "ItemModel")]
+        [Display(Name = "Model de item")]
         public bool GenerarWebModelsItemModel { get; set; }
 
         [Display(Name = "ViewModel de entidad")]
@@ -68,10 +68,10 @@ namespace namasdev.Apps.Web.Portal.ViewModels.Templates
         [Display(Name = "Metadata de Views")]
         public bool GenerarWebMetadataViews { get; set; }
 
-        [Display(Name = "Index")]
+        [Display(Name = "View Index")]
         public bool GenerarWebViewsIndex { get; set; }
 
-        [Display(Name = "Entidad")]
+        [Display(Name = "View Entidad")]
         public bool GenerarWebViewsEntidad { get; set; }
 
         public void MarcarTodos()

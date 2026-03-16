@@ -127,11 +127,11 @@ namespace @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Entidades)).M
                     propiedadConstantes.Add(constantesDefiniciones.DigitosDecimales, "4");
                     if (p.EspecificacionesImporte.ValorMinimo.HasValue)
                     {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, p.EspecificacionesImporte.ValorMinimo.ToString());
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMinimoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesImporte.ValorMinimo));
                     }
                     if (p.EspecificacionesImporte.ValorMaximo.HasValue)
                     {
-                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, p.EspecificacionesImporte.ValorMaximo.ToString());
+                        propiedadConstantes.Add(constantesDefiniciones.ValorMaximoDecimal, FormatoHelper.ValorConSufijo(p.EspecificacionesImporte.ValorMaximo));
                     }
                     break;
             }

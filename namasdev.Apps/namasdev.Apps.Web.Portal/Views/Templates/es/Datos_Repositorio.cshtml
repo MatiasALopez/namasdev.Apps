@@ -12,7 +12,7 @@
     var clases = new
     {
         Entidad = Model.Nombre,
-        Repositorio = string.Format("{0}{1}", idiomaTextos.Repositorio, esSoloLectura ? "ReadOnly" : ""),
+        Repositorio = string.Format("{0}{1}", idiomaTextos.Repositorio, esSoloLectura ? "SoloLectura" : ""),
         RepositorioEntidad = string.Format("{0}{1}", Model.NombrePlural, idiomaTextos.Repositorio)
     };
     var interfaces = new
@@ -48,7 +48,6 @@ using namasdev.Data.Entity;
 
 using @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Entidades));
 using @(Html.Raw(namespaces.Aplicacion)).@(Html.Raw(namespaces.Datos)).Sql;
-
 
 // TODO (Gen): agregar DbSet en SqlContext
 namespace @Html.Raw(namespaces.Aplicacion).@(namespaces.Datos)

@@ -12,7 +12,7 @@
     var clases = new
     {
         Entidad = Model.Nombre,
-        Repositorio = string.Format("{0}{1}", idiomaTextos.Repositorio, esSoloLectura ? "ReadOnly" : ""),
+        Repositorio = string.Format("{0}{1}", esSoloLectura ? "ReadOnly" : "", idiomaTextos.Repositorio),
         RepositorioEntidad = string.Format("{0}{1}", Model.NombrePlural, idiomaTextos.Repositorio)
     };
     var interfaces = new

@@ -2,7 +2,8 @@
 	@EntidadIdOrigen uniqueidentifier,
 	@EntidadIdDestino uniqueidentifier,
 	@UsuarioId nvarchar(128),
-	@FechaHora datetime
+	@FechaHora datetime,
+	@SobreescribirEntidadDestino bit = 0
 AS
 BEGIN
 	declare @NombreAReemplazar nvarchar(100) = concat('_',(select NombrePlural from dbo.Entidades where EntidadId = @EntidadIdOrigen),'_'),
@@ -35,6 +36,14 @@ BEGIN
 	into #tmpEntidadesPropiedades
 	from dbo.EntidadesPropiedades
 	where EntidadId = @EntidadIdOrigen
+
+	if @SobreescribirEntidadDestino = 1 and exists(select * from dbo.EntidadesPropiedades where EntidadId = @EntidadIdDestino)
+	begin
+		delete dbo.EntidadesAsociaciones where OrigenEntidadId = @EntidadIdDestino
+		delete dbo.EntidadesClaves where EntidadId = @EntidadIdDestino
+		delete dbo.EntidadesIndices where EntidadId = @EntidadIdDestino
+		delete dbo.EntidadesPropiedades where EntidadId = @EntidadIdDestino
+	end
 
 	insert into dbo.EntidadesPropiedades (EntidadPropiedadId,EntidadId,Nombre,Etiqueta,PropiedadTipoId,PropiedadTipoEspecificaciones,PermiteNull,Orden,CalculadaFormula,GeneradaAlCrear,Editable,PropiedadCategoriaId)
 		select EntidadPropiedadId,EntidadId,Nombre,Etiqueta,PropiedadTipoId,PropiedadTipoEspecificaciones,PermiteNull,Orden,CalculadaFormula,GeneradaAlCrear,Editable,PropiedadCategoriaId

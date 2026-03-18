@@ -50,10 +50,18 @@
             case PropiedadTipos.TEXTO:
                 if (p.EspecificacionesTexto != null)
                 {
-                    var maxLength = p.EspecificacionesTexto.TamañoMaximo ?? p.EspecificacionesTexto.TamañoExacto;
-                    if (maxLength.HasValue)
+                    string maxLengthMetadataNombre = null;
+                    if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
                     {
-                        propiedadReglas.Add(string.Format("HasMaxLength({0}{1})", propiedadMetadataBase, EntidadMetadataAtributos_en.TAMAÑO_MAX));
+                        maxLengthMetadataNombre = EntidadMetadataAtributos_en.TAMAÑO_MAX;
+                    }
+                    else if (p.EspecificacionesTexto.TamañoExacto.HasValue)
+                    {
+                        maxLengthMetadataNombre = EntidadMetadataAtributos_en.TAMAÑO_EXACTO;
+                    }
+                    if (!string.IsNullOrWhiteSpace(maxLengthMetadataNombre))
+                    {
+                        propiedadReglas.Add(string.Format("HasMaxLength({0}{1})", propiedadMetadataBase, maxLengthMetadataNombre));
                     }
                 }
                 break;

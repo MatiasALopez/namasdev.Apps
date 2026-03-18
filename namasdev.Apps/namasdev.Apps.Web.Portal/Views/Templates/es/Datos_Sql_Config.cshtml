@@ -46,10 +46,18 @@
             case PropiedadTipos.TEXTO:
                 if (p.EspecificacionesTexto != null)
                 {
-                    var maxLength = p.EspecificacionesTexto.TamañoMaximo ?? p.EspecificacionesTexto.TamañoExacto;
-                    if (maxLength.HasValue)
+                    string maxLengthMetadataNombre = null;
+                    if (p.EspecificacionesTexto.TamañoMaximo.HasValue)
                     {
-                        propiedadReglas.Add(string.Format("HasMaxLength({0}{1})", propiedadMetadataBase, EntidadMetadataAtributos_es.TAMAÑO_MAX));
+                        maxLengthMetadataNombre = EntidadMetadataAtributos_es.TAMAÑO_MAX;
+                    }
+                    else if (p.EspecificacionesTexto.TamañoExacto.HasValue)
+                    {
+                        maxLengthMetadataNombre = EntidadMetadataAtributos_es.TAMAÑO_EXACTO;
+                    }
+                    if (!string.IsNullOrWhiteSpace(maxLengthMetadataNombre))
+                    {
+                        propiedadReglas.Add(string.Format("HasMaxLength({0}{1})", propiedadMetadataBase, maxLengthMetadataNombre));
                     }
                 }
                 break;
@@ -155,31 +163,31 @@ namespace @(Html.Raw(namespaces.Aplicacion)).Datos.Sql.Config
 {
     public class @Html.Raw(clases.Config) : @Html.Raw(FormatoHelper.Generic(clases.ConfigBase, Model.Nombre))
     {
-        public @(Html.Raw(clases.Config))()
-        {
-            ToTable(@(Html.Raw(clases.Metadata)).BD.TABLA);
-            @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
-            {
-            <text>HasKey(p => p.Id);</text>
-            }
-            else if (Model.Claves.Count == 1)
-            {
-            <text>HasKey(p => p.@Html.Raw(Model.Claves[0].Propiedad.Nombre));</text>
-            }
-            else if (Model.Claves.Count > 1)
-            {
-            <text>HasKey(p => new { @Html.Raw(string.Join(", ", Model.Claves.Select(c => string.Format("p.{0}", c.Propiedad.Nombre)))) });</text>
-            }
-
-            @foreach (var p in propiedadesReglas)
-            {
-            <text>Property(p => @Html.Raw(p.Key)).@Html.Raw(p.Value);</text>
-            }
-
-            @foreach (var a in asociaciones)
-            {
-            <text>@Html.Raw(a);</text>
-            }
-        }
+    public @(Html.Raw(clases.Config))()
+    {
+    ToTable(@(Html.Raw(clases.Metadata)).BD.TABLA);
+    @if (Model.Especificaciones.IDPropiedadTipoId.HasValue)
+    {
+        <text>HasKey(p => p.Id);</text>
     }
-}
+    else if (Model.Claves.Count == 1)
+    {
+        <text>HasKey(p => p.@Html.Raw(Model.Claves[0].Propiedad.Nombre));</text>
+    }
+    else if (Model.Claves.Count > 1)
+    {
+        <text>HasKey(p => new { @Html.Raw(string.Join(", ", Model.Claves.Select(c => string.Format("p.{0}", c.Propiedad.Nombre)))) });</text>
+    }
+
+    @foreach (var p in propiedadesReglas)
+    {
+        <text>Property(p => @Html.Raw(p.Key)).@Html.Raw(p.Value);</text>
+    }
+
+    @foreach (var a in asociaciones)
+    {
+        <text>@Html.Raw(a);</text>
+    }
+    }
+    }
+    }

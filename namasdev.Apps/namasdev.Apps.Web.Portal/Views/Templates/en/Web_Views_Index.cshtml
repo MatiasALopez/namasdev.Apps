@@ -57,7 +57,7 @@
                 propiedades.Add(p.NombreOId, string.Format("{0}.Amount(item.{1}, decimalDigits: 2)", clases.Formateador, p.NombreOId));
                 break;
             case PropiedadTipos.FECHA_HORA:
-                propiedades.Add(p.NombreOId, string.Format("{0}.DateTime(item.{2})", clases.Formateador, p.NombreOId));
+                propiedades.Add(p.NombreOId, string.Format("{0}.DateTime(item.{1})", clases.Formateador, p.NombreOId));
                 break;
             case PropiedadTipos.FECHA:
                 propiedades.Add(p.NombreOId, string.Format("{0}.Date(item.{1})", clases.Formateador, p.NombreOId));
